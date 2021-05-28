@@ -1,0 +1,28 @@
+.search-form {
+    background: white;
+    border: 1px solid var(--text-color);
+    border-radius: 50px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.search-form input {
+    border: none;
+    border-radius: 50px;
+    width: 90%;
+}
+
+.fa-search {
+    color: var(--text-color);
+}
+
+.search:focus-visible {
+    outline: none !important;
+}
+
+.navbar-toggler :focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0;
+}
