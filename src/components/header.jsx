@@ -12,7 +12,7 @@ import {
 	DropdownMenu,
 	DropdownItem,
 } from 'reactstrap';
-import 'assets/css/components/header.css';
+import 'assets/scss/scss-components/header.scss';
 
 const Example = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +32,8 @@ const Example = (props) => {
 							</Link>
 						</NavItem>
 						<NavItem>
-							<Link className="nav-link" to="#">
-								Link
+							<Link className="nav-link" to="/login">
+							login
 							</Link>
 						</NavItem>
 						<UncontrolledDropdown nav inNavbar>

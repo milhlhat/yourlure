@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import 'assets/css/components/card-product.css';
+import 'assets/scss/scss-components/card-product.scss';
 CartProduct.propTypes = {};
 
 function CartProduct(props) {

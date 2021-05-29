@@ -13,7 +13,7 @@ let dummyimg = [
 function Home(props) {
 	return (
 		<div>
-			<div className="d-flex">
+			<div className="d-flex m-4">
 				<ProductImage data={dummyimg} />
                 <ProductAction />
 			</div>

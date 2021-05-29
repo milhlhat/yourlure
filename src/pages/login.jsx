@@ -1,5 +1,5 @@
-import InputField from "components/customeField/InputField.jsx";
-import YLButton from "components/customeField/YLButton.jsx";
+import InputField from "components/custom-field/YLInput.jsx";
+import YLButton from "components/custom-field/YLButton.jsx";
 import React from "react";
 import { useHistory } from "react-router";
 import * as Yup from "yup";

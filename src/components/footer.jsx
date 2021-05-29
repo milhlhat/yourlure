@@ -1,9 +1,9 @@
 import React from 'react';
-import 'assets/css/components/footer.css';
+ 
 
 function Footer(props) {
 	return (
-		<footer className="">
+		<footer id="footer">
 			<hr className="hr" />
 			<div className="d-flex">
 				<div className="col-3 d-flex flex-column">

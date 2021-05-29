@@ -1,0 +1,32 @@
+@import '../map.scss';
+.gallery {
+	display: flex;
+}
+
+.object-fit img {
+	object-fit: contain;
+}
+
+.border-gallery {
+	border-bottom: 3px solid $primary;
+}
+
+.product-action {
+	background: #fff;
+
+	border-radius: 2px;
+	display: flex;
+	flex-direction: column;
+}
+
+.tab {
+	display: flex;
+	& .detail-tab {
+		border-right: 1px solid $text-color;
+		border-left: 1px solid $text-color;
+	}
+    & a {
+        text-decoration: none;
+        color: $text-color
+    }
+}

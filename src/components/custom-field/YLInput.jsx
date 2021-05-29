@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import { ErrorMessage } from "formik";
-import 'assets/scss/component/customeField/InputField.scss';
+import 'assets/scss/scss-components/custom-field/InputField.scss';
 
 InputField.propTypes = {
   field: PropTypes.object.isRequired,
@@ -15,7 +15,7 @@ InputField.propTypes = {
 };
 
 InputField.defaultProps = {
-  type: "text",
+  type: "text", 
   label: "",
   placeholder: "",
   disabled: false,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Magnifier from 'react-magnifier';
-import 'assets/css/pages/product-detail.css';
+import 'assets/scss/scss-pages/product-detail.scss';
 ProductImage.propTypes = {};
 
 function ProductImage(props) {
