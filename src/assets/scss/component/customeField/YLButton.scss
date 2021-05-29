@@ -1,0 +1,43 @@
+@import '../../map.scss';
+.button {
+    margin: 10px;
+    border: 1px solid #000000;
+    width: 356.68px;
+    height: 53px;
+    left: 6px;
+    top: 6px;
+}
+
+.transButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 356.68px;
+    height: 53px;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    margin-top: -6px;
+    margin-left: -6px;
+    cursor: pointer;
+}
+
+.dark {
+    background-color: #000000;
+    color: #fff;
+}
+
+.primary {
+    background-color: $primary;
+    color: #fff;
+}
+
+.transButton:hover {
+    background-color: $hover-color;
+    color: #fff;
+    font-weight: bold;
+}
+
+.transButton:active {
+    transform: translate(6px, 6px)
+}
