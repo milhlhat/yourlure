@@ -1,4 +1,4 @@
-import AxiosClient from './AxiosClient';
+import AxiosClient from './axios-client';
 import queryString from 'query-string';
 const UserApi = {
 	login: (user) => {

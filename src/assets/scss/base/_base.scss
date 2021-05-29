@@ -1,0 +1,20 @@
+@import '_variable.scss';
+.text-color {
+	color: $text-color;
+}
+.title {
+	color: $title-color;
+	font-weight: bold;
+}
+.hr {
+	color: $primary;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+.bold {
+	font-weight: 500;
+}
+.text-small {
+	font-size: small;
+}

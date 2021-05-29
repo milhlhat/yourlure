@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CartProduct from 'components/cart-product';
+import CartProduct from 'components/card-product';
 import ProductImage from 'components/product-media';
 import ProductAction from 'components/product-action';
 
