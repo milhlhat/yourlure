@@ -5,7 +5,7 @@ CartProduct.propTypes = {};
 
 function CartProduct(props) {
 	return (
-		<div className="card-product align-items-center p-3 mx-1 ">
+		<div className="card-product align-items-center p-3 ">
 			<div className="thumb">
 				<img
 					className="card-img-top"

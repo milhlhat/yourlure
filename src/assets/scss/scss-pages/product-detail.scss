@@ -1,32 +1,83 @@
-@import '../map.scss';
+@import "../map.scss";
 .gallery {
-	display: flex;
+  display: flex;
 }
 
 .object-fit img {
-	object-fit: contain;
+  object-fit: contain;
 }
 
 .border-gallery {
-	border-bottom: 3px solid $primary;
+  border-bottom: 3px solid $primary;
 }
 
 .product-action {
-	background: #fff;
+  background: #fff;
 
-	border-radius: 2px;
-	display: flex;
-	flex-direction: column;
-}
-
-.tab {
-	display: flex;
-	& .detail-tab {
-		border-right: 1px solid $text-color;
-		border-left: 1px solid $text-color;
-	}
-    & a {
-        text-decoration: none;
-        color: $text-color
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  & .tab {
+    display: flex;
+    & .buy-tab {
+      border-left: 1px solid $text-color;
+      border-top: 1px solid $text-color;
     }
+    & .detail-tab {
+      border-left: 1px solid $text-color;
+      background-color: #fff;
+    }
+    & a {
+      text-decoration: none;
+      color: $text-color;
+    }
+    & .param-tab {
+      border-left: 3px solid $background-box-color;
+      background-color: #fff;
+    }
+  }
+  & .product-choose-color {
+    align-items: center;
+    & .choose-color {
+      display: flex;
+	  flex-wrap: wrap;
+      & .box-color {
+        width: 50px;
+        height: 50px;
+        border: 1px solid;
+        cursor: pointer;
+        justify-content: center;
+      }
+      & .red {
+        background-color: red;
+      }
+      & .green {
+        background-color: green;
+      }
+      & .yellow {
+        background-color: yellow;
+      }
+      & .blue {
+        background-color: blue;
+      }
+    }
+  }
+  & .product-details-quantity{
+    & input::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+    }
+    & .input-quickview{
+      outline: none;
+      border: none;
+      text-align: center;
+    }
+    & .quantity-input{
+      border: none;
+      background-color: #fff;
+    }
+  }
+  & .product-buy{
+    display: flex;
+    height: 50px;
+  }
 }

@@ -9,7 +9,7 @@ function ProductImage(props) {
 	const [selectImg, setSelectImg] = useState(0);
 	return (
 		<div className=" d-flex flex-column m-4">
-			<Magnifier src={data[selectImg]} height={350} width={300} className="object-fit" />
+			<Magnifier src={data[selectImg]} height={350} className="object-fit" />
 
 			<div className="gallery mt-1">
 				{data &&

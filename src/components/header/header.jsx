@@ -48,8 +48,8 @@ const Example = (props) => {
 							</DropdownMenu>
 						</UncontrolledDropdown>
 					</Nav>
-					<div className="d-flex ms-auto search-form">
-						<input type="text" className="search" />
+					<div className="d-flex ms-auto search-form px-3 ">
+						<input type="text" className="search" placeholder="Tìm kiếm..."/>
 						<i className="fa fa-search"></i>
 					</div>
 				</Collapse>
