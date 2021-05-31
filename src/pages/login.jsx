@@ -4,8 +4,10 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import * as Yup from 'yup';
 import { FastField, Form, Formik } from 'formik';
-import { setUser } from 'redux/action/user-slice';
+import { getUser, setUser } from 'redux/action/user-slice';
 import { useDispatch } from 'react-redux';
+import UserApi from 'api/user-api';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 function Login(props) {
 	const history = useHistory();
@@ -13,11 +15,18 @@ function Login(props) {
 	//redux
 	const dispatch = useDispatch();
 
-	const login = (values) => {
-		const action = setUser(values);
+	const login = async (values) => {
+		// const action = setUser(values);
 
-		dispatch(action);
+		// dispatch(action);
 		// history.replace("/home");
+		 try{
+			const actionResult = await dispatch(getUser(values));
+			const currentUser = unwrapResult(actionResult);
+			console.log('currentUser', currentUser);
+		 }catch(e){
+			 console.log("failed to login",e);
+		 }
 	};
 
 	//constructor value for formik field

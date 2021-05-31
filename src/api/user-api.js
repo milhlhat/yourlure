@@ -2,9 +2,10 @@ import AxiosClient from './axios-client';
 import queryString from 'query-string';
 const UserApi = {
 	login: (user) => {
-		// const url = `/login`;
+		const url = `/login`;
 		// return AxiosClient.post(url, user);
-        return {name: "UserApi"}
+		return {name: user};
+      
 	},
 	getAll: () => {
 		const url = '/customer';

@@ -1,5 +1,6 @@
 import axios from "axios";
 import queryString from "query-string";
+import { useSelector } from "react-redux";
 
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
@@ -13,6 +14,9 @@ const AxiosClient = axios.create({
 
 AxiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
+  const token = localStorage.getItem('YL-user');
+  console.log();
+  config.headers.Authorization= `Bearer ${JSON.parse(token).account}`;
   return config;
 });
 
