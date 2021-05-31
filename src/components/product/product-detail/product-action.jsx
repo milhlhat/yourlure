@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import YLButton from "../custom-field/YLButton";
-
+import YLButton from "../../custom-field/YLButton";
+import data from './dumy-data';
 ProductAction.propTypes = {};
 
 function ProductAction(props) {
-
-	const [quantity, setQuantity] = useState(1);
-	const decrement =()=>{
-		Number(quantity)<=1? setQuantity(1):setQuantity(Number(quantity)-1);
-		console.log(quantity);
-	}
-	const increment =()=>{ 
-		setQuantity(Number(quantity)+1);
-		console.log(quantity);
-	}
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState(0);
+  var cl=0;
+  const decrement = () => {
+    Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
+    console.log(quantity);
+  };
+  const increment = () => {
+    setQuantity(Number(quantity) + 1);
+    console.log(quantity);
+  };
+  const handleChooseColor = (index)=>{
+    console.log(index);
+    setColor(index);
+    cl=index;
+    console.log(cl);
+  };
   //example color product choosen
-  const productColor = [
-    "red","blue","green","yellow","red","blue","green","yellow","red","blue","green","yellow","red","blue","green","yellow","red","blue","green","yellow",
-  ];
+  const productColor = data.productColor();
   return (
     <div className="product-action p-4">
       <span className="title">Lorem ipsum dolor sit amet, consectetur</span>
@@ -46,8 +51,10 @@ function ProductAction(props) {
       <div className="product-choose-color">
         <h5>Mã màu:</h5>
         <div className="choose-color">
-          {productColor.map((value) => (
-            <div className={"box-color mt-2 ms-2 " + value}>{value}</div>
+          {productColor.map((value,index) => (
+            <div className={"box-choose "+index==cl?'clicked-color':''} onClick={()=>handleChooseColor(index)}>
+              <div className={"box-color m-1 " + value}>{value}</div>
+            </div>
           ))}
         </div>
       </div>
@@ -55,7 +62,7 @@ function ProductAction(props) {
         <h5>Số lượng:</h5>
       </div>
       <div className="product-details-quantity d-flex">
-	  <button className="quantity-input" onClick={decrement}>
+        <button className="quantity-input" onClick={decrement}>
           &mdash;
         </button>
         <input
@@ -64,7 +71,7 @@ function ProductAction(props) {
           value={quantity}
           required
         />
-		<button className="quantity-input" onClick={increment}>
+        <button className="quantity-input" onClick={increment}>
           &#xff0b;
         </button>
       </div>

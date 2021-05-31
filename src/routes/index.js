@@ -5,6 +5,7 @@ import Header from "components/header/header";
 import Loading from "components/loading";
 import CommonUtils from "utils/common";
 import Footer from "components/footer/footer";
+import Product from "components/product/product";
 const Login = React.lazy(() => import("pages/login"));
 const Home = React.lazy(() => import("pages/home"));
 const NotFound = React.lazy(() => import("pages/notfound"));
@@ -13,10 +14,10 @@ function AppRouter() {
     CommonUtils.scrollTop();
   }, []);
   return (
-    <Container fluid="lg" className="pt-2 main-container">
-      <Suspense fallback={<Loading />}>
-        <BrowserRouter>
-          <Header />
+    <Suspense fallback={<Loading />}>
+      <BrowserRouter>
+        <Header />
+        <Container fluid="lg" className="main-container">
           <div className="main">
             <Switch>
               <Redirect exact from="/" to="/home" />
@@ -31,13 +32,14 @@ function AppRouter() {
                 }}
               />
               <Route path="/login" component={Login} />
+              <Route path="/product" component={Product} />
               <Route component={NotFound} />
             </Switch>{" "}
           </div>
+        </Container>
           <Footer />
-        </BrowserRouter>
-      </Suspense>
-    </Container>
+      </BrowserRouter>
+    </Suspense>
   );
 }
 

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CartProduct from "components/card-product";
-import ProductImage from "components/product/product-media";
-import ProductAction from "components/product/product-action";
+import ProductImage from "components/product/product-detail/product-media";
+import ProductAction from "components/product/product-detail/product-action";
 
 Home.propTypes = {};
 let dummyimg = [

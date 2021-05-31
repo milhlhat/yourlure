@@ -6,16 +6,19 @@ ProductImage.propTypes = {};
 
 function ProductImage(props) {
 	let { data } = props;
+	const isCustome=true;
 	const [selectImg, setSelectImg] = useState(0);
 	return (
-		<div className=" d-flex flex-column m-4">
+		<div className="product-media d-flex flex-column m-4">
+			<div className="big-image ">
+				<button className="big-image-edit bg-white" hidden={!isCustome}>edit</button>
 			<Magnifier src={data[selectImg]} height={350} className="object-fit" />
-
+			</div>
 			<div className="gallery mt-1">
 				{data &&
 					data.map((item, i) => (
 						<div
-							className={`me-1 ' ${selectImg == i ? 'border-gallery' : ''} `}
+							className={`me-1 small-images ' ${selectImg == i ? 'border-gallery' : ''} `}
 							key={i}
 							onClick={() => setSelectImg(i)}
 						>

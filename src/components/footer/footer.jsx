@@ -3,7 +3,8 @@ import React from 'react';
 
 function Footer(props) {
 	return (
-		<footer id="footer">
+		<div className="bg-white">
+		<footer id="footer" className="container">
 			<hr className="hr" />
 			<div className="d-flex">
 				<div className="col-3 d-flex flex-column">
@@ -28,6 +29,7 @@ function Footer(props) {
 				</div>
 			</div>
 		</footer>
+		</div>
 	);
 }
 
