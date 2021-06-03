@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import CartProduct from "components/card-product";
 import ProductImage from "components/product/product-detail/product-media";
 import ProductAction from "components/product/product-detail/product-action";
-
+import SelectLocation from "components/select-location/select-location";
 Home.propTypes = {};
+ 
 let dummyimg = [
   "https://thegioidocau.vn/vnt_upload/product/2019/12/moi-ca-v5-fimax-31.jpg",
   "https://salt.tikicdn.com/cache/w444/ts/product/c0/4a/ee/a32098a9fc5b043d015eb6c5e0e484a4.jpg",
@@ -26,6 +27,7 @@ function Home(props) {
         <CartProduct />
         <CartProduct />
       </div>
+      
     </div>
   );
 }

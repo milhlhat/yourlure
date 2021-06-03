@@ -14,9 +14,9 @@ const AxiosClient = axios.create({
 
 AxiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
-  const token = localStorage.getItem('YL-user');
-  console.log();
-  config.headers.Authorization= `Bearer ${JSON.parse(token).account}`;
+  // const token = localStorage.getItem('YL-user');
+  
+  // config.headers.Authorization= `Bearer ${JSON.parse(token).data}`;
   return config;
 });
 

@@ -24,7 +24,7 @@ function AppRouter() {
               <Route
                 path="/home"
                 render={() => {
-                  return localStorage.getItem("accessToken") ? (
+                  return localStorage.getItem("YL-user") ? (
                     <Home />
                   ) : (
                     <Redirect to="/login" />

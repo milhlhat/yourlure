@@ -43,7 +43,6 @@ function SelectField(props) {
 		};
 		field.onChange(changeEvent);
 	};
-
 	return (
 		<FormGroup>
 			{label && <Label for={name}>{label}</Label>}

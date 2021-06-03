@@ -4,8 +4,8 @@ const UserApi = {
 	login: (user) => {
 		const url = `/login`;
 		// return AxiosClient.post(url, user);
-		return {name: user};
-      
+
+		return user;
 	},
 	getAll: () => {
 		const url = '/customer';
