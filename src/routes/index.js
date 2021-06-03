@@ -5,7 +5,7 @@ import Header from "components/header/header";
 import Loading from "components/loading";
 import CommonUtils from "utils/common";
 import Footer from "components/footer/footer";
-import Product from "components/product/product";
+import Product from "pages/product";
 const Login = React.lazy(() => import("pages/login"));
 const Home = React.lazy(() => import("pages/home"));
 const NotFound = React.lazy(() => import("pages/notfound"));

@@ -1,0 +1,18 @@
+@import "../map.scss";
+.product-show{
+    display: flex;
+    flex-wrap: wrap;
+}
+.product-choose-filter{
+    background-color: #fff;
+    & .head-text{
+        text-align: center;
+        background-color: $primary;
+        color: #fff;
+    }
+}
+.product-type{
+    h1{
+        text-align: center;
+    }
+}
