@@ -33,7 +33,7 @@ const Example = (props) => {
                 </Link>
               </NavItem>
               <NavItem>
-                <Link className="nav-link" to="/login">
+                <Link className="nav-link" to="/user/login">
                   login
                 </Link>
               </NavItem>
