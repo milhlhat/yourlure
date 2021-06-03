@@ -10,9 +10,9 @@ function ProductImage(props) {
 	const [selectImg, setSelectImg] = useState(0);
 	return (
 		<div className="product-media d-flex flex-column m-4">
-			<div className="big-image ">
-				<button className="big-image-edit bg-white" hidden={!isCustome}>edit</button>
-			<Magnifier src={data[selectImg]} height={350} className="object-fit" />
+			<div className="big-image object-fit">
+				<button className="big-image-edit bg-white " hidden={!isCustome}>edit</button>
+			<img src={data[selectImg]} height={350} className="" />
 			</div>
 			<div className="gallery mt-1">
 				{data &&

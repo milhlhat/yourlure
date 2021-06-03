@@ -23,6 +23,14 @@ const dumyProduct = {
         {id:2,name:'Mồi cứng'},
     ]
         
+    },
+    fish:()=>{
+        return [
+            {id:1,name:'Cá chép'},
+            {id:21,name:'Cá chuối'},
+            {id:3,name:'Cá rô'},
+            {id:4,name:'Cá chim'},
+        ]
     }
 }
 export default dumyProduct;

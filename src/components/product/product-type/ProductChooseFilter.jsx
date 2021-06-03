@@ -11,13 +11,14 @@ function ProductChooseFilter(props) {
   };
 
   const initialValues = {
-    checkmox: [],
+    checkbox: [],
   };
   const category = data.category();
+  const fish = data.fish();
   return (
     <div className="product-choose-filter">
       <div className="head-text">Danh mục</div>
-      <div className="form-filter">
+      <div className="form-filter p-2 mt-2">
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => {
@@ -25,14 +26,38 @@ function ProductChooseFilter(props) {
           }}
         >
           <Form>
+            <p>
+              <b>Loại mồi</b>
+            </p>
             {category.map((value, index) => (
               <div className="field-category">
-                <Field name={value.name} type="checkbox" id={value.id} value={value.name} />
+                <Field
+                  name="checkbox"
+                  type="checkbox"
+                  id={value.id}
+                  value={value.name}
+                />
+                <label for={value.id}>{value.name}</label>
+              </div>
+            ))}
+            <p>
+              <b>Loại cá</b>
+            </p>
+            {fish.map((value, index) => (
+              <div className="field-category">
+                <Field
+                  name="checkbox"
+                  type="checkbox"
+                  id={value.id}
+                  value={value.name}
+                />
                 <label for={value.id}>{value.name}</label>
               </div>
             ))}
 
-            <button type="submit">submit</button>
+            <div className="button-submit m-2">
+              <YLButton type="submit" varian="primary" value="Tìm kiếm" />
+            </div>
           </Form>
         </Formik>
       </div>
