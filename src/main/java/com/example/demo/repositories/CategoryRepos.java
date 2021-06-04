@@ -1,7 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entity.Category;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepos extends CrudRepository<Category, Long> {
+public interface CategoryRepos extends JpaRepository<Category, Long> {
 }

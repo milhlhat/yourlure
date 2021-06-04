@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_Users")
@@ -47,10 +49,6 @@ public class Users {
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)
     private UserRoles userRoles;
-
-    @ManyToOne
-    @JoinColumn(name = "addressID", nullable = false)
-    private UserAddress address;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .

@@ -7,12 +7,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
+
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 //        http
 //                .authorizeRequests()
 //                .anyRequest().access("hasIpAddress('0.0.0.0/0')");
-
+//
 //        http.authorizeRequests()
 //                .antMatchers("/login").permitAll()
 //                .antMatchers("/**").hasIpAddress("locahost")

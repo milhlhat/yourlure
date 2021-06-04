@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +11,10 @@ import java.util.Collection;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tbl_Category")
+@Table(name = "tbl_Payment")
 public class Payment {
 
     @Id

@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_OrderLine")
@@ -32,16 +34,12 @@ public class OrderLine {
     private int quantity;
 
     @Nullable
-    @Column(name = "address")
-    private String address;
+    @Column(name = "price")
+    private int price;
 
     @Nullable
-    @Column(name = "phone")
-    private String phone;
-
-    @Nullable
-    @Column(name = "name")
-    private String name;
+    @Column(name = "sale")
+    private Float sale;
 
     @ManyToOne
     @JoinColumn(name = "customizeID", nullable = false)

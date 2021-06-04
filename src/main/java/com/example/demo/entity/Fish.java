@@ -26,11 +26,20 @@ public class Fish {
     @Column(name = "fishName")
     private String fishName;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "fish_product", //Tạo ra một join Table tên là "fish_product"
-            joinColumns = @JoinColumn(name = "fishID"),  // TRong đó, khóa ngoại chính là address_id trỏ tới class hiện tại (Address)
-            inverseJoinColumns = @JoinColumn(name = "productID") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (Person)
-    )
-    private Collection<Products> productCollection;
+//    @JsonIgnore
+    /*
+     * Chú thích cấp lớp (class) này có thể được sử dụng để loại trừ các thuộc tính nhất
+     *  định trong quá trình Serialization and Deserialization dữ liệu JSON.
+     * */
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinTable(name = "fish_product", //Tạo ra một join Table tên là "fish_product"
+//            joinColumns = @JoinColumn(name = "fishID"),  // TRong đó, khóa ngoại chính là address_id trỏ tới class hiện tại (Address)
+//            inverseJoinColumns = @JoinColumn(name = "productID") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (Person)
+//    )
+//    private Collection<Products> productCollection;
 
+    @OneToMany(mappedBy = "fish", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến fish ở trong tbl_fish.
+    //1 fish có nhiều fish_product
+    private Collection<Fish_product> fishCollection;
 }

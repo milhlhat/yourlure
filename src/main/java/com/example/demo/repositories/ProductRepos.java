@@ -1,8 +1,8 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entity.Products;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface ProductRepos extends CrudRepository<Products, Long> {
+public interface ProductRepos extends JpaRepository<Products, Long> {
 }

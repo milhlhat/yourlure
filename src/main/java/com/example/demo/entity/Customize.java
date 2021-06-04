@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_Customize")
@@ -58,9 +60,5 @@ public class Customize {
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
     private Products products;
-
-    @ManyToOne
-    @JoinColumn(name = "userAddressID", nullable = false)
-    private UserAddress userAddress;
 
 }
