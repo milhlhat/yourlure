@@ -52,7 +52,7 @@ function ProductAction(props) {
         <h5>Mã màu:</h5>
         <div className="choose-color">
           {productColor.map((value,index) => (
-            <div className={"box-choose "+index==cl?'clicked-color':''} onClick={()=>handleChooseColor(index)}>
+            <div key={index} className={"box-choose "+index==cl?'clicked-color':''} onClick={()=>handleChooseColor(index)}>
               <div className={"box-color m-1 " + value}>{value}</div>
             </div>
           ))}

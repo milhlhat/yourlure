@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -18,7 +18,8 @@ const Example = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-
+  let path = useLocation().pathname;
+  useEffect(() => {}, []);
   return (
     <div className="bg-white">
       <div className="container">
@@ -27,14 +28,29 @@ const Example = (props) => {
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="me-auto" navbar>
-              <NavItem>
+              <NavItem className={path.indexOf("product") > -1 ? "active" : ""}>
                 <Link className="nav-link" to="/product">
-                  Sản phẩm
+                  SẢN PHẨM
                 </Link>
               </NavItem>
               <NavItem>
                 <Link className="nav-link" to="/user/login">
-                  login
+                  TÙY BIẾN
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/user/login">
+                  THƯƠNG HIỆU
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/user/login">
+                  Blog
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link className="nav-link" to="/user/login">
+                  SỰ KIỆN
                 </Link>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
@@ -52,6 +68,12 @@ const Example = (props) => {
             <div className="d-flex ms-auto search-form px-3 ">
               <input type="text" className="search" placeholder="Tìm kiếm..." />
               <i className="fa fa-search"></i>
+            </div>
+            <div className="header-cart ms-2">
+              <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div className="header-user ms-2 me-2">
+              <Link className="nav-link" to="/user/login" ><i className="fa fa-user"></i></Link>
             </div>
           </Collapse>
         </Navbar>

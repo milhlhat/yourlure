@@ -2,6 +2,7 @@
 .product-show{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 .product-choose-filter{
     background-color: #fff;
@@ -9,6 +10,9 @@
         text-align: center;
         background-color: $primary;
         color: #fff;
+    }
+    & .button-submit{
+        height: 30px;
     }
 }
 .product-type{

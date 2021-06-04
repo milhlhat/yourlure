@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     border: 1px solid  $text-color;
-
+    justify-content: center;
 }
 
 .search-form input {
@@ -28,3 +28,14 @@
     outline: 0;
     box-shadow: 0;
 }
+.header-cart{
+    color: $primary;
+}
+.header-user{
+    color: $primary;
+}
+.active{
+    & a{
+      color: $primary !important;
+    }
+  }

@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'assets/scss/scss-components/card-product.scss';
-CartProduct.propTypes = {};
+import { useHistory } from 'react-router';
+CardProduct.propTypes = {};
 
-function CartProduct(props) {
+function CardProduct(props) {
+	const history = useHistory();
+    const handleClick = (value) =>{
+		history.push('/product/detail/1');
+    }
 	return (
-		<div className="card-product align-items-center p-3 ">
+		<div className="card-product align-items-center m-2 " onClick={handleClick}>
 			<div className="thumb">
 				<img
 					className="card-img-top"
@@ -22,4 +27,4 @@ function CartProduct(props) {
 	);
 }
 
-export default CartProduct;
+export default CardProduct;

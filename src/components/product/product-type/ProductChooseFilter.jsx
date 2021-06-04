@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import YLButton from "components/custom-field/YLButton";
 import { FastField, Field, Form, Formik } from "formik";
-import data from "./data-product";
+import data from "../../../assets/dumy-data/data-product";
 ProductChooseFilter.propTypes = {};
 
 function ProductChooseFilter(props) {
@@ -26,35 +26,30 @@ function ProductChooseFilter(props) {
           }}
         >
           <Form>
-            <p>
-              <b>Loại mồi</b>
-            </p>
-            {category.map((value, index) => (
-              <div className="field-category">
-                <Field
-                  name="checkbox"
-                  type="checkbox"
-                  id={value.id}
-                  value={value.name}
-                />
-                <label for={value.id}>{value.name}</label>
+            <div className="row">
+              <div className="cate-filter col-md-12 col-sm-6">
+                <p>
+                  <b>Loại mồi</b>
+                </p>
+                {category.map((value, index) => (
+                  <div className="field-category " key={index}>
+                    <Field name="checkbox" type="checkbox" value={value.name} />
+                    <label for={value.id}>{value.name}</label>
+                  </div>
+                ))}
               </div>
-            ))}
-            <p>
-              <b>Loại cá</b>
-            </p>
-            {fish.map((value, index) => (
-              <div className="field-category">
-                <Field
-                  name="checkbox"
-                  type="checkbox"
-                  id={value.id}
-                  value={value.name}
-                />
-                <label for={value.id}>{value.name}</label>
+              <div className="fish-filter col-md-12 col-sm-6">
+                <p>
+                  <b>Loại cá</b>
+                </p>
+                {fish.map((value, index) => (
+                  <div className="field-category" key={index}>
+                    <Field name="checkbox" type="checkbox" value={value.name} />
+                    <label for={value.name}>{value.name}</label>
+                  </div>
+                ))}
               </div>
-            ))}
-
+            </div>
             <div className="button-submit m-2">
               <YLButton type="submit" varian="primary" value="Tìm kiếm" />
             </div>

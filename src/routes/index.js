@@ -7,6 +7,7 @@ import CommonUtils from 'utils/common';
 import Footer from 'components/footer/footer';
 
 import HomeRoute from './home-route';
+import CartProduct from 'components/cart/CartProduct';
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
 const NotFound = React.lazy(() => import('pages/notfound'));
@@ -24,6 +25,7 @@ function AppRouter() {
 							{/* <Redirect exact from="/" to="/home" /> */}
 							<Route path="/user" component={UserRoute} />
 							<Route path="/product" component={ProductRoute} />
+							<Route path="/cart" component={CartProduct} />
 							<Route path="/" component={HomeRoute} />
 							<Route component={NotFound} />
 						</Switch>
