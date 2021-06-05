@@ -43,12 +43,9 @@ public class ProductService implements ProductServiceImpl {
 
 
     @Override
-    public Optional<ProductsDtoOut> getById(Long id) {
+    public ProductsDtoOut getById(Long id) {
         Optional<Product> findProduct = productRepos.findById(id);
-        if(findProduct.isPresent()){
-//            Optional<ProductsDtoOut> productsDtoOut = mapper.map(findProduct.get(), ProductsDtoOut.class);
-        }
-        return Optional.empty();
+        return findProduct.map(product -> mapper.map(product, ProductsDtoOut.class)).orElse(null);
     }
 
     @Override

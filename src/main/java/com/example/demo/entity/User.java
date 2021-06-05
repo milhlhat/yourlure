@@ -36,7 +36,7 @@ public class User {
 
     @Nullable
     @Column(name = "gender")
-    private boolean gender;
+    private Boolean gender;
 
     @Nullable
     @Column(name = "userEmail")
@@ -44,7 +44,7 @@ public class User {
 
     @Nullable
     @Column(name = "maxCustomizable")
-    private int maxCustomizable;
+    private Integer maxCustomizable;
 
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)

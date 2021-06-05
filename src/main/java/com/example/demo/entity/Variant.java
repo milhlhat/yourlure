@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.sun.istack.Nullable;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Variant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "variantID")
-    private long variantID;
+    private Long variantID;
 
     @Nullable
     @Column(name = "variantsType")
@@ -28,11 +29,11 @@ public class Variant {
 
     @Nullable
     @Column(name = "length")
-    private float length;
+    private Float length;
 
     @Nullable
     @Column(name = "weight")
-    private float weight;
+    private Float weight;
 
     @Nullable
     @Column(name = "material")
@@ -40,19 +41,19 @@ public class Variant {
 
     @Nullable
     @Column(name = "hookSize")
-    private float hookSize;
+    private Float hookSize;
 
     @Nullable
     @Column(name = "deepDiving")
-    private float deepDiving;
+    private String deepDiving;
 
     @Nullable
     @Column(name = "newPrice")
-    private float newPrice;
+    private Float newPrice;
 
     @Nullable
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)

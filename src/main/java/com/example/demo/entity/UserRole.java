@@ -24,7 +24,7 @@ public class UserRole {
 
     @Nullable
     @Column(name = "roleName")
-    private boolean roleName;
+    private Boolean roleName;
 
     @OneToMany(mappedBy = "userRoles", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến roles ở trong Users.

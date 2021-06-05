@@ -20,7 +20,7 @@ public class Campaign {
     @Id
     @Column(name = "campaignID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long campaignID;
+    private Long campaignID;
 
     @Nullable
     @Column(name = "description")

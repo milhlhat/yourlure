@@ -31,11 +31,11 @@ public class OrderLine {
 
     @Nullable
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Nullable
     @Column(name = "price")
-    private int price;
+    private Float price;
 
     @Nullable
     @Column(name = "sale")

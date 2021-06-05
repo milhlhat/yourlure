@@ -51,7 +51,7 @@ public class Customize {
 
     @Nullable
     @Column(name = "price")
-    private float price;
+    private Float price;
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
