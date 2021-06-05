@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestMapping(path = "/category")
-public interface CategoryInterface {
+public interface CategoryControllerImpl {
 
     @GetMapping("/all")
     ResponseEntity<List<CategoryDtoOut>> getAll();
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<CategoryDtoOut>> getById(@PathVariable int id);
+    ResponseEntity<Optional<CategoryDtoOut>> getById(@PathVariable Long id);
 
     @PostMapping("/{id}")
     ResponseEntity<Boolean> updateCategory(@RequestBody Category categoryInput, @PathVariable Long idInput);

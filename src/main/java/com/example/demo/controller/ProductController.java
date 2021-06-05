@@ -1,27 +1,27 @@
 package com.example.demo.controller;
 
-import com.example.demo.controller.controllerInterface.ProductInterface;
+import com.example.demo.Service.impl.CategoryServiceImpl.ProductServiceImpl;
+import com.example.demo.controller.controllerInterface.ProductControllerImpl;
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
+import com.example.demo.dto.dtoOut.ProductOutPageable;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Products;
-import com.example.demo.repositories.CategoryRepos;
-import com.example.demo.repositories.ProductRepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController // This means that this class is a Controller
-public class ProductController implements ProductInterface {
+public class ProductController implements ProductControllerImpl {
 
     @Autowired
-    private ProductRepos productRepos;
-    @Autowired
-    private CategoryRepos categoryRepos;
+    ProductServiceImpl productService;
 
     @PostMapping("/add-include")
     public String addProduct(@RequestBody Category category, Products product) {
@@ -37,7 +37,15 @@ public class ProductController implements ProductInterface {
     }
 
     @Override
-    public ResponseEntity<List<ProductsDtoOut>> getAll(int page, int limit) {
+    public ResponseEntity<ProductOutPageable> getAll(int page, int limit) {
+//        ProductOutPageable result = ProductOutPageable.builder()
+//                .page(page)
+//                .build();
+//        Pageable pageable = new PageRequest.of(0, page - 1, limit);
+//        result.setListResult(productService.getAll(pageable));
+//        result.setTotalPage((int) Math.ceil((double) (productService.totalItem()) / limit));
+
+//        return new ResponseEntity<>(result, HttpStatus.OK);
         return null;
     }
 

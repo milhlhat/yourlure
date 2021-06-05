@@ -2,6 +2,7 @@ package com.example.demo.controller.controllerInterface;
 
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
+import com.example.demo.dto.dtoOut.ProductOutPageable;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestMapping(path = "/product")
-public interface ProductInterface {
+public interface ProductControllerImpl {
 
-    @GetMapping("/all")
-    ResponseEntity<List<ProductsDtoOut>> getAll(@RequestParam(value = "page") int page,
-                                                @RequestParam(value = "limit") int limit);
+    @PostMapping("/all")
+    ResponseEntity<ProductOutPageable> getAll(@RequestParam(value = "page") int page,
+                                                    @RequestParam(value = "limit") int limit);
 
     @GetMapping("/{id}")
     ResponseEntity<Optional<ProductsDtoOut>> getById(@PathVariable int id);
