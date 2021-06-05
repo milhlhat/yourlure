@@ -15,7 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_Variants")
-public class Variants {
+public class Variant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +56,7 @@ public class Variants {
 
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
-    private Products products;
+    private Product product;
 
     @OneToMany(mappedBy = "variants", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến variants ở trong orderline.

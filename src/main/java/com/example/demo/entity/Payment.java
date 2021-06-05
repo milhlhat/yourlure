@@ -29,5 +29,5 @@ public class Payment {
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến payment ở trong Orders.
     //1 payment có nhiều Orders
-    private Collection<Orders> ordersCollection;
+    private Collection<Order> orderCollection;
 }

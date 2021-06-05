@@ -55,10 +55,10 @@ public class Customize {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private Users users;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
-    private Products products;
+    private Product product;
 
 }

@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_Orders")
-public class Orders {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +44,6 @@ public class Orders {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private Users Users;
+    private User User;
 
 }

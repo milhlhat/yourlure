@@ -30,5 +30,5 @@ public class Image {
     @NotNull
     @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
     // Quan hệ 1-n với đối tượng ở dưới (Product) (1 product có nhiều ảnh)
-    private Collection<Products> productsCollection;
+    private Collection<Product> productCollection;
 }

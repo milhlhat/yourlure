@@ -4,7 +4,7 @@ import com.example.demo.Service.impl.CategoryServiceImpl.ProductServiceImpl;
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
-import com.example.demo.entity.Products;
+import com.example.demo.entity.Product;
 import com.example.demo.repositories.ProductRepos;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class ProductService implements ProductServiceImpl {
     public List<ProductsDtoOut> getAll(Pageable pageable) {
 
         List<ProductsDtoOut> results = new ArrayList<>();
-        List<Products> list = productRepos.findAll(pageable).getContent();
-        for (Products item : list) {
+        List<Product> list = productRepos.findAll(pageable).getContent();
+        for (Product item : list) {
             ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
             results.add(dtoOut);
         }
@@ -43,7 +43,11 @@ public class ProductService implements ProductServiceImpl {
 
 
     @Override
-    public Optional<ProductsDtoOut> getById(int id) {
+    public Optional<ProductsDtoOut> getById(Long id) {
+        Optional<Product> findProduct = productRepos.findById(id);
+        if(findProduct.isPresent()){
+//            Optional<ProductsDtoOut> productsDtoOut = mapper.map(findProduct.get(), ProductsDtoOut.class);
+        }
         return Optional.empty();
     }
 

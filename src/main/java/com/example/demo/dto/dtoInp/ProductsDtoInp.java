@@ -25,7 +25,7 @@ public class ProductsDtoInp {
     private Float sale;
     private boolean customizable;
     private Date dateCreate;
-    private Collection<Variants> variantsCollection;
+    private Collection<Variant> variantCollection;
     private Collection<Customize> customizeCollection;
     private Collection<Fish_product> productsCollection;
 }

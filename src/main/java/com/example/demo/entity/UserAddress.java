@@ -28,7 +28,7 @@ public class UserAddress {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private Users users;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "wardID", nullable = false)

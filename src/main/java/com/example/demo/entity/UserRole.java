@@ -15,7 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_UserRoles")
-public class UserRoles {
+public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,5 +29,5 @@ public class UserRoles {
     @OneToMany(mappedBy = "userRoles", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến roles ở trong Users.
     //1 roles có nhiều Users
-    private Collection<Users> usersCollection;
+    private Collection<User> userCollection;
 }

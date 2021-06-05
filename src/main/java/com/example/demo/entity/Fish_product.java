@@ -26,7 +26,7 @@ public class Fish_product {
 
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
-    private Products products;
+    private Product product;
 
 
 }

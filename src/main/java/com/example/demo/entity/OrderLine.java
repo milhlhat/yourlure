@@ -23,11 +23,11 @@ public class OrderLine {
 
     @ManyToOne
     @JoinColumn(name = "oderID", nullable = false)
-    private Orders orders;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "variantID")
-    private Variants variants;
+    private Variant variant;
 
     @Nullable
     @Column(name = "quantity")

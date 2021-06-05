@@ -15,7 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_Users")
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,7 +48,7 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)
-    private UserRoles userRoles;
+    private UserRole userRole;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .

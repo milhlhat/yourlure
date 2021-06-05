@@ -31,6 +31,6 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến category ở trong product.
     //1 category có nhiều product
-    private Collection<Products> productsCollection;
+    private Collection<Product> productCollection;
 
 }

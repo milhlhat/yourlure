@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tbl_Products")
-public class Products {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "productID")
@@ -41,7 +41,7 @@ public class Products {
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
-    private Collection<Variants> variantsCollection;
+    private Collection<Variant> variantCollection;
 
     @JsonIgnore
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)

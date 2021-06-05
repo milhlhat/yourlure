@@ -7,7 +7,7 @@ import com.example.demo.dto.dtoOut.CategoryDtoOut;
 import com.example.demo.dto.dtoOut.ProductOutPageable;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
 import com.example.demo.entity.Category;
-import com.example.demo.entity.Products;
+import com.example.demo.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ public class ProductController implements ProductControllerImpl {
     ProductServiceImpl productService;
 
     @PostMapping("/add-include")
-    public String addProduct(@RequestBody Category category, Products product) {
+    public String addProduct(@RequestBody Category category, Product product) {
 //        try{
 //            category = categoryRepos.save(category);
 //            product.setCategoryId(category);

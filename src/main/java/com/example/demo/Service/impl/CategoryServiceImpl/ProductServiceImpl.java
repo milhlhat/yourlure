@@ -14,7 +14,7 @@ public interface ProductServiceImpl {
 
     int totalItem();
 
-    Optional<ProductsDtoOut> getById(int id);
+    Optional<ProductsDtoOut> getById(Long id);
 
     List<ProductsDtoOut> getBestSeller();
 
