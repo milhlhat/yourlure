@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class Payment {
     @Column(name = "payment")
     private String payment;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến payment ở trong Orders.
     //1 payment có nhiều Orders

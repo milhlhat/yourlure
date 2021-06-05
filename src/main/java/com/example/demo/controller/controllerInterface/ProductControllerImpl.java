@@ -1,7 +1,6 @@
 package com.example.demo.controller.controllerInterface;
 
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
-import com.example.demo.dto.dtoOut.CategoryDtoOut;
 import com.example.demo.dto.dtoOut.ProductOutPageable;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +14,10 @@ public interface ProductControllerImpl {
 
     @PostMapping("/all")
     ResponseEntity<ProductOutPageable> getAll(@RequestParam(value = "page") int page,
-                                                    @RequestParam(value = "limit") int limit);
+                                              @RequestParam(value = "limit") int limit);
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<ProductsDtoOut>> getById(@PathVariable int id);
+    ResponseEntity<Optional<ProductsDtoOut>> getById(@PathVariable Long id);
 
     @GetMapping("/best-seller")
     ResponseEntity<List<ProductsDtoOut>> getBestSeller();
@@ -26,14 +25,17 @@ public interface ProductControllerImpl {
     @GetMapping("/newest")
     ResponseEntity<List<ProductsDtoOut>> getNewestProduct();
 
-    @GetMapping("/best-seller-with-category")
-    ResponseEntity<List<CategoryDtoOut>> getBestSellerWithCategory();
-
     @GetMapping("/filter-category")
-    ResponseEntity<List<ProductsDtoOut>> getProductByCategory(@RequestBody List<Long> listCateId, @RequestBody List<Long> listFishId);
+    ResponseEntity<List<ProductsDtoOut>> getProductByCategoryAndFish(@RequestParam List<Long> listCateId,
+                                                                     @RequestParam List<Long> listFishId,
+                                                                     @RequestParam(value = "page") int page,
+                                                                     @RequestParam(value = "limit") int limit);
 
     @GetMapping("/find-by-name")
-    ResponseEntity<List<ProductsDtoOut>> getProductByName(@RequestParam(value = "product_name") String product_name);
+    ResponseEntity<List<ProductsDtoOut>> getProductByName(
+            @RequestParam(value = "product_name") String product_name,
+                                                          @RequestParam(value = "page") int page,
+                                                          @RequestParam(value = "limit") int limit);
 
     //TODO: getmapping customize
 

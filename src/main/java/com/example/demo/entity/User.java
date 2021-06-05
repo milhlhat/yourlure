@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,16 +47,19 @@ public class User {
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
     private Collection<Customize> customizeCollection;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;

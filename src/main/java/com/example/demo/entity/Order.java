@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,10 +39,12 @@ public class Order {
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "paymentID", nullable = false)
     private Payment payment;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
     private User User;

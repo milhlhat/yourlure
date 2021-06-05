@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,8 @@ public class UserRole {
     @Column(name = "roleName")
     private Boolean roleName;
 
-    @OneToMany(mappedBy = "userRoles", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến roles ở trong Users.
     //1 roles có nhiều Users
     private Collection<User> userCollection;

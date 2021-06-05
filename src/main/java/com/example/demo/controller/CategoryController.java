@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.Service.impl.CategoryServiceImpl.CategoryServiceImpl;
 import com.example.demo.controller.controllerInterface.CategoryControllerImpl;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
+import com.example.demo.dto.dtoOut.CategoryDtoOutWithCategory;
 import com.example.demo.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,6 @@ public class CategoryController implements CategoryControllerImpl {
     @Autowired
     CategoryServiceImpl categoryService;
 
-
     /**
      * add category to data
      *
@@ -40,12 +40,12 @@ public class CategoryController implements CategoryControllerImpl {
     /**
      * add category to data
      *
-     * @param idInput id want to delete
+     * @param id id want to delete
      * @return no return
      */
     @Override
-    public ResponseEntity<Boolean> removeCategory(Long idInput) {
-        Boolean delete = categoryService.removeCategory(idInput);
+    public ResponseEntity<Boolean> removeCategory(Long id) {
+        Boolean delete = categoryService.removeCategory(id);
         return new ResponseEntity<>(delete, HttpStatus.OK);
     }
 
@@ -72,6 +72,12 @@ public class CategoryController implements CategoryControllerImpl {
         return new ResponseEntity<>(dtoOut, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<List<CategoryDtoOutWithCategory>> getBestSellerWithCategory() {
+        List<CategoryDtoOutWithCategory> dtoOuts = categoryService.getBestSellerWithCategory();
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
+    }
+
     /**
      * update category to data
      *
@@ -80,8 +86,8 @@ public class CategoryController implements CategoryControllerImpl {
      * @return if update successful return true else false
      */
     @Override
-    public ResponseEntity<Boolean> updateCategory(Category categoryInput, Long idInput) {
-        Boolean update = categoryService.updateCategory(categoryInput, idInput);
+    public ResponseEntity<Boolean> updateCategory(Category categoryInput, Long id) {
+        Boolean update = categoryService.updateCategory(categoryInput, id);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
 

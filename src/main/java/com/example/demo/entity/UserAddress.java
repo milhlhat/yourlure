@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +27,12 @@ public class UserAddress {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "wardID", nullable = false)
     private UserWard userWard;
@@ -55,10 +58,12 @@ public class UserAddress {
         @Column(name = "userWardName")
         private String userWardName;
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "districtID", nullable = false)
         private UserDistrict userDistrict;
 
+        @JsonIgnore
         @OneToMany(mappedBy = "userWard", cascade = CascadeType.ALL)
         // MapopedBy trỏ tới tên biến userWard ở trong UserAddress.
         //1 userWard có nhiều UserAddress
@@ -86,10 +91,12 @@ public class UserAddress {
         @Column(name = "userDistrictName")
         private String userDistrictName;
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "userProvinceID", nullable = false)
         private UserProvince userProvince;
 
+        @JsonIgnore
         @OneToMany(mappedBy = "userDistrict", cascade = CascadeType.ALL)
         // MapopedBy trỏ tới tên biến userDistrict ở trong UserWard.
         //1 UserDistrict có nhiều UserWard
@@ -117,10 +124,12 @@ public class UserAddress {
         @Column(name = "userProvinceName")
         private String userProvinceName;
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "userCountryID", nullable = false)
         private UserCountry userCountry;
 
+        @JsonIgnore
         @OneToMany(mappedBy = "userProvince", cascade = CascadeType.ALL)
         // MapopedBy trỏ tới tên biến userProvince ở trong UserDistrict.
         //1 UserProvince có nhiều UserDistrict
@@ -148,6 +157,7 @@ public class UserAddress {
         @Column(name = "userCountryName")
         private String userCountryName;
 
+        @JsonIgnore
         @OneToMany(mappedBy = "userCountry", cascade = CascadeType.ALL)
         // MapopedBy trỏ tới tên biến userCountry ở trong UserProvince.
         //1 UserCountry có nhiều UserProvince

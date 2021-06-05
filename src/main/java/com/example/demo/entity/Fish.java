@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,7 @@ public class Fish {
 //    )
 //    private Collection<Products> productCollection;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "fish", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến fish ở trong tbl_fish.
     //1 fish có nhiều fish_product

@@ -3,15 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.Service.impl.CategoryServiceImpl.ProductServiceImpl;
 import com.example.demo.controller.controllerInterface.ProductControllerImpl;
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
-import com.example.demo.dto.dtoOut.CategoryDtoOut;
 import com.example.demo.dto.dtoOut.ProductOutPageable;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
-import com.example.demo.entity.Category;
-import com.example.demo.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,87 +22,63 @@ public class ProductController implements ProductControllerImpl {
     @Autowired
     ProductServiceImpl productService;
 
-    @PostMapping("/add-include")
-    public String addProduct(@RequestBody Category category, Product product) {
-//        try{
-//            category = categoryRepos.save(category);
-//            product.setCategoryId(category);
-//            product = productRepos.save(product);
-//            return "create product success with id " + product.getId();
-//        }catch (Exception e){
-//            return "fail";
-//        }
-        return null;
-    }
-
     @Override
     public ResponseEntity<ProductOutPageable> getAll(int page, int limit) {
-//        ProductOutPageable result = ProductOutPageable.builder()
-//                .page(page)
-//                .build();
-//        Pageable pageable = new PageRequest.of(0, page - 1, limit);
-//        result.setListResult(productService.getAll(pageable));
-//        result.setTotalPage((int) Math.ceil((double) (productService.totalItem()) / limit));
-
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-        return null;
+        ProductOutPageable result = new ProductOutPageable();
+        result.setPage(page);
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.unsorted());
+        result.setListResult(productService.getAll(pageable));
+        result.setTotalPage((int) Math.ceil((double) (productService.totalItem()) / limit));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<ProductsDtoOut>> getById(int id) {
-        return null;
+    public ResponseEntity<Optional<ProductsDtoOut>> getById(Long id) {
+        ProductsDtoOut dtoOut = productService.getById(id);
+        return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ProductsDtoOut>> getBestSeller() {
-        return null;
+        List<ProductsDtoOut> dtoOuts = productService.getBestSeller();
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ProductsDtoOut>> getNewestProduct() {
-        return null;
+        List<ProductsDtoOut> dtoOuts = productService.getNewestProduct();
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
+    //TODO: chưa phân trang
     @Override
-    public ResponseEntity<List<CategoryDtoOut>> getBestSellerWithCategory() {
-        return null;
+    public ResponseEntity<List<ProductsDtoOut>> getProductByCategoryAndFish(List<Long> listCateId, List<Long> listFishId, int page, int limit) {
+        List<ProductsDtoOut> dtoOuts = productService.getProductByCategoryAndFish(listCateId, listFishId);
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
+    //TODO: chưa phân trang
     @Override
-    public ResponseEntity<List<ProductsDtoOut>> getProductByCategory(List<Long> listCateId, List<Long> listFishId) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<List<ProductsDtoOut>> getProductByName(String product_name) {
-        return null;
+    public ResponseEntity<List<ProductsDtoOut>> getProductByName(String product_name, int page, int limit) {
+        List<ProductsDtoOut> dtoOuts = productService.getProductByName(product_name);
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Boolean> updateProduct(ProductsDtoInp productsDtoInp, Long id) {
-        //        try {
-//            productRepos.deleteById(product.getId());
-//            productRepos.save(product);
-//        } catch (Exception e) {
-//            return "fail";
-//        }
-        return null;
+        Boolean check = productService.updateProduct(productsDtoInp, id);
+        return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Boolean> saveCate(ProductsDtoInp productsDtoInp) {
-        return null;
+        Boolean check = productService.save(productsDtoInp);
+        return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Boolean> removeCategory(Long id) {
-        //        try{
-//            Products product = productRepos.findById(id).get();
-//            product.setStatus(false);
-//            return "success";
-//        }catch (Exception e){
-//            return "fail";
-//        }
-        return null;
+        Boolean check = productService.remove(id);
+        return new ResponseEntity<>(check, HttpStatus.OK);
     }
 }

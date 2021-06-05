@@ -1,6 +1,7 @@
 package com.example.demo.controller.controllerInterface;
 
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
+import com.example.demo.dto.dtoOut.CategoryDtoOutWithCategory;
 import com.example.demo.entity.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,16 @@ public interface CategoryControllerImpl {
     @GetMapping("/{id}")
     ResponseEntity<Optional<CategoryDtoOut>> getById(@PathVariable Long id);
 
-    @PostMapping("/{id}")
-    ResponseEntity<Boolean> updateCategory(@RequestBody Category categoryInput, @PathVariable Long idInput);
+    @GetMapping("/best-seller-with-category")
+    ResponseEntity<List<CategoryDtoOutWithCategory>> getBestSellerWithCategory();
 
-    @GetMapping("/save")
+    @PostMapping("/{id}")
+    ResponseEntity<Boolean> updateCategory(@RequestBody Category categoryInput, @PathVariable Long id);
+
+    @PostMapping("/save")
     ResponseEntity<Boolean> saveCate(@RequestBody Category categoryInput);
 
-    @DeleteMapping("/remove{id}")
-    ResponseEntity<Boolean> removeCategory(@PathVariable Long idInput);
+    @DeleteMapping("/remove/{id}")
+    ResponseEntity<Boolean> removeCategory(@PathVariable Long id);
 
 }

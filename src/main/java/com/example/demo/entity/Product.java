@@ -38,13 +38,13 @@ public class Product {
     private Image image;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Customize> customizeCollection;
@@ -55,7 +55,7 @@ public class Product {
 //    private Collection<Fish> fishCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 // MapopedBy trỏ tới tên biến products ở trong fish_product.
 //1 category có nhiều product
     private Collection<Fish_product> productsCollection;

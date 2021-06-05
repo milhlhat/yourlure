@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class Image {
     @Column(name = "linkImage")
     private String linkImage;
 
+    @JsonIgnore
     @NotNull
     @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
     // Quan hệ 1-n với đối tượng ở dưới (Product) (1 product có nhiều ảnh)

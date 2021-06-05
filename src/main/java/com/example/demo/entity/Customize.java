@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,10 +54,12 @@ public class Customize {
     @Column(name = "price")
     private Float price;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
     private Product product;

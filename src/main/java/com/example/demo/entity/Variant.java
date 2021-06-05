@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
-import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,11 +55,13 @@ public class Variant {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "variants", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến variants ở trong orderline.
     //1 variants có nhiều orderline
     private Collection<OrderLine> orderLineCollection;

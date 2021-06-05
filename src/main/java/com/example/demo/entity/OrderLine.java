@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,10 +22,12 @@ public class OrderLine {
     @Column(name = "orderLineID")
     private Long orderLineID;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "oderID", nullable = false)
     private Order order;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "variantID")
     private Variant variant;
@@ -41,7 +44,9 @@ public class OrderLine {
     @Column(name = "sale")
     private Float sale;
 
+    @Nullable
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "customizeID", nullable = false)
     private Customize customize;
 

@@ -2,6 +2,7 @@ package com.example.demo.Service.impl;
 
 import com.example.demo.Service.impl.CategoryServiceImpl.CategoryServiceImpl;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
+import com.example.demo.dto.dtoOut.CategoryDtoOutWithCategory;
 import com.example.demo.entity.Category;
 import com.example.demo.repositories.CategoryRepos;
 import org.modelmapper.ModelMapper;
@@ -33,12 +34,26 @@ public class CategoryService implements CategoryServiceImpl {
     }
 
     @Override
-    public Optional<CategoryDtoOut> getById(long id) {
+    public Optional<CategoryDtoOut> getById(Long id) {
         //Todo: validate
 
         Optional<Category> category = categoryRepos.findById(id);
-        CategoryDtoOut categoryDtoOut = mapper.map(category, CategoryDtoOut.class);
-        return Optional.of(categoryDtoOut);
+        if (category.isPresent()) {
+            CategoryDtoOut categoryDtoOut = mapper.map(category.get(), CategoryDtoOut.class);
+            return Optional.of(categoryDtoOut);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<CategoryDtoOutWithCategory> getBestSellerWithCategory() {
+        List<CategoryDtoOutWithCategory> result = new ArrayList<>();
+        List<Category> list = categoryRepos.getBestSellerWithCategory();
+        for (Category item : list) {
+            CategoryDtoOutWithCategory dtoOut = mapper.map(item, CategoryDtoOutWithCategory.class);
+            result.add(dtoOut);
+        }
+        return result;
     }
 
     @Override
@@ -46,9 +61,9 @@ public class CategoryService implements CategoryServiceImpl {
         try {
             //todo: thêm validate
             if (idInput != null && categoryInput != null) {
-                Optional<Category> categories = categoryRepos.findById(idInput);
-                Category categoryToUpdate = Category.builder()
-                        .categoryName(categories.get().getCategoryName())
+                Category categoryToUpdate = categoryRepos.findById(idInput).get();
+                categoryToUpdate.builder()
+                        .categoryName(categoryInput.getCategoryName())
                         .build();
                 categoryRepos.save(categoryToUpdate);
             }
