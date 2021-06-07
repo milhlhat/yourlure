@@ -1,0 +1,21 @@
+.cart-product {
+  & .cart-right {
+    & .cart-detail {
+      display: flex;
+      flex-direction: column;
+      & p {
+        padding: 1em 2em;
+        display: flex;
+        & span {
+          margin-left: auto;
+        }
+      }
+      & .btn-cart-continous {
+        height: 30px;
+      }
+      & .btn-cart-continous {
+        margin-left: auto;
+      }
+    }
+  }
+}

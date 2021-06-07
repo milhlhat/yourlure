@@ -70,7 +70,7 @@ const Example = (props) => {
               <i className="fa fa-search"></i>
             </div>
             <div className="header-cart ms-2">
-              <i class="fa fa-shopping-cart"></i>
+            <Link className="nav-link" to="/cart" ><i class="fa fa-shopping-cart"></i></Link>
             </div>
             <div className="header-user ms-2 me-2">
               <Link className="nav-link" to="/user/login" ><i className="fa fa-user"></i></Link>

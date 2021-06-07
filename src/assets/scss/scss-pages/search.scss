@@ -1,0 +1,22 @@
+@import "../map.scss";
+.product-show{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.product-choose-filter{
+    background-color: #fff;
+    & .head-text{
+        text-align: center;
+        background-color: $primary;
+        color: #fff;
+    }
+    & .button-submit{
+        height: 30px;
+    }
+}
+.search-type{
+    h1{
+        text-align: center;
+    }
+}

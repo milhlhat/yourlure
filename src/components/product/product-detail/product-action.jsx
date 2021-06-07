@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import YLButton from "../../custom-field/YLButton";
-import data from './dumy-data';
+import data from "./dumy-data";
+import ChangeQuantity from "components/orther/ChangeQuantity";
 ProductAction.propTypes = {};
 
 function ProductAction(props) {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(0);
-  var cl=0;
+  var cl = 0;
   const decrement = () => {
     Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
     console.log(quantity);
@@ -17,10 +18,10 @@ function ProductAction(props) {
     setQuantity(Number(quantity) + 1);
     console.log(quantity);
   };
-  const handleChooseColor = (index)=>{
+  const handleChooseColor = (index) => {
     console.log(index);
     setColor(index);
-    cl=index;
+    cl = index;
     console.log(cl);
   };
   //example color product choosen
@@ -51,30 +52,35 @@ function ProductAction(props) {
       <div className="product-choose-color">
         <h5>Mã màu:</h5>
         <div className="choose-color">
-          {productColor.map((value,index) => (
-            <div key={index} className={"box-choose "+index==cl?'clicked-color':''} onClick={()=>handleChooseColor(index)}>
+          {productColor.map((value, index) => (
+            <div
+              key={index}
+              className={"box-choose " + index == cl ? "clicked-color" : ""}
+              onClick={() => handleChooseColor(index)}
+            >
               <div className={"box-color m-1 " + value}>{value}</div>
             </div>
           ))}
         </div>
       </div>
-      <div className="product-quantity mt-4">
+      <div className="product-quantity mt-4 row">
         <h5>Số lượng:</h5>
+        <div className="product-details-quantity d-flex">
+          <button className="quantity-input" onClick={decrement}>
+            &mdash;
+          </button>
+          <input
+            type="number"
+            className="input-quickview"
+            value={quantity}
+            required
+          />
+          <button className="quantity-input" onClick={increment}>
+            &#xff0b;
+          </button>
+        </div>
       </div>
-      <div className="product-details-quantity d-flex">
-        <button className="quantity-input" onClick={decrement}>
-          &mdash;
-        </button>
-        <input
-          type="number"
-          className="input-quickview"
-          value={quantity}
-          required
-        />
-        <button className="quantity-input" onClick={increment}>
-          &#xff0b;
-        </button>
-      </div>
+
       <div className="product-buy mt-5">
         <YLButton varian="primary" value="Thêm vào giỏ hàng"></YLButton>
         <YLButton varian="light" value="Mua ngay"></YLButton>

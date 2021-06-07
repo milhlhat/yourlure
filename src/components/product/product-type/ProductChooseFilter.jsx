@@ -1,7 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
 import YLButton from "components/custom-field/YLButton";
-import { FastField, Field, Form, Formik } from "formik";
+import {Field, Form, Formik } from "formik";
 import data from "../../../assets/dumy-data/data-product";
 ProductChooseFilter.propTypes = {};
 
