@@ -7,6 +7,7 @@ import { setColor, removeColor } from 'redux/action/customize-color';
 import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
 import { setMaterialId } from 'redux/action/customize-id';
+import { HexColorPicker } from 'react-colorful';
 
 const tablist = [{ name: 'IMG' }, { name: 'Color' }];
 function TabSelectCustomize(props) {
@@ -21,7 +22,6 @@ function TabSelectCustomize(props) {
 	return (
 		<div className="tab-custom">
 			<div className="tab-menu">
-				<div className="tab-menu__border"></div>
 				{tablist.map((tab, i) => (
 					<div
 						className={`${tabSelect === i ? 'selected' : ''} texture-action`}
@@ -96,11 +96,21 @@ function ImgChoices(props) {
 	return (
 		<div className="d-flex flex-column">
 			<div className="img-option">
-				{images.map((value, index) => (
-					<img src={`${value}`} width={80} height={80} key={index} onClick={() => handleChangeImg(value)} />
-				))}
+				{mId === 1 || mId === 4 ? (
+					images.map((value, index) => (
+						<img
+							src={`${value}`}
+							width={80}
+							height={80}
+							key={index}
+							onClick={() => handleChangeImg(value)}
+						/>
+					))
+				) : (
+					<span>Bộ phận không hỗ trợ sử dụng hình ảnh</span>
+				)}
 			</div>
-			<YLButton varian="primary" value="Không dùng ảnh" onClick={handleRemoveImg} />
+			<YLButton variant="negative" type='button' value="Không dùng ảnh" onClick={handleRemoveImg} />
 		</div>
 	);
 }
@@ -193,8 +203,14 @@ function ColorChoices(props) {
 				{color.map((value, index) => (
 					<Link style={{ background: value }} key={index} onClick={() => handleSetColor(value)} />
 				))}
+				
 			</div>
-			<YLButton varian="primary" value="Không màu" onClick={handleRemoveColor} />
+			<HexColorPicker
+				className="color-option-picker"
+				 
+				onChange={(color) =>  handleSetColor(color)}
+			/>
+			<YLButton variant="negative" value="Không màu" onClick={handleRemoveColor} />
 		</div>
 	);
 }
