@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/category")
-public interface CategoryController {
+public interface AdminCategoryController {
 
 
     @PostMapping("/add")

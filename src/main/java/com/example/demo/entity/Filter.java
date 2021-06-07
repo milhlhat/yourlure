@@ -1,16 +1,19 @@
 package com.example.demo.entity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Filter {
-    int page;
-    int limit;
-    String keyword;
-    Long productTypeId;
-    Long fishTypeId;
-    //mới nhất
-    //cũ nhất
-    // giá thấp - cao
-    // giá cao - thấp
-    // bán chạy
-    // nhẹ - nặng
-    // nặng - nhẹ
+
+    private String keyword;
+    private int page;
+    private int limit;
+//    private Pageable pageable;
 }

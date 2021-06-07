@@ -1,4 +1,4 @@
-package com.example.demo.Service.impl.CategoryServiceImpl;
+package com.example.demo.service;
 
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface ProductServiceImpl {
+public interface ProductService {
 
     List<ProductsDtoOut> getAll(Pageable pageable);
 
@@ -20,7 +20,7 @@ public interface ProductServiceImpl {
 
     List<ProductsDtoOut> getProductByCategoryAndFish(List<Long> listCateId, List<Long> listFishId);
 
-    List<ProductsDtoOut> getProductByName(String product_name);
+    List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable);
 
     Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
 

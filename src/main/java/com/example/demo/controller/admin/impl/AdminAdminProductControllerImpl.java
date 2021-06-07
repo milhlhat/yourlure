@@ -1,6 +1,6 @@
 package com.example.demo.controller.admin.impl;
 
-import com.example.demo.controller.admin.ProductController;
+import com.example.demo.controller.admin.AdminProductController;
 import com.example.demo.entity.Product;
 import com.example.demo.repositories.ProductRepos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-public class ProductControllerImpl implements ProductController {
+public class AdminAdminProductControllerImpl implements AdminProductController {
 
     @Autowired
     private ProductRepos productRepos;

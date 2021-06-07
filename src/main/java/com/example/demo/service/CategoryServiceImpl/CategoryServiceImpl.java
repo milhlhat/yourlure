@@ -1,10 +1,10 @@
-package com.example.demo.Service.impl;
+package com.example.demo.service.CategoryServiceImpl;
 
-import com.example.demo.Service.impl.CategoryServiceImpl.CategoryServiceImpl;
 import com.example.demo.dto.dtoOut.CategoryDtoOut;
 import com.example.demo.dto.dtoOut.CategoryDtoOutWithCategory;
 import com.example.demo.entity.Category;
 import com.example.demo.repositories.CategoryRepos;
+import com.example.demo.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryService implements CategoryServiceImpl {
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryRepos categoryRepos;

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/admin/product")
-public interface ProductController {
+public interface AdminProductController {
 
     @GetMapping("/all")
     ResponseEntity<List<Product>> findAll();

@@ -1,6 +1,6 @@
-package com.example.demo.Service.impl;
+package com.example.demo.service.CategoryServiceImpl;
 
-import com.example.demo.Service.impl.CategoryServiceImpl.ProductServiceImpl;
+import com.example.demo.service.ProductService;
 import com.example.demo.dto.dtoInp.ProductsDtoInp;
 import com.example.demo.dto.dtoOut.ProductsDtoOut;
 import com.example.demo.entity.Product;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService implements ProductServiceImpl {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductRepos productRepos;
@@ -82,9 +82,9 @@ public class ProductService implements ProductServiceImpl {
     }
 
     @Override
-    public List<ProductsDtoOut> getProductByName(String product_name) {
+    public List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable) {
         List<ProductsDtoOut> result = new ArrayList<>();
-        List<Product> list = productRepos.findProductByProductName(product_name);
+        List<Product> list = productRepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
         for (Product item : list) {
             ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
             result.add(dtoOut);

@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entity.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,6 @@ public interface ProductRepos extends JpaRepository<Product, Long> {
     List<Product> getProductByCategory(@RequestParam("cate_ids") List<Long> cate_ids,
                                        @RequestParam("fish_ids") List<Long> fish_ids);
 
-    List<Product> findProductByProductName(String product_name);
+    List<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
 
 }
