@@ -25,7 +25,7 @@ public class ProductsDtoOut {
     private Float sale;
     private Boolean customizable;
     private Date dateCreate;
-    private Collection<Variant> variantCollection;
-    private Collection<Customize> customizeCollection;
-    private Collection<Fish_product> productsCollection;
+//    private Collection<Variant> variantCollection;
+//    private Collection<Customize> customizeCollection;
+//    private Collection<Fish_product> productsCollection;
 }

@@ -1,6 +1,8 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,4 +20,6 @@ public interface CategoryRepos extends JpaRepository<Category, Long> {
             "GROUP BY tbl_category.category_name,tbl_category.categoryid) AS rankCategory\n" +
             "WHERE category_rank <= 10", nativeQuery = true)
     List<Category> getBestSellerWithCategory();
+
+//    List<Product> findById(String productName, Pageable pageable);
 }
