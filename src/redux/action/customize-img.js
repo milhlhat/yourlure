@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+ 
 const customize = createSlice({
 	name: 'customize-img',
 	initialState: {

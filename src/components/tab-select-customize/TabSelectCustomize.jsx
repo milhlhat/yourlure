@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 
 import { images, color } from './dumy-data';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { setImg, removeImg } from 'redux/action/customize-img';
 import { setColor, removeColor } from 'redux/action/customize-color';
 import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
 import { setMaterialId } from 'redux/action/customize-id';
 import { HexColorPicker } from 'react-colorful';
+import { setListName } from 'redux/action/customize-name';
 
 const tablist = [{ name: 'IMG' }, { name: 'Color' }];
 function TabSelectCustomize(props) {
 	const [tabSelect, setTabSelect] = useState(0);
-	const materials = ['laces', 'mesh', 'caps', 'inner', 'sole', 'stripes', 'band', 'patch'];
-
+	const materials = props.customizeName;
+	console.log(materials);
 	const mId = useSelector((state) => state.customizeId);
 	function handleClickTab(i) {
 		setTabSelect(i);
@@ -37,8 +38,8 @@ function TabSelectCustomize(props) {
 				<div className="tab-detail-close">X</div>
 				<SwitchMaterial materials={materials} mId={mId} />
 				<div className="detail">
-					{tabSelect === 0 && <ImgChoices mId={mId} />}
-					{tabSelect === 1 && <ColorChoices mId={mId} />}
+					<ImgChoices mId={mId} />
+					<ColorChoices mId={mId} />
 				</div>
 			</div>
 		</div>
@@ -63,7 +64,7 @@ function SwitchMaterial(props) {
 	return (
 		<div className="d-flex">
 			<button onClick={() => decreaseMId()}>{'<'}</button>
-			<p>{material[mId]}</p>
+			<p>{material.length > 0 && material[mId].name}</p>
 			<button onClick={() => increaseMId()}>{'>'}</button>
 		</div>
 	);
@@ -71,26 +72,19 @@ function SwitchMaterial(props) {
 
 function ImgChoices(props) {
 	const mId = props.mId;
-	const imgRedux = useSelector((state) => state.customizeImg);
+	const imgRedux = useSelector((state) => state.customizeName);
 
 	const dispatch = useDispatch();
 	function handleChangeImg(imgLink) {
-		let action = null;
-		if (mId === 4) {
-			action = setImg({ ...imgRedux, sole: imgLink });
-		} else if (mId === 1) {
-			action = setImg({ ...imgRedux, mesh: imgLink });
-		} else return;
-
+		let list = JSON.parse(JSON.stringify(imgRedux));
+		list[mId].img = imgLink;
+		let action = setListName(list);
 		dispatch(action);
 	}
 	function handleRemoveImg() {
-		let action = null;
-		if (mId === 4) {
-			action = removeImg({ ...imgRedux, sole: null });
-		} else if (mId === 1) {
-			action = removeImg({ ...imgRedux, mesh: '' });
-		} else return;
+		let list = JSON.parse(JSON.stringify(imgRedux));
+		list[mId].img = '';
+		let action = setListName(list);
 		dispatch(action);
 	}
 	return (
@@ -110,91 +104,27 @@ function ImgChoices(props) {
 					<span>Bộ phận không hỗ trợ sử dụng hình ảnh</span>
 				)}
 			</div>
-			<YLButton variant="negative" type='button' value="Không dùng ảnh" onClick={handleRemoveImg} />
+			<YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} />
 		</div>
 	);
 }
 
 function ColorChoices(props) {
 	const mId = props.mId;
-	const colorRedux = useSelector((state) => state.customizeColor);
 	const dispatch = useDispatch();
 
-	let colorChoose = { ...colorRedux };
+	const imgRedux = useSelector((state) => state.customizeName);
+
 	function handleSetColor(color) {
-		switch (mId) {
-			case 0:
-				colorChoose = { ...colorRedux, laces: color };
-				break;
-
-			case 1:
-				colorChoose = { ...colorRedux, mesh: color };
-				break;
-
-			case 2:
-				colorChoose = { ...colorRedux, caps: color };
-				break;
-
-			case 3:
-				colorChoose = { ...colorRedux, inner: color };
-				break;
-
-			case 4:
-				colorChoose = { ...colorRedux, sole: color };
-				break;
-
-			case 5:
-				colorChoose = { ...colorRedux, stripes: color };
-				break;
-
-			case 6:
-				colorChoose = { ...colorRedux, band: color };
-				break;
-			case 7:
-				colorChoose = { ...colorRedux, patch: color };
-				break;
-			default:
-				return;
-		}
-		const action = setColor(colorChoose);
+		let list = JSON.parse(JSON.stringify(imgRedux));
+		list[mId].color = color;
+		let action = setListName(list);
 		dispatch(action);
 	}
 	function handleRemoveColor() {
-		switch (mId) {
-			case 0:
-				colorChoose = { ...colorRedux, laces: '#ffffff' };
-				break;
-
-			case 1:
-				colorChoose = { ...colorRedux, mesh: '#ffffff' };
-				break;
-
-			case 2:
-				colorChoose = { ...colorRedux, caps: '#ffffff' };
-				break;
-
-			case 3:
-				colorChoose = { ...colorRedux, inner: '#ffffff' };
-				break;
-
-			case 4:
-				colorChoose = { ...colorRedux, sole: '#ffffff' };
-				break;
-
-			case 5:
-				colorChoose = { ...colorRedux, stripes: '#ffffff' };
-				break;
-
-			case 6:
-				colorChoose = { ...colorRedux, band: '#ffffff' };
-				break;
-			case 7:
-				colorChoose = { ...colorRedux, patch: '#ffffff' };
-				break;
-			default:
-				return;
-		}
-		const action = setColor(colorChoose);
+		let list = JSON.parse(JSON.stringify(imgRedux));
+		list[mId].color = '#fff';
+		let action = setListName(list);
 		dispatch(action);
 	}
 	return (
@@ -203,15 +133,11 @@ function ColorChoices(props) {
 				{color.map((value, index) => (
 					<Link style={{ background: value }} key={index} onClick={() => handleSetColor(value)} />
 				))}
-				
 			</div>
-			<HexColorPicker
-				className="color-option-picker"
-				 
-				onChange={(color) =>  handleSetColor(color)}
-			/>
+			<HexColorPicker className="color-option-picker" onChange={(color) => handleSetColor(color)} />
 			<YLButton variant="negative" value="Không màu" onClick={handleRemoveColor} />
 		</div>
 	);
 }
-export default TabSelectCustomize;
+const mapStateToProps = (state) => ({ customizeName: state.customizeName });
+export default connect(mapStateToProps)(TabSelectCustomize);
