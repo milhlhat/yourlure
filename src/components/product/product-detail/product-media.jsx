@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Magnifier from 'react-magnifier';
+
 import 'assets/scss/scss-pages/product-detail.scss';
+import { useHistory } from 'react-router';
 ProductImage.propTypes = {};
 
 function ProductImage(props) {
 	let { data } = props;
 	const isCustome=true;
 	const [selectImg, setSelectImg] = useState(0);
+	const history = useHistory();
+	 
+	function goToCustomize(){
+		history.push('/product/customize/2')
+	}
 	return (
 		<div className="product-media d-flex flex-column m-4">
 			<div className="big-image object-fit">
-				<button className="big-image-edit bg-white " hidden={!isCustome}>edit</button>
+				<button className="big-image-edit bg-white " onClick={goToCustomize} hidden={!isCustome}>edit</button>
 			<img src={data[selectImg]} height={350} className="" />
 			</div>
 			<div className="gallery mt-1">

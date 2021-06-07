@@ -1,0 +1,187 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v1.5.17",
+    "version": "2.0"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Cube.001",
+      "translation": [
+        0.39688873291015625,
+        1.8039095401763916,
+        7.174177169799805
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "back",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0,
+        "roughnessFactor": 0.5
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "Belly",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0.41860467195510864,
+        "roughnessFactor": 0.5
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Cube.004",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        },
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 22561,
+      "max": [
+        2.710923671722412,
+        0.424319326877594,
+        0.4274511933326721
+      ],
+      "min": [
+        -2.6335718631744385,
+        -0.32678720355033875,
+        -0.42745181918144226
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 22561,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 22561,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 105774,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 16992,
+      "max": [
+        2.710923671722412,
+        -0.03686559200286865,
+        0.420165091753006
+      ],
+      "min": [
+        -2.756450891494751,
+        -0.6761857867240906,
+        -0.42016565799713135
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 16992,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 16992,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5123,
+      "count": 80256,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 270732,
+      "byteOffset": 0
+    },
+    {
+      "buffer": 0,
+      "byteLength": 270732,
+      "byteOffset": 270732
+    },
+    {
+      "buffer": 0,
+      "byteLength": 180488,
+      "byteOffset": 541464
+    },
+    {
+      "buffer": 0,
+      "byteLength": 211548,
+      "byteOffset": 721952
+    },
+    {
+      "buffer": 0,
+      "byteLength": 203904,
+      "byteOffset": 933500
+    },
+    {
+      "buffer": 0,
+      "byteLength": 203904,
+      "byteOffset": 1137404
+    },
+    {
+      "buffer": 0,
+      "byteLength": 135936,
+      "byteOffset": 1341308
+    },
+    {
+      "buffer": 0,
+      "byteLength": 160512,
+      "byteOffset": 1477244
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "moi_mem_data.bin",
+      "byteLength": 1637756
+    }
+  ]
+}

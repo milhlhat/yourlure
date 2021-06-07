@@ -6,16 +6,24 @@ import { Link, BrowserRouter as Router } from 'react-router-dom';
 YLButton.propTypes = {};
 
 function YLButton(props) {
-	const { varian, value, onClick, disabled, type } = props;
+	const { variant, value, onClick, disabled, type, to } = props;
 	return (
 		<Router>
-			<div className="button" onClick={onClick} disabled={disabled}>
+			<div className="yl-button" onClick={onClick}>
 				{type ? (
-					<button className={'transButton ' + varian} type={type}>
+					<button
+						className={`button button_${variant} ${disabled ? 'disabled' : ''} `}
+						type={type}
+						disabled={disabled}
+					>
 						{value}
 					</button>
 				) : (
-					<Link to="#" className={'transButton ' + varian}>
+					<Link
+						to={disabled ? to : '#'}
+						className={`button button_${variant} ${disabled ? 'disabled' : ''}`}
+						onClick={onClick}
+					>
 						{value}
 					</Link>
 				)}
