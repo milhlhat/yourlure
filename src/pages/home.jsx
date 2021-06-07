@@ -28,7 +28,7 @@ function Home(props) {
           </h3>
           <h3>Lorem ipsum dolo</h3>
           <div className="button-discover">
-          <YLButton value="Discover me" varian="dark"/>
+          <YLButton value="Discover me" variant="dark"/>
           </div>
         </div>
       </div>

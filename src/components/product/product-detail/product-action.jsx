@@ -82,8 +82,8 @@ function ProductAction(props) {
       </div>
 
       <div className="product-buy mt-5">
-        <YLButton varian="primary" value="Thêm vào giỏ hàng"></YLButton>
-        <YLButton varian="light" value="Mua ngay"></YLButton>
+        <YLButton variant="primary" value="Thêm vào giỏ hàng"></YLButton>
+        <YLButton variant="light" value="Mua ngay"></YLButton>
       </div>
     </div>
   );

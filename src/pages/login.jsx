@@ -67,7 +67,7 @@ function Login(props) {
 								label="Mật khẩu"
 								placeholder="Nhập mật khẩu"
 							></FastField>
-							<YLButton type="submit" varian="primary" value="Login"></YLButton>
+							<YLButton type="submit" variant="primary" value="Login"></YLButton>
 						</Form>
 					);
 				}}
