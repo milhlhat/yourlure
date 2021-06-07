@@ -17,8 +17,8 @@ public class ProductsDtoOut {
 
     private Long productID;
     private String productName;
-    private Category category;
-    private Image image;
+    private Long categoryId;
+    private String imageUrl;
     private Float defaultPrice;
     private String description;
     private String brand;
