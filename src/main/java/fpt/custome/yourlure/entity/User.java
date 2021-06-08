@@ -2,6 +2,7 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
+import fpt.custome.yourlure.security.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +52,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)
     private UserRole userRole;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

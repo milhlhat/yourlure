@@ -1,0 +1,10 @@
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#         google:
+#          clientId: 643008307069-ivpjji7hjocfknqp5f5ofuff170ubiaa.apps.googleusercontent.com
+#          clientSecret: uUrzpugmwdEyTM-H_c26sKjN
+#          scope:
+#           - email
+#           - profile

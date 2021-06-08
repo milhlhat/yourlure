@@ -25,7 +25,7 @@ public class UserRole {
 
     @Nullable
     @Column(name = "roleName")
-    private Boolean roleName;
+    private String roleName;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
