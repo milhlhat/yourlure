@@ -22,6 +22,16 @@ public class OrderLine {
     @Column(name = "orderLineID")
     private Long orderLineID;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "oderID", nullable = false)
+    private Order order;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "variantID")
+    private Variant variant;
+
     @Nullable
     @Column(name = "quantity")
     private Integer quantity;
@@ -40,14 +50,5 @@ public class OrderLine {
     @JoinColumn(name = "customizeID", nullable = false)
     private Customize customize;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "oderID", nullable = false)
-    private Order order;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "variantID")
-    private Variant variant;
 
 }
