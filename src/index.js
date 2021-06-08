@@ -7,7 +7,6 @@ import AppRouter from 'routes';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/scss/map.scss';
 import store, { persistor } from 'redux/store';
-import persistStore from 'redux-persist/es/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(

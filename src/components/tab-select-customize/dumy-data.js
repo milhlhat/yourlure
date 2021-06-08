@@ -5,7 +5,6 @@ import g4 from 'assets/images/bando.jpg';
 export const images = [g1, g2, g3, g4];
 export const color = [
 	'#640075',
-	'#790089',
 	'#5a00b9',
 	'#4400f5',
 	'#00ace2',

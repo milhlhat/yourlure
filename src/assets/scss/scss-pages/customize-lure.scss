@@ -28,10 +28,16 @@
 
 .picker {
 	position: absolute !important;
-	top: 74px;
-	left: 70px;
-	width: 90px !important;
-	height: 90px !important;
+	top: 50px;
+	right: 0px;
+	color: $text-color;
+	& .list-group-active {
+		color: #ffffff;
+		background-color: $hover-color;
+	}
+	& a {
+		min-width: 120px;
+	}
 }
 .tab-custom {
 	display: flex;
@@ -40,32 +46,44 @@
 		display: flex;
 		flex-direction: column;
 		background-color: #95a790;
-		cursor: pointer;
-		padding-top: 20px;
-	 
+
+		padding-top: 30px;
+
 		& .texture-action {
 			min-width: 50px;
 			min-height: 50px;
 			text-align: center;
 			color: white;
 			line-height: 45px;
+			cursor: pointer;
 		}
 		& .selected {
 			background-color: white;
 			color: $text-color;
+			cursor: pointer;
 		}
 	}
 	& .tab-detail {
 		background-color: white;
 		width: 100%;
-
 		display: flex;
 		flex-direction: column;
-		padding: 5px;
-		cursor: pointer;
+		align-items: center;
+		padding: 0 5px 5px 5px;
+		overflow: auto;
+		transition: all 1s linear;
 		&-close {
 			width: 100%;
 			text-align: right;
+			color: $close-btn-color;
+			font-size: x-large !important;
+		}
+		& .switch {
+			color: $text-color;
+			font-size: large;
+			font-weight: bold;
+			text-transform: uppercase;
+			padding: 5px 0 5px 0;
 		}
 		& .img-option {
 			display: flex;
@@ -75,11 +93,15 @@
 			& img {
 				margin-right: 5px;
 				margin-top: 5px;
+				cursor: pointer;
+				max-width: 50px !important;
+				max-height: 50px !important;
 			}
 		}
 		& .color-option {
 			display: flex;
 			flex-wrap: wrap;
+			justify-content: center;
 			& a {
 				position: relative;
 				display: block;
@@ -90,7 +112,7 @@
 				margin: 0 0.1rem 0.3rem;
 				transition: box-shadow 0.35s ease;
 			}
-			&-picker{
+			&-picker {
 				width: 100%;
 				padding: 0 10px 0 10px;
 			}
