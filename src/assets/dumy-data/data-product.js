@@ -1,14 +1,14 @@
 const dumyProduct = {
     products: ()=>{
       return  [
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'1'  },
-           { name:'cá rô',categoryId:'2'  },
-           { name:'cá rô',categoryId:'2'  },
+           { name:'TÔM GIẢ CÂU MỰC TM03',categoryId:'1'  },
+           { name:'TÔM GIẢ CÂU MỰC TM08',categoryId:'1'  },
+           { name:'TÔM GIẢ CÂU MỰC CÓ ĐÈN TM05',categoryId:'1'  },
+           { name:'MỒI CÂU LURE CHẼM, HỒNG, MÚ M80',categoryId:'2'  },
+           { name:'MỒI LURE BIỂN CR28',categoryId:'2'  },
+           { name:'CÁ SẮT JD06 CÂU CÁ LÓC',categoryId:'2'  },
+           { name:'MỒI CÂU LURE BIỂN SLURE 120',categoryId:'2'  },
+           { name:'MỒI CÂU LURE BIỂN X ROOL 128',categoryId:'2'  },
            { name:'cá rô',categoryId:'2'  },
            { name:'cá rô',categoryId:'2'  },
            { name:'cá rô',categoryId:'3'  },
@@ -19,8 +19,9 @@ const dumyProduct = {
         ]
     },
     category: ()=>{
-       return [{id:1,name:'Mồi mềm'},
+       return [{id:1,name:'Mồi câu mực'},
         {id:2,name:'Mồi cứng'},
+        {id:3,name:'Mồi mềm'},
     ]
         
     },

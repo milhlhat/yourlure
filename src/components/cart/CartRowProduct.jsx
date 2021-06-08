@@ -19,7 +19,7 @@ function CartRowProduct(props) {
   //   handleCheckBox(product.id,isCheck)
   // },[]);
   return (
-    <div className="bg-white">
+    <div className="bg-white row-cart">
       <table>
         <tr>
           <td>

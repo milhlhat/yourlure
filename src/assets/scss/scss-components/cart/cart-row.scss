@@ -1,8 +1,10 @@
-table{
-    width: 100%;
-}
+.row-cart{
+    & table{
+        width: 100%;
+    }
 
-img{
-    width: 150px;
-    height: 150px;
+    & img{
+        width: 150px;
+        height: 150px;
+    }
 }

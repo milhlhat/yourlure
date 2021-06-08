@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
@@ -14,72 +14,112 @@ import {
 } from "reactstrap";
 import "assets/scss/scss-components/header.scss";
 
-const Example = (props) => {
+function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClose, setIsClose] = useState(true);
 
-  const toggle = () => setIsOpen(!isOpen);
+  const toggle = () => {
+    setIsOpen(!isClose);
+  };
   let path = useLocation().pathname;
+
+  ///
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          if (isOpen) {
+          }
+        }
+        if (ref.current&& !ref.current.contains(event.target)) {
+          console.log("object");
+          setIsClose(!isClose);
+          if (!isClose) {
+            setIsOpen(false);
+          }
+        }
+		console.log(ref.current.contains(event.target));
+		console.log(event.target);
+      }
+
+      // Bind the event listener
+      document.addEventListener("mouseup", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mouseup", handleClickOutside);
+      };
+    }, [ref, isClose]);
+  }
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
+
+
   useEffect(() => {}, []);
   return (
     <div className="bg-white">
       <div className="container">
-        <Navbar light expand="md" className="p-1">
-          <NavbarBrand href="/">LOGO</NavbarBrand>
-          <NavbarToggler onClick={toggle} />
+        <Navbar light expand="md" className="p-1 flex-end">
+          <NavbarBrand className="me-auto" href="/">
+            LOGO
+          </NavbarBrand>
+          <div ref={wrapperRef}>
+            <NavbarToggler onClick={toggle} />
+          </div>
           <Collapse isOpen={isOpen} navbar>
             <Nav className="me-auto" navbar>
-              <NavItem className={path.indexOf("product") > -1 ? "active" : ""}>
-                <Link className="nav-link" to="/product">
+              <div
+                className={"" + path.indexOf("product") > -1 ? "active" : ""}
+              >
+                <Link className="nav-link item-hover" to="/product">
                   SẢN PHẨM
                 </Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/user/login">
+              </div>
+              <div>
+                <Link className="nav-link item-hover" to="/user/login">
                   TÙY BIẾN
                 </Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/user/login">
-                  THƯƠNG HIỆU
-                </Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/user/login">
+              </div>
+              <div>
+                <Link className="nav-link item-hover" to="/user/login">
                   Blog
                 </Link>
-              </NavItem>
-              <NavItem>
-                <Link className="nav-link" to="/user/login">
+              </div>
+              <div>
+                <Link className="nav-link item-hover" to="/user/login">
                   SỰ KIỆN
                 </Link>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>Option 1</DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              </div>
+			  
+              <div className="pt-1" ref={wrapperRef}>
+                <NavItem className="d-flex ms-auto search-form px-3 ">
+                  <input
+                    type="text"
+                    className="search"
+                    placeholder="Tìm kiếm..."
+                  />
+                  <i className="fa fa-search"></i>
+                </NavItem>
+              </div>
+                <NavItem className="header-cart ms-2 ">
+                  <Link className="nav-link" to="/cart">
+                    <i class="fa fa-shopping-cart"></i>
+                  </Link>
+                </NavItem>
+                <NavItem className="header-user ms-2 me-2 ">
+                  <Link className="nav-link" to="/user/login">
+                    <i className="fa fa-user"></i>
+                  </Link>
+                </NavItem>
             </Nav>
-            <div className="d-flex ms-auto search-form px-3 ">
-              <input type="text" className="search" placeholder="Tìm kiếm..." />
-              <i className="fa fa-search"></i>
-            </div>
-            <div className="header-cart ms-2">
-            <Link className="nav-link" to="/cart" ><i class="fa fa-shopping-cart"></i></Link>
-            </div>
-            <div className="header-user ms-2 me-2">
-              <Link className="nav-link" to="/user/login" ><i className="fa fa-user"></i></Link>
-            </div>
           </Collapse>
         </Navbar>
       </div>
     </div>
   );
-};
+}
 
-export default Example;
+export default Header;

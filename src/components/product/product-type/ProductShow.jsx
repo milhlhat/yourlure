@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import data from "../../../assets/dumy-data/data-product";
-import CartProduct from "components/card/card-product.jsx";
+import CardProduct from "components/card/card-product.jsx";
 import Paging from "./Paging";
 ProductShow.propTypes = {};
 
@@ -45,7 +45,7 @@ function ProductShow(props) {
   return (
     <div className="product-show mt-3 bg-white">
       {/* {products.map((product, index) => (
-          <CartProduct key={index} />
+          <CardProduct key={index} />
         ))} */}
       {postList.map((value, index) => (
         <p key={index}>{value.id}</p>

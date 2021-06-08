@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import data from "assets/dumy-data/data-product.js";
 import CartRowProduct from "./CartRowProduct";
-import "assets/scss/scss-pages/cart.scss";
+import "assets/scss/scss-pages/card.scss";
 import { Link } from "react-router-dom";
 
 function CartProduct(props) {

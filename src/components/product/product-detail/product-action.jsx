@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import YLButton from "../../custom-field/YLButton";
 import data from "./dumy-data";
-import ChangeQuantity from "components/orther/ChangeQuantity";
-ProductAction.propTypes = {};
 
 function ProductAction(props) {
   const [quantity, setQuantity] = useState(1);

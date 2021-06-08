@@ -9,6 +9,9 @@ Home.propTypes = {};
 
 function Home(props) {
   const products=data.products();
+  const handleOnPointerOut = ()=>{
+    console.log('on mouse out');
+  }
   return (
     <div className="container home-page">
       <div className="banner">
@@ -47,7 +50,7 @@ function Home(props) {
         <h2 className="ms-5">Sản phẩm mới </h2>
         <div className="top-product-show">
           {products.map((value,index)=>(
-            index<5 && <CartProduct key={index}/>
+            index<5 && <CartProduct key={index} onPointerOut={handleOnPointerOut}/>
           ))}
         </div>
       </div>

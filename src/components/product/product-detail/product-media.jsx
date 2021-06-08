@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import Magnifier from 'react-magnifier';
 
-import 'assets/scss/scss-pages/product-detail.scss';
+import 'assets/scss/scss-components/product/product-detail.scss';
 import { useHistory } from 'react-router';
-ProductImage.propTypes = {};
 
 function ProductImage(props) {
 	let { data } = props;
