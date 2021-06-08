@@ -49,4 +49,8 @@ public class Order {
     @JoinColumn(name = "userID", nullable = false)
     private User User;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "order")
+    private Status status;
+
 }

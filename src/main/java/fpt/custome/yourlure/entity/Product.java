@@ -27,6 +27,34 @@ public class Product {
     @Column(name = "productName")
     private String productName;
 
+    @Nullable
+    @Column(name = "defaultPrice")
+    private Float defaultPrice;
+
+    @Nullable
+    @Column(name = "subDescription")
+    private String subDescription;
+
+    @Nullable
+    @Column(name = "Description")
+    private String Description;
+
+    @Nullable
+    @Column(name = "brand")
+    private String brand;
+
+    @Nullable
+    @Column(name = "sale")
+    private Float sale;
+
+    @Nullable
+    @Column(name = "customizable")
+    private Boolean customizable;
+
+    @Nullable
+    @Column(name = "dateCreate")
+    private Date dateCreate;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoryID", nullable = false)
@@ -59,29 +87,5 @@ public class Product {
 // MapopedBy trỏ tới tên biến products ở trong fish_product.
 //1 category có nhiều product
     private Collection<Fish_product> productsCollection;
-
-    @Nullable
-    @Column(name = "defaultPrice")
-    private Float defaultPrice;
-
-    @Nullable
-    @Column(name = "description")
-    private String description;
-
-    @Nullable
-    @Column(name = "brand")
-    private String brand;
-
-    @Nullable
-    @Column(name = "sale")
-    private Float sale;
-
-    @Nullable
-    @Column(name = "customizable")
-    private Boolean customizable;
-
-    @Nullable
-    @Column(name = "dateCreate")
-    private Date dateCreate;
 
 }

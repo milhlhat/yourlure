@@ -47,6 +47,11 @@ public class User {
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
+    @Nullable
+    @Column(name = "provider")
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "roleID", nullable = false)
@@ -63,5 +68,9 @@ public class User {
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
 }

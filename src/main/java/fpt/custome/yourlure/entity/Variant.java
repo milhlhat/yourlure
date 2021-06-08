@@ -55,10 +55,18 @@ public class Variant {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "backgroundColor")
+    private String backgroundColor;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
     private Product product;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "cartID", nullable = false)
+    private Cart cart;
 
     @JsonIgnore
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
@@ -66,7 +74,5 @@ public class Variant {
     //1 variants có nhiều orderline
     private Collection<OrderLine> orderLineCollection;
 
-    @Column(name = "backgroundColor")
-    private String backgroundColor;
 
 }
