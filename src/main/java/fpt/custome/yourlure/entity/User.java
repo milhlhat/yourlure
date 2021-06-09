@@ -28,7 +28,7 @@ public class User {
 
     @Nullable
     @Column(name = "userName")
-    private String userName;
+    private String username;
 
     @Nullable
     @Column(name = "password")

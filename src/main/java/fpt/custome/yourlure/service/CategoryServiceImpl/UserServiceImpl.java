@@ -15,11 +15,11 @@ public class UserServiceImpl implements UserService {
 
     public void processOAuthPostLogin(String username) {
 //		System.out.println("da login thah cong");
-        User existUser = userRepos.findAllByUserName(username);
+        User existUser = userRepos.findAllByUsername(username);
 
         if (existUser == null) {
             User newUser = new User();
-            newUser.setUserName(username);
+            newUser.setUsername(username);
             newUser.setProvider(Provider.GOOGLE);
 //            newUser.setUserRole(false);
 
