@@ -5,6 +5,8 @@ import com.sun.istack.Nullable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,9 +26,12 @@ public class Status {
     @Column(name = "statusName")
     private String statusName;
 
+
+
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderID", referencedColumnName = "statusID")
-    private Order order;
+    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến category ở trong product.
+    //1 category có nhiều product
+    private Collection<Order> orders;
 
 }

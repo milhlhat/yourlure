@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -49,4 +50,8 @@ public class Order {
     @JoinColumn(name = "userID", nullable = false)
     private User User;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "statusID", nullable = false)
+    private Status status;
 }

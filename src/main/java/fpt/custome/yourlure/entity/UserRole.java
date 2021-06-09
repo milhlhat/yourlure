@@ -27,9 +27,9 @@ public class UserRole {
     @Column(name = "roleName")
     private String roleName;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến roles ở trong Users.
-    //1 roles có nhiều Users
-    private Collection<User> userCollection;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
+//    // MapopedBy trỏ tới tên biến roles ở trong Users.
+//    //1 roles có nhiều Users
+//    private Collection<User> userCollection;
 }

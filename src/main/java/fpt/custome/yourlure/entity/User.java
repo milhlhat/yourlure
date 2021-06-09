@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -48,10 +50,19 @@ public class User {
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name = "roleID", nullable = false)
+//    private UserRole userRole;
+
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "roleID", nullable = false)
-    private UserRole userRole;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "userID"),
+            inverseJoinColumns = @JoinColumn(name = "userRolesID")
+    )
+    private Set<UserRole> roles = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
