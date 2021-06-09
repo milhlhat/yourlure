@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Data
 @Entity
@@ -62,12 +61,5 @@ public class Variant {
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
     private Product product;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến variants ở trong orderline.
-    //1 variants có nhiều orderline
-    private Collection<OrderLine> orderLineCollection;
-
 
 }

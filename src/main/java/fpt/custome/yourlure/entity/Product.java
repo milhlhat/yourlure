@@ -27,39 +27,6 @@ public class Product {
     @Column(name = "productName")
     private String productName;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "categoryID", nullable = false)
-    private Category category;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "imageID", nullable = false)
-    private Image image;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến products ở trong variants .
-    //1 product có nhiều variants
-    private Collection<Variant> variantCollection;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến products ở trong variants .
-    //1 product có nhiều variants
-    private Collection<Customize> customizeCollection;
-
-//    @JsonIgnore
-//    // mappedBy trỏ tới tên biến productCollection ở trong Fish.
-//    @ManyToMany(mappedBy = "productCollection")
-//    private Collection<Fish> fishCollection;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-// MapopedBy trỏ tới tên biến products ở trong fish_product.
-//1 category có nhiều product
-    private Collection<Fish_product> productsCollection;
-
     @Nullable
     @Column(name = "defaultPrice")
     private Float defaultPrice;
@@ -84,4 +51,32 @@ public class Product {
     @Column(name = "dateCreate")
     private Date dateCreate;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "categoryID", nullable = false)
+    private Category category;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến products ở trong Images .
+    //1 product có nhiều image
+    private Collection<Image> imageCollection;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến products ở trong variants .
+    //1 product có nhiều variants
+    private Collection<Variant> variantCollection;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến products ở trong variants .
+    //1 product có nhiều variants
+    private Collection<Customize> customizeCollection;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến products ở trong fish_product.
+    //1 category có nhiều product
+    private Collection<Fish_product> productsCollection;
 }
