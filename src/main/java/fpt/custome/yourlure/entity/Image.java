@@ -29,12 +29,11 @@ public class Image {
     @JsonIgnore
     @Nullable
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = false)
+    @JoinColumn(name = "productID", nullable = true)
     private Product product;
 
     @JsonIgnore
-    @Nullable
     @ManyToOne
-    @JoinColumn(name = "campaign", nullable = false)
+    @JoinColumn(name = "campaignid", nullable = true)
     private Campaign campaign;
 }

@@ -42,7 +42,7 @@ public class OrderLine {
     @Nullable
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "customizeID", nullable = false)
+    @JoinColumn(name = "customizeID")
     private Customize customize;
 
     @Nullable
