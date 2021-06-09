@@ -3,10 +3,12 @@ package fpt.custome.yourlure.controller.admin.impl;
 import fpt.custome.yourlure.controller.admin.AdminCategoryController;
 import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Filter;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
+@RestController
 public class AdminCategoryControllerImpl implements AdminCategoryController {
     @Override
     public List<Category> findAll() {

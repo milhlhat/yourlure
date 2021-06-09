@@ -1,14 +1,11 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
-import fpt.custome.yourlure.entity.Customize;
-import fpt.custome.yourlure.entity.UserAddress;
-import fpt.custome.yourlure.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,8 +20,6 @@ public class UserDtoOut {
     private Boolean gender;
     private String userEmail;
     private Integer maxCustomizable;
-    private UserRole userRole;
-    private Collection<Customize> customizeCollection;
-    private Collection<UserAddress> userAddressCollection;
+    private List<String> role;
 
 }
