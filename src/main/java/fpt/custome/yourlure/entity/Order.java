@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -40,6 +40,10 @@ public class Order {
     @Column(name = "name")
     private String name;
 
+    @Nullable
+    @Column(name = "note")
+    private String note;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "paymentID", nullable = false)
@@ -47,11 +51,13 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
+    @Nullable
     @JoinColumn(name = "userID", nullable = false)
     private User User;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "statusID", nullable = false)
-    private Status status;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến order ở trong orderline.
+    //1 order có nhiều orderline
+    private Collection<OrderLine> orderLineCollection;
 }

@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -37,4 +39,10 @@ public class Campaign {
     @Nullable
     @Column(name = "banner")
     private String banner;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến campaign ở trong image.
+    //1 campaign có nhiều image
+    private Collection<Image> imageCollection;
 }
