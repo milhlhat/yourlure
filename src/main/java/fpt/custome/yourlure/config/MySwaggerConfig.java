@@ -37,10 +37,8 @@ public class MySwaggerConfig {
 //    private Predicate<String> paths() {
 //        return or(
 //                regex("/product.*"),
-//                regex("/category.*"));
-////                regex("/order.*"),
-////                regex("/cart.*"),
-////                regex("/springsRestController.*"),
-////                regex("/cart.*"));
+//                regex("/order.*"),
+//                regex("/cart.*"),
+//                regex("/cart.*"));
 //    }
 }
