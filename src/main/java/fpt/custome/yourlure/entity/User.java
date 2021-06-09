@@ -54,19 +54,10 @@ public class User {
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
-//    @JsonIgnore
-//    @ManyToOne
-//    @JoinColumn(name = "roleID", nullable = false)
-//    private UserRole userRole;
-
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "userRolesID")
-    )
-    private Set<UserRole> roles = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "userRolesID", nullable = false)
+    private UserRole userRole;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
