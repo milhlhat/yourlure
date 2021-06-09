@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name = "tbl_Products")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "productID")
     private Long productID;
 

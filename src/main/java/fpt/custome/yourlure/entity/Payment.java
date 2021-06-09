@@ -19,7 +19,7 @@ import java.util.Collection;
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "paymentID")
     private Long paymentID;
 

@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Customize {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customizeID")
     private Long customizeID;
 

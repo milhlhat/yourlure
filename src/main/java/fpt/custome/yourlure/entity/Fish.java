@@ -19,7 +19,7 @@ import java.util.Collection;
 public class Fish {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fishID")
     private Long fishID;
 

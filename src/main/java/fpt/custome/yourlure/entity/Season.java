@@ -18,7 +18,7 @@ import java.util.Set;
 public class Season {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seasonID")
     private Long seasonID;
 

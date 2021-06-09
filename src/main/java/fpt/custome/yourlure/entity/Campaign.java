@@ -21,7 +21,7 @@ public class Campaign {
 
     @Id
     @Column(name = "campaignID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long campaignID;
 
     @Nullable

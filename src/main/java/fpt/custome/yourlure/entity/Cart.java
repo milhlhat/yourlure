@@ -18,7 +18,7 @@ import java.util.Collection;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cartID")
     private Long cartID;
 

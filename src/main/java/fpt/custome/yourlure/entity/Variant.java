@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Variant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "variantID")
     private Long variantID;
 

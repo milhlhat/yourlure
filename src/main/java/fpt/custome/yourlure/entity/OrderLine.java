@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class OrderLine {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderLineID")
     private Long orderLineID;
 

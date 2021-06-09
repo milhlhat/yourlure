@@ -19,7 +19,7 @@ import java.util.Collection;
 public class UserRole {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userRolesID")
     private Long userRolesID;
 

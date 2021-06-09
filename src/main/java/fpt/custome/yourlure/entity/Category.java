@@ -17,7 +17,7 @@ import java.util.Collection;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoryID")
     private Long categoryID;
 
