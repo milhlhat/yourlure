@@ -40,6 +40,10 @@ public class Order {
     @Column(name = "name")
     private String name;
 
+    @Nullable
+    @Column(name = "note")
+    private String note;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "paymentID", nullable = false)

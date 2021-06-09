@@ -55,6 +55,9 @@ public class Variant {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "backgroundColor")
+    private String backgroundColor;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productID", nullable = false)
@@ -66,7 +69,5 @@ public class Variant {
     //1 variants có nhiều orderline
     private Collection<OrderLine> orderLineCollection;
 
-    @Column(name = "backgroundColor")
-    private String backgroundColor;
 
 }

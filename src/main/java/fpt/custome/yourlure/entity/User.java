@@ -47,6 +47,10 @@ public class User {
     private String userEmail;
 
     @Nullable
+    @Column(name = "statusActivity")
+    private Boolean statusActivity;
+
+    @Nullable
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
