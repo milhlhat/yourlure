@@ -1,0 +1,29 @@
+@import "../base/variable";
+.login {
+  display: flex;
+  & .login-big-image {
+    & img {
+      width: 60vh;
+    }
+  }
+  & .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    & .item-botton {
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  .login-big-image {
+    width: 0;
+  }
+  .login-form {
+    & h1 {
+      color: #fff;
+    }
+    width: 100vh;
+  }
+}

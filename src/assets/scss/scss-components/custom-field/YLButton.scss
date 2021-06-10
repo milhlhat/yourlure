@@ -77,6 +77,7 @@
 		box-shadow 0.15s ease-in-out;
 	text-decoration: none;
 
+	
 	&_primary {
 		color: #fff;
 		background-color: $primary;
@@ -159,4 +160,7 @@
 			background-color: $bg-negative-btn;
 		}
 	}
+}
+.width-100{
+	width: 100%;
 }

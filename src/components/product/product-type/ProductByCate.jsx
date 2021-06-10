@@ -27,11 +27,11 @@ function ProductByCate(props) {
           </div>
           <div className="product-card-row m-xl-5">
             {products.map((product, indexx) => (
-              <>
+              <React.Fragment key={indexx}>
                 {product.categoryId == cate.id && (
-                  <CardProduct product={product} key={indexx} />
+                  <CardProduct product={product}  />
                 )}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>
