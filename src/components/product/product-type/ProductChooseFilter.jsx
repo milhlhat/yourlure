@@ -1,7 +1,8 @@
 import React from "react";
 import YLButton from "components/custom-field/YLButton";
-import {Field, Form, Formik } from "formik";
+import { FastField, Field, Form, Formik } from "formik";
 import data from "../../../assets/dumy-data/data-product";
+import YLCheckBoxField from 'components/custom-field/YLCheckBoxField.jsx';
 ProductChooseFilter.propTypes = {};
 
 function ProductChooseFilter(props) {
@@ -24,35 +25,64 @@ function ProductChooseFilter(props) {
             handleSubmit(values);
           }}
         >
-          <Form>
-            <div className="row">
-              <div className="cate-filter col-md-12 col-sm-6">
-                <p>
-                  <b>Loại mồi</b>
-                </p>
-                {category.map((value, index) => (
-                  <div className="field-category " key={index}>
-                    <Field name="checkbox" type="checkbox" value={value.name} />
-                    <label for={value.id}>{value.name}</label>
+          {({ values, setFieldValue }) => {
+            console.log(values);
+            return (
+              <Form>
+                <div className="row">
+                  <div className="cate-filter col-md-12 col-sm-5 col-5">
+                    <p>
+                      <b>Loại mồi</b>
+                    </p>
+                    <div className="field-category ">
+                      <Field name="checkbox" type="checkbox" value="all-cate" />
+                      <label for="all-cate" className="ms-1">
+                        Tất cả
+                      </label>
+                    </div>
+                    {category.map((cate, index) => (
+                      <div className="field-category " key={index}>
+                        {/* <Field
+                          name="checkboxx"
+                          type="checkbox"
+                          value={value.id}
+                        />
+                        <label className="ms-1" htmlFor={value.id}>
+                          {value.name}
+                        </label> */}
+                        <FastField 
+                        name="filter"
+                        component={YLCheckBoxField}
+                        checked={false}
+                        
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="fish-filter col-md-12 col-sm-6">
-                <p>
-                  <b>Loại cá</b>
-                </p>
-                {fish.map((value, index) => (
-                  <div className="field-category" key={index}>
-                    <Field name="checkbox" type="checkbox" value={value.name} />
-                    <label for={value.name}>{value.name}</label>
+                  <div className="fish-filter col-md-12 col-sm-5 col-5">
+                    <p>
+                      <b>Loại cá</b>
+                    </p>
+                    {fish.map((value, index) => (
+                      <div className="field-category" key={index}>
+                        <Field
+                          name="checkbox"
+                          type="checkbox"
+                          value={value.name}
+                        />
+                        <label className="ms-1" for={value.name}>
+                          {value.name}
+                        </label>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="button-submit m-2">
-              <YLButton type="submit" varian="primary" value="Tìm kiếm" />
-            </div>
-          </Form>
+                </div>
+                <div className="button-submit m-2">
+                  <YLButton type="submit" variant="primary" value="Tìm kiếm" />
+                </div>
+              </Form>
+            );
+          }}
         </Formik>
       </div>
     </div>

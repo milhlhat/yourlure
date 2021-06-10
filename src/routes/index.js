@@ -9,6 +9,8 @@ import Footer from 'components/footer/footer';
 import HomeRoute from './home-route';
 import CartProduct from 'components/cart/CartProduct';
 import Payment from 'pages/Payment';
+import About from 'pages/About';
+import CartRoute from './cart-router';
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
 const NotFound = React.lazy(() => import('pages/notfound'));
@@ -26,8 +28,8 @@ function AppRouter() {
 							{/* <Redirect exact from="/" to="/home" /> */}
 							<Route path="/user" component={UserRoute} />
 							<Route path="/product" component={ProductRoute} />
-							<Route path="/cart" component={CartProduct} />
-							<Route path="/payment" component={Payment} />
+							<Route path="/cart" component={CartRoute} />
+							<Route path="/about" component={About} />
 							<Route path="/" component={HomeRoute} />
 							<Route component={NotFound} />
 						</Switch>

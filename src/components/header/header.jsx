@@ -7,10 +7,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
 } from "reactstrap";
 import "assets/scss/scss-components/header.scss";
 
@@ -41,8 +37,6 @@ function Header(props) {
             setIsOpen(false);
           }
         }
-		console.log(ref.current.contains(event.target));
-		console.log(event.target);
       }
 
       // Bind the event listener
@@ -84,7 +78,7 @@ function Header(props) {
                 </Link>
               </div>
               <div>
-                <Link className="nav-link item-hover" to="/user/login">
+                <Link className="nav-link item-hover" to="/about">
                   Blog
                 </Link>
               </div>
@@ -106,7 +100,7 @@ function Header(props) {
               </div>
                 <NavItem className="header-cart ms-2 ">
                   <Link className="nav-link" to="/cart">
-                    <i class="fa fa-shopping-cart"></i>
+                    <i className="fa fa-shopping-cart"></i>
                   </Link>
                 </NavItem>
                 <NavItem className="header-user ms-2 me-2 ">

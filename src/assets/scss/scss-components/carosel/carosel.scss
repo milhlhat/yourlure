@@ -1,0 +1,11 @@
+.carousel{
+    width: 100%;
+    & .color-black{
+        color: black;
+        font-weight: bold;
+    }
+    & .item-center {
+        display: flex;
+        justify-content: center;
+    }
+}

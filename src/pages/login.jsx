@@ -72,6 +72,7 @@ function Login(props) {
 					);
 				}}
 			</Formik>
+			<YLButton variant="warning" value="Đăng ký"/>
 		</div>
 	);
 }

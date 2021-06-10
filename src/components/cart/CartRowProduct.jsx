@@ -55,7 +55,7 @@ function CartRowProduct(props) {
           </td>
           <td>{product.price * quantity}</td>
           <td>
-            <i class="fa fa-trash" onClick={() => handleDelete(product.id)}></i>
+            <i className="fa fa-trash" onClick={() => handleDelete(product.id)}></i>
           </td>
         </tr>
       </table>

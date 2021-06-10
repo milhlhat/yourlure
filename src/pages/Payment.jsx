@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import InputField from "components/custom-field/YLInput";
 import SelectField from "components/custom-field/YLSelect";
 import dataAdress from "./address";
+import 'assets/scss/scss-components/cart/payment.scss';
 
 let districtOn = false,
   wardOn = false;
@@ -148,6 +149,14 @@ function Payment(props) {
                   </td>
                 </tr>
               ))}
+            </table>
+          </div>
+          <div className="total-mini">
+            <table>
+              <tr>
+                <td>TỔNG PHỤ </td>
+                <td></td>
+              </tr>
             </table>
           </div>
         </div>

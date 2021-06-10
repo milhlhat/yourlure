@@ -28,6 +28,7 @@ function ProductDetail(props) {
           <ProductAction />
         </div>
       </div>
+      
       <div className="bg-white d-flex m-2">
         {product.map((value,index)=>(
         <CardProduct product={value} key={index} />

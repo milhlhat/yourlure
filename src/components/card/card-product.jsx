@@ -22,10 +22,10 @@ function CardProduct(props) {
 				/>
 			</div>
 
-			<div className="d-flex flex-column card-info w-100 thumb align-items-center ">
-				<span className="text-color text-small">Brand</span>
+			<div className="d-flex flex-column card-info w-100 thumb text-center align-items-center ">
+				<span className="text-color text-small">{product==null?"brand null":product.brand}</span>
 				<span className="mt-2">{product==null?"product null":product.name}</span>
-				<span className="text-color">150,000đ</span>
+				<span className="text-color">{product==null?"price null":product.defaultPrice}</span>
 			</div>
 		</div>
 	);

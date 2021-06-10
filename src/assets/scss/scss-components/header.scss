@@ -65,4 +65,7 @@ $grid-breakpoints: (
       width: 100%;
       justify-content: space-evenly;
   }
+  & .nav-link{
+    font-weight: bold;
+  }
 }

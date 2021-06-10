@@ -15,7 +15,7 @@ function ProductImage(props) {
 	return (
 		<div className="product-media d-flex flex-column m-4">
 			<div className="big-image object-fit">
-				<button className="big-image-edit bg-white " onClick={goToCustomize} hidden={!isCustome}>edit</button>
+				<button className="big-image-edit " onClick={goToCustomize} hidden={!isCustome}><i class="fa fa-pencil"></i></button>
 			<img src={data[selectImg]} height={350} className="" />
 			</div>
 			<div className="gallery mt-1">

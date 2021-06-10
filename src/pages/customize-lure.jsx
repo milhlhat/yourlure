@@ -150,7 +150,7 @@ function ListActionMaterials(props) {
 		dispatch(action);
 	}
 	return (
-		<div class="list-group picker">
+		<div className="list-group picker">
 			{customizeInfo.length > 0 &&
 				customizeInfo.map((item, i) => (
 					<a
