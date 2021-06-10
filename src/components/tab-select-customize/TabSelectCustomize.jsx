@@ -5,7 +5,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
 import { setMaterialId } from 'redux/action/customize-id';
-import { HexColorPicker } from 'react-colorful';
+import { HexColorPicker, RgbaColorPicker } from 'react-colorful';
 import { setListName } from 'redux/action/customize-info';
 
 function TabSelectCustomize(props) {
@@ -104,7 +104,7 @@ function ImgChoices(props) {
 						))}
 					</div>
 					<div className="d-flex flex-column mt-3 align-items-center">
-						<YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} />
+						{/* <YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} /> */}
 						<hr className="hr my-3" />
 						<YLButton variant="primary" type="button" value="Upload ảnh" />
 					</div>
@@ -123,6 +123,7 @@ function ColorChoices(props) {
 	const imgRedux = useSelector((state) => state.customizeInfo);
 
 	function handleSetColor(color) {
+	 
 		let list = JSON.parse(JSON.stringify(imgRedux));
 		list[mId].color = color;
 		let action = setListName(list);
@@ -130,7 +131,7 @@ function ColorChoices(props) {
 	}
 	function handleRemoveColor() {
 		let list = JSON.parse(JSON.stringify(imgRedux));
-		list[mId].color = '#fff';
+		list[mId].color = '';
 		let action = setListName(list);
 		dispatch(action);
 	}
@@ -149,7 +150,7 @@ function ColorChoices(props) {
 					</div>
 				</>
 			) : (
-				<span>Bộ phận không hỗ trợ sử dụng hình ảnh</span>
+				<span>Bộ phận không hỗ trợ sử dụng màu</span>
 			)}
 		</div>
 	);

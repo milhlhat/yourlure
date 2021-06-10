@@ -2,7 +2,7 @@ import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Environment, useGLTF, OrbitControls, useTexture, Loader } from '@react-three/drei';
 import * as THREE from 'three';
-import m3d from 'assets/3d-models/moi_mem.glb';
+import m3d from 'assets/3d-models/shoe-draco.glb';
 import whiteImg from 'assets/images/white-img.jpg';
 import 'assets/scss/scss-pages/customize-lure.scss';
 import TabSelectCustomize from 'components/tab-select-customize/TabSelectCustomize';
@@ -10,19 +10,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMaterialsInfoBy, getNodesInfoBy, getMaterialsName, getColorMaterialByName } from 'utils/product';
 import { setListName } from 'redux/action/customize-info';
 import { setMaterialId } from 'redux/action/customize-id';
+import { setMaterialInit } from 'redux/action/customize-init-data';
 
-function Shoe(props) {
+function RenderModel(props) {
 	const ref = useRef();
+	const initMaterials = useRef({ num: 0, data: [] });
+
 	const dispatch = props.dispatch;
 
 	let customizeInfo = props.customizeInfo;
-
+	let customizeInit = props.customizeInit;
 	//Load 3d model
-	const { nodes, materials } = useGLTF(m3d);
+	const { nodes, materials } = useGLTF(m3d, true);
+	// console.log(nodes, materials);
 
+	if (initMaterials.current.num < 1) {
+		initMaterials.current = {
+			num: Number(initMaterials.current.num) + 1,
+			data: getMaterialsInfoBy(materials, 'MeshStandardMaterial', 'MeshBasicMaterial'),
+		};
+	}
+	console.log(initMaterials);
 	let listNodes = getNodesInfoBy(nodes, 'Mesh');
-	let listMaterials = getMaterialsInfoBy(materials, 'MeshStandardMaterial');
-	let listMaterialsName = getMaterialsName(materials, 'MeshStandardMaterial');
+	let listMaterials = getMaterialsInfoBy(materials, 'MeshStandardMaterial', 'MeshBasicMaterial');
+	let listMaterialsName = getMaterialsName(materials, 'MeshStandardMaterial', 'MeshBasicMaterial');
 	useEffect(() => {
 		const action = setListName(listMaterialsName);
 		dispatch(action);
@@ -55,10 +66,31 @@ function Shoe(props) {
 	);
 
 	listTextures.push(texture0, texture1, texture2, texture3, texture4, texture5, texture6, texture7);
-
-	// 	texture.wrapS = THREE.RepeatWrapping;
-	// 	texture.wrapT = THREE.RepeatWrapping;
-	// 	texture.repeat.set(1, 1);
+	let listMesh = [];
+	for (let i = 0; i < listNodes.length; i++) {
+		let node = listNodes[i];
+		let item = {
+			geometry: node.geometry,
+			material: listMaterials[i],
+		
+		};
+		// if (customizeInfo[i] && customizeInfo[i].img === '') {
+		// 	item = { ...item, material: initMaterials.current.data[i] };
+		// }
+		// if (customizeInfo[i] && customizeInfo[i].img !== '') {
+		// 	item = { ...item, 'material-map': listTextures[i] };
+		// }
+		// else{
+		// 	item = { ...item, 'material-map': null };
+		// }
+		if (customizeInfo[i] && customizeInfo[i].color !== '') {
+			item = { ...item, 'material-color': customizeInfo[i].color };
+		}
+		listMesh.push(item);
+	}
+	// texture0.wrapS = THREE.RepeatWrapping;
+	// texture0.wrapT = THREE.RepeatWrapping;
+	// texture0.repeat.set(4, 4);
 
 	// Animate model
 	useFrame((state) => {
@@ -89,7 +121,6 @@ function Shoe(props) {
 			dispose={null}
 			onPointerOver={(e) => {
 				e.stopPropagation();
-				console.log(e.object);
 				setHovered(e.object.material.name);
 			}}
 			onPointerOut={(e) => e.intersections.length === 0 && setHovered(null)}
@@ -100,18 +131,39 @@ function Shoe(props) {
 				e.stopPropagation();
 			}}
 		>
-			{listNodes.length > 0 &&
+			{listMesh.length > 0 &&
+				listMesh.map((item, i) => (
+					<mesh
+						key={i}
+						receiveShadow
+						castShadow
+						{...item}
+						material-map={listTextures[i]}
+
+						// geometry={item.geometry}
+						// material={listMaterials[i]}
+
+						// material-color={
+						// 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
+						// }
+					/>
+				))}
+			{/* {listNodes.length > 0 &&
 				listNodes.map((item, i) => (
 					<mesh
 						key={i}
 						receiveShadow
 						castShadow
 						geometry={item.geometry}
-						material={listMaterials[i].mesh}
-						material-map={listTextures[i]}
-						material-color={customizeInfo.length > 0 ? customizeInfo[i].color : '#ffffff'}
+						material={listMaterials[i]}
+						// material-map={customizeInfo[i] && customizeInfo[i].img != '' ? listTextures[i] : null}
+						// material-color={listMaterials[i] ? listMaterials[i].color: null}
+						// material-map={listTextures[i]}
+						// material-color={
+						// 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
+						// }
 					/>
-				))}
+				))} */}
 		</group>
 	);
 }
@@ -123,7 +175,11 @@ function CanvasModel(props) {
 				<ambientLight intensity={0.7} />
 				<spotLight intensity={0.5} angle={0.1} penumbra={1} position={[10, 15, 10]} castShadow />
 				<Suspense fallback={null}>
-					<Shoe dispatch={props.dispatch} customizeInfo={props.customizeInfo} />
+					<RenderModel
+						dispatch={props.dispatch}
+						customizeInit={props.customizeInit}
+						customizeInfo={props.customizeInfo}
+					/>
 					<Environment preset="city" />
 					<ContactShadows
 						rotation-x={Math.PI / 2}
@@ -170,6 +226,7 @@ function ListActionMaterials(props) {
 export default function Customize() {
 	const customizeInfo = useSelector((state) => state.customizeInfo);
 	const mId = useSelector((state) => state.customizeId);
+	const customizeInit = useSelector((state) => state.customizeInit);
 	const dispatch = useDispatch();
 
 	return (
@@ -178,7 +235,12 @@ export default function Customize() {
 				<TabSelectCustomize />
 			</div>
 			<div className="col-md-9">
-				<CanvasModel dispatch={dispatch} mId={mId} customizeInfo={customizeInfo} />
+				<CanvasModel
+					dispatch={dispatch}
+					customizeInit={customizeInit}
+					mId={mId}
+					customizeInfo={customizeInfo}
+				/>
 			</div>
 		</div>
 	);

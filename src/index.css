@@ -12,8 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 body {
-    font-family: 'Quicksand', sans-serif !important;
+  font-family: 'Questrial', sans-serif; 
+  /* font-family: 'Quicksand', sans-serif !important; */
 }

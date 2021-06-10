@@ -9,22 +9,22 @@ let productUtils = {
 		}
 		return listTemp;
 	},
-	getMaterialsInfoBy: (list, type) => {
+	getMaterialsInfoBy: (list, type, type2) => {
 		let listTemp = [];
 		for (const i in list) {
 			const element = list[i];
-			if (element.type === type) {
-				listTemp.push({ name: element.name, mesh: element });
+			if (element.type === type || element.type === type2) {
+				listTemp.push(element);
 			}
 		}
 		return listTemp;
 	},
-	getMaterialsName: (list, type) => {
+	getMaterialsName: (list, type, type2) => {
 		let listTemp = [];
 		let id = 0;
 		for (const i in list) {
 			const element = list[i];
-			if (element.type === type) {
+			if (element.type === type || element.type === type2) {
 				listTemp.push({
 					id: id,
 					name: element.name,

@@ -7,7 +7,7 @@ const customize = createSlice({
 		setMaterialId: (state, action) => {
 			let s = {...state};
 			s = action.payload;
-            console.log(s);
+            
 			return s;
 		} 
 	},
