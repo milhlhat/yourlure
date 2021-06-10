@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
-import userReducer from './customize-action/user-slice.js';
+import userReducer from './user-action/user-slice.js';
 import customizeIdReducer from './customize-action/customize-id';
 import customizeInfoReducer from './customize-action/customize-info';
 import customizeInitReducer from './customize-action/customize-init-data'
