@@ -91,8 +91,12 @@ function CartProduct(props) {
             TỔNG CỘNG: <span>{totalCost + 25000}</span>
           </p>
           <div className="btn-cart-continous">
-            <Link to="/payment"><button className="btn btn-success">Tiếp tục</button> </Link>
+            <Link to="cart/payment" product="hihihaha"><button className="btn btn-success">Tiếp tục</button> </Link>
           </div>
+        </div>
+        <div className="float-end mt-4">
+        <Link to="/product">Trở lại mua hàng</Link>
+
         </div>
       </div>
     </div>

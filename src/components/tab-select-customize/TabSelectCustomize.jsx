@@ -67,11 +67,11 @@ function SwitchMaterial(props) {
 	return (
 		<div className="d-flex align-items-center justify-content-center switch">
 			<button className="border-0 bg-transparent pointer" onClick={() => decreaseMId()}>
-				<i class="fa fa-angle-left"></i>
+				<i className="fa fa-angle-left"></i>
 			</button>
 			<span className="mx-3">{material.length > 0 && material[mId].name}</span>
 			<button className="border-0 bg-transparent pointer" onClick={() => increaseMId()}>
-				<i class="fa fa-angle-right"></i>
+				<i className="fa fa-angle-right"></i>
 			</button>
 		</div>
 	);

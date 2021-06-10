@@ -20,8 +20,22 @@
     align-items: center;
     & .big-image-edit {
       position: absolute;
+      width: 50px;
+      height: 50px;
       margin-top: 10px;
       margin-left: 10px;
+      border-radius: 50%;
+      background:rgba(0,0,0,0.5);
+      border: 1px solid $primary;
+      & .fa-pencil{
+        font-size: 25px;
+        color: $primary;
+      }
+      &:hover{
+        & .fa-pencil{
+          font-size: 30px;
+        }
+      }
     }
   }
 }
