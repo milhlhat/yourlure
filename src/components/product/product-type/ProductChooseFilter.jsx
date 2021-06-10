@@ -3,47 +3,102 @@ import YLButton from 'components/custom-field/YLButton';
 import { FastField, Field, Form, Formik } from 'formik';
 import data from '../../../assets/dumy-data/data-product';
 import YLCheckBoxField from 'components/custom-field/YLCheckBoxField.jsx';
+import { handleChangeCheckbox } from 'utils/input';
+import { findByFilter } from 'redux/product-action/filter';
+import { useDispatch } from 'react-redux';
 ProductChooseFilter.propTypes = {};
 
 function ProductChooseFilter(props) {
-	const [selectCate, setSelectCate] = useState([]);
-	const [selectFish, setSelectFish] = useState([]);
 	const category = data.category();
 	const fish = data.fish();
-	function handleChangeCate(e) {
-		const name = e.target.name;
-		const checked = e.target.checked;
+	const LIMIT_DATA_PER_PAGE = 15;
+	const dispatch = useDispatch();
+	const [selectCate, setSelectCate] = useState(category);
+	const [selectFish, setSelectFish] = useState(fish);
+	const [isCustom, setIsCustom] = useState(false);
+	const [page, setPage] = useState(1);
+
+	function getListCateChecked(list) {
+		let l = [];
+		for (let i = 0; i < list.length; i++) {
+			let item = list[i];
+			if (item.checked) {
+				l.push(item.categoryID);
+			}
+		}
+		return l;
+	}
+	function getListFishChecked(list) {
+		let l = [];
+		for (let i = 0; i < list.length; i++) {
+			let item = list[i];
+			if (item.checked) {
+				l.push(item.fishID);
+			}
+		}
+		return l;
 	}
 	function handleSubmitFilter(e) {
 		e.preventDefault();
-		let listFilter = [];
-		let formValue = e.target;
-
-		for (let i = 0; i < formValue.length; i++) {
-			let field = formValue[i];
-			if (field.type === 'checkbox') {
-				console.log(field);
-			}
-		}
+		let listCateId = getListCateChecked(selectCate).toString();
+		let listFishId = getListFishChecked(selectFish).toString();
+		console.log(listCateId);
+		const action = findByFilter({
+			listCateId: listCateId,
+			listFishId: listFishId,
+			page: page,
+			limit: LIMIT_DATA_PER_PAGE,
+			custom: isCustom,
+		});
+		dispatch(action);
 	}
 	return (
 		<div className="product-choose-filter">
 			<div className="head-text">Danh mục</div>
 			<form onSubmit={handleSubmitFilter}>
 				<div className="form-filter p-2 mt-2">
+					<span className="title">Tùy biến</span>
+
+					<div className="form-check ">
+						<input
+							className="form-check-input pointer"
+							type="checkbox"
+							id={`flexCheckCheckedCustom`}
+							onClick={() => setIsCustom(!isCustom)}
+						/>
+						<label className="form-check-label pointer" htmlFor={`flexCheckCheckedCustom`}>
+							Loại tùy biến
+						</label>
+					</div>
 					{/* {props.cateAll &&
 						props.cateAll.map((item, i) => ( */}
+					<span className="title">Loại mồi</span>
 					{category.map((item, i) => (
-						<div class="form-check" key={i}>
+						<div className="form-check " key={i}>
 							<input
-								className="form-check-input"
+								className="form-check-input pointer"
 								type="checkbox"
-								id="flexCheckChecked"
+								id={`flexCheckChecked${i}`}
 								name={item.categoryID}
-								onChange={(e) => handleChangeCate(e)}
+								onClick={(e) => handleChangeCheckbox(e, selectCate, setSelectCate)}
 							/>
-							<label className="form-check-label" htmlFor="flexCheckChecked">
+							<label className="form-check-label pointer" htmlFor={`flexCheckChecked${i}`}>
 								{item.categoryName}
+							</label>
+						</div>
+					))}
+					<span className="title">Loại cá</span>
+					{fish.map((item, i) => (
+						<div className="form-check " key={i}>
+							<input
+								className="form-check-input pointer"
+								type="checkbox"
+								id={`flexCheckChecked${i}`}
+								name={item.fishID}
+								onClick={(e) => handleChangeCheckbox(e, selectFish, setSelectFish)}
+							/>
+							<label className="form-check-label pointer" htmlFor={`flexCheckChecked${i}`}>
+								{item.fishName}
 							</label>
 						</div>
 					))}
