@@ -60,7 +60,7 @@ function Home(props) {
   useEffect(() => {
     // fetchProductNewest();
     // fetchProductBestSeller();
-    // console.log(productListBestSeller.list);
+    console.log(productListBestSeller.list);
 
     
     setProductListBestSeller({...productListBestSeller,list:products});

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import YLButton from "../../custom-field/YLButton";
 import data from "./dumy-data";
@@ -6,6 +6,7 @@ import data from "./dumy-data";
 function ProductAction(props) {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState(0);
+  const {product}=props;
   var cl = 0;
   const decrement = () => {
     Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
@@ -23,10 +24,23 @@ function ProductAction(props) {
   };
   //example color product choosen
   const productColor = data.productColor();
+  useEffect(()=>{
+    console.log('product');
+    console.log(product);
+  },[]);
   return (
     <div className="product-action p-4">
-      <span className="title">Lorem ipsum dolor sit amet, consectetur</span>
-      <div className="">190,000</div>
+      <span className="title">{product==null?"name":product.productName}</span>
+      <div className="">
+      {product==null?"price":Number(product.defaultPrice).toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                      }
+                    )}
+                    đ
+        </div>
       <div className="tab p-3">
         <div className="buy-tab p-1">
           <span>MUA HÀNG</span>

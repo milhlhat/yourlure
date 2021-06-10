@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CardProduct from "components/card/card-product";
 import ProductImage from "components/product/product-detail/product-media";
 import ProductAction from "components/product/product-detail/product-action";
 import data from "assets/dumy-data/data-product.js";
 import SelectLocation from "components/select-location/select-location";
+import ProductAPI from "api/product-api";
 ProductDetail.propTypes = {};
 
 let dummyimg = [
@@ -14,8 +15,31 @@ let dummyimg = [
 ];
 function ProductDetail(props) {
   const products = data.products();
-  const product = products.filter((value) => value.categoryId == 1);
+  const productByCate = products.filter((value) => value.categoryId == 1);
+  const [product, setProduct] = useState(null);
+
+  const fetchProduct = async () => {
+    try {
+      const response = await ProductAPI.getProductByID(props.match.params.id);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        console.log(response);
+        setProduct(response);
+      }
+    } catch (error) {
+      console.log("fail to fetch customer list");
+    }
+  };
+
   useEffect(() => {
+    // fetchProduct();
+    // console.log("detail");
+    // console.log(product);
+    // return (
+    //   fetchProduct()
+    // );
+    setProduct(products[0]);
     console.log(product);
   }, []);
   return (
@@ -25,13 +49,13 @@ function ProductDetail(props) {
           <ProductImage data={dummyimg} />
         </div>
         <div className="bg-white col-md-6 col-sm-12">
-          <ProductAction />
+          <ProductAction product={product} />
         </div>
       </div>
-      
+
       <div className="bg-white d-flex m-2">
-        {product.map((value,index)=>(
-        <CardProduct product={value} key={index} />
+        {productByCate.map((value, index) => (
+          <CardProduct product={value} key={index} />
         ))}
       </div>
     </div>

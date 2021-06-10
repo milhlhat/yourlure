@@ -37,7 +37,7 @@ function CartRowProduct(props) {
           <td>
             <div className="info-product">
               <span>
-                <b>{product.name}</b>
+                <b>{product.productName}</b>
                 <br />
                 {product.price}
                 <br />

@@ -11,6 +11,10 @@ const ProductAPI = {
 		const url = '/product/newest';
 		return AxiosClient.get(url);
 	},
+	getProductByID: (id) => {
+		const url = `product/${id}`;
+		return AxiosClient.get(url);
+	},
     getAllCategory: () => {
 		const url = '/category/all';
 		return AxiosClient.get(url);

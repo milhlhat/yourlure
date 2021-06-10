@@ -7,14 +7,14 @@ CardProduct.propTypes = {};
 function CardProduct(props) {
 	const {product} =props;
 	const history = useHistory();
-    const handleClick = (value) =>{
-		history.push('/product/detail/1');
+    const handleClick = (id) =>{
+		history.push(`/product/detail/${id}`);
     }
 	useEffect(()=>{
 		// console.log(product==null);
 	},[])
 	return (
-		<div className="card-product align-items-center m-2 " onClick={handleClick}>
+		<div className="card-product align-items-center m-2 " onClick={()=>handleClick(product.productID)}>
 			<div className="thumb">
 				<img
 					className="card-img-top"
@@ -24,8 +24,17 @@ function CardProduct(props) {
 
 			<div className="d-flex flex-column card-info w-100 thumb text-center align-items-center ">
 				<span className="text-color text-small">{product==null?"brand null":product.brand}</span>
-				<span className="mt-2">{product==null?"product null":product.name}</span>
-				<span className="text-color">{product==null?"price null":product.defaultPrice}</span>
+				<span className="mt-2">{product==null?"product null":product.productName}</span>
+				<span className="text-color">
+					{product==null?"price null":Number(product.defaultPrice).toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                      }
+                    )}đ
+					
+					</span>
 			</div>
 		</div>
 	);

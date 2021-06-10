@@ -128,7 +128,7 @@ function Payment(props) {
                       {Number(cart.price).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 2,
-                      })}{" "}
+                      })}
                       đ
                     </span>
                     <br />
@@ -144,7 +144,7 @@ function Payment(props) {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 2,
                       }
-                    )}{" "}
+                    )}
                     đ
                   </td>
                 </tr>

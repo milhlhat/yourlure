@@ -60,7 +60,6 @@ function Carosel(props) {
         data-bs-target={"#"+caroselId==null?"#carouselExampleControls":"#"+caroselId}
         data-bs-slide="prev"
       >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
         <span className="color-black"><i className="fa fa-chevron-left"></i></span>
       </button>
       <button
@@ -69,7 +68,6 @@ function Carosel(props) {
         data-bs-target={caroselId==null?"#carouselExampleControls":"#"+caroselId}
         data-bs-slide="next"
       >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
         <span className="color-black"><i className="fa fa-chevron-right"></i></span>
       </button>
     </div>
