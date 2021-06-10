@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront;
 
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RequestMapping(path = "/product")
 public interface ProductController {
 
@@ -16,7 +18,7 @@ public interface ProductController {
 //    ResponseEntity<ProductOutPageable> getAll(@RequestParam(value = "page") Filter filter);
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<ProductsDtoOut>> getById(@PathVariable Long id);
+    ResponseEntity<Optional<ProductsDetailDtoOut>> getById(@PathVariable Long id);
 
     @GetMapping("/best-seller")
     ResponseEntity<List<ProductsDtoOut>> getBestSeller();
@@ -24,11 +26,8 @@ public interface ProductController {
     @GetMapping("/newest")
     ResponseEntity<List<ProductsDtoOut>> getNewestProduct();
 
-    @GetMapping("/filter-category")
-    ResponseEntity<List<ProductsDtoOut>> getProductByCategoryAndFish(@RequestParam List<Long> listCateId,
-                                                                     @RequestParam List<Long> listFishId,
-                                                                     @RequestParam(value = "page") int page,
-                                                                     @RequestParam(value = "limit") int limit);
+    @PostMapping("/product-filter")
+    ResponseEntity<List<ProductsDtoOut>> getProductFilter(@RequestBody Filter filter);
 
     @PostMapping("/find-by-name")
     ResponseEntity<List<ProductsDtoOut>> getProductByName(@RequestBody Filter filter);

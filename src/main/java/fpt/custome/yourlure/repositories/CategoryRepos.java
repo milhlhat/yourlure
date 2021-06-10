@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface CategoryRepos extends JpaRepository<Category, Long> {
+public interface CategoryRepos extends JpaRepository<Category, Long>{
 
     @Query(value = "SELECT * \n" +
             "FROM  (SELECT tbl_category.*, SUM(tbl_order_line.quantity) AS sum_quantity\n" +

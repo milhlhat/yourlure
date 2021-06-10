@@ -16,5 +16,5 @@ public class ProductOutPageable {
 
     private int page;
     private int totalPage;
-    private List<ProductsDtoOut> listResult = new ArrayList<>();
+    private List<ProductsDetailDtoOut> listResult = new ArrayList<>();
 }

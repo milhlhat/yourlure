@@ -54,8 +54,13 @@ public class Variant {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Nullable
     @Column(name = "backgroundColor")
     private String backgroundColor;
+
+    @Nullable
+    @Column(name = "imageUrl")
+    private String imageUrl;
 
     @JsonIgnore
     @ManyToOne

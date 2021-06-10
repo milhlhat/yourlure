@@ -1,10 +1,12 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.ProductController;
-import fpt.custome.yourlure.entity.Filter;
-import fpt.custome.yourlure.service.ProductService;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
+import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.repositories.ProductRepos;
+import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,9 @@ public class ProductControllerImpl implements ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductRepos productRepos;
+
 //    @Override
 //    public ResponseEntity<ProductOutPageable> getAll(Filter filter) {
 //        ProductOutPageable result = new ProductOutPageable();
@@ -32,8 +37,8 @@ public class ProductControllerImpl implements ProductController {
 //    }
 
     @Override
-    public ResponseEntity<Optional<ProductsDtoOut>> getById(Long id) {
-        ProductsDtoOut dtoOut = productService.getById(id);
+    public ResponseEntity<Optional<ProductsDetailDtoOut>> getById(Long id) {
+        ProductsDetailDtoOut dtoOut = productService.getById(id);
         return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
     }
 
@@ -49,17 +54,16 @@ public class ProductControllerImpl implements ProductController {
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
-    //TODO: chưa phân trang
     @Override
-    public ResponseEntity<List<ProductsDtoOut>> getProductByCategoryAndFish(List<Long> listCateId, List<Long> listFishId, int page, int limit) {
-        List<ProductsDtoOut> dtoOuts = productService.getProductByCategoryAndFish(listCateId, listFishId);
+    public ResponseEntity<List<ProductsDtoOut>> getProductFilter(Filter filter) {
+        List<ProductsDtoOut> dtoOuts = productService.getProductFilter(filter);
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<List<ProductsDtoOut>> getProductByName(Filter filter) {
         List<ProductsDtoOut> dtoOuts = productService.findAllByProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
-                filter.getLimit(), filter.getIsAsc()? Sort.by(filter.getSortBy()).ascending(): Sort.by(filter.getSortBy()).descending()));
+                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
