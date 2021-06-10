@@ -1,92 +1,59 @@
-import React from "react";
-import YLButton from "components/custom-field/YLButton";
-import { FastField, Field, Form, Formik } from "formik";
-import data from "../../../assets/dumy-data/data-product";
+import React, { useState } from 'react';
+import YLButton from 'components/custom-field/YLButton';
+import { FastField, Field, Form, Formik } from 'formik';
+import data from '../../../assets/dumy-data/data-product';
 import YLCheckBoxField from 'components/custom-field/YLCheckBoxField.jsx';
 ProductChooseFilter.propTypes = {};
 
 function ProductChooseFilter(props) {
-  const handleSubmit = async (values) => {
-    console.log(values);
-  };
+	const [selectCate, setSelectCate] = useState([]);
+	const [selectFish, setSelectFish] = useState([]);
+	const category = data.category();
+	const fish = data.fish();
+	function handleChangeCate(e) {
+		const name = e.target.name;
+		const checked = e.target.checked;
+	}
+	function handleSubmitFilter(e) {
+		e.preventDefault();
+		let listFilter = [];
+		let formValue = e.target;
 
-  const initialValues = {
-    checkbox: [],
-  };
-  const category = data.category();
-  const fish = data.fish();
-  return (
-    <div className="product-choose-filter">
-      <div className="head-text">Danh mục</div>
-      <div className="form-filter p-2 mt-2">
-        <Formik
-          initialValues={initialValues}
-          onSubmit={(values) => {
-            handleSubmit(values);
-          }}
-        >
-          {({ values, setFieldValue }) => {
-            console.log(values);
-            return (
-              <Form>
-                <div className="row">
-                  <div className="cate-filter col-md-12 col-sm-5 col-5">
-                    <p>
-                      <b>Loại mồi</b>
-                    </p>
-                    <div className="field-category ">
-                      <Field name="checkbox" type="checkbox" value="all-cate" />
-                      <label for="all-cate" className="ms-1">
-                        Tất cả
-                      </label>
-                    </div>
-                    {category.map((cate, index) => (
-                      <div className="field-category " key={index}>
-                        {/* <Field
-                          name="checkboxx"
-                          type="checkbox"
-                          value={value.id}
-                        />
-                        <label className="ms-1" htmlFor={value.id}>
-                          {value.name}
-                        </label> */}
-                        <FastField 
-                        name="filter"
-                        component={YLCheckBoxField}
-                        checked={false}
-                        
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="fish-filter col-md-12 col-sm-5 col-5">
-                    <p>
-                      <b>Loại cá</b>
-                    </p>
-                    {fish.map((value, index) => (
-                      <div className="field-category" key={index}>
-                        <Field
-                          name="checkbox"
-                          type="checkbox"
-                          value={value.name}
-                        />
-                        <label className="ms-1" for={value.name}>
-                          {value.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="button-submit m-2">
-                  <YLButton type="submit" variant="primary" value="Tìm kiếm" />
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    </div>
-  );
+		for (let i = 0; i < formValue.length; i++) {
+			let field = formValue[i];
+			if (field.type === 'checkbox') {
+				console.log(field);
+			}
+		}
+	}
+	return (
+		<div className="product-choose-filter">
+			<div className="head-text">Danh mục</div>
+			<form onSubmit={handleSubmitFilter}>
+				<div className="form-filter p-2 mt-2">
+					{/* {props.cateAll &&
+						props.cateAll.map((item, i) => ( */}
+					{category.map((item, i) => (
+						<div class="form-check" key={i}>
+							<input
+								className="form-check-input"
+								type="checkbox"
+								id="flexCheckChecked"
+								name={item.categoryID}
+								onChange={(e) => handleChangeCate(e)}
+							/>
+							<label className="form-check-label" htmlFor="flexCheckChecked">
+								{item.categoryName}
+							</label>
+						</div>
+					))}
+					<div className="button-submit m-2">
+						<YLButton type="submit" variant="primary" value="Tìm kiếm" />
+					</div>
+				</div>
+			</form>
+		</div>
+	);
 }
 
 export default ProductChooseFilter;

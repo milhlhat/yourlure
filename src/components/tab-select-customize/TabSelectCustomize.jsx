@@ -4,9 +4,9 @@ import { images, color } from './dumy-data';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
-import { setMaterialId } from 'redux/action/customize-id';
+import { setMaterialId } from 'redux/customize-action/customize-id';
 import { HexColorPicker, RgbaColorPicker } from 'react-colorful';
-import { setListName } from 'redux/action/customize-info';
+import { setListName } from 'redux/customize-action/customize-info';
 
 function TabSelectCustomize(props) {
 	const [tabSelect, setTabSelect] = useState(0);

@@ -2,15 +2,15 @@ import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Environment, useGLTF, OrbitControls, useTexture, Loader } from '@react-three/drei';
 import * as THREE from 'three';
-import m3d from 'assets/3d-models/shoe-draco.glb';
+import m3d from 'assets/3d-models/moi_thia_6.glb';
 import whiteImg from 'assets/images/white-img.jpg';
 import 'assets/scss/scss-pages/customize-lure.scss';
 import TabSelectCustomize from 'components/tab-select-customize/TabSelectCustomize';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMaterialsInfoBy, getNodesInfoBy, getMaterialsName, getColorMaterialByName } from 'utils/product';
-import { setListName } from 'redux/action/customize-info';
-import { setMaterialId } from 'redux/action/customize-id';
-import { setMaterialInit } from 'redux/action/customize-init-data';
+import { setListName } from 'redux/customize-action/customize-info';
+import { setMaterialId } from 'redux/customize-action/customize-id';
+import { setMaterialInit } from 'redux/customize-action/customize-init-data';
 
 function RenderModel(props) {
 	const ref = useRef();
@@ -72,19 +72,19 @@ function RenderModel(props) {
 		let item = {
 			geometry: node.geometry,
 			material: listMaterials[i],
-		
+			['material-map']: listTextures[i]
 		};
 		// if (customizeInfo[i] && customizeInfo[i].img === '') {
 		// 	item = { ...item, material: initMaterials.current.data[i] };
 		// }
 		// if (customizeInfo[i] && customizeInfo[i].img !== '') {
-		// 	item = { ...item, 'material-map': listTextures[i] };
+		// 	item = { ...item, ['material-map']: listTextures[i] };
 		// }
 		// else{
 		// 	item = { ...item, 'material-map': null };
 		// }
 		if (customizeInfo[i] && customizeInfo[i].color !== '') {
-			item = { ...item, 'material-color': customizeInfo[i].color };
+			item = { ...item, ['material-color']: customizeInfo[i].color };
 		}
 		listMesh.push(item);
 	}
@@ -138,7 +138,7 @@ function RenderModel(props) {
 						receiveShadow
 						castShadow
 						{...item}
-						material-map={listTextures[i]}
+						// material-map={listTextures[i]}
 
 						// geometry={item.geometry}
 						// material={listMaterials[i]}

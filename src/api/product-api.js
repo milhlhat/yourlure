@@ -11,6 +11,14 @@ const ProductAPI = {
 		const url = '/product/newest';
 		return AxiosClient.get(url);
 	},
+    getAllCategory: () => {
+		const url = '/category/all';
+		return AxiosClient.get(url);
+	},
+    getAllFish: () => {
+		const url = '/fish/all';
+		return AxiosClient.get(url);
+	},
 };
-
+export const {getBestSeller,getNewList,getAllCategory,getAllFish} =ProductAPI
 export default ProductAPI;

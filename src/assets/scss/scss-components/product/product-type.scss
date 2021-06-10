@@ -6,7 +6,10 @@
 }
 .product-choose-filter{
     background-color: #fff;
+    border-radius: 5px;
     & .head-text{
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
         text-align: center;
         background-color: $primary;
         color: #fff;
