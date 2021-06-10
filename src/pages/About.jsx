@@ -1,103 +1,57 @@
 import React from "react";
 import PropTypes from "prop-types";
-import 'assets/scss/scss-pages/about.scss';
+import "assets/scss/scss-pages/about.scss";
 About.propTypes = {};
 
 function About(props) {
   return (
-    <div className="container">
-      <h1>Use Bootstrap 3's carousel to show multiple items per slide.</h1>
+    <div className="container about">
+      <h1>Giới thiệu</h1>
+      <div className="row mt-5">
+        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text">
+          <img
+            // src="https://source.unsplash.com/300x300/?perth,australia"
+            src="https://images.unsplash.com/photo-1599134733852-61560256bb50?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMTMz&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            className="img-responsive"
+          />
+        </div>
+        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text text-case">
+          <span>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam ex
+            est sit in? Ipsa, nulla numquam reiciendis iure cum mollitia animi,
+            deserunt totam error nesciunt sequi asperiores quibusdam earum enim.
+          </span>
+        </div>
+      </div>
       <div className="row">
-        <div className="col-md-12">
-          <div className="carousel slide multi-item-carousel" id="theCarousel">
-            <div className="carousel-inner">
-              <div className="item active">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?perth,australia"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?fremantle,australia"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?west-australia"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?perth"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?quokka,perth"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?margaretriver,australia"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-
-              <div className="item">
-                <div className="col-4">
-                  <a href="#1">
-                    <img
-                      src="https://source.unsplash.com/300x300/?perth,australia&r=7"
-                      className="img-responsive"
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <a
-              className="left carousel-control"
-              href="#theCarousel"
-              data-slide="prev"
-            >
-              <i className="glyphicon glyphicon-chevron-left"></i>
-            </a>
-            <a
-              className="right carousel-control"
-              href="#theCarousel"
-              data-slide="next"
-            >
-              <i className="glyphicon glyphicon-chevron-right"></i>
-            </a>
-          </div>
+        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text">
+          <img
+            // src="https://source.unsplash.com/300x300/?perth,australia"
+            src="https://images.unsplash.com/photo-1580692874422-eeda1658da9c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMTcz&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            className="img-responsive"
+          />
+        </div>
+        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text text-case">
+          <span>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam ex
+            est sit in? Ipsa, nulla numquam reiciendis iure cum mollitia animi,
+            deserunt totam error nesciunt sequi asperiores quibusdam earum enim.
+          </span>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text">
+          <img
+            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            className="img-responsive"
+          />
+        </div>
+        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text text-case">
+          <span>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam ex
+            est sit in? Ipsa, nulla numquam reiciendis iure cum mollitia animi,
+            deserunt totam error nesciunt sequi asperiores quibusdam earum enim.
+          </span>
         </div>
       </div>
     </div>

@@ -14,6 +14,7 @@ import CartRoute from './cart-router';
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
 const NotFound = React.lazy(() => import('pages/notfound'));
+const Campaign = React.lazy(() => import('pages/Campaign'));
 function AppRouter() {
 	useEffect(() => {
 		CommonUtils.scrollTop();
@@ -30,6 +31,7 @@ function AppRouter() {
 							<Route path="/product" component={ProductRoute} />
 							<Route path="/cart" component={CartRoute} />
 							<Route path="/about" component={About} />
+							<Route path="/campaign" component={Campaign} />
 							<Route path="/" component={HomeRoute} />
 							<Route component={NotFound} />
 						</Switch>

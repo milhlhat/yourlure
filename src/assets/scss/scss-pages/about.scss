@@ -1,36 +1,37 @@
-.multi-item-carousel{
-    & .carousel-inner{
-        &  .item{
-        transition: 500ms ease-in-out left;
-      }
-      & .active{
-        &.left{
-          left:-33%;
-        }
-        &.right{
-          left:33%;
-        }
-      }
-      & .next{
-        left: 33%;
-      }
-      & .prev{
-        left: -33%;
-      }
-      @media all and (transform-3d), (-webkit-transform-3d) {
-        &  .item{
-          // use your favourite prefixer here
-          transition: 500ms ease-in-out left;
-          transition: 500ms ease-in-out all;
-          backface-visibility: visible;
-          transform: none!important;
-        }
-      }
-    }
-    & .carouse-control{
-      &.left, &.right{
-        background-image: none;
-      }
+@import "../base/variable";
+.about {
+  & h1{
+    text-align: center;
+  }
+  & .showcase-text {
+    text-align: justify;
+    padding: 0;
+    & span {
+      margin: 20px;
     }
   }
-  
+  & .img-responsive {
+    width: 100%;
+  }
+}
+@media screen and (min-width: $mobile-width - 1px) {
+  .about {
+    & .text-case {
+      padding: 0.5rem;
+    }
+  }
+}
+@media screen and (min-width: $tablet-width - 1px) {
+  .about {
+    & .text-case {
+      padding: 1.5rem;
+    }
+  }
+}
+@media screen and (min-width: $desktop-width - 1px) {
+  .about {
+    & .text-case {
+      padding: 3rem;
+    }
+  }
+}
