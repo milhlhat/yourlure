@@ -6,7 +6,7 @@ let Utils = {
 		});
 	},
 	handleChangeCheckbox: (e, state, setState) => {
-		let list = [...state];
+		let list = JSON.parse(JSON.stringify(state));
 		for (let i = 0; i < list.length; i++) {
 			let item = list[i];
 			if (item.categoryID == e.target.name) {

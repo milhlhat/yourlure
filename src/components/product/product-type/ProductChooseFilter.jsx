@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import YLButton from 'components/custom-field/YLButton';
 import { FastField, Field, Form, Formik } from 'formik';
-import data from '../../../assets/dumy-data/data-product';
+import data from 'assets/dumy-data/data-product';
 import YLCheckBoxField from 'components/custom-field/YLCheckBoxField.jsx';
 import { handleChangeCheckbox } from 'utils/input';
 import { findByFilter } from 'redux/product-action/filter';
@@ -9,8 +9,10 @@ import { useDispatch } from 'react-redux';
 ProductChooseFilter.propTypes = {};
 
 function ProductChooseFilter(props) {
-	const category = data.category();
-	const fish = data.fish();
+	const category = { data: data.category() };
+	const fish = { data: data.fish() };
+	// const category = props.cateAll;
+	// const fish = props.fishAll;
 	const LIMIT_DATA_PER_PAGE = 15;
 	const dispatch = useDispatch();
 	const [selectCate, setSelectCate] = useState(category);
@@ -73,36 +75,38 @@ function ProductChooseFilter(props) {
 					{/* {props.cateAll &&
 						props.cateAll.map((item, i) => ( */}
 					<span className="title">Loại mồi</span>
-					{category.map((item, i) => (
-						<div className="form-check " key={i}>
-							<input
-								className="form-check-input pointer"
-								type="checkbox"
-								id={`flexCheckChecked${i}`}
-								name={item.categoryID}
-								onClick={(e) => handleChangeCheckbox(e, selectCate, setSelectCate)}
-							/>
-							<label className="form-check-label pointer" htmlFor={`flexCheckChecked${i}`}>
-								{item.categoryName}
-							</label>
-						</div>
-					))}
+					{category &&
+						category.data.map((item, i) => (
+							<div className="form-check " key={i}>
+								<input
+									className="form-check-input pointer"
+									type="checkbox"
+									id={`cateChecked${i}`}
+									name={item.categoryID}
+									onClick={(e) => handleChangeCheckbox(e, selectCate, setSelectCate)}
+								/>
+								<label className="form-check-label pointer" htmlFor={`cateChecked${i}`}>
+									{item.categoryName}
+								</label>
+							</div>
+						))}
 					<span className="title">Loại cá</span>
-					{fish.map((item, i) => (
-						<div className="form-check " key={i}>
-							<input
-								className="form-check-input pointer"
-								type="checkbox"
-								id={`flexCheckChecked${i}`}
-								name={item.fishID}
-								onClick={(e) => handleChangeCheckbox(e, selectFish, setSelectFish)}
-							/>
-							<label className="form-check-label pointer" htmlFor={`flexCheckChecked${i}`}>
-								{item.fishName}
-							</label>
-						</div>
-					))}
-					<div className="button-submit m-2">
+					{fish &&
+						fish.data.map((item, i) => (
+							<div className="form-check " key={i}>
+								<input
+									className="form-check-input pointer"
+									type="checkbox"
+									id={`fishChecked${i}`}
+									name={item.fishID}
+									onClick={(e) => handleChangeCheckbox(e, selectFish, setSelectFish)}
+								/>
+								<label className="form-check-label pointer " htmlFor={`fishChecked${i}`}>
+									{item.fishName}
+								</label>
+							</div>
+						))}
+					<div className="button-submit m-2 d-flex justify-content-center">
 						<YLButton type="submit" variant="primary" value="Tìm kiếm" />
 					</div>
 				</div>

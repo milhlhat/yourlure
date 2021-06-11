@@ -3,28 +3,71 @@ import PropTypes from 'prop-types';
 import ProductChooseFilter from 'components/product/product-type/ProductChooseFilter.jsx';
 import ProductShow from 'components/product/product-type/ProductShow';
 import 'assets/scss/scss-components/product/product-type.scss';
-import Sort from 'components/orther/Sort';
-import SearchProduct from './Search';
 import ProductByCate from 'components/product/product-type/ProductByCate';
-import { getAllCategory } from 'api/product-api';
+import { getBestSellerCategory } from 'api/category-api';
+import { getAllCategory, getAllFish } from 'api/product-api';
 
 Product.propTypes = {};
 
 function Product(props) {
-	const [cateAll, setCateAll] = useState();
-	const [fishAll, setFishAll] = useState();
+	const [bestCate, setBestCate] = useState({ data: [], loading: true, error: false });
+	const [fishAll, setFishAll] = useState({ data: [], loading: true, error: false });
+	const [cateAll, setCateAll] = useState({ data: [], loading: true, error: false });
 	useEffect(() => {
+		const fetchBestSellerCategory = async () => {
+			try {
+				const response = await getBestSellerCategory();
+				if (response.error) {
+					console.log(response.error);
+					let i = { ...bestCate, loading: false, error: true };
+					setBestCate(i);
+				} else {
+					let i = { ...bestCate, data: response, loading: false, error: false };
+					setBestCate(i);
+				}
+			} catch (e) {
+				let i = { ...bestCate, loading: false, error: true };
+				setBestCate(i);
+				console.log('fail to fetch  ');
+			}
+		};
+		const fetchAllFish = async () => {
+			try {
+				const response = await getAllFish();
+				if (response.error) {
+					console.log(response.error);
+					let i = { ...fishAll, loading: false, error: true };
+					setFishAll(i);
+				} else {
+					let i = { ...fishAll, data: response, loading: false, error: false };
+					setFishAll(i);
+				}
+			} catch (e) {
+				let i = { ...fishAll, loading: false, error: true };
+				setFishAll(i);
+				console.log('fail to fetch  ');
+			}
+		};
 		const fetchAllCategory = async () => {
 			try {
 				const response = await getAllCategory();
 				if (response.error) {
-					console.log(response);
+					console.log(response.error);
+					let i = { ...cateAll, loading: false, error: true };
+					setCateAll(i);
 				} else {
-					setCateAll(response);
+					let i = { ...cateAll, data: response, loading: false, error: false };
+					setCateAll(i);
 				}
-			} catch (e) {}
+			} catch (e) {
+				let i = { ...cateAll, loading: false, error: true };
+				setCateAll(i);
+				console.log('fail to fetch  ');
+			}
 		};
-		fetchAllCategory();
+        fetchAllCategory();
+		fetchAllFish();
+		fetchBestSellerCategory();
 	}, []);
 
 	return (
@@ -35,8 +78,7 @@ function Product(props) {
 					<ProductChooseFilter cateAll={cateAll} fishAll={fishAll} />
 				</div>
 				<div className="col-md-9 col-sm-12">
-					{/* <ProductShow/> */}
-					<ProductByCate />
+					<ProductByCate bestCate={bestCate} />
 				</div>
 			</div>
 		</div>

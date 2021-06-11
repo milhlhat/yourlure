@@ -1,7 +1,5 @@
-.product-card-row{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    & .product-card{
-    }
+.product-card-row {
+	display: flex;
+	flex-wrap: wrap;
+	grid-column-gap: 5px;
 }

@@ -5,12 +5,14 @@ import customizeIdReducer from './customize-action/customize-id';
 import customizeInfoReducer from './customize-action/customize-info';
 import customizeInitReducer from './customize-action/customize-init-data'
 import productFilterReducer from './product-action/filter'
+import cateBestReducer from './category-action/best-seller-action'
 const rootReducer = {
 	user: userReducer,
 	customizeId: customizeIdReducer,
 	customizeInfo: customizeInfoReducer,
 	customizeInit : customizeInitReducer,
-	productFilter: productFilterReducer
+	productFilter: productFilterReducer,
+	cateBest: cateBestReducer,
 };
 
 const store = configureStore({

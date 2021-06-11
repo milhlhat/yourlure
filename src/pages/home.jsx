@@ -4,6 +4,7 @@ import data from "../assets/dumy-data/data-product.js";
 import YLButton from "components/custom-field/YLButton";
 import Carosel from "components/card/Carosel";
 import ProductAPI from "api/product-api";
+import Loading from "components/loading";
 Home.propTypes = {};
 
 function Home(props) {
@@ -58,25 +59,25 @@ function Home(props) {
   };
 
   useEffect(() => {
-    // fetchProductNewest();
-    // fetchProductBestSeller();
+    fetchProductNewest();
+    fetchProductBestSeller();
     console.log(productListBestSeller.list);
 
     
-    setProductListBestSeller({...productListBestSeller,list:products});
-    setProductListNewest({...productListNewest,list:products})
-    // return (
-    //   fetchProductBestSeller(),
-    //   fetchProductNewest()
-    //   );
+    // setProductListBestSeller({...productListBestSeller,list:products});
+    // setProductListNewest({...productListNewest,list:products})
+    return (
+      fetchProductBestSeller(),
+      fetchProductNewest()
+      );
   }, []);
-  // if (productListBestSeller.failFetch||productListNewest.failFetch) {
-  //   return <p>Failed to fetch</p>;
-  // } else if (!productListBestSeller.isFetched||!productListNewest.isFetched) {
-  //   return (
-  //     <p>loading...</p>
-  //   );
-  // } else
+  if (productListBestSeller.failFetch||productListNewest.failFetch) {
+    return <p>Failed to fetch</p>;
+  } else if (!productListBestSeller.isFetched||!productListNewest.isFetched) {
+    return (
+      <Loading/>
+    );
+  } else
     return (
       <div className="container home-page">
         <div className="banner">
