@@ -81,6 +81,7 @@ function Login(props) {
                     <YLButton
                       type="submit"
                       variant="primary"
+                      onClick={() => history.push("/user/account")}
                       value="Login"
                       width={100}
                     ></YLButton>

@@ -7,7 +7,7 @@ CardProduct.propTypes = {};
 function CardProduct(props) {
 	const { product } = props;
 	console.log(product);
-	console.log(product ? product.imageCollection[0].linkImage : 'none');
+	console.log(product.imageCollection ? product.imageCollection[0].linkImage : 'none');
 	const history = useHistory();
 	const handleClick = (id) => {
 		history.push(`/product/detail/${id}`);
@@ -18,7 +18,7 @@ function CardProduct(props) {
 	return (
 		<div className="card-product align-items-center m-2 " onClick={() => handleClick(product.productID)}>
 			<div className="thumb">
-				<img className="card-img-top" src={product != null ? product.imageCollection[0].linkImage : ''} />
+				<img className="card-img-top" src={product.imageCollection != null ? product.imageCollection[0].linkImage : ''} />
 			</div>
 
 			<div className="d-flex flex-column card-info w-100 thumb text-center align-items-center ">
