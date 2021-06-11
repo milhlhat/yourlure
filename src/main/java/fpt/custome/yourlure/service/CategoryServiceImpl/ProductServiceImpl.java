@@ -22,10 +22,10 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductJPARepos productJPARepos;
+    private ProductJPARepos productJPARepos;
 
     @Autowired
-    ProductRepos productRepos;
+    private ProductRepos productRepos;
 
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @CrossOrigin
 @RequestMapping(path = "/campaign")
-public interface CampainController {
+public interface CampaignController {
 
     @GetMapping("/all")
     ResponseEntity<List<CampaignDtoOut>> getAll();

@@ -17,7 +17,4 @@ public interface UserController {
     @PostMapping("/{id}")
     ResponseEntity<Boolean> updateUser(@PathVariable Long id, @RequestBody UserDtoInp userDtoInp);
 
-    @PostMapping("/save")
-    ResponseEntity<Boolean> saveCate(@RequestBody UserDtoInp userDtoInp);
-
 }

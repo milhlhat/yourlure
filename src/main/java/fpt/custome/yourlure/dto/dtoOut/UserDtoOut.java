@@ -15,7 +15,6 @@ public class UserDtoOut {
 
     private Long userID;
     private String userName;
-    private String password;
     private String phone;
     private Boolean gender;
     private String userEmail;

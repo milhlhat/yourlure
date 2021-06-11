@@ -1,9 +1,8 @@
 package fpt.custome.yourlure.controller.storefront;
 
+import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
-import fpt.custome.yourlure.entity.CartItem;
-import fpt.custome.yourlure.entity.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,7 @@ public interface CartController {
 
     /**
      * lấy giỏ hàng của user
+     *
      * @param id user
      * @return
      */
@@ -23,35 +23,44 @@ public interface CartController {
 
     /**
      * Thêm sản phẩm vào giỏ hàng
-     * @param id user
-     * @param cartItem
+     *
+     * @param cartId        user
+     * @param cartItemInput
      */
     @PostMapping("/add-product")
-    public void addProduct(@PathVariable("id") Long id,@RequestBody CartItem cartItem);
+    ResponseEntity<Boolean> addProduct(@RequestParam("userId") Long userId,
+                                       @RequestParam("cartId") Long cartId,
+                                       @RequestBody CartItemInput cartItemInput);
 
     /**
      * xoá SP khỏi giỏ hàng
+     *
      * @param cartId
      * @param productId
      */
-    @DeleteMapping("remove/{id}")
-    public void removeProduct(@PathVariable("id") Long cartId, String productId);
+    @DeleteMapping("remove/{cartId}")
+    ResponseEntity<Boolean> removeProduct(@PathVariable("cartId") Long cartId, Long productId);
 
     /**
      * thay đổi quantity của product
-     * @param id user
+     *
+     * @param cartId    user
      * @param productId
      * @param quantity
      */
-    @PostMapping("save-quantity/{id}")
-    public void setProductQuantity(@PathVariable("id") Long id,@RequestParam String productId,@RequestParam int quantity);
+    @PostMapping("save-quantity/{cartId}")
+    ResponseEntity<Boolean> setProductQuantity(@PathVariable("cartId") Long cartId,
+                                               @RequestParam Long productId,
+                                               @RequestParam int quantity);
 
     /**
      * user thực hiện order
-     * @param id user
-     * @param order
+     *
+     * @param cartId user
+     * @param orderDtoInput
      * @return
      */
-    @PostMapping("order/{id}")
-    public OrderDtoInput createOrder(@PathVariable("id") Long id, @RequestBody Order order);
+    @PostMapping("order/{cartId}")
+    ResponseEntity<Optional<OrderDtoInput>> createOrder(@PathVariable("cartId") Long cartId,
+                                                        @RequestBody OrderDtoInput orderDtoInput);
 }
