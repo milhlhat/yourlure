@@ -13,7 +13,7 @@ const UserApi = {
 	},
 
 	get: (id) => {
-		const url = `/customer/id/${id}`;
+		const url = `/user/${id}`;
 		return AxiosClient.get(url);
 	},
 	search: (filter) => {

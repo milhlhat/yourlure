@@ -1,5 +1,57 @@
-@import '../../base/variable';
-.management-account{
+@import "../../base/variable";
+.management-account {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  & .tab-switch {
+    font-size: larger;
+    & .account-name {
+    }
+    & .my-account {
+    }
+    & .my-payment {
+    }
+  }
+  & .cursor-pointer {
+    cursor: pointer;
+  }
+  & .active {
+    color: $primary;
+  }
+}
+
+.account-tab {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+}
+@media screen and (max-width: $mobile-width - 1px) {
+  // .tab-switch{
+  //     width: -webkit-fill-available;
+  //     & .active {
+  //         border-bottom: 1px solid $primary;
+  //       }
+  // }
+}
+@media screen and (min-width: $mobile-width - 1px) {
+}
+@media screen and (max-width: $tablet-width - 1px) {
+  .tab-switch {
+    width: -webkit-fill-available;
+    & .active {
+      border-bottom: 1px solid $primary;
+    }
+  }
+  .tab-show {
+    width: 100%;
+  }
+}
+@media screen and (min-width: $tablet-width) {
+  .tab-switch {
+    width: 33%;
+  }
+  .tab-show {
+    width: 66%;
+    
+  }
 }
