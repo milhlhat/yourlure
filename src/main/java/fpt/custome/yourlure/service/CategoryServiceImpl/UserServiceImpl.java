@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.UserAddress;
 import fpt.custome.yourlure.entity.address.Country;
@@ -59,8 +60,10 @@ public class UserServiceImpl implements UserService {
 
 
     // Tạo mapper object
-    ModelMapper mapper = new ModelMapper();
+//    ModelMapper mapper = new ModelMapper();
 
+    @Autowired
+    private ModelMapper mapper;
     @Override
     public String signin(String username, String password) {
         try {
@@ -94,7 +97,18 @@ public class UserServiceImpl implements UserService {
             return user;
         }
 
-        public User whoami (HttpServletRequest req){
+    @Override
+    public List<UserResponseDTO> findAll() {
+        List<User> users = userRepos.findAll();
+        List<UserResponseDTO> result = new ArrayList<>();
+        for(User user: users){
+            result.add(mapper.map(user, UserResponseDTO.class));
+
+        }
+        return result;
+    }
+
+    public User whoami (HttpServletRequest req){
             return userRepos.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         }
 

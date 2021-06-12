@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
@@ -22,6 +23,8 @@ public interface UserService {
     void delete(String username);
 
     User search(String username);
+
+    List<UserResponseDTO> findAll();
 
     User whoami(HttpServletRequest req);
 

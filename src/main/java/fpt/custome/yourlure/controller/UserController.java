@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -67,6 +68,18 @@ public class UserController {
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
   public UserResponseDTO search(@ApiParam("Username") @PathVariable String username) {
     return modelMapper.map(userService.search(username), UserResponseDTO.class);
+  }
+
+  @GetMapping(value = "/all")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class, authorizations = { @Authorization(value="apiKey") })
+  @ApiResponses(value = {//
+          @ApiResponse(code = 400, message = "Something went wrong"), //
+          @ApiResponse(code = 403, message = "Access denied"), //
+          @ApiResponse(code = 404, message = "The user doesn't exist"), //
+          @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+  public List<UserResponseDTO> findAll() {
+    return userService.findAll();
   }
 
   @GetMapping(value = "/me")

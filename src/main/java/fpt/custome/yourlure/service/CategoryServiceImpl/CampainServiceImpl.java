@@ -19,7 +19,10 @@ public class CampainServiceImpl implements CampaignService {
     private CampaignRepos campaignRepos;
 
     // Tạo mapper object
-    ModelMapper mapper = new ModelMapper();
+//    ModelMapper mapper = new ModelMapper();
+
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public List<CampaignDtoOut> getAll() {
