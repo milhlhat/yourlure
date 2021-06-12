@@ -7,7 +7,6 @@ import fpt.custome.yourlure.repositories.ProductRepos;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.List;
 
 public class ProductReposImpl implements ProductRepos {
 
@@ -15,7 +14,7 @@ public class ProductReposImpl implements ProductRepos {
     private EntityManager em;
 
     @Override
-    public List<Product> getProductFilter(Filter filter) {
+    public Query getProductFilter(Filter filter) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT tbl_products.*, SUM(tbl_order_line.quantity)AS sumQuantity \n");
         query.append(" FROM tbl_category,tbl_products,tbl_fish_product,tbl_fish,tbl_orders,tbl_order_line,tbl_variants \n");
@@ -32,18 +31,21 @@ public class ProductReposImpl implements ProductRepos {
             query.append(" AND tbl_fish.fishid IN (:fishIds) \n");
         }
         if (filter.getCustom()) {
-            query.append(" AND tbl_products.customizable = true ");
+            query.append(" AND tbl_products.customizable = true \n");
         }
         if (!filter.getKeyword().isEmpty()) {
-            query.append("AND tbl_products.product_name like :keyword ");
+            query.append("AND UPPER( tbl_products.product_name) like UPPER(:keyword) \n");
         }
         query.append(" GROUP BY tbl_products.productid,tbl_products.product_name \n");
 
         /**
+         * isAsc: true: tăng dần
+         *        false: giảm dần
+         *
          * sort by:
          * sumQuantity: best seller
-         * date_create
-         * default_price
+         * date_create : mới nhất
+         * default_price: xếp theo giá
          */
         if (!(filter.getSortBy().isEmpty())) {
             query.append("order by " + filter.getSortBy());
@@ -53,12 +55,9 @@ public class ProductReposImpl implements ProductRepos {
         }
 
         Query result = em.createNativeQuery(query.toString(),Product.class);
-        result.setFirstResult(filter.getLimit() * filter.getPage());
-        result.setMaxResults(filter.getLimit());
         if (!filter.getListCateId().isEmpty()) result.setParameter("cateIds", filter.getListCateId());
         if (!filter.getListFishId().isEmpty()) result.setParameter("fishIds", filter.getListFishId());
         if (!filter.getKeyword().isEmpty()) result.setParameter("keyword", "%" + filter.getKeyword() + "%");
-        List<Product> list = result.getResultList();
-        return list;
+        return result;
     }
 }

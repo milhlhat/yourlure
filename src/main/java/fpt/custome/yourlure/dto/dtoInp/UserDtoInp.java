@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
+import fpt.custome.yourlure.entity.UserAddress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,6 @@ public class UserDtoInp {
     private String phone;
     private Boolean gender;
     private String userEmail;
-    private String address;
+    private UserAddress userAddress;
 
 }

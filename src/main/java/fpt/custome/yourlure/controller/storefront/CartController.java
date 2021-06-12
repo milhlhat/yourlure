@@ -39,7 +39,9 @@ public interface CartController {
      * @param productId
      */
     @DeleteMapping("remove/{cartId}")
-    ResponseEntity<Boolean> removeProduct(@PathVariable("cartId") Long cartId, Long productId);
+    ResponseEntity<Boolean> removeProduct(@RequestParam("userId") Long userId,
+                                          @PathVariable("cartId") Long cartId,
+                                          Long productId);
 
     /**
      * thay đổi quantity của product
@@ -49,14 +51,15 @@ public interface CartController {
      * @param quantity
      */
     @PostMapping("save-quantity/{cartId}")
-    ResponseEntity<Boolean> setProductQuantity(@PathVariable("cartId") Long cartId,
+    ResponseEntity<Boolean> setProductQuantity(@RequestParam("userId") Long userId,
+                                               @PathVariable("cartId") Long cartId,
                                                @RequestParam Long productId,
                                                @RequestParam int quantity);
 
     /**
      * user thực hiện order
      *
-     * @param cartId user
+     * @param cartId        user
      * @param orderDtoInput
      * @return
      */

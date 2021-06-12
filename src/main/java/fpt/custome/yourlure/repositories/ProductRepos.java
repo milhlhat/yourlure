@@ -4,10 +4,10 @@ import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.entity.Product;
 import org.springframework.data.repository.Repository;
 
-import java.util.List;
+import javax.persistence.Query;
 
 public interface ProductRepos extends Repository<Product, Long> {
 
-    List<Product> getProductFilter(Filter filter);
+    Query getProductFilter(Filter filter);
 
 }

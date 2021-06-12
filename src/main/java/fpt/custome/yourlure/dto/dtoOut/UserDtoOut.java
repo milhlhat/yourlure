@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,6 +17,5 @@ public class UserDtoOut {
     private Boolean gender;
     private String userEmail;
     private Integer maxCustomizable;
-    private List<String> role;
 
 }

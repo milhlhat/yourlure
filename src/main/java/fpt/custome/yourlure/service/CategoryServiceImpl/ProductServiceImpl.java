@@ -3,6 +3,7 @@ package fpt.custome.yourlure.service.CategoryServiceImpl;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.ProductJPARepos;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,11 @@ public class ProductServiceImpl implements ProductService {
             results.add(dtoOut);
         }
         return results;
+    }
+
+    @Override
+    public Integer totalItem() {
+        return productJPARepos.findAll().size();
     }
 
     @Override
@@ -71,14 +78,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductsDtoOut> getProductFilter(Filter filter) {
-        List<ProductsDtoOut> result = new ArrayList<>();
-        List<Product> list = productRepos.getProductFilter(filter);
+    public Optional<ProductsFilterDtoOut> getProductFilter(Filter filter) {
+        Query query = productRepos.getProductFilter(filter);
+        int totalProduct = query.getResultList().size();
+        query.setFirstResult(filter.getLimit() * filter.getPage());
+        query.setMaxResults(filter.getLimit());
+        List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
+        List<Product> list = query.getResultList();
         for (Product item : list) {
-            ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
-            result.add(dtoOut);
+            ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
+            productOutList.add(dtoOut);
         }
-        return result;
+
+        ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
+                .productOutList(productOutList)
+                .totalProduct(totalProduct)
+                .totalPage((int) Math.ceil((double) totalItem() / filter.getLimit()))
+                .build();
+        return Optional.of(result);
     }
 
     @Override

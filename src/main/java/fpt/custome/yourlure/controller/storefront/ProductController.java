@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.storefront;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public interface ProductController {
     ResponseEntity<List<ProductsDtoOut>> getNewestProduct();
 
     @PostMapping("/product-filter")
-    ResponseEntity<List<ProductsDtoOut>> getProductFilter(@RequestBody Filter filter);
+    ResponseEntity<Optional<ProductsFilterDtoOut>> getProductFilter(@RequestBody Filter filter);
 
     @PostMapping("/find-by-name")
     ResponseEntity<List<ProductsDtoOut>> getProductByName(@RequestBody Filter filter);

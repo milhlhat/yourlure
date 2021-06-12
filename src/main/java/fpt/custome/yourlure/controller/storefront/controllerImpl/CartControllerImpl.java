@@ -27,19 +27,26 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Boolean> addProduct(Long userId, Long cartId, CartItemInput cartItemInput) {
+    public ResponseEntity<Boolean> addProduct(Long userId,
+                                              Long cartId,
+                                              CartItemInput cartItemInput) {
         Boolean result = cartService.addProduct(userId, cartId, cartItemInput);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> removeProduct(Long cartId, Long productId) {
+    public ResponseEntity<Boolean> removeProduct(Long userId,
+                                                 Long cartId,
+                                                 Long productId) {
         Boolean result = cartService.removeProduct(cartId, productId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> setProductQuantity(Long cartId, Long productId, int quantity) {
+    public ResponseEntity<Boolean> setProductQuantity(Long userId,
+                                                      Long cartId,
+                                                      Long productId,
+                                                      int quantity) {
         Boolean result = cartService.setProductQuantity(cartId, productId, quantity);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
