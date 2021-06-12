@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import 'assets/scss/scss-components/header.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { filterConfig } from 'constant/filter-setting';
 function Header(props) {
 	const productFilter = useSelector((state) => state.productFilter.filter);
 	const dispatch = useDispatch();
+	const history = useHistory();
 	const [isOpen, setIsOpen] = useState(false);
 	const [isClose, setIsClose] = useState(true);
 	const [keyword, setKeyword] = useState(productFilter.keyword);
@@ -64,17 +65,23 @@ function Header(props) {
 			dispatch(action);
 		}
 	}, [path]);
-
-	function handleTextSearch() {
+	function goToSearchPage() {
+		history.push({
+			pathname: '/product/search',
+		});
+	}
+	function handleSubmitSearch() {
+		const filterAction = findByFilter({ ...productFilter, keyword: keyword });
+		dispatch(filterAction);
 		const action = setFilter({ keyword: keyword });
 		dispatch(action);
-		const filterAction = findByFilter({ ...productFilter });
-		dispatch(filterAction);
+		goToSearchPage();
 	}
+
 	return (
 		<div className="bg-white">
 			<div className="container">
-				<Navbar light expand="md" className="p-1 flex-end">
+				<Navbar light expand="md" className="p-2 flex-end">
 					<NavbarBrand className="me-auto" href="/">
 						LOGO
 					</NavbarBrand>
@@ -113,7 +120,7 @@ function Header(props) {
 										name="keyword"
 										onChange={(e) => setKeyword(e.target.value)}
 									/>
-									<i className="fa fa-search" onClick={() => handleTextSearch()}></i>
+									<i className="fa fa-search" onClick={() => handleSubmitSearch()}></i>
 								</NavItem>
 							</div>
 							<NavItem className="header-cart ms-2 ">

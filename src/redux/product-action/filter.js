@@ -1,10 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { filterConfig } from 'constant/filter-setting';
 import { getProductByFilter } from 'api/product-api';
-import queryString from 'query-string';
 export const findByFilter = createAsyncThunk('filter/findByFilter', async (params) => {
 	const response = await getProductByFilter(params);
-	await console.log(response);
 	return response;
 });
 const filter = createSlice({

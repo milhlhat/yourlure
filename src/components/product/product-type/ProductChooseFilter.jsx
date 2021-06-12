@@ -25,7 +25,6 @@ function ProductChooseFilter(props) {
 	const [isCustom, setIsCustom] = useState(location.pathname === '/product/search' ? productFilter.custom : false);
 
 	useEffect(() => {
-		 
 		const fetchAllFish = async () => {
 			try {
 				const response = await getAllFish();
@@ -69,8 +68,6 @@ function ProductChooseFilter(props) {
 	function goToSearchPage() {
 		history.push({
 			pathname: '/product/search',
-
-			state: { detail: 'some_value' },
 		});
 	}
 	function getCheckedByList(list, id) {
@@ -112,9 +109,21 @@ function ProductChooseFilter(props) {
 	}
 	function handleSubmitFilter(e) {
 		e.preventDefault();
+		goToSearchPage();
 		let listCateId = getListCateChecked(selectCate);
 		let listFishId = getListFishChecked(selectFish);
-
+		//call api
+		const filterAction = findByFilter({
+			...productFilter,
+			listCateId: listCateId,
+			listFishId: listFishId,
+			page: filterConfig.PAGE_NUMBER_DEFAULT,
+			limit: filterConfig.LIMIT_DATA_PER_PAGE,
+			custom: isCustom,
+			isAsc: false,
+		});
+		dispatch(filterAction);
+		//save filter choosen
 		const action = setFilter({
 			listCateId: listCateId,
 			listFishId: listFishId,
@@ -124,9 +133,6 @@ function ProductChooseFilter(props) {
 			isAsc: false,
 		});
 		dispatch(action);
-		goToSearchPage();
-		const filterAction = findByFilter(productFilter);
-		dispatch(filterAction);
 	}
 	return (
 		<div className="product-choose-filter">

@@ -1,7 +1,8 @@
 const filterSettings = {
 	filterConfig: {
 		PAGE_NUMBER_DEFAULT: 0,
-		LIMIT_DATA_PER_PAGE: 15,
+		LIMIT_DATA_PER_PAGE: 5,
+		PAGE_RANGE_DISPLAYED : 3,
 		SORT_OPTIONS: [
 			{ display: 'Sản phẩm bán chạy', isAsc: false, sortBy: 'sumQuantity', value: 'SORT_BEST_SELLER' },
 			{ display: 'Sản phẩm mới nhất', isAsc: false, sortBy: 'date_create', value: 'SORT_NEWEST_DATE' },
