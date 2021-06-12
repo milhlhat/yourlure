@@ -1,3 +1,5 @@
+import { findByFilter, setFilter } from 'redux/product-action/filter';
+
 let productUtils = {
 	getNodesInfoBy: (list, type) => {
 		let listTemp = [];
@@ -49,6 +51,15 @@ let productUtils = {
 		}
 		return '';
 	},
+	saveFilter: (dispatch, value) => {
+		const action = setFilter({ ...value });
+		dispatch(action);
+	},
+	fetchFilter: (dispatch, value) => {
+		const action = findByFilter({ ...value });
+		dispatch(action);
+	},
 };
-export const { getNodesInfoBy, getMaterialsInfoBy, getMaterialsName, getColorMaterialByName } = productUtils;
+export const { getNodesInfoBy, getMaterialsInfoBy, getMaterialsName, getColorMaterialByName, saveFilter, fetchFilter } =
+	productUtils;
 export default productUtils;

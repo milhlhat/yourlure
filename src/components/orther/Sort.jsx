@@ -25,7 +25,7 @@ function Sort(props) {
 		const value = getSortSelectedByList(filterConfig.SORT_OPTIONS, e.target.value);
 		const action = setFilter({ ...value });
 		dispatch(action);
-		const filterAction = findByFilter({ ...productFilter });
+		const filterAction = findByFilter({ ...productFilter, ...value });
 		dispatch(filterAction);
 	}
 

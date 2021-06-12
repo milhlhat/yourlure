@@ -77,7 +77,12 @@ function Header(props) {
 		dispatch(action);
 		goToSearchPage();
 	}
-
+	function onChangeTextSearch(e) {
+		setKeyword(e.target.value);
+		if (e.key === 'Enter') {
+			handleSubmitSearch();
+		}
+	}
 	return (
 		<div className="bg-white">
 			<div className="container">
@@ -118,7 +123,7 @@ function Header(props) {
 										className="search"
 										placeholder="Tìm kiếm..."
 										name="keyword"
-										onChange={(e) => setKeyword(e.target.value)}
+										onKeyDown={(e) => onChangeTextSearch(e)}
 									/>
 									<i className="fa fa-search" onClick={() => handleSubmitSearch()}></i>
 								</NavItem>
