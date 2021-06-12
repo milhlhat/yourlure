@@ -26,13 +26,13 @@ function AppRouter() {
 				<Container fluid="lg" className="main-container">
 					<div className="main">
 						<Switch>
-							{/* <Redirect exact from="/" to="/home" /> */}
+							<Redirect exact from="/" to="/home" />
+							 <Route path="/home" component={HomeRoute} />
 							<Route path="/user" component={UserRoute} />
 							<Route path="/product" component={ProductRoute} />
 							<Route path="/cart" component={CartRoute} />
 							<Route path="/about" component={About} />
 							<Route path="/campaign" component={Campaign} />
-							<Route path="/" component={HomeRoute} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>

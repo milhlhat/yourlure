@@ -17,7 +17,7 @@ const filter = createSlice({
 			limit: filterConfig.LIMIT_DATA_PER_PAGE,
 			custom: false,
 			isAsc: false,
-			sortBy: '',
+			sortBy: 'sumQuantity',
 			keyword: '',
 		},
 		data: [],

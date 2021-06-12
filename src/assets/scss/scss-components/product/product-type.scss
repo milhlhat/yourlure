@@ -1,28 +1,35 @@
-@import "../../map.scss";
-.product-show{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+@import '../../base/variable';
+.product-show {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
-.product-choose-filter{
-    background-color: #fff;
-    border-radius: 5px;
-    & .head-text{
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        text-align: center;
-        background-color: $primary;
-        color: #fff;
-    }
-    & .button-submit{
-        height: 30px;
-    }
+.product-choose-filter {
+	background-color: #fff;
+	border-radius: 5px;
+	& .head-text {
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+		text-align: center;
+		background-color: $primary;
+		color: #fff;
+	}
+	& .button-submit {
+		height: 30px;
+	}
 }
-.product-type{
-    h1{
-        text-align: center;
-    }
+.product-type {
+	h1 {
+		text-align: center;
+	}
 }
-.form-check-label{
-    font-size: small;
+.form-check-label {
+	font-size: small;
+}
+
+.pagination {
+	& .disabled {
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
 }

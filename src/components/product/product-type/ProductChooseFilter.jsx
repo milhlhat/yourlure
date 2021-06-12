@@ -25,10 +25,7 @@ function ProductChooseFilter(props) {
 	const [isCustom, setIsCustom] = useState(location.pathname === '/product/search' ? productFilter.custom : false);
 
 	useEffect(() => {
-		if (location.pathname !== '/product/search') {
-			const action = setFilter({ custom: false, listFishId: [], listCateId: [] });
-			dispatch(action);
-		}
+		 
 		const fetchAllFish = async () => {
 			try {
 				const response = await getAllFish();

@@ -2,15 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import 'assets/scss/scss-components/header.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { findByFilter, setFilter } from 'redux/product-action/filter';
+import { filterConfig } from 'constant/filter-setting';
 
 function Header(props) {
+	const productFilter = useSelector((state) => state.productFilter.filter);
+	const dispatch = useDispatch();
 	const [isOpen, setIsOpen] = useState(false);
 	const [isClose, setIsClose] = useState(true);
-
+	const [keyword, setKeyword] = useState(productFilter.keyword);
+	const location = useLocation();
 	const toggle = () => {
 		setIsOpen(!isClose);
 	};
-	let path = useLocation().pathname;
+	let path = location.pathname;
 
 	///
 	function useOutsideAlerter(ref) {
@@ -43,7 +49,28 @@ function Header(props) {
 	const wrapperRef = useRef(null);
 	useOutsideAlerter(wrapperRef);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		if (path !== '/product/search') {
+			const action = setFilter({
+				listCateId: [],
+				listFishId: [],
+				page: filterConfig.PAGE_NUMBER_DEFAULT,
+				limit: filterConfig.LIMIT_DATA_PER_PAGE,
+				custom: false,
+				isAsc: false,
+				sortBy: 'sumQuantity',
+				keyword: '',
+			});
+			dispatch(action);
+		}
+	}, [path]);
+
+	function handleTextSearch() {
+		const action = setFilter({ keyword: keyword });
+		dispatch(action);
+		const filterAction = findByFilter({ ...productFilter });
+		dispatch(filterAction);
+	}
 	return (
 		<div className="bg-white">
 			<div className="container">
@@ -79,8 +106,14 @@ function Header(props) {
 
 							<div className="pt-1" ref={wrapperRef}>
 								<NavItem className="d-flex ms-auto search-form px-3 ">
-									<input type="text" className="search" placeholder="Tìm kiếm..." />
-									<i className="fa fa-search"></i>
+									<input
+										type="search"
+										className="search"
+										placeholder="Tìm kiếm..."
+										name="keyword"
+										onChange={(e) => setKeyword(e.target.value)}
+									/>
+									<i className="fa fa-search" onClick={() => handleTextSearch()}></i>
 								</NavItem>
 							</div>
 							<NavItem className="header-cart ms-2 ">

@@ -7,6 +7,7 @@ const Product = React.lazy(() => import('pages/product'));
 const ProductDetail = React.lazy(() => import('pages/productDetail'));
 const ProductCustomize = React.lazy(() => import('pages/customize-lure'));
 const SearchProduct = React.lazy(() => import('pages/Search'));
+const NotFound = React.lazy(() => import('pages/notfound'));
 function ProductRoute(props) {
 	return (
 		<Switch>
@@ -14,6 +15,7 @@ function ProductRoute(props) {
 			<Route exact path="/product/detail/:id" component={ProductDetail} />
 			<Route exact path="/product/customize/:id" component={ProductCustomize} />
 			<Route exact path="/product/search" component={SearchProduct} />
+			<Route component={NotFound} />
 		</Switch>
 	);
 }

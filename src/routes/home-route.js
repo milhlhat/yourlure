@@ -8,7 +8,7 @@ export default function HomeRoute() {
 		<Switch>
 			<Route
 				exact
-				path={`${process.env.PUBLIC_URL}/`}
+				path={`/home`}
 				render={() => {
 					return localStorage.getItem('YL-user') ? <HomePage /> : <Redirect to="/login" />;
 				}}
