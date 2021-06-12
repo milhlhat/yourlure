@@ -39,8 +39,8 @@ public interface UserController {
     @PostMapping("/get-address-se/{userid}")
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(@PathVariable(name = "userid") Long id);
 
-    @PostMapping("/update-address/{addressId}")
-    ResponseEntity<Boolean> updateAddress(@PathVariable(name = "addressId") Long addressId,
+    @PostMapping("/update-address")
+    ResponseEntity<Boolean> updateAddress(@RequestParam(name = "addressId") Long addressId,
                                           @RequestBody UserAddressInput userAddressInput);
 
 }
