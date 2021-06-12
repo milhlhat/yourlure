@@ -38,6 +38,10 @@ const UserApi = {
 		const url = `/customer/update/${id}`;
 		return AxiosClient.patch(url, customer);
 	},
+	getAddress:(userId)=>{
+		const url = `/user/get-address-se`;
+		return AxiosClient.post(url, userId);
+	}
 };
 
 export default UserApi;
