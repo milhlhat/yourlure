@@ -7,9 +7,10 @@ let Utils = {
 	},
 	handleChangeCheckbox: (e, state, setState) => {
 		let list = JSON.parse(JSON.stringify(state));
+		console.log(list);
 		for (let i = 0; i < list.length; i++) {
 			let item = list[i];
-			if (item.categoryID == e.target.name) {
+			if (item.categoryID == e.target.name || item.fishID == e.target.name) {
 				list[i] = { ...list[i], checked: e.target.checked };
 			}
 		}

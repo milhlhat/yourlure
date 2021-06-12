@@ -6,6 +6,7 @@ import ProductShow from 'components/product/product-type/ProductShow';
 
 
 function SearchProduct(props) {
+ 
     return (
         <div className="container search-type mt-2">
             <h1>Sản phẩm</h1>

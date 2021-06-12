@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import ProductChooseFilter from 'components/product/product-type/ProductChooseFilter.jsx';
-import ProductShow from 'components/product/product-type/ProductShow';
 import 'assets/scss/scss-components/product/product-type.scss';
 import ProductByCate from 'components/product/product-type/ProductByCate';
 import { getBestSellerCategory } from 'api/category-api';
-import { getAllCategory, getAllFish } from 'api/product-api';
 
 Product.propTypes = {};
 
 function Product(props) {
 	const [bestCate, setBestCate] = useState({ data: [], loading: true, error: false });
-	const [fishAll, setFishAll] = useState({ data: [], loading: true, error: false });
-	const [cateAll, setCateAll] = useState({ data: [], loading: true, error: false });
+
 	useEffect(() => {
 		const fetchBestSellerCategory = async () => {
 			try {
@@ -31,51 +27,16 @@ function Product(props) {
 				console.log('fail to fetch  ');
 			}
 		};
-		const fetchAllFish = async () => {
-			try {
-				const response = await getAllFish();
-				if (response.error) {
-					console.log(response.error);
-					let i = { ...fishAll, loading: false, error: true };
-					setFishAll(i);
-				} else {
-					let i = { ...fishAll, data: response, loading: false, error: false };
-					setFishAll(i);
-				}
-			} catch (e) {
-				let i = { ...fishAll, loading: false, error: true };
-				setFishAll(i);
-				console.log('fail to fetch  ');
-			}
-		};
-		const fetchAllCategory = async () => {
-			try {
-				const response = await getAllCategory();
-				if (response.error) {
-					console.log(response.error);
-					let i = { ...cateAll, loading: false, error: true };
-					setCateAll(i);
-				} else {
-					let i = { ...cateAll, data: response, loading: false, error: false };
-					setCateAll(i);
-				}
-			} catch (e) {
-				let i = { ...cateAll, loading: false, error: true };
-				setCateAll(i);
-				console.log('fail to fetch  ');
-			}
-		};
-        fetchAllCategory();
-		fetchAllFish();
+
 		fetchBestSellerCategory();
 	}, []);
 
 	return (
 		<div className="container product-type mt-2">
-			<h1>Sản phẩm</h1>
+			<h1>Danh mục bán chạy</h1>
 			<div className="row">
 				<div className="col-md-3 col-sm-12">
-					<ProductChooseFilter cateAll={cateAll} fishAll={fishAll} />
+					<ProductChooseFilter />
 				</div>
 				<div className="col-md-9 col-sm-12">
 					<ProductByCate bestCate={bestCate} />
