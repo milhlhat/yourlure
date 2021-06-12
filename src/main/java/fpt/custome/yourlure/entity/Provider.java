@@ -1,4 +1,4 @@
-package fpt.custome.yourlure.security;
+package fpt.custome.yourlure.entity;
 
 public enum Provider {
     LOCAL, GOOGLE, FACEBOOK, GITHUB

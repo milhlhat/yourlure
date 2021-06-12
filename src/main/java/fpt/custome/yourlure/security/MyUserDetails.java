@@ -1,60 +1,36 @@
 package fpt.custome.yourlure.security;
 
 import fpt.custome.yourlure.entity.User;
-import fpt.custome.yourlure.entity.UserRole;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import fpt.custome.yourlure.repositories.UserRepos;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+@Service
+public class MyUserDetails implements UserDetailsService {
 
-public class MyUserDetails implements UserDetails {
+  @Autowired
+  private UserRepos userRepository;
 
-    private User user;
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    final User user = userRepository.findByUsername(username);
 
-    public MyUserDetails(User user) {
-        this.user = user;
+    if (user == null) {
+      throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        UserRole role = user.getUserRole();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return user.getPassword();
-    }
-
-    @Override
-    public String getUsername() {
-        return user.getUsername();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    return org.springframework.security.core.userdetails.User//
+        .withUsername(username)//
+        .password(user.getPassword())//
+        .authorities(user.getRoles())//
+        .accountExpired(false)//
+        .accountLocked(false)//
+        .credentialsExpired(false)//
+        .disabled(false)//
+        .build();
+  }
 
 }

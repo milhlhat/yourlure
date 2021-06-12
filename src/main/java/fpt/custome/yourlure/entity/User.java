@@ -2,16 +2,15 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
-import fpt.custome.yourlure.security.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,11 +26,13 @@ public class User {
     private Long userID;
 
     @Nullable
-    @Column(name = "userName")
+    @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
+    @Column(name = "userName", unique = true, nullable = false)
     private String username;
 
     @Nullable
     @Column(name = "password")
+    @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
     @Nullable
@@ -43,7 +44,7 @@ public class User {
     private Boolean gender;
 
     @Nullable
-    @Column(name = "userEmail")
+    @Column(name = "userEmail", unique = true, nullable = false)
     private String userEmail;
 
     @Nullable
@@ -54,10 +55,8 @@ public class User {
     @Column(name = "maxCustomizable")
     private Integer maxCustomizable;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "userRolesID", nullable = false)
-    private UserRole userRole;
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -73,5 +72,6 @@ public class User {
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;
+
 
 }

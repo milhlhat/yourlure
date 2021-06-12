@@ -31,5 +31,4 @@ public interface ProductRepos extends JpaRepository<Product, Long> {
                                        @RequestParam("fish_ids") List<Long> fish_ids);
 
     List<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
-
 }
