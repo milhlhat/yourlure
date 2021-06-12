@@ -1,24 +1,20 @@
 package fpt.custome.yourlure.service;
 
-import fpt.custome.yourlure.entity.User;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
 import fpt.custome.yourlure.entity.address.Ward;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void processOAuthPostLogin(String username);
-
     String signin(String username, String password);
 
     String signup(User user);

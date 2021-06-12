@@ -2,25 +2,22 @@ package fpt.custome.yourlure.controller.admin.impl;
 
 import fpt.custome.yourlure.controller.admin.AdminProductController;
 import fpt.custome.yourlure.entity.Product;
-import fpt.custome.yourlure.repositories.ProductRepos;
+import fpt.custome.yourlure.repositories.ProductJPARepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 public class AdminAdminProductControllerImpl implements AdminProductController {
 
     @Autowired
-    private ProductRepos productRepos;
+    private ProductJPARepos productRepos;
 
     @Override
     public ResponseEntity<List<Product>> findAll() {

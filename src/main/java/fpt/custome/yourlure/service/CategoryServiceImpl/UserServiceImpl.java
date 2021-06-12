@@ -5,16 +5,14 @@ import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.entity.User;
-import fpt.custome.yourlure.repositories.UserRepos;
-import fpt.custome.yourlure.security.JwtTokenProvider;
-import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.entity.UserAddress;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
 import fpt.custome.yourlure.entity.address.Ward;
 import fpt.custome.yourlure.repositories.*;
-import fpt.custome.yourlure.security.Provider;
+import fpt.custome.yourlure.security.JwtTokenProvider;
+import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +61,18 @@ public class UserServiceImpl implements UserService {
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();
 
-        public String signup (User user){
+    @Override
+    public String signin(String username, String password) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return jwtTokenProvider.createToken(username, userRepos.findByUsername(username).getRoles());
+        } catch (AuthenticationException e) {
+            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+
+    public String signup (User user){
             if (!userRepos.existsByUsername(user.getUsername())) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepos.save(user);
