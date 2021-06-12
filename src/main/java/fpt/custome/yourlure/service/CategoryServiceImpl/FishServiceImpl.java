@@ -15,7 +15,7 @@ import java.util.List;
 public class FishServiceImpl implements FishService {
 
     @Autowired
-    FishRepos fishRepos;
+    private FishRepos fishRepos;
 
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();

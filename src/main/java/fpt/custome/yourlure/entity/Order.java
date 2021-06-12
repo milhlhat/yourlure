@@ -52,7 +52,7 @@ public class Order {
     @JsonIgnore
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "userID")
     private User User;
 
     @JsonIgnore

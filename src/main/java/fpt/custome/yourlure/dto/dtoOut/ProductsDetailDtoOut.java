@@ -7,19 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.Date;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CampaignDtoOut {
+@NoArgsConstructor
+public class ProductsDetailDtoOut {
 
-    private Long campaignID;
-    private String description;
-    private Date startDate;
-    private Date endDate;
-    private String banner;
+    private Long productID;
+    private String productName;
     private Collection<Image> imageCollection;
+    private Float defaultPrice;
+    private String description;
+    private String brand;
+    private Boolean customizable;
 
 }

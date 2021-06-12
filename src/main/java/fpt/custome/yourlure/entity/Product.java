@@ -74,9 +74,9 @@ public class Product {
     //1 product có nhiều variants
     private Collection<Customize> customizeCollection;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến products ở trong fish_product.
-    //1 category có nhiều product
-    private Collection<Fish_product> productsCollection;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    // MapopedBy trỏ tới tên biến products ở trong fish_product.
+//    //1 category có nhiều product
+//    private Collection<Fish_product> productsCollection;
 }

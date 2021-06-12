@@ -17,7 +17,7 @@ import java.util.Optional;
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
-    CategoryRepos categoryRepos;
+    private CategoryRepos categoryRepos;
 
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();

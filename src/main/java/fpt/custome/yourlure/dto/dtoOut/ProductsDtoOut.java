@@ -1,11 +1,12 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
+import fpt.custome.yourlure.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.util.Collection;
 
 @Data
 @Builder
@@ -15,13 +16,7 @@ public class ProductsDtoOut {
 
     private Long productID;
     private String productName;
-    private Long categoryId;
-    private String imageUrl;
+    private Collection<Image> imageCollection;
     private Float defaultPrice;
-    private String description;
-    private String brand;
-    private Float sale;
-    private Boolean customizable;
-    private Date dateCreate;
 
 }

@@ -54,6 +54,7 @@ public class Customize {
     @Column(name = "price")
     private Float price;
 
+    @Nullable
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)

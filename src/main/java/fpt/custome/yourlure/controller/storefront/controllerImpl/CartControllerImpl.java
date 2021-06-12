@@ -1,11 +1,13 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CartController;
+import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
-import fpt.custome.yourlure.entity.CartItem;
-import fpt.custome.yourlure.entity.Order;
+import fpt.custome.yourlure.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,28 +17,43 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartControllerImpl implements CartController {
 
+    @Autowired
+    private CartService cartService;
+
     @Override
     public ResponseEntity<Optional<CartDtoOut>> getCart(Long id) {
-        return null;
+        Optional<CartDtoOut> result = cartService.getCart(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public void addProduct(Long id, CartItem cartItem) {
-
+    public ResponseEntity<Boolean> addProduct(Long userId,
+                                              Long cartId,
+                                              CartItemInput cartItemInput) {
+        Boolean result = cartService.addProduct(userId, cartId, cartItemInput);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public void removeProduct(Long cartId, String productId) {
-
+    public ResponseEntity<Boolean> removeProduct(Long userId,
+                                                 Long cartId,
+                                                 Long productId) {
+        Boolean result = cartService.removeProduct(cartId, productId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public void setProductQuantity(Long id, String productId, int quantity) {
-
+    public ResponseEntity<Boolean> setProductQuantity(Long userId,
+                                                      Long cartId,
+                                                      Long productId,
+                                                      int quantity) {
+        Boolean result = cartService.setProductQuantity(cartId, productId, quantity);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public OrderDtoInput createOrder(Long id, Order order) {
+    public ResponseEntity<Optional<OrderDtoInput>> createOrder(Long cartId,
+                                                               OrderDtoInput orderDtoInput) {
         return null;
     }
 }
