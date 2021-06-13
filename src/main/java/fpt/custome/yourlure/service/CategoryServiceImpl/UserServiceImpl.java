@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
+import fpt.custome.yourlure.entity.Provider;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.UserAddress;
 import fpt.custome.yourlure.entity.address.Country;
@@ -65,10 +66,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper mapper;
     @Override
-    public String signin(String username, String password) {
+    public String signin(String phone, String password) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepos.findByUsername(username).getRoles());
+            User findUser = userRepos.findByPhone(phone);
+            if(findUser.getEnabled()){
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
+                return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
+            }
+            throw new CustomException("This account was disabled", HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (AuthenticationException e) {
             throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -76,21 +81,27 @@ public class UserServiceImpl implements UserService {
 
 
     public String signup (User user){
-            if (!userRepos.existsByUsername(user.getUsername())) {
+            if (!userRepos.existsByPhone(user.getPhone())) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setProvider(Provider.LOCAL);
+                user.setEnabled(true);
+                user.setMaxCustomizable(5);
                 userRepos.save(user);
-                return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+                return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
             } else {
-                throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+                throw new CustomException("Username or phone is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
             }
         }
 
-        public void delete (String username){
-            userRepos.deleteByUsername(username);
+        public void delete (String phone){
+            User findUser = userRepos.findByPhone(phone);
+            findUser.setEnabled(false);
+            userRepos.save(findUser);
+//            userRepos.deleteByPhone(phone);
         }
 
-        public User search (String username){
-            User user = userRepos.findByUsername(username);
+        public User search (String phone){
+            User user = userRepos.findByPhone(phone);
             if (user == null) {
                 throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
             }
@@ -109,11 +120,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public User whoami (HttpServletRequest req){
-            return userRepos.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            return userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         }
 
-        public String refresh (String username){
-            return jwtTokenProvider.createToken(username, userRepos.findByUsername(username).getRoles());
+        public String refresh (String phone){
+            return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
         }
 
 

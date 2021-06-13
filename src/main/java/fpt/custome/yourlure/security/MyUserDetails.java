@@ -16,7 +16,8 @@ public class MyUserDetails implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    final User user = userRepository.findByUsername(username);
+    // set phone number is username of UserDetail in spring security
+    final User user = userRepository.findByPhone(username);
 
     if (user == null) {
       throw new UsernameNotFoundException("User '" + username + "' not found");

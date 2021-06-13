@@ -12,10 +12,12 @@ public class UserDataDTO {
   @ApiModelProperty(position = 0)
   private String username;
   @ApiModelProperty(position = 1)
-  private String userEmail;
+  private String phone;
   @ApiModelProperty(position = 2)
-  private String password;
+  private String userEmail;
   @ApiModelProperty(position = 3)
+  private String password;
+  @ApiModelProperty(position = 4)
   List<Role> roles;
 
 

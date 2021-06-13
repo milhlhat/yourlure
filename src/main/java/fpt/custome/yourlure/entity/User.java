@@ -37,6 +37,7 @@ public class User {
 
     @Nullable
     @Column(name = "phone")
+    @Size(min = 10, max = 10, message = "phone number just contains 10 characters")
     private String phone;
 
     @Nullable
@@ -47,12 +48,11 @@ public class User {
     @Column(name = "userEmail", unique = true, nullable = false)
     private String userEmail;
 
-    @Nullable
-    @Column(name = "statusActivity")
-    private Boolean statusActivity;
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @Nullable
-    @Column(name = "maxCustomizable")
+    @Column(name = "maxCustomizable", columnDefinition = "integer default 5")
     private Integer maxCustomizable;
 
     @ElementCollection(fetch = FetchType.EAGER)

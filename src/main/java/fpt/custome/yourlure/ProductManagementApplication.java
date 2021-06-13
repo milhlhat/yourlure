@@ -32,6 +32,7 @@ public class ProductManagementApplication implements CommandLineRunner {
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword("admin");
+        admin.setPhone("0981808167");
         admin.setUserEmail("admin@email.com");
         admin.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_ADMIN)));
 
@@ -39,6 +40,7 @@ public class ProductManagementApplication implements CommandLineRunner {
 
         User client = new User();
         client.setUsername("client");
+        client.setPhone("0399804460");
         client.setPassword("client");
         client.setUserEmail("client@email.com");
         client.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_CLIENT)));

@@ -16,14 +16,13 @@ public class ProductReposImpl implements ProductRepos {
     @Override
     public Query getProductFilter(Filter filter) {
         StringBuilder query = new StringBuilder();
-        query.append("SELECT tbl_products.*, SUM(tbl_order_line.quantity)AS sumQuantity \n");
-        query.append(" FROM tbl_category,tbl_products,tbl_fish_product,tbl_fish,tbl_orders,tbl_order_line,tbl_variants \n");
-        query.append("  WHERE tbl_category.categoryid = tbl_products.categoryid  \n");
-        query.append("  AND tbl_products.productid = tbl_fish_product.productid \n");
-        query.append(" AND tbl_fish_product.fishid = tbl_fish.fishid \n");
-        query.append(" AND tbl_order_line.variantid = tbl_variants.variantid \n");
-        query.append(" AND tbl_products.productid = tbl_variants.productid \n");
-        query.append(" AND tbl_orders.orderid = tbl_order_line.oderid  \n");
+        query.append("SELECT  DISTINCT tbl_products.*, SUM(tbl_order_line.quantity)AS sumQuantity FROM tbl_products\n");
+        query.append("left join tbl_category ON tbl_products.categoryid = tbl_category.categoryid \n");
+        query.append("left join tbl_fish_product ON tbl_products.productid = tbl_fish_product.productid \n");
+        query.append("left JOIN tbl_fish ON tbl_fish_product.fishid = tbl_fish.fishid \n");
+        query.append("LEFT JOIN tbl_variants ON tbl_products.productid = tbl_variants.productid\n");
+        query.append("LEFT JOIN tbl_order_line ON tbl_order_line.variantid = tbl_variants.variantid \n");
+        query.append("LEFT JOIN tbl_orders ON tbl_orders.orderid = tbl_order_line.oderid \n");
         if (!filter.getListCateId().isEmpty()) {
             query.append(" AND tbl_category.categoryid IN (:cateIds) \n");
         }

@@ -16,19 +16,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    String signin(String username, String password);
+    String signin(String phone, String password);
 
     String signup(User user);
 
-    void delete(String username);
+    void delete(String phone);
 
-    User search(String username);
+    User search(String phone);
 
     List<UserResponseDTO> findAll();
 
     User whoami(HttpServletRequest req);
 
-    String refresh(String username);
+    String refresh(String phone);
 
     Optional<UserDtoOut> getUser(Long id);
 

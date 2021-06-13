@@ -13,8 +13,10 @@ public class UserResponseDTO {
   @ApiModelProperty(position = 1)
   private String username;
   @ApiModelProperty(position = 2)
-  private String email;
+  private String phone;
   @ApiModelProperty(position = 3)
+  private String email;
+  @ApiModelProperty(position = 4)
   List<Role> roles;
 
 
