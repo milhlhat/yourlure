@@ -113,7 +113,7 @@ function ProductChooseFilter(props) {
 	}
 	return (
 		<div className="product-choose-filter">
-			<div className="head-text">Danh mục</div>
+			<div className="head-text">Danh Mục</div>
 			<form onSubmit={handleSubmitFilter}>
 				<div className="form-filter p-2 mt-2">
 					<span className="title">Loại mồi</span>

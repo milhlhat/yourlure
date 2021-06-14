@@ -2,7 +2,8 @@ import g1 from 'assets/images/g1.jpg';
 import g2 from 'assets/images/g2.jpg';
 import g3 from 'assets/images/g3.jpg';
 import g4 from 'assets/images/bando.jpg';
-export const images = [g1, g2, g3, g4];
+import g5 from 'assets/images/white-scales-texture.jpg';
+export const images = [g1, g2, g3, g4,g5];
 export const color = [
 	'#640075',
 	'#5a00b9',

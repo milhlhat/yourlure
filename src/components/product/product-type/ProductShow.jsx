@@ -8,7 +8,7 @@ import { findByFilter } from 'redux/product-action/filter';
 import Loading from 'components/loading';
 import ErrorLoad from 'components/ErrorLoad';
 function ProductShow(props) {
-	const products = useSelector((state) => state.productFilter.data);
+	const products = props.products;
 	const productFilter = useSelector((state) => state.productFilter.filter);
 	const isLoading = useSelector((state) => state.productFilter.loading);
 	const success = useSelector((state) => state.productFilter.success);
@@ -27,15 +27,12 @@ function ProductShow(props) {
 	} else
 		return (
 			<div className="product-show mt-3 bg-white">
-			 
-					<div className="product-list">
-						{products.productOutList.length<=0 && <p>Không có sản phẩm </p>}
-						{products.productOutList &&
-							products.productOutList.map((item, i) => (
-								<CardProduct product={item} key={`card-prod-${i}`} />
-							))}
-					</div>
-			 
+				<div className="product-list">
+					{products.productOutList.length <= 0 && <p>Không có sản phẩm </p>}
+					{products.productOutList &&
+						products.productOutList.map((item, i) => <CardProduct product={item} key={`card-prod-${i}`} />)}
+				</div>
+
 				<div className="d-flex flex-end">
 					{products.totalPage > 1 && (
 						<Pagination

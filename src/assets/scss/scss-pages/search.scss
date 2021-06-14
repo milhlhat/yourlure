@@ -6,11 +6,7 @@
 }
 .product-choose-filter {
 	background-color: #fff;
-	& .head-text {
-		text-align: center;
-		background-color: $primary;
-		color: #fff;
-	}
+
 	& .button-submit {
 		height: 30px;
 	}
@@ -30,20 +26,7 @@
 		grid-column-gap: 5px;
 	}
 }
-.product-choose-filter {
-	background-color: #fff;
-	border-radius: 5px;
-	& .head-text {
-		border-top-left-radius: 5px;
-		border-top-right-radius: 5px;
-		text-align: center;
-		background-color: $primary;
-		color: #fff;
-	}
-	& .button-submit {
-		height: 30px;
-	}
-}
+
 .select-sort {
 	max-width: 200px;
 }
@@ -52,4 +35,18 @@
 	& .disabled {
 		border-radius: 5px;
 	}
+}
+
+.page-item.active .page-link {
+	background-color: $primary  ;
+	border-color: $primary  ;
+	color: white !important;
+}
+.page-link {
+	color: $primary;
+}
+.form-select:focus {
+	border-color: none;
+	outline: 0;
+	box-shadow: 0;
 }

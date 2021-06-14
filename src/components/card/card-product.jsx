@@ -25,7 +25,7 @@ function CardProduct(props) {
 						<span className="text-color text-small">{product.brand}</span>
 						<span className="mt-2">{product.productName ? product.productName : ''}</span>
 						<span className="text-color">
-							{product
+							{!product
 								? 'N/A'
 								: Number(product.defaultPrice).toLocaleString(undefined, {
 										minimumFractionDigits: 0,

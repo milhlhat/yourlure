@@ -101,18 +101,18 @@ function Header(props) {
 								</Link>
 							</div>
 							<div>
-								<Link className="nav-link item-hover" to="/user/login">
+								<Link className="nav-link item-hover" to="/product/customize/:id">
 									Tùy biến
 								</Link>
 							</div>
 							<div>
-								<Link className="nav-link item-hover" to="/about">
-									Blog
+								<Link className="nav-link item-hover" to="/campaign">
+									Sự kiện
 								</Link>
 							</div>
 							<div>
-								<Link className="nav-link item-hover" to="/user/login">
-									Sự kiện
+								<Link className="nav-link item-hover" to="/login">
+									About
 								</Link>
 							</div>
 
@@ -134,7 +134,7 @@ function Header(props) {
 								</Link>
 							</NavItem>
 							<NavItem className="header-user ms-2 me-2 ">
-								<Link className="nav-link" to="/user/login">
+								<Link className="nav-link" to="/user/account">
 									<i className="fa fa-user"></i>
 								</Link>
 							</NavItem>
