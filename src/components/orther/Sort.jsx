@@ -1,5 +1,4 @@
 import React from 'react';
-import 'assets/scss/scss-components/product/sort.scss';
 import { filterConfig } from 'constant/filter-setting';
 import { useDispatch, useSelector } from 'react-redux';
 import { findByFilter, setFilter } from 'redux/product-action/filter';

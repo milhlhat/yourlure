@@ -7,7 +7,7 @@ import Loading from 'components/loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilter, saveFilter } from 'utils/product';
 import { useHistory } from 'react-router-dom';
-
+import ErrorLoad from 'components/ErrorLoad';
 ProductByCate.propTypes = {};
 
 function ProductByCate(props) {
@@ -16,7 +16,7 @@ function ProductByCate(props) {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	if (cates.error) {
-		return <p>Hệ thống bận</p>;
+		return <ErrorLoad />;
 	}
 	if (cates.loading) {
 		return <Loading />;

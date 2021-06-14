@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import CardProduct from "components/card/card-product";
 import ProductImage from "components/product/product-detail/product-media";
 import ProductAction from "components/product/product-detail/product-action";
 import data from "assets/dumy-data/data-product.js";
-import SelectLocation from "components/select-location/select-location";
 import ProductAPI from "api/product-api";
 ProductDetail.propTypes = {};
 

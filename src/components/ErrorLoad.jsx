@@ -3,7 +3,7 @@ import React from 'react';
 function ErrorLoad(props) {
     return (
         <div>
-            ErrorLoad
+            Hệ thống bận!
         </div>
     );
 }

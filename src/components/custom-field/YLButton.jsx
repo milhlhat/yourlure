@@ -17,11 +17,13 @@ function YLButton(props) {
 						} `}
 						type={type}
 						disabled={disabled}
-					>{value}
-          {props.children}</button>
+					>
+						{value}
+						{props.children}
+					</button>
 				) : (
 					<Link
-						to={!disabled ? to : '#'}
+						to={!disabled ? (to ? to : '#') : '#'}
 						className={`button ${width == null ? '' : 'width-' + width} button_${variant} ${
 							disabled ? 'disabled' : ''
 						}`}
