@@ -7,15 +7,35 @@ let Utils = {
 	},
 	handleChangeCheckbox: (e, state, setState) => {
 		let list = JSON.parse(JSON.stringify(state));
-		console.log(list);
-		for (let i = 0; i < list.length; i++) {
-			let item = list[i];
-			if (item.categoryID == e.target.name || item.fishID == e.target.name) {
-				list[i] = { ...list[i], checked: e.target.checked };
+		if (list.length > 0)
+			for (let i = 0; i < list.length; i++) {
+				let item = list[i];
+				if (item.categoryID == e.target.name || item.fishID == e.target.name) {
+					list[i] = { ...list[i], checked: e.target.checked };
+				}
 			}
-		}
 		setState(list);
 	},
+	handleCheckAllCateOrFish: (e, state, setState) => {
+		let list = [...state];
+		if (list.length > 0)
+			for (let i = 0; i < list.length; i++) {
+				list[i] = { ...list[i], checked: e.target.checked };
+			}
+		setState(list);
+	},
+	getIsCheckedAll: (list) => {
+		if (list.length > 0) {
+			for (let i = 0; i < list.length; i++) {
+				if (!list[i].checked) return false;
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	},
 };
-export const { handleChangeInput, handleChangeCheckbox } = Utils;
+export const { handleChangeInput, handleChangeCheckbox,
+	 handleCheckAllCateOrFish,getIsCheckedAll } = Utils;
 export default Utils;

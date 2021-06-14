@@ -31,7 +31,7 @@ function Sort(props) {
 
 	return (
 		<div className="bg-white d-flex flex-end ">
-			<select className="form-select select-sort pointer" onChange={(e) => handleSelectSort(e)} de>
+			<select className="form-select select-sort pointer" onChange={(e) => handleSelectSort(e)} >
 				{filterConfig.SORT_OPTIONS.map((item, i) => (
 					<option value={item.value} key={`sort-${i}`} className="pointer" selected={item.sortBy === sortBy}>
 						{item.display}

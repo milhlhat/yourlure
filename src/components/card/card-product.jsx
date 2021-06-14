@@ -6,8 +6,8 @@ CardProduct.propTypes = {};
 
 function CardProduct(props) {
 	const { product } = props;
-	console.log(product);
-	console.log(product.imageCollection ? product.imageCollection[0].linkImage : 'none');
+	// console.log(product);
+	// console.log(product.imageCollection ? product.imageCollection[0].linkImage : 'none');
 	const history = useHistory();
 	const handleClick = (id) => {
 		history.push(`/product/detail/${id}`);

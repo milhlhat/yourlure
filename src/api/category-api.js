@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 const CategoryAPI = {
 	getBestSellerCategory: () => {
-		const url = '/category/best-seller-with-category';
+		const url = 'api/category/best-seller-with-category';
 		return AxiosClient.get(url);
 	},
 };

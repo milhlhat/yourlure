@@ -6,6 +6,7 @@ import customizeInfoReducer from './customize-action/customize-info';
 import customizeInitReducer from './customize-action/customize-init-data'
 import productFilterReducer from './product-action/filter'
 import cateBestReducer from './category-action/best-seller-action'
+import cateFishForFilterReducer from './product-action/fetch-cate-fish'
 const rootReducer = {
 	user: userReducer,
 	customizeId: customizeIdReducer,
@@ -13,6 +14,7 @@ const rootReducer = {
 	customizeInit : customizeInitReducer,
 	productFilter: productFilterReducer,
 	cateBest: cateBestReducer,
+	cateFishForFilter: cateFishForFilterReducer,
 };
 
 const store = configureStore({

@@ -3,27 +3,27 @@ import queryString from 'query-string';
 
 const ProductAPI = {
 	getBestSeller: () => {
-		const url = '/product/best-seller';
+		const url = 'api/product/best-seller';
 		return AxiosClient.get(url);
 	},
 	getNewList: () => {
-		const url = '/product/newest';
+		const url = 'api/product/newest';
 		return AxiosClient.get(url);
 	},
 	getProductByID: (id) => {
-		const url = `product/${id}`;
+		const url = `api/product/${id}`;
 		return AxiosClient.get(url);
 	},
 	getAllCategory: () => {
-		const url = '/category/all';
+		const url = 'api/category/all';
 		return AxiosClient.get(url);
 	},
 	getAllFish: () => {
-		const url = '/fish/all';
+		const url = 'api/fish/all';
 		return AxiosClient.get(url);
 	},
 	getProductByFilter: (param) => {
-		const url = '/product/product-filter';
+		const url = 'api/product/product-filter';
 		return AxiosClient.post(url, param);
 	},
 };
