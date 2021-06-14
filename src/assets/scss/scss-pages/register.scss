@@ -14,6 +14,10 @@
     width: 100%;
     & .item-botton{
     }
+    & .otp-form{
+      display: flex;
+      align-items: flex-end;
+    }
   }
 }
 @media screen and (max-width: 700px) {

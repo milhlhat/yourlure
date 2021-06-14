@@ -8,6 +8,7 @@ UserRoute.propTypes = {
 const Login = React.lazy(() => import('pages/login'));
 const Register = React.lazy(() => import('pages/register'));
 const ManagementAccount = React.lazy(() => import('components/user/ManagementAccount'));
+const FogotPassWord = React.lazy(() => import('pages/FogotPassWord'));
 function UserRoute(props) {
     const match = useRouteMatch();
     return (
@@ -15,6 +16,7 @@ function UserRoute(props) {
        	<Route path={`${match.url}/login`} component={Login} />
        	<Route path={`${match.url}/register`} component={Register} />
        	<Route path={`${match.url}/account`} component={ManagementAccount} />
+       	<Route path={`${match.url}/fogot-password`} component={FogotPassWord} />
     </Switch>
     );
 }

@@ -39,8 +39,8 @@ const UserApi = {
 		return AxiosClient.patch(url, customer);
 	},
 	getAddress:(userId)=>{
-		const url = `/user/get-address-se`;
-		return AxiosClient.post(url, userId);
+		const url = `/user/get-address-user/${userId}`;
+		return AxiosClient.get(url);
 	}
 };
 
