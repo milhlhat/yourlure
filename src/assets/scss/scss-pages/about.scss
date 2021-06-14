@@ -1,6 +1,6 @@
 @import "../base/variable";
 .about {
-  & h1{
+  & h1 {
     text-align: center;
   }
   & .showcase-text {
@@ -13,11 +13,41 @@
   & .img-responsive {
     width: 100%;
   }
+  & .big-image {
+    overflow: overlay;
+  }
+  & .information-about {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    word-wrap: break-word;
+    & .info-detail {
+      & img {
+        border-radius: 50%;
+      }
+    }
+  }
 }
 @media screen and (min-width: $mobile-width - 1px) {
   .about {
     & .text-case {
       padding: 0.5rem;
+    }
+    & .info-detail {
+      width: 150px;
+      & img {
+        width: 150px;
+      }
+    }
+  }
+}
+@media screen and (max-width: $mobile-width - 1px) {
+  .about {
+    & .info-detail {
+      width: 100px;
+      & img {
+        width: 100px;
+      }
     }
   }
 }
@@ -26,12 +56,24 @@
     & .text-case {
       padding: 1.5rem;
     }
+    & .info-detail {
+      width: 150px;
+      & img {
+        width: 150px;
+      }
+    }
   }
 }
 @media screen and (min-width: $desktop-width - 1px) {
   .about {
     & .text-case {
       padding: 3rem;
+    }
+    & .info-detail {
+      width: 200px;
+      & img {
+        width: 200px;
+      }
     }
   }
 }

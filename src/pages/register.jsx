@@ -53,9 +53,9 @@ function RegisterBase(props) {
     password: "",
     rePassword: "",
   };
-  const equal=(a,b)=>{
-    return a===b;
-  }
+  const equal = (a, b) => {
+    return a === b;
+  };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
@@ -68,7 +68,7 @@ function RegisterBase(props) {
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
       .required("Không được để trống."),
     rePassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
       .required("Không được để trống."),
@@ -109,11 +109,13 @@ function RegisterBase(props) {
                   label="Nhập lại mật khẩu"
                   placeholder="Nhập lại mật khẩu"
                 ></FastField>
-                <YLButton
-                  type="submit"
-                  variant="primary"
-                  value="Đăng ký"
-                ></YLButton>
+                <div className="my-2">
+                  <YLButton
+                    type="submit"
+                    variant="primary"
+                    value="Đăng ký"
+                  ></YLButton>
+                </div>
               </Form>
             );
           }}

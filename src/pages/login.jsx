@@ -86,18 +86,18 @@ function Login(props) {
                       width={100}
                     ></YLButton>
                   </div>
+                  <div className="mt-2">
+                    <YLButton
+                      variant="warning"
+                      onClick={() => history.push("/user/register")}
+                      value="Đăng ký"
+                      width={100}
+                    />
+                  </div>
                 </Form>
               );
             }}
           </Formik>
-        </div>
-        <div className="mt-2">
-          <YLButton
-            variant="warning"
-            onClick={() => history.push("/user/register")}
-            value="Đăng ký"
-            width={100}
-          />
         </div>
         <div className="mt-2">
           <YLButton

@@ -7,6 +7,33 @@ function About(props) {
   return (
     <div className="container about">
       <h1>Giới thiệu</h1>
+      <div className="big-image">
+        <img
+          src="https://images.unsplash.com/photo-1580690497875-93aad5a9056d?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=400&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzNjU5ODQx&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=700"
+          alt=""
+        />
+      </div>
+      <div className="over-view">
+        
+      <p>
+          p Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Consequuntur non recusandae aspernatur unde sed temporibus omnis, sunt
+          ut neque repellat beatae rerum est deleniti sit quam itaque, ab
+          molestias exercitationem.
+        </p>
+        <p>
+          p Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Consequuntur non recusandae aspernatur unde sed temporibus omnis, sunt
+          ut neque repellat beatae rerum est deleniti sit quam itaque, ab
+          molestias exercitationem.
+        </p>
+        <p>
+          p Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Consequuntur non recusandae aspernatur unde sed temporibus omnis, sunt
+          ut neque repellat beatae rerum est deleniti sit quam itaque, ab
+          molestias exercitationem.
+        </p>
+      </div>
       <div className="row mt-5">
         <div className="col-12 col-md-6 order-md-1 my-auto showcase-text">
           <img
@@ -53,6 +80,28 @@ function About(props) {
             deserunt totam error nesciunt sequi asperiores quibusdam earum enim.
           </span>
         </div>
+      </div>
+      <div className="information-about mt-5">
+          <div className="info-detail mx-2">
+            <img src="https://source.unsplash.com/200x200/?perth,australia" alt="" />
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+          </div>
+          <div className="info-detail mx-2">
+            <img src="https://source.unsplash.com/200x200/?perth,australia" alt="" />
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+          </div>
+          <div className="info-detail mx-2">
+            <img src="https://source.unsplash.com/200x200/?perth,australia" alt="" />
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+          </div>
+          <div className="info-detail mx-2">
+            <img src="https://source.unsplash.com/200x200/?perth,australia" alt="" />
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+          </div>
+          <div className="info-detail mx-2">
+            <img src="https://source.unsplash.com/200x200/?perth,australia" alt="" />
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+          </div>
       </div>
     </div>
   );

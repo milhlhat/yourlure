@@ -12,8 +12,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    & .item-botton {
-    }
   }
 }
 @media screen and (max-width: 700px) {
@@ -21,7 +19,8 @@
     width: 0;
   }
   .login-form {
-    & h1,label {
+    & h1,
+    label {
       color: #fff;
     }
     width: 100vh;

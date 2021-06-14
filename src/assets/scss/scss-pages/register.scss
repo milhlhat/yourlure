@@ -1,22 +1,23 @@
 @import "../base/variable";
 .register {
-    display: flex;
+  display: flex;
   & .register-big-image {
     & img {
       width: 60vh;
     }
   }
   & .register-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    & .item-botton{
-    }
-    & .otp-form{
+    & .otp-form {
       display: flex;
       align-items: flex-end;
+    }
+    & button{
+      width: 100%;
     }
   }
 }
