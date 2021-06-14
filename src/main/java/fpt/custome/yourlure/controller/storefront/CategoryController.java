@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
-@RequestMapping(path = "/category")
+@RequestMapping(path = "/api/category")
 public interface CategoryController {
 
     @GetMapping("/all")

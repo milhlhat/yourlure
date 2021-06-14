@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
-@RequestMapping(path = "/product")
+@RequestMapping(path = "/api/product")
 public interface ProductController {
 
 //    @PostMapping("/all")

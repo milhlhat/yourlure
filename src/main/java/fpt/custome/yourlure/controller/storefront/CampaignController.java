@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
-@RequestMapping(path = "/campaign")
+@RequestMapping(path = "/api/campaign")
 public interface CampaignController {
 
     @GetMapping("/all")

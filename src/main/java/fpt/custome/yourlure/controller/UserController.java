@@ -32,9 +32,9 @@ public class UserController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 422, message = "Invalid username/password supplied")})
     public String login(//
-                        @ApiParam("Username") @RequestParam String username,
+                        @ApiParam("Phone") @RequestParam String phone,
                         @ApiParam("Password") @RequestParam String password) {
-        return userService.signin(username, password);
+        return userService.signin(phone, password);
     }
 
     @PostMapping("/signup")

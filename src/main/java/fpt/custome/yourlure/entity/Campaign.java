@@ -25,7 +25,7 @@ public class Campaign {
     private Long campaignID;
 
     @Nullable
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition="TEXT")
     private String description;
 
     @Nullable

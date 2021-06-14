@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @CrossOrigin
-@RequestMapping(path = "/fish")
+@RequestMapping(path = "/api/fish")
 public interface FishController {
 
     @GetMapping("/all")
