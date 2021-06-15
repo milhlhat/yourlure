@@ -9,13 +9,19 @@ import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.repositories.ProductRepos;
 import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,5 +93,25 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<Boolean> removeCategory(Long id) {
         Boolean check = productService.remove(id);
         return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Resource> download(String path) {
+        try{
+            java.io.File file = ResourceUtils.getFile("classpath:" + path);
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+            return ResponseEntity.ok()
+//                    .headers(headers)
+//                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound()
+                    .build();
+        }
+
+
     }
 }

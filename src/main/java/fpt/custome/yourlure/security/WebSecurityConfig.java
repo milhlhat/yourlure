@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/signup").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/api/**").permitAll()
+//                .antMatchers("/api/product/model-download").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
@@ -49,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Optional, if you want to test the API from a browser
         // http.httpBasic();
     }
+
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {

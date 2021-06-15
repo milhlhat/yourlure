@@ -5,7 +5,6 @@ import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInsta
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -14,13 +13,12 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,9 +61,12 @@ public class DriveService {
 
     public static String uploadFile(Drive service, String path) throws IOException {
         File fileMetadata = new File();
-        fileMetadata.setName("photo.jpg");
+        fileMetadata.setName(path.substring(path.lastIndexOf("/") + 1));
+//        fileMetadata.setShared(true);
+        fileMetadata.setMimeType("application/vnd.google-apps.drive-sdk");
+
         java.io.File filePath = new java.io.File(path);
-        FileContent mediaContent = new FileContent("image/jpeg", filePath);
+        FileContent mediaContent = new FileContent("glb/gltf", filePath);
         File file = service.files().create(fileMetadata, mediaContent)
                 .setFields("id")
                 .execute();
@@ -73,17 +74,52 @@ public class DriveService {
         return file.getId();
     }
 
+    public static String createFolder(Drive driveService) throws IOException {
+        File fileMetadata = new File();
+        fileMetadata.setName("3d_Model.glb");
+        fileMetadata.setMimeType("application/vnd.google-apps.folder");
 
-    public static void main(String... args) throws IOException, GeneralSecurityException {
-        // Build a new authorized API client service.
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
+        File file = driveService.files().create(fileMetadata)
+                .setFields("id")
+                .execute();
+        return file.getId();
+    }
 
-        // upload a file
-        String fileUploadId = uploadFile(service, "/Users/ngominhthang/Documents/ki 9/Capstone project/src/main/resources/conca.jpeg");
-        String image_url = "https://drive.google.com/uc?export=view&id=" + fileUploadId;
-        System.out.println(image_url);
+    public static List<String> uploadFileToFolder(Drive driveService, String folderId, List<String> filePaths) throws IOException {
+        List<String> uploadFileIds = new ArrayList<>();
+
+        for(String path : filePaths){
+            File fileMetadata = new File();
+            fileMetadata.setName(path.substring(path.lastIndexOf("/") + 1));
+            fileMetadata.setParents(Collections.singletonList(folderId));
+            fileMetadata.setShared(true);
+            java.io.File filePath = new java.io.File(path);
+            FileContent mediaContent = new FileContent("image/jpeg", filePath);
+            File file = driveService.files().create(fileMetadata, mediaContent)
+                    .setFields("id, parents")
+                    .execute();
+            System.out.println("File ID: " + file.getId());
+        }
+       return uploadFileIds;
+    }
+
+
+//    public static void main(String... args) throws IOException, GeneralSecurityException {
+//        // Build a new authorized API client service.
+//        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+//        Drive service = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+//                .setApplicationName(APPLICATION_NAME)
+//                .build();
+//
+//        // upload a file
+//        String fileUploadId = uploadFile(service, "/Users/ngominhthang/Documents/Blender_Project/model_activated/gltf/model_1.glb");
+//        String image_url = "https://drive.google.com/uc?export=view&id=" + fileUploadId;
+//        System.out.println(image_url);
+//    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        java.io.File file = ResourceUtils.getFile("classpath:model/model_1.glb");
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        System.out.println(resource);
     }
 }

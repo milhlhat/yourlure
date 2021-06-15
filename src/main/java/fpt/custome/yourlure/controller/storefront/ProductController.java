@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,8 @@ public interface ProductController {
 
     @DeleteMapping("/remove{id}")
     ResponseEntity<Boolean> removeCategory(@PathVariable Long id);
+
+    @GetMapping("/model-download")
+    ResponseEntity<Resource> download(String path);
 
 }
