@@ -1,5 +1,7 @@
+@import '../base/variable';
 .word-wrap{
     word-wrap: break-word;
 }
-.title{
+.footer{
+    border-top: 1px solid $primary ;
 }

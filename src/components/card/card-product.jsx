@@ -22,12 +22,13 @@ function CardProduct(props) {
 									? product.imageCollection[0].linkImage
 									: ''
 							}
+							
 						/>
 					</div>
 
-					<div className="d-flex flex-column card-info w-100 thumb text-center align-items-center ">
+					<div className="d-flex flex-column card-info w-100 thum p-2 pb-4">
 						<span className="text-color text-small">{product.brand}</span>
-						<span className="mt-2 text-name-product">{product.productName ? product.productName : ''}</span>
+						<span className="mt-2 text-name-product text-ellipsis">{product.productName ? product.productName : ''}</span>
 						<span className="text-color-primary">
 							{!product
 								? 'N/A'

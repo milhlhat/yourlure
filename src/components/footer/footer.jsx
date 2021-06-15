@@ -3,7 +3,7 @@ import 'assets/scss/scss-components/footer.scss';
 
 function Footer(props) {
 	return (
-		<div className="bg-white mt-4">
+		<div className="bg-white mt-4 footer">
 			<footer id="footer" className="container word-wrap pt-5 pb-5">
 				<div className="d-flex row">
 					<div className="col-6 col-sm-3 d-flex flex-column">

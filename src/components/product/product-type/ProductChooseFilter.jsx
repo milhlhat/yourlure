@@ -189,7 +189,7 @@ function ProductChooseFilter(props) {
 						</label>
 					</div>
 					<div className="button-submit m-2 d-flex justify-content-center">
-						<YLButton type="submit" variant="primary" value="Tìm kiếm" />
+						<YLButton type="submit" width={100} variant="primary" value="Tìm kiếm" />
 					</div>
 				</div>
 			</form>

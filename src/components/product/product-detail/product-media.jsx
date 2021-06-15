@@ -4,20 +4,31 @@ import 'assets/scss/scss-components/product/product-detail.scss';
 import { useHistory } from 'react-router';
 
 function ProductImage(props) {
-	let { data ,product} = props;
-	const isCustome=true;
+	let { product } = props;
+	const isCustome = true;
 	const [selectImg, setSelectImg] = useState(0);
 	const history = useHistory();
-	 
-	function goToCustomize(){
-		history.push('/product/customize/2')
+
+	function goToCustomize() {
+		history.push(`/product/customize/${product.productId}`);
 	}
 	return (
 		<div className="product-media d-flex flex-column m-4">
-			{console.log(product? product.imageCollection:'null')}
-			<div className='big-image object-fit'>
-				<button className={`big-image-edit ${product?product.customizable?'':'d-none':''}`} onClick={goToCustomize} hidden={!isCustome}><i class="fa fa-pencil"></i></button>
-			<img src={product? product.imageCollection[selectImg].linkImage:''} height={350} className="" alt="Ảnh sản phẩm"/>
+			{console.log(product ? product.imageCollection : 'null')}
+			<div className="big-image object-fit">
+				<button
+					className={`big-image-edit ${product ? (product.customizable ? '' : 'd-none') : ''}`}
+					onClick={goToCustomize}
+					hidden={!isCustome}
+				>
+					<i class="fa fa-pencil"></i>
+				</button>
+				<img
+					src={product ? product.imageCollection[selectImg].linkImage : ''}
+					height={350}
+					className=""
+					alt="Ảnh sản phẩm"
+				/>
 			</div>
 			<div className="gallery mt-1">
 				{product &&
@@ -27,7 +38,7 @@ function ProductImage(props) {
 							key={i}
 							onClick={() => setSelectImg(i)}
 						>
-							<img width={100} src={item.linkImage} />
+							<img width={60} src={item.linkImage} />
 						</div>
 					))}
 			</div>
