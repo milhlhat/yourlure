@@ -2,7 +2,7 @@ import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Environment, useGLTF, OrbitControls, useTexture, Loader } from '@react-three/drei';
 import * as THREE from 'three';
-import m3d from 'assets/3d-models/moi_thia_6.glb';
+import m3d from 'assets/3d-models/model_4.glb';
 import whiteImg from 'assets/images/white-img.jpg';
 import 'assets/scss/scss-pages/customize-lure.scss';
 import TabSelectCustomize from 'components/tab-select-customize/TabSelectCustomize';
