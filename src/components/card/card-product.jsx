@@ -17,7 +17,11 @@ function CardProduct(props) {
 					<div className="thumb">
 						<img
 							className="card-img-top"
-							src={product.imageCollection ? product.imageCollection[0].linkImage : ''}
+							src={
+								product.imageCollection && product.imageCollection.length > 0
+									? product.imageCollection[0].linkImage
+									: ''
+							}
 						/>
 					</div>
 
