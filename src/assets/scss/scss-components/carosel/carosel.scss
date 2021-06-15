@@ -1,14 +1,21 @@
-.carousel{
+.carosel-custome{
+    display: block !important;
     width: 100%;
-    & .color-black{
-        color: black;
-        font-weight: bold;
+    & ul{
+        & li{
+            display: flex;
+            justify-content: center;
+        }
     }
-    & .item-center {
-        display: flex;
-        justify-content: center;
-    }
-    & .carousel-control-next, .carousel-control-prev{
-        width: fit-content;
-    }
+    // & .color-black{
+    //     color: black;
+    //     font-weight: bold;
+    // }
+    // & .item-center {
+    //     display: flex;
+    //     justify-content: center;
+    // }
+    // & .carousel-control-next, .carousel-control-prev{
+    //     width: fit-content;
+    // }
 }

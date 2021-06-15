@@ -22,6 +22,7 @@
     "react-hook-form": "^7.8.4",
     "react-js-pagination": "^3.0.3",
     "react-magnifier": "^3.0.4",
+    "react-multi-carousel": "^2.6.3",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
