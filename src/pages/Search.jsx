@@ -4,25 +4,26 @@ import ProductChooseFilter from 'components/product/product-type/ProductChooseFi
 import Sort from 'components/orther/Sort';
 import ProductShow from 'components/product/product-type/ProductShow';
 import { useSelector } from 'react-redux';
-
+import ProductBanner from 'components/product/ProductBanner';
 
 function SearchProduct(props) {
-    const products = useSelector((state) => state.productFilter.data);
-    
-    return (
-        <div className="container search-type mt-2">
-            <h1>Sản phẩm</h1>
-            <div className="row">
-                <div className="col-md-3 col-sm-12">
-                <ProductChooseFilter/>
-                </div>
-                <div className="col-md-9 col-sm-12">
-                    <Sort  />
-                <ProductShow products={products}/>
-                </div>
-            </div>
-        </div>
-    );
+	const products = useSelector((state) => state.productFilter.data);
+
+	return (
+		<div className="container search-type mt-2">
+			<ProductBanner title="Sản phẩm" />
+
+			<div className="row">
+				<div className="col-md-3 col-sm-12">
+					<ProductChooseFilter />
+				</div>
+				<div className="col-md-9 col-sm-12">
+					<Sort />
+					<ProductShow products={products} />
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default SearchProduct;

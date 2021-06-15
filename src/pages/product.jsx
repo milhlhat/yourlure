@@ -3,7 +3,8 @@ import ProductChooseFilter from 'components/product/product-type/ProductChooseFi
 import 'assets/scss/scss-components/product/product-type.scss';
 import ProductByCate from 'components/product/product-type/ProductByCate';
 import { getBestSellerCategory } from 'api/category-api';
-
+import ProductBanner from 'components/product/ProductBanner';
+import YLBreadCrumbs from 'components/custom-field/YLBreadCrumbs';
 Product.propTypes = {};
 
 function Product(props) {
@@ -33,7 +34,8 @@ function Product(props) {
 
 	return (
 		<div className="container product-type mt-2">
-			<h1>Danh mục bán chạy</h1>
+			<ProductBanner title="Danh mục sản phẩm" />
+			<YLBreadCrumbs/>
 			<div className="row">
 				<div className="col-md-3 col-sm-12">
 					<ProductChooseFilter />
