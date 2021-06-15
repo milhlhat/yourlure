@@ -36,7 +36,7 @@ function ProductByCate(props) {
 		<div className="product-by-cate">
 			{cates &&
 				cates.data.map((cate, index) => (
-					<div key={index} className=" bg-white mb-5 p-2">
+					<div key={index} className=" bg-white mb-5 p-2 bg-shadow">
 						<div className="d-flex justify-content-between align-items-center flex-wrap px-2">
 							<span className=" title">{cate.categoryName}</span>
 

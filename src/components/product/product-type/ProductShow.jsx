@@ -26,7 +26,7 @@ function ProductShow(props) {
 		return <ErrorLoad />;
 	} else
 		return (
-			<div className="product-show mt-3 bg-white">
+			<div className="product-show mt-3 bg-white bg-shadow">
 				<div className="product-list">
 					{products.productOutList.length <= 0 && <p>Không có sản phẩm </p>}
 					{products.productOutList &&

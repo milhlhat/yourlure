@@ -1,15 +1,18 @@
 @import "_variable.scss";
-body{
-	background-color: #F5F5F5;
+body {
+  background-color: #f5f5f5;
 }
-.bg-white{
-	background-color: #fff;
+.bg-white {
+  background-color: #fff;
+}
+.bg-shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 }
 .main-container {
   display: flex;
   flex-direction: column;
   min-height: 55vh;
-//   background-color: #fff;
+  //   background-color: #fff;
   & .main {
     flex: 1;
   }

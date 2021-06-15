@@ -72,8 +72,8 @@ function Home(props) {
 	} else
 		return (
 			<div className="container home-page">
-				<div className="banner">
-					<div className="img-banner">
+				<div className="banner ">
+					<div className="img-banner bg-shadow">
 						<img src={banner} alt="image" />
 					</div>
 
@@ -89,18 +89,18 @@ function Home(props) {
 						</div>
 					</div>
 				</div>
-				<div className="top-product-sale bg-white p-2">
-					<h2 className="ms-md-5 ms-2">Sản phẩm bán chạy</h2>
-					<div className="ms-md-5 ms-2 bottom-line"></div>
+				<div className="top-product-sale bg-white bg-shadow p-2">
+					<h3 className="ms-md-4 ms-2">Sản phẩm bán chạy</h3>
+					<div className="ms-md-4 ms-2 bottom-line"></div>
 					<div className="top-product-show mt-5 mb-3">
 						{productListBestSeller.list.length > 0 && (
 							<Carosel products={productListBestSeller.list} caroselId="bestsaleproduct" />
 						)}
 					</div>
 				</div>
-				<div className="top-product-new bg-white p-3 mt-5 mb-3">
-					<h2 className="ms-md-5 ms-2">Sản phẩm mới </h2>
-					<div className="ms-md-5 ms-2 bottom-line"></div>
+				<div className="top-product-new bg-white bg-shadow p-3 mt-5 mb-3">
+					<h3 className="ms-md-4 ms-2">Sản phẩm mới </h3>
+					<div className="ms-md-4 ms-2 bottom-line"></div>
 					<div className="top-product-show mt-5 mb-3">
 						{productListNewest.list.length > 0 && (
 							<Carosel products={productListNewest.list} caroselId="newproduct" />

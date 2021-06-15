@@ -30,7 +30,7 @@ function Sort(props) {
 	}
 
 	return (
-		<div className="bg-white d-flex align-items-center p-2">
+		<div className="bg-white bg-shadow d-flex align-items-center p-2">
 			<div className="d-flex align-items-center ">
 				<span className="text-nowrap ">Sắp xếp theo: </span>
 
