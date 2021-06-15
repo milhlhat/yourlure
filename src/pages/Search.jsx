@@ -11,6 +11,8 @@ function SearchProduct(props) {
 
 	return (
 		<div className="container search-type mt-2">
+			<YLBreadCrumbs children={[{name:'Tìm kiếm'}]}/>
+
 			<ProductBanner title="Sản phẩm" />
 
 			<div className="row">

@@ -35,7 +35,7 @@ function Product(props) {
 	return (
 		<div className="container product-type mt-2">
 			<ProductBanner title="Danh mục sản phẩm" />
-			<YLBreadCrumbs/>
+			<YLBreadCrumbs children={[{name:'Sản phẩm'}]}/>
 			<div className="row">
 				<div className="col-md-3 col-sm-12">
 					<ProductChooseFilter />

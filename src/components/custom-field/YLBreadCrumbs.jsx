@@ -2,21 +2,26 @@ import React from 'react';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { Link } from 'react-router-dom';
 import 'assets/scss/scss-components/custom-field/YLBreadcrumbs.scss';
-function handleClick(event) {
-	// event.preventDefault();
-	// console.info('You clicked a breadcrumb.');
-}
+
 function YLBreadCrumbs(props) {
+	const children = props.children;
+	 
 	return (
-		<Breadcrumbs maxItems={3} aria-label="breadcrumb" className="yl-breadcrumb ">
-			<Link className="link" to="#">
-				TRANG CHỦ
-			</Link>
-			<Link className="link" to="#">Catalog</Link>
-			<Link  className="link"to="#">Accessories</Link>
+		<Breadcrumbs maxItems={3} aria-label="breadcrumb" className="yl-breadcrumb py-3">
 			<Link className="link" to="/home">
-				New Collection
+				Trang chủ
 			</Link>
+			{children &&
+				children.length > 0 &&
+				children.map((item, i) => (
+					<Link
+						className={`link ${i === children.length - 1 ? 'current' : ''}`}
+						to={item.path}
+						key={`breadcrumbs-${i}`}
+					>
+						{item.name}
+					</Link>
+				))}
 		</Breadcrumbs>
 	);
 }
