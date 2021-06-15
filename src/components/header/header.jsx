@@ -105,13 +105,13 @@ function Header(props) {
 									Tùy biến
 								</Link>
 							</div>
-							<div>
+							<div className={'' + path.indexOf('campaign') > -1 ? 'active' : ''}>
 								<Link className="nav-link item-hover" to="/campaign">
 									Sự kiện
 								</Link>
 							</div>
-							<div>
-								<Link className="nav-link item-hover" to="/login">
+							<div className={'' + path.indexOf('about') > -1 ? 'active' : ''}>
+								<Link className="nav-link item-hover" to="/about">
 									About
 								</Link>
 							</div>

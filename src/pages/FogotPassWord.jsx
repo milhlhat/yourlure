@@ -134,6 +134,7 @@ function OTPForm(props) {
             return (
               <Form>
                 <div className="otp-form my-2">
+                  
                   <FastField
                     name="otp"
                     component={InputField}

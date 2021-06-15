@@ -4,6 +4,8 @@ import * as Yup from "yup";
 import { FastField, Form, Formik } from "formik";
 import InputField from "components/custom-field/YLInput";
 import YLButton from "components/custom-field/YLButton";
+import banner from 'assets/images/urban-fishing-in-boston-social.jpg';
+import activity from 'assets/images/g1.jpg';
 
 function Campaign(props) {
   //constructor value for formik field
@@ -22,7 +24,7 @@ function Campaign(props) {
       <div className="banner">
         <img
           className="img-banner"
-          src="https://cdn11.bigcommerce.com/s-55834/images/stencil/original/carousel/31/fishing-tackle-shop38932.jpg"
+          src={banner}
           alt=""
         />
         <div className="countdown">
@@ -94,39 +96,39 @@ function Campaign(props) {
         <h1>Hình ảnh nổi bật</h1>
         <div className="list-img">
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
           <img
-            src="https://images.unsplash.com/photo-1591280063444-d3c514eb6e13?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjIzMzMyMjA5&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300"
+            src={activity}
             alt=""
           />
         </div>

@@ -1,3 +1,4 @@
+@import '../base/variable';
 .home-page {
     display: flex;
     flex-direction: column;
@@ -17,6 +18,10 @@
       height: 50px;
       width: 150px;
     }
+  }
+  & .bottom-line{
+    width: 100px;
+    border-bottom: 2px solid $primary;
   }
   & .top-product-sale {
     

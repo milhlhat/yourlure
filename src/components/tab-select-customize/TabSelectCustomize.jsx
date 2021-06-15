@@ -6,6 +6,7 @@ import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
 import { setMaterialId } from 'redux/customize-action/customize-id';
 import { HexColorPicker, RgbaColorPicker } from 'react-colorful';
+import 'assets/scss/scss-components/customize-lure.scss';
 import { setListName } from 'redux/customize-action/customize-info';
 
 function TabSelectCustomize(props) {
@@ -66,11 +67,11 @@ function SwitchMaterial(props) {
 	}
 	return (
 		<div className="d-flex align-items-center justify-content-center switch">
-			<button className="border-0 bg-transparent pointer" onClick={() => decreaseMId()}>
+			<button className="border-0 bg-transparent pointer switch-button" onClick={() => decreaseMId()}>
 				<i className="fa fa-angle-left"></i>
 			</button>
 			<span className="mx-3">{material.length > 0 && material[mId].name}</span>
-			<button className="border-0 bg-transparent pointer" onClick={() => increaseMId()}>
+			<button className="border-0 bg-transparent pointer switch-button" onClick={() => increaseMId()}>
 				<i className="fa fa-angle-right"></i>
 			</button>
 		</div>
@@ -100,7 +101,7 @@ function ImgChoices(props) {
 				<>
 					<div className="img-option">
 						{images.map((item, i) => (
-							<img src={item} key={i} width={30} height={30} onClick={() => handleChangeImg(item)} />
+							<img src={item} key={i} width={50} height={50} onClick={() => handleChangeImg(item)} />
 						))}
 					</div>
 					<div className="d-flex flex-column mt-3 align-items-center">

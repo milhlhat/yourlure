@@ -53,12 +53,7 @@ function ProductAction(props) {
         </div>
       </div>
       <div className="product-content">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Necessitatibus aliquam sapiente dignissimos quasi laudantium
-          doloribus, eligendi praesentium ab magni velit id modi nulla autem ea
-          natus aspernatur officiis ullam accusamus!
-        </p>
+        <span>{product?product.description:''}</span>
       </div>
       <div className="product-choose-color">
         <h5>Mã màu:</h5>

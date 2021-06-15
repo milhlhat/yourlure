@@ -1,0 +1,24 @@
+@import "../base/variable";
+.list-group .picker {
+}
+.tab-custom {
+  & .tab-menu {
+    & .selected {
+      color: $primary;
+    }
+  }
+  & .switch-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .customize {
+    & .picker {
+      display: none;
+    }
+  }
+  .switch-button {
+    display: block !important;
+  }
+}

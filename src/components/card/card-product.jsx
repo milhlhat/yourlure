@@ -27,8 +27,8 @@ function CardProduct(props) {
 
 					<div className="d-flex flex-column card-info w-100 thumb text-center align-items-center ">
 						<span className="text-color text-small">{product.brand}</span>
-						<span className="mt-2">{product.productName ? product.productName : ''}</span>
-						<span className="text-color">
+						<span className="mt-2 text-name-product">{product.productName ? product.productName : ''}</span>
+						<span className="text-color-primary">
 							{!product
 								? 'N/A'
 								: Number(product.defaultPrice).toLocaleString(undefined, {

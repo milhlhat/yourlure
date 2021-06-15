@@ -16,14 +16,23 @@ function ProductDetail(props) {
   const productByCate = products.filter((value) => value.categoryId == 1);
   const [product, setProduct] = useState(null);
 
+  const [producDetailtList, setProductDetailListt] = useState({
+    list: null,
+    isFetched: false,
+    failFetch: false,
+  });
   const fetchProduct = async () => {
     try {
       const response = await ProductAPI.getProductByID(props.match.params.id);
       if (response.error) {
+        setProductDetailListt({ ...producDetailtList, failFetch: true });
         throw new Error(response.error);
       } else {
-        console.log(response);
-        setProduct(response);
+        setProductDetailListt({
+          list: response,
+          isFetched: true,
+          failFetch: false,
+        });
       }
     } catch (error) {
       console.log("fail to fetch customer list");
@@ -31,23 +40,23 @@ function ProductDetail(props) {
   };
 
   useEffect(() => {
-    // fetchProduct();
+    fetchProduct();
     // console.log("detail");
     // console.log(product);
     // return (
     //   fetchProduct()
     // );
-    setProduct(products[0]);
-    console.log(product);
+    // setProduct(products[0]);
+    // console.log(product);
   }, []);
   return (
     <div className="">
       <div className="d-flex m-2 row">
         <div className="bg-white col-md-6 col-sm-12">
-          <ProductImage data={dummyimg} />
+          <ProductImage product={producDetailtList.list} data={dummyimg} />
         </div>
         <div className="bg-white col-md-6 col-sm-12">
-          <ProductAction product={product} />
+          <ProductAction product={producDetailtList.list} />
         </div>
       </div>
 

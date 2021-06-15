@@ -33,11 +33,11 @@ function ProductByCate(props) {
 		fetchFilter(dispatch, { ...productFilter, listCateId: listCategorySelect });
 	}
 	return (
-		<div className="bg-white">
+		<div className="product-by-cate">
 			{cates &&
 				cates.data.map((cate, index) => (
-					<div key={index}>
-						<div className="d-flex justify-content-between align-items-center flex-wrap">
+					<div key={index} className=" bg-white mb-5 p-2">
+						<div className="d-flex justify-content-between align-items-center flex-wrap px-2">
 							<span className=" title">{cate.categoryName}</span>
 
 							<div>
@@ -46,10 +46,13 @@ function ProductByCate(props) {
 								</YLButton>
 							</div>
 						</div>
+						<div className="flex-card-row">
+							
 						<div className="product-card-row mx-xl-5">
 							{cate.productCollection.map((product, indexx) => (
 								<React.Fragment key={indexx}>{<CardProduct product={product} />}</React.Fragment>
 							))}
+						</div>
 						</div>
 					</div>
 				))}
