@@ -5,6 +5,7 @@ import Sort from 'components/orther/Sort';
 import ProductShow from 'components/product/product-type/ProductShow';
 import { useSelector } from 'react-redux';
 import ProductBanner from 'components/product/ProductBanner';
+import YLBreadCrumbs from 'components/custom-field/YLBreadCrumbs';
 
 function SearchProduct(props) {
 	const products = useSelector((state) => state.productFilter.data);
