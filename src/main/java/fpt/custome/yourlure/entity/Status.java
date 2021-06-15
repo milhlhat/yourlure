@@ -17,16 +17,21 @@ public class Status {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "statusID")
-    private Long statusID;
+    @Column(name = "statusId")
+    private Long statusId;
 
     @Nullable
     @Column(name = "statusName")
     private String statusName;
 
     @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
+
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderID")
+    @JoinColumn(name = "orderId")
     private Order order;
 
 }

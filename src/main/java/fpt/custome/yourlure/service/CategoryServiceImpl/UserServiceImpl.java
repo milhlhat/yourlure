@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
         @Override
         public List<UserAddressDtoOut> getAddressUser (Long id){
             List<UserAddressDtoOut> result = new ArrayList<>();
-            List<UserAddress> list = userAddressRepos.findAllByUser_UserID(id);
+            List<UserAddress> list = userAddressRepos.findAllByUser_UserId(id);
             for (UserAddress userAddress : list) {
                 UserAddressDtoOut dtoOut = new UserAddressDtoOut();
                 dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
                 if (id != null && userAddressInput != null) {
                     if (userAddressRepos.findById(id).isPresent()) {
                         UserAddress userAddressUpdate = mapper.map(userAddressInput, UserAddress.class);
-                        userAddressUpdate.setUserAddressID(id);
+                        userAddressUpdate.setUserAddressId(id);
                         userAddressRepos.save(userAddressUpdate);
                     } else {
                         return false;

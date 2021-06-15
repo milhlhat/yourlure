@@ -3,7 +3,9 @@ package fpt.custome.yourlure.service.CategoryServiceImpl;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
+import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.CategoryRepos;
+import fpt.custome.yourlure.repositories.ProductJPARepos;
 import fpt.custome.yourlure.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepos categoryRepos;
+
+    @Autowired
+    private ProductJPARepos productJPARepos;
 
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();
@@ -47,8 +52,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDtoOutWithCategory> getBestSellerWithCategory() {
+//        List<CategoryDtoOutWithCategory> result = new ArrayList<>();
+//        List<Category> list = categoryRepos.getBestSellerWithCategory();
+//        for (Category item : list) {
+//            CategoryDtoOutWithCategory dtoOut = mapper.map(item, CategoryDtoOutWithCategory.class);
+//            result.add(dtoOut);
+//        }
+//        return result;
+
         List<CategoryDtoOutWithCategory> result = new ArrayList<>();
-        List<Category> list = categoryRepos.getBestSellerWithCategory();
+        List<Category> list = categoryRepos.getBestSellerCategory();
+        //set lai danh sach product theo category
+        for (Category item : list) {
+            List<Product> productCollection = productJPARepos.bestSellerProductByCategory(item.getCategoryId());
+            item.setProductCollection(productCollection);
+        }
+        // map by to CategoryDtoOutWithCategory to return
         for (Category item : list) {
             CategoryDtoOutWithCategory dtoOut = mapper.map(item, CategoryDtoOutWithCategory.class);
             result.add(dtoOut);

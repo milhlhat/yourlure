@@ -19,21 +19,20 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "imageId")
+    private Long imageId;
 
     @Nullable
     @Column(name = "linkImage")
     private String linkImage;
 
     @JsonIgnore
-    @Nullable
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = true)
+    @JoinColumn(name = "productId")
     private Product product;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "campaignid", nullable = true)
+    @JoinColumn(name = "campaignId")
     private Campaign campaign;
 }

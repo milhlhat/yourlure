@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Optional<CartDtoOut> getCart(Long userId) {
         //TODO: validate
-        Optional<Cart> cart = cartRepos.findCartByUserUserID(userId);
+        Optional<Cart> cart = cartRepos.findCartByUserUserId(userId);
         if (cart.isPresent()) {
             CartDtoOut cartDtoOut = mapper.map(cart.get(), CartDtoOut.class);
             return Optional.of(cartDtoOut);
@@ -48,7 +48,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Boolean removeProduct(Long cartId, Long cartItemId) {
         //TODO: cần check thêm dk xoá là variant
-        cartItemRepos.deleteCartItemsByCart_CartID(cartId);
+        cartItemRepos.deleteCartItemsByCart_CartId(cartId);
         return true;
     }
 

@@ -21,8 +21,8 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderID")
-    private Long orderID;
+    @Column(name = "orderId")
+    private Long orderId;
 
     @Nullable
     @Column(name = "orderDate")
@@ -46,13 +46,13 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "paymentID", nullable = false)
+    @JoinColumn(name = "paymentId", nullable = false)
     private Payment payment;
 
     @JsonIgnore
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "userID")
+    @JoinColumn(name = "userId")
     private User User;
 
     @JsonIgnore

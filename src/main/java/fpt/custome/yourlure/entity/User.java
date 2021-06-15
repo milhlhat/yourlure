@@ -22,8 +22,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userID")
-    private Long userID;
+    @Column(name = "userId")
+    private Long userId;
 
     @Nullable
     @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
@@ -60,6 +60,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến user ở trong status.
+    //1 user có nhiều status
+    private Collection<Status> statusCollection;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -17,25 +17,26 @@ public class ProductReposImpl implements ProductRepos {
     public Query getProductFilter(Filter filter) {
         StringBuilder query = new StringBuilder();
         query.append("SELECT  DISTINCT tbl_products.*, SUM(tbl_order_line.quantity)AS sumQuantity FROM tbl_products\n");
-        query.append("left join tbl_category ON tbl_products.categoryid = tbl_category.categoryid \n");
-        query.append("left join tbl_fish_product ON tbl_products.productid = tbl_fish_product.productid \n");
-        query.append("left JOIN tbl_fish ON tbl_fish_product.fishid = tbl_fish.fishid \n");
-        query.append("LEFT JOIN tbl_variants ON tbl_products.productid = tbl_variants.productid\n");
-        query.append("LEFT JOIN tbl_order_line ON tbl_order_line.variantid = tbl_variants.variantid \n");
-        query.append("LEFT JOIN tbl_orders ON tbl_orders.orderid = tbl_order_line.oderid \n");
+        query.append("left join tbl_category ON tbl_products.category_id = tbl_category.category_id \n");
+        query.append("left join tbl_fish_product ON tbl_products.product_id = tbl_fish_product.product_id \n");
+        query.append("left JOIN tbl_fish ON tbl_fish_product.fish_id = tbl_fish.fish_id \n");
+        query.append("LEFT JOIN tbl_variants ON tbl_products.product_id = tbl_variants.product_id\n");
+        query.append("LEFT JOIN tbl_order_line ON tbl_order_line.variant_id = tbl_variants.variant_id \n");
+        query.append("LEFT JOIN tbl_orders ON tbl_orders.order_id = tbl_order_line.oder_id \n");
+        query.append("where 1 = 1 \n");
         if (!filter.getListCateId().isEmpty()) {
-            query.append(" AND tbl_category.categoryid IN (:cateIds) \n");
+            query.append(" and tbl_category.category_id IN (:cateIds) \n");
         }
         if (!filter.getListFishId().isEmpty()) {
-            query.append(" AND tbl_fish.fishid IN (:fishIds) \n");
+            query.append(" and tbl_fish.fish_id IN (:fishIds) \n");
         }
         if (filter.getCustom()) {
-            query.append(" AND tbl_products.customizable = true \n");
+            query.append(" and tbl_products.customizable = true \n");
         }
         if (!filter.getKeyword().isEmpty()) {
-            query.append("AND UPPER( tbl_products.product_name) like UPPER(:keyword) \n");
+            query.append(" and UPPER( tbl_products.product_name) like UPPER(:keyword) \n");
         }
-        query.append(" GROUP BY tbl_products.productid,tbl_products.product_name \n");
+        query.append(" GROUP BY tbl_products.product_id,tbl_products.product_name \n");
 
         /**
          * isAsc: true: tăng dần
@@ -47,7 +48,7 @@ public class ProductReposImpl implements ProductRepos {
          * default_price: xếp theo giá
          */
         if (!(filter.getSortBy().isEmpty())) {
-            query.append("order by " + filter.getSortBy());
+            query.append(" order by " + filter.getSortBy());
             if (!filter.getIsAsc()){
                 query.append(" DESC");
             }
@@ -56,7 +57,7 @@ public class ProductReposImpl implements ProductRepos {
         Query result = em.createNativeQuery(query.toString(),Product.class);
         if (!filter.getListCateId().isEmpty()) result.setParameter("cateIds", filter.getListCateId());
         if (!filter.getListFishId().isEmpty()) result.setParameter("fishIds", filter.getListFishId());
-        if (!filter.getKeyword().isEmpty()) result.setParameter("keyword", "%" + filter.getKeyword() + "%");
+        if (!filter.getKeyword().isEmpty()) result.setParameter("keyword", "%" + filter.getKeyword().trim() + "%");
         return result;
     }
 }

@@ -19,44 +19,20 @@ public class Variant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "variantID")
-    private Long variantID;
+    @Column(name = "variantId")
+    private Long variantId;
 
     @Nullable
-    @Column(name = "variantsType")
-    private String variantsType;
-
-    @Nullable
-    @Column(name = "length")
-    private Float length;
-
-    @Nullable
-    @Column(name = "weight")
-    private Float weight;
-
-    @Nullable
-    @Column(name = "material")
-    private String material;
-
-    @Nullable
-    @Column(name = "hookSize")
-    private Float hookSize;
-
-    @Nullable
-    @Column(name = "deepDiving")
-    private String deepDiving;
-
-    @Nullable
-    @Column(name = "newPrice")
-    private Float newPrice;
+    @Column(name = "backgroundColor")
+    private String backgroundColor;
 
     @Nullable
     @Column(name = "quantity")
     private Integer quantity;
 
     @Nullable
-    @Column(name = "backgroundColor")
-    private String backgroundColor;
+    @Column(name = "newPrice")
+    private Float newPrice;
 
     @Nullable
     @Column(name = "imageUrl")
@@ -64,7 +40,7 @@ public class Variant {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = false)
+    @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
 }

@@ -11,13 +11,13 @@ public interface CartItemRepos extends JpaRepository<CartItem, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM tbl_cart_item WHERE cartid = ?1 ",
+    @Query(value = "DELETE FROM tbl_cart_item WHERE cart_id = ?1 ",
             nativeQuery = true)
-    void deleteCartItemsByCart_CartID(Long cartID);
+    void deleteCartItemsByCart_CartId(Long cartId);
 
     @Transactional
     @Modifying
-    @Query(value = "update tbl_cart_item set quantity = ?1 where cartId = ?2 and cart_item_id = ?3",
+    @Query(value = "update tbl_cart_item set quantity = ?1 where cart_id = ?2 and cart_item_id = ?3",
             nativeQuery = true)
     void updateQuantityCartItem(int quantity,
                                 Long cartId,

@@ -20,8 +20,8 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "paymentID")
-    private Long paymentID;
+    @Column(name = "paymentId")
+    private Long paymentId;
 
     @Nullable
     @Column(name = "payment")

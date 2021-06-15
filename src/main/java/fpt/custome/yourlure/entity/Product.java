@@ -20,8 +20,8 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "productID")
-    private Long productID;
+    @Column(name = "productId")
+    private Long productId;
 
     @Nullable
     @Column(name = "productName")
@@ -36,6 +36,38 @@ public class Product {
     private String description;
 
     @Nullable
+    @Column(name = "minWeight")
+    private Float minWeight;
+
+    @Nullable
+    @Column(name = "weight")
+    private Float defaultWeight;
+
+    @Nullable
+    @Column(name = "maxWeight")
+    private Float maxWeight;
+
+    @Nullable
+    @Column(name = "length")
+    private Float length;
+
+    @Nullable
+    @Column(name = "material")
+    private String material;
+
+    @Nullable
+    @Column(name = "hookSize")
+    private Float hookSize;
+
+    @Nullable
+    @Column(name = "deepDiving")
+    private String deepDiving;
+
+    @Nullable
+    @Column(name = "customizable")
+    private Boolean customizable;
+
+    @Nullable
     @Column(name = "brand")
     private String brand;
 
@@ -44,16 +76,16 @@ public class Product {
     private Float sale;
 
     @Nullable
-    @Column(name = "customizable")
-    private Boolean customizable;
-
-    @Nullable
     @Column(name = "dateCreate")
     private Date dateCreate;
 
+    @Nullable
+    @Column(name = "imgUrlModel")
+    private String imgUrlModel;
+
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "categoryID", nullable = false)
+    @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
     @JsonIgnore
@@ -70,13 +102,8 @@ public class Product {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến products ở trong variants .
-    //1 product có nhiều variants
+    // MapopedBy trỏ tới tên biến products ở trong Customize .
+    //1 product có nhiều Customize
     private Collection<Customize> customizeCollection;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    // MapopedBy trỏ tới tên biến products ở trong fish_product.
-//    //1 category có nhiều product
-//    private Collection<Fish_product> productsCollection;
 }
