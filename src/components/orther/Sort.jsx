@@ -1,11 +1,10 @@
 import React from 'react';
 import { filterConfig } from 'constant/filter-setting';
 import { useDispatch, useSelector } from 'react-redux';
-import { findByFilter, setFilter } from 'redux/product-action/filter';
+import { setFilter } from 'redux/product-action/filter';
 function Sort(props) {
-	const products = useSelector((state) => state.productFilter.data.productOutList);
+	const totalProduct = useSelector((state) => state.productFilter.data.totalProduct);
 	const sortBy = useSelector((state) => state.productFilter.filter.sortBy);
-	const productFilter = useSelector((state) => state.productFilter.filter);
 
 	const dispatch = useDispatch();
 	function getSortSelectedByList(list, value) {
@@ -25,8 +24,6 @@ function Sort(props) {
 		const value = getSortSelectedByList(filterConfig.SORT_OPTIONS, e.target.value);
 		const action = setFilter({ ...value });
 		dispatch(action);
-		const filterAction = findByFilter({ ...productFilter, ...value });
-		dispatch(filterAction);
 	}
 
 	return (
@@ -47,7 +44,7 @@ function Sort(props) {
 					))}
 				</select>
 			</div>
-			<span className="ms-auto">{`${products ? products.length : 0} sản phẩm`}</span>
+			<span className="ms-auto">{`${totalProduct ? totalProduct : 0} sản phẩm`}</span>
 		</div>
 	);
 }

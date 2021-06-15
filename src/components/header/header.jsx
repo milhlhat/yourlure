@@ -71,9 +71,16 @@ function Header(props) {
 		});
 	}
 	function handleSubmitSearch() {
-		const filterAction = findByFilter({ ...productFilter, keyword: keyword });
-		dispatch(filterAction);
-		const action = setFilter({ keyword: keyword });
+		const action = setFilter({
+			listCateId: [],
+			listFishId: [],
+			page: filterConfig.PAGE_NUMBER_DEFAULT,
+			limit: filterConfig.LIMIT_DATA_PER_PAGE,
+			custom: false,
+			isAsc: false,
+			sortBy: 'sumQuantity',
+			keyword: keyword,
+		});
 		dispatch(action);
 		goToSearchPage();
 	}

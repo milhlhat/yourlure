@@ -11,17 +11,19 @@ import { getMaterialsInfoBy, getNodesInfoBy, getMaterialsName, getColorMaterialB
 import { setListName } from 'redux/customize-action/customize-info';
 import { setMaterialId } from 'redux/customize-action/customize-id';
 import { setMaterialInit } from 'redux/customize-action/customize-init-data';
-
+import Loading from 'components/loading';
+import ErrorLoad from 'components/ErrorLoad';
+import ProductAPI from 'api/product-api';
 function RenderModel(props) {
 	const ref = useRef();
 	const initMaterials = useRef({ num: 0, data: [] });
 
 	const dispatch = props.dispatch;
-
+	const model3d = props.model3d;
 	let customizeInfo = props.customizeInfo;
 	let customizeInit = props.customizeInit;
 	//Load 3d model
-	const { nodes, materials } = useGLTF(m3d, true);
+	const { nodes, materials } = useGLTF(`https://cors-anywhere.herokuapp.com/${model3d}`, true);
 	// console.log(nodes, materials);
 
 	if (initMaterials.current.num < 1) {
@@ -72,7 +74,7 @@ function RenderModel(props) {
 		let item = {
 			geometry: node.geometry,
 			material: listMaterials[i],
-			['material-map']: listTextures[i]
+			['material-map']: listTextures[i],
 		};
 		// if (customizeInfo[i] && customizeInfo[i].img === '') {
 		// 	item = { ...item, material: initMaterials.current.data[i] };
@@ -179,6 +181,7 @@ function CanvasModel(props) {
 						dispatch={props.dispatch}
 						customizeInit={props.customizeInit}
 						customizeInfo={props.customizeInfo}
+						model3d={props.model3d}
 					/>
 					<Environment preset="city" />
 					<ContactShadows
@@ -223,25 +226,56 @@ function ListActionMaterials(props) {
 	);
 }
 
-export default function Customize() {
+export default function Customize(props) {
 	const customizeInfo = useSelector((state) => state.customizeInfo);
 	const mId = useSelector((state) => state.customizeId);
 	const customizeInit = useSelector((state) => state.customizeInit);
 	const dispatch = useDispatch();
-
-	return (
-		<div className="row">
-			<div className="col-md-4">
-				<TabSelectCustomize />
+	const productId = props.match.params.id;
+	const [product, setProduct] = useState({
+		data: '',
+		isLoading: true,
+		failFetch: false,
+	});
+	const fetchProduct = async () => {
+		try {
+			const response = await ProductAPI.getProductByID(productId);
+			if (response.error) {
+				setProduct({ ...product, failFetch: true, isLoading: false });
+				throw new Error(response.error);
+			} else {
+				setProduct({
+					data: response,
+					isLoading: false,
+					failFetch: false,
+				});
+			}
+		} catch (error) {
+			console.log('fail to fetch data');
+		}
+	};
+	useEffect(() => {
+		fetchProduct();
+	}, []);
+	if (product.isLoading) {
+		return <Loading />;
+	} else if (product.failFetch || !product.data.imgUrlModel) {
+		return <ErrorLoad></ErrorLoad>;
+	} else
+		return (
+			<div className="row">
+				<div className="col-md-4">
+					<TabSelectCustomize />
+				</div>
+				<div className="col-md-8">
+					<CanvasModel
+						dispatch={dispatch}
+						customizeInit={customizeInit}
+						mId={mId}
+						customizeInfo={customizeInfo}
+						model3d={product.data.imgUrlModel}
+					/>
+				</div>
 			</div>
-			<div className="col-md-8">
-				<CanvasModel
-					dispatch={dispatch}
-					customizeInit={customizeInit}
-					mId={mId}
-					customizeInfo={customizeInfo}
-				/>
-			</div>
-		</div>
-	);
+		);
 }

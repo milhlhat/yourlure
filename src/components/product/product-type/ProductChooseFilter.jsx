@@ -90,16 +90,7 @@ function ProductChooseFilter(props) {
 		let listFishId = getListFishChecked(fish);
 		// console.log('submit1', listCateId);
 		//call api
-		const filterAction = findByFilter({
-			...productFilter,
-			listCateId: listCateId,
-			listFishId: listFishId,
-			page: filterConfig.PAGE_NUMBER_DEFAULT,
-			limit: filterConfig.LIMIT_DATA_PER_PAGE,
-			custom: isCustom,
-			isAsc: false,
-		});
-		dispatch(filterAction);
+		 
 		//save filter choosen
 		const action = setFilter({
 			listCateId: listCateId,
@@ -189,7 +180,7 @@ function ProductChooseFilter(props) {
 						</label>
 					</div>
 					<div className="button-submit m-2 d-flex justify-content-center">
-						<YLButton type="submit" width={100} variant="primary" value="Tìm kiếm" />
+						<YLButton type="submit" width={100} variant="primary" value="Lọc" />
 					</div>
 				</div>
 			</form>
