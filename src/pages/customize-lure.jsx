@@ -26,8 +26,6 @@ function RenderModel(props) {
 	let customizeInit = props.customizeInit;
 	//Load 3d model
 	const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
-	// const { nodes, materials } = useGLTF(`https://cors-for-all.vercel.app/https://drive.google.com/uc?export=view&id=1ziqcfOcaPcKPBd7HiZ09VFZlzjsqCBq9`, true);
-	// console.log(nodes, materials);
 
 	if (initMaterials.current.num < 1) {
 		initMaterials.current = {
@@ -259,6 +257,7 @@ export default function Customize(props) {
 	};
 	useEffect(() => {
 		fetchProduct();
+		document.getElementById('footer').style.display = 'none';
 	}, []);
 	if (product.isLoading) {
 		return <Loading />;
@@ -266,11 +265,11 @@ export default function Customize(props) {
 		return <ErrorLoad></ErrorLoad>;
 	} else
 		return (
-			<div className="row">
-				<div className="col-md-4">
+			<div className="row main-customize">
+				<div className=" col-md-3">
 					<TabSelectCustomize />
 				</div>
-				<div className="col-md-8">
+				<div className=" col-md-9">
 					<CanvasModel
 						dispatch={dispatch}
 						customizeInit={customizeInit}

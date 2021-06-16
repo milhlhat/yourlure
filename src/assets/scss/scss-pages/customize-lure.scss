@@ -1,5 +1,14 @@
 @import '../base/variable';
 
+@media screen and (min-width: $mobile-width) {
+	.main-customize {
+		position: absolute;
+		top: 70px;
+		left: 20px;
+		right: 20px;
+	}
+}
+
 .customize {
 	display: flex;
 	justify-content: center;
@@ -61,7 +70,7 @@
 			background-color: white;
 			color: $text-color;
 			cursor: pointer;
-			color: #ffffff77
+			color: #ffffff77;
 		}
 	}
 	& .tab-detail {

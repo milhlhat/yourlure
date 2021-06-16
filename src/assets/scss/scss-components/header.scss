@@ -47,6 +47,7 @@ $grid-breakpoints: (
 	& .active {
 		& a {
 			color: $primary !important;
+			cursor: default;
 		}
 	}
 	& .item-hover {
