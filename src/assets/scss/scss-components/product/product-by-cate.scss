@@ -1,10 +1,42 @@
+@import "../../base/variable";
 .product-by-cate {
-	// display: flex;
-	// justify-content: center;
-  
+}
+.flex-card-row {
+  display: flex;
+  justify-content: center;
 }
 .product-card-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: center;
+}
+
+// @media screen and (max-width: $desktop-width) {
+//   .product-card-row {
+//     gap: 2rem;
+//     max-width: 42rem;
+//   }
+// }
+@media screen and (min-width: $desktop-width) {
+  .product-card-row {
+    width: 39rem;
   }
+}
+@media screen and (max-width: $desktop-width) {
+  .product-card-row {
+    width: 26rem;
+  }
+}
+@media screen and (max-width: $mobile-width + 1px) {
+  .product-card-row {
+    width: 18rem;
+    & .card-product{
+      width: 7rem ;
+    }
+  }
+}
+@media screen and (min-width: 1400px) {
+  .product-card-row {
+    width: 53rem;
+  }
+}

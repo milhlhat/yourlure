@@ -89,7 +89,7 @@ function PhoneForm(props) {
 
                 <YLButton
                   variant="link"
-                  onClick={() => history.push("/user/login")}
+                  onClick={() => history.push("/login")}
                   value="Trở về"
                 />
               </div>

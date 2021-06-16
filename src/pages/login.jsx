@@ -81,7 +81,7 @@ function Login(props) {
                     <YLButton
                       type="submit"
                       variant="primary"
-                      onClick={() => history.push("/user/account")}
+                      // onClick={}
                       value="Login"
                       width={100}
                     ></YLButton>
@@ -89,7 +89,7 @@ function Login(props) {
                   <div className="mt-2">
                     <YLButton
                       variant="warning"
-                      onClick={() => history.push("/user/register")}
+                      onClick={() => history.push("/register")}
                       value="Đăng ký"
                       width={100}
                     />
@@ -102,7 +102,7 @@ function Login(props) {
         <div className="mt-2">
           <YLButton
             variant="link"
-            onClick={() => history.push("/user/fogot-password")}
+            onClick={() => history.push("/fogot-password")}
             value="Quên mật khẩu?"
             width={100}
           />

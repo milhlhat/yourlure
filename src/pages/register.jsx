@@ -123,7 +123,7 @@ function RegisterBase(props) {
       </div>
       <YLButton
         variant="link"
-        onClick={() => history.push("/user/login")}
+        onClick={() => history.push("/login")}
         to="/user/register"
         value="Đã có tài khoản, đăng nhập ngay!"
       />

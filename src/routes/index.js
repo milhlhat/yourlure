@@ -19,7 +19,7 @@ function AppRouter() {
 		<Suspense fallback={<Loading />}>
 			<BrowserRouter>
 				<Header />
-				<Container fluid="lg" className="main-container">
+				<div  className="main-container">
 					<div className="main">
 						<Switch>
 							<Route path="/user" component={UserRoute} />
@@ -29,7 +29,7 @@ function AppRouter() {
 							<Route component={NotFound} />
 						</Switch>
 					</div>
-				</Container>
+				</div>
 				<Footer />
 			</BrowserRouter>
 		</Suspense>
