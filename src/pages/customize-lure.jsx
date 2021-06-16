@@ -14,7 +14,8 @@ import { setMaterialInit } from 'redux/customize-action/customize-init-data';
 import Loading from 'components/loading';
 import ErrorLoad from 'components/ErrorLoad';
 import ProductAPI from 'api/product-api';
-const HOST_SERVER = process.env.REACT_APP_API_URL;
+const BE_SERVER = process.env.REACT_APP_API_URL;
+const BE_FOLDER = process.env.REACT_APP_URL_3D_MODEL;
 function RenderModel(props) {
 	const ref = useRef();
 	const initMaterials = useRef({ num: 0, data: [] });
@@ -24,7 +25,7 @@ function RenderModel(props) {
 	let customizeInfo = props.customizeInfo;
 	let customizeInit = props.customizeInit;
 	//Load 3d model
-	const { nodes, materials } = useGLTF(`${HOST_SERVER}api/product/model-download?path=${model3d}}`, true);
+	const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
 	// const { nodes, materials } = useGLTF(`https://cors-for-all.vercel.app/https://drive.google.com/uc?export=view&id=1ziqcfOcaPcKPBd7HiZ09VFZlzjsqCBq9`, true);
 	// console.log(nodes, materials);
 

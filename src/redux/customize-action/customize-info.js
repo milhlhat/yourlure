@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const customizeName = createSlice({
-	name: 'customize-name',
+	name: 'customize-info',
 	initialState: [],
 	reducers: {
 		setListName: (state, action) => {

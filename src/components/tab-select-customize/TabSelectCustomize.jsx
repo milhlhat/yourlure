@@ -38,9 +38,9 @@ function TabSelectCustomize(props) {
 				))}
 				<div className="texture-action"></div>
 			</div>
-			<div className={`tab-detail ${!isOpen? 'd-none': ''}`}>
+			<div className={`tab-detail ${!isOpen ? 'd-none' : ''}`}>
 				<div className="tab-detail-close pointer p-0 m-0">
-					<i onClick={()=>setIsOpisOpen(false)} className={`fa fa-times-circle `}></i>
+					<i onClick={() => setIsOpisOpen(false)} className={`fa fa-times-circle `}></i>
 				</div>
 
 				<SwitchMaterial materials={materials} mId={mId} />
@@ -70,7 +70,7 @@ function SwitchMaterial(props) {
 			<button className="border-0 bg-transparent pointer switch-button" onClick={() => decreaseMId()}>
 				<i className="fa fa-angle-left"></i>
 			</button>
-			<span className="mx-3">{material.length > 0 && material[mId].name}</span>
+			<span className="mx-3">{material.length > 0 && material[mId] && material[mId].name}</span>
 			<button className="border-0 bg-transparent pointer switch-button" onClick={() => increaseMId()}>
 				<i className="fa fa-angle-right"></i>
 			</button>
@@ -97,7 +97,7 @@ function ImgChoices(props) {
 	}
 	return (
 		<div className="d-flex flex-column ">
-			{imgRedux.length > 0 && imgRedux[mId].canAddImg ? (
+			{imgRedux.length > 0 && imgRedux[mId] && imgRedux[mId].canAddImg ? (
 				<>
 					<div className="img-option">
 						{images.map((item, i) => (
@@ -107,7 +107,7 @@ function ImgChoices(props) {
 					<div className="d-flex flex-column mt-3 align-items-center">
 						{/* <YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} /> */}
 						<hr className="hr my-3" />
-						<YLButton variant="primary" type="button" value="Upload ảnh" />
+						{/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
 					</div>
 				</>
 			) : (
@@ -124,7 +124,6 @@ function ColorChoices(props) {
 	const imgRedux = useSelector((state) => state.customizeInfo);
 
 	function handleSetColor(color) {
-	 
 		let list = JSON.parse(JSON.stringify(imgRedux));
 		list[mId].color = color;
 		let action = setListName(list);
@@ -138,7 +137,7 @@ function ColorChoices(props) {
 	}
 	return (
 		<div className="d-flex flex-column ">
-			{imgRedux.length > 0 && imgRedux[mId].canAddColor ? (
+			{imgRedux.length > 0 && imgRedux[mId] && imgRedux[mId].canAddColor ? (
 				<>
 					<div className="color-option">
 						{color.map((value, index) => (
