@@ -12,39 +12,16 @@ const AxiosClient = axios.create({
 	paramsSerializer: (params) => queryString.stringify(params),
 });
 
-// AxiosClient.interceptors.request.use(
-// 	async (config) => {
-// 		// Handle token here ...
-// 		// const token = localStorage.getItem('YL-user');
 
-// 		// config.headers.Authorization= `Bearer ${JSON.parse(token).data}`;
-// 		return config;
-// 	},
-// 	(error) => {
-// 		return Promise.reject(error);
-// 	}
-// );
-
-// AxiosClient.interceptors.response.use(
-// 	(response) => {
-// 		// if (response && response.data) {
-// 		//   return response.data;
-// 		// }
-
-// 		return response;
-// 	},
-// 	(error) => {
-// 		// Handle errors
-// 		throw error;
-// 	}
-// );
 // Add a request interceptor
 AxiosClient.interceptors.request.use(
-	function (config) {
+	async (config) => {
 		// Do something before request is sent
+		// config.headers.Authorization= `Bearer ${JSON.parse(token).data}`;
+
 		return config;
 	},
-	function (error) {
+	(error) => {
 		// Do something with request error
 		return Promise.reject(error);
 	}
@@ -54,7 +31,6 @@ AxiosClient.interceptors.response.use(
 		// Any status code that lie within the range of 2xx cause this function to trigger
 		// Do something with response data
 		if (response && response.data) {
-			console.log(response);
 			return response.data;
 		}
 		return response;
