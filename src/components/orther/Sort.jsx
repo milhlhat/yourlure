@@ -1,7 +1,7 @@
 import React from 'react';
 import { filterConfig } from 'constant/filter-setting';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from 'redux/product-action/filter';
+import { setFilter } from 'redux/product-action/fetch-filter';
 function Sort(props) {
 	const totalProduct = useSelector((state) => state.productFilter.data.totalProduct);
 	const sortBy = useSelector((state) => state.productFilter.filter.sortBy);

@@ -18,25 +18,25 @@
 //   }
 // }
 @media screen and (min-width: $desktop-width) {
-  .product-card-row {
-    width: 39rem;
+	.product-card-row {
+	  width: 40rem;
+	}
   }
-}
-@media screen and (max-width: $desktop-width) {
-  .product-card-row {
-    width: 26rem;
+  @media screen and (max-width: $desktop-width) {
+	.product-card-row {
+	  width: 27rem;
+	}
   }
-}
-@media screen and (max-width: $mobile-width + 1px) {
-  .product-card-row {
-    width: 18rem;
-    & .card-product{
-      width: 7rem ;
-    }
+  @media screen and (max-width: $mobile-width + 1px) {
+	.product-card-row {
+	  width: 18rem;
+	  & .card-product{
+		width: 7rem ;
+	  }
+	}
   }
-}
-@media screen and (min-width: 1400px) {
-  .product-card-row {
-    width: 52rem;
+  @media screen and (min-width: 1400px) {
+	.product-card-row {
+	  width: 53rem;
+	}
   }
-}

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import "assets/scss/scss-components/product/product-type.scss";
 import { filterConfig } from "constant/filter-setting";
-import { findByFilter } from "redux/product-action/filter";
-import Loading from "components/loading";
+import { findByFilter } from "redux/product-action/fetch-filter";
+import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
 function ProductShow(props) {
   const products = props.products;

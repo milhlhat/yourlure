@@ -1,16 +1,16 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, useEffect } from 'react';
 import { Container } from 'reactstrap';
-import Header from 'components/header/header';
-import Loading from 'components/loading';
+import Header from 'components/header/Header';
+import Loading from 'components/Loading';
 import CommonUtils from 'utils/common';
-import Footer from 'components/footer/footer';
+import Footer from 'components/footer/Footer';
 
 import OtherRoute from './other-route';
 import CartRoute from './cart-router';
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
-const NotFound = React.lazy(() => import('pages/notfound'));
+const NotFound = React.lazy(() => import('pages/Notfound'));
 function AppRouter() {
 	useEffect(() => {
 		CommonUtils.scrollTop();

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CardProduct from "components/card/card-product";
-import ProductImage from "components/product/product-detail/product-media";
-import ProductAction from "components/product/product-detail/product-action";
+import ProductImage from "components/product/product-detail/Product-media";
+import ProductAction from "components/product/product-detail/Product-action";
 import data from "assets/dumy-data/data-product.js";
 import ProductAPI from "api/product-api";
 ProductDetail.propTypes = {};

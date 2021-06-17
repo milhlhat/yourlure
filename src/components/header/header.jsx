@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import 'assets/scss/scss-components/header.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { findByFilter, setFilter } from 'redux/product-action/filter';
+import { findByFilter, setFilter } from 'redux/product-action/fetch-filter';
 import { filterConfig } from 'constant/filter-setting';
 
 function Header(props) {

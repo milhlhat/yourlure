@@ -4,7 +4,7 @@ import data from '../assets/dumy-data/data-product.js';
 import YLButton from 'components/custom-field/YLButton';
 import Carosel from 'components/card/Carosel';
 import ProductAPI from 'api/product-api';
-import Loading from 'components/loading';
+import Loading from 'components/Loading';
 import ErrorLoad from 'components/ErrorLoad';
 import banner from 'assets/images/urban-fishing-in-boston-social.jpg';
 Home.propTypes = {};

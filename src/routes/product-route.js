@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import { Route, Switch } from 'react-router-dom';
 ProductRoute.propTypes = {};
-const Product = React.lazy(() => import('pages/product'));
-const ProductDetail = React.lazy(() => import('pages/productDetail'));
-const ProductCustomize = React.lazy(() => import('pages/customize-lure'));
+const Product = React.lazy(() => import('pages/Product'));
+const ProductDetail = React.lazy(() => import('pages/ProductDetail'));
+const ProductCustomize = React.lazy(() => import('pages/CustomizeLure'));
 const SearchProduct = React.lazy(() => import('pages/Search'));
-const NotFound = React.lazy(() => import('pages/notfound'));
+const NotFound = React.lazy(() => import('pages/Notfound'));
 function ProductRoute(props) {
 	return (
 		<Switch>

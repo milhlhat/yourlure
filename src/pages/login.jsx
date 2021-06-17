@@ -4,7 +4,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
 import { FastField, Form, Formik } from "formik";
-import { getUser, setUser } from "redux/user-action/user-slice";
+import { getUser, setUser } from "redux/user-action/fetch-login";
 import { useDispatch } from "react-redux";
 import "assets/scss/scss-pages/login.scss";
 

@@ -1,4 +1,4 @@
-import { findByFilter, setFilter } from 'redux/product-action/filter';
+import { findByFilter, setFilter } from 'redux/product-action/fetch-filter';
 
 let productUtils = {
 	getNodesInfoBy: (list, type) => {

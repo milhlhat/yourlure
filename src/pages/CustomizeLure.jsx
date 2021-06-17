@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMaterialsInfoBy, getNodesInfoBy, getMaterialsName, getColorMaterialByName } from 'utils/product';
 import { setListName } from 'redux/customize-action/customize-info';
 import { setMaterialId } from 'redux/customize-action/customize-id';
-import { setMaterialInit } from 'redux/customize-action/customize-init-data';
-import Loading from 'components/loading';
+// import { setMaterialInit } from 'redux/customize-action/customize-init-data';
+import Loading from 'components/Loading';
 import ErrorLoad from 'components/ErrorLoad';
 import ProductAPI from 'api/product-api';
 const BE_SERVER = process.env.REACT_APP_API_URL;
@@ -23,7 +23,7 @@ function RenderModel(props) {
 	const dispatch = props.dispatch;
 	const model3d = props.model3d;
 	let customizeInfo = props.customizeInfo;
-	let customizeInit = props.customizeInit;
+	// let customizeInit = props.customizeInit;
 	//Load 3d model
 	const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
 
@@ -180,7 +180,7 @@ function CanvasModel(props) {
 				<Suspense fallback={null}>
 					<RenderModel
 						dispatch={props.dispatch}
-						customizeInit={props.customizeInit}
+						// customizeInit={props.customizeInit}
 						customizeInfo={props.customizeInfo}
 						model3d={props.model3d}
 					/>
@@ -230,7 +230,7 @@ function ListActionMaterials(props) {
 export default function Customize(props) {
 	const customizeInfo = useSelector((state) => state.customizeInfo);
 	const mId = useSelector((state) => state.customizeId);
-	const customizeInit = useSelector((state) => state.customizeInit);
+	// const customizeInit = useSelector((state) => state.customizeInit);
 	const dispatch = useDispatch();
 	const productId = props.match.params.id;
 	const [product, setProduct] = useState({
@@ -272,7 +272,7 @@ export default function Customize(props) {
 				<div className=" col-md-9">
 					<CanvasModel
 						dispatch={dispatch}
-						customizeInit={customizeInit}
+						// customizeInit={customizeInit}
 						mId={mId}
 						customizeInfo={customizeInfo}
 						model3d={product.data.imgUrlModel}

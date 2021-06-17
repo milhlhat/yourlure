@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import CardProduct from 'components/card/card-product';
 import 'assets/scss/scss-components/product/product-by-cate.scss';
 import YLButton from 'components/custom-field/YLButton';
-import Loading from 'components/loading';
+import Loading from 'components/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilter, saveFilter } from 'utils/product';
 import { useHistory } from 'react-router-dom';
@@ -47,12 +47,11 @@ function ProductByCate(props) {
 							</div>
 						</div>
 						<div className="flex-card-row">
-							
-						<div className="product-card-row mx-xl-5">
-							{cate.productCollection.map((product, indexx) => (
-								<React.Fragment key={indexx}>{<CardProduct product={product} />}</React.Fragment>
-							))}
-						</div>
+							<div className="product-card-row mx-xl-5">
+								{cate.productCollection.slice(0, 4).map((product, indexx) => (
+									<CardProduct product={product} key={indexx} />
+								))}
+							</div>
 						</div>
 					</div>
 				))}

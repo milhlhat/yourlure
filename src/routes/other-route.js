@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
 const Campaign = React.lazy(() => import('pages/Campaign'));
 const About = React.lazy(() => import('pages/About'));
-const HomePage = React.lazy(() => import('pages/home'));
-const Login = React.lazy(() => import('pages/login'));
-const Register = React.lazy(() => import('pages/register'));
+const HomePage = React.lazy(() => import('pages/Home'));
+const Login = React.lazy(() => import('pages/Login'));
+const Register = React.lazy(() => import('pages/Register'));
 const FogotPassWord = React.lazy(() => import('pages/FogotPassWord'));
-const NotFound = React.lazy(() => import('pages/notfound'));
+const NotFound = React.lazy(() => import('pages/Notfound'));
 
 export default function OtherRoute() {
 	const match = useRouteMatch();

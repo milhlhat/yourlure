@@ -22,10 +22,10 @@ function Product(props) {
 					let i = { ...bestCate, data: response, loading: false, error: false };
 					setBestCate(i);
 				}
-			} catch (e) {
+			} catch (error) {
 				let i = { ...bestCate, loading: false, error: true };
 				setBestCate(i);
-				console.log('fail to fetch  ');
+				console.log('Error', error.message);
 			}
 		};
 
@@ -35,7 +35,7 @@ function Product(props) {
 	return (
 		<div className="container product-type mt-2">
 			<ProductBanner title="Danh mục sản phẩm" />
-			<YLBreadCrumbs children={[{name:'Sản phẩm'}]}/>
+			<YLBreadCrumbs children={[{ name: 'Sản phẩm' }]} />
 			<div className="row">
 				<div className="col-md-3 col-sm-12">
 					<ProductChooseFilter />
