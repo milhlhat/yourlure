@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @Api(tags = "users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -32,8 +34,11 @@ public class UserController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 422, message = "Invalid username/password supplied")})
     public String login(//
-                        @ApiParam("Phone") @RequestParam String phone,
-                        @ApiParam("Password") @RequestParam String password) {
+//                        @ApiParam("Phone") @RequestParam String phone,
+//                        @ApiParam("Password") @RequestParam String password,
+                        @RequestBody Map<String, String> user) {
+        String phone = user.get("phone");
+        String password = user.get("password");
         return userService.signin(phone, password);
     }
 

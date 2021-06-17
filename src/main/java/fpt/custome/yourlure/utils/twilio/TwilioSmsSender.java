@@ -42,7 +42,8 @@ public class TwilioSmsSender implements SmsSender {
 
     private boolean isPhoneNumberValid(String phoneNumber) {
         String regex = "^\\+{1}8{1}4{1}[1-9]{1}[0-9]{8}$";
-
         return Pattern.matches(regex, phoneNumber);
     }
+
+
 }
