@@ -19,8 +19,8 @@ public class Season {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "seasonID")
-    private Long seasonID;
+    @Column(name = "seasonId")
+    private Long seasonId;
 
     @Nullable
     @Column(name = "seasonName")
@@ -30,8 +30,8 @@ public class Season {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "season_product",
-            joinColumns = @JoinColumn(name = "seasonID"),
-            inverseJoinColumns = @JoinColumn(name = "productID")
+            joinColumns = @JoinColumn(name = "seasonId"),
+            inverseJoinColumns = @JoinColumn(name = "productId")
     )
     private Set<Product> products = new HashSet<>();
 }

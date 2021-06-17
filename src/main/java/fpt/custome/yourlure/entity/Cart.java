@@ -19,12 +19,12 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cartID")
-    private Long cartID;
+    @Column(name = "cartId")
+    private Long cartId;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "userID")
+    @JoinColumn(name = "userId")
     private User user;
 
     @JsonIgnore

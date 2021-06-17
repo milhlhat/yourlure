@@ -18,8 +18,8 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categoryID")
-    private Long categoryID;
+    @Column(name = "categoryId")
+    private Long categoryId;
 
     @Nullable
     @Column(name = "categoryName")

@@ -31,6 +31,10 @@ public class CartItem {
     private Long variantId;
 
     @Nullable
+    @Column(name = "price")
+    private Float price;
+
+    @Nullable
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -44,6 +48,6 @@ public class CartItem {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "cartID", nullable = false)
+    @JoinColumn(name = "cartId", nullable = false)
     private Cart cart;
 }

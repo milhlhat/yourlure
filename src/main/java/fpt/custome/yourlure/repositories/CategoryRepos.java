@@ -10,14 +10,24 @@ public interface CategoryRepos extends JpaRepository<Category, Long>{
 
     @Query(value = "SELECT * \n" +
             "FROM  (SELECT tbl_category.*, SUM(tbl_order_line.quantity) AS sum_quantity\n" +
-            ", row_number() over (partition by tbl_category.category_name order by SUM(tbl_order_line.quantity) desc) as category_rank   \n" +
+            ", row_number() over (partition by tbl_category.category_name) as category_rank   \n" +
             "FROM tbl_category, tbl_products, tbl_variants, tbl_order_line\n" +
-            "WHERE tbl_category.categoryid = tbl_products.categoryid\n" +
-            "AND tbl_products.productid = tbl_variants.productid\n" +
-            "AND tbl_variants.variantid = tbl_order_line.variantid\n" +
-            "GROUP BY tbl_category.category_name,tbl_category.categoryid) AS rankCategory\n" +
-            "WHERE category_rank <= 10", nativeQuery = true)
+            "WHERE tbl_category.category_id = tbl_products.category_id\n" +
+            "AND tbl_products.product_id = tbl_variants.product_id\n" +
+            "AND tbl_variants.variant_id = tbl_order_line.variant_id\n" +
+            "GROUP BY tbl_category.category_name,tbl_category.category_id) AS rankCategory \n" +
+            "WHERE category_rank <= 10 \n" +
+            " ORDER BY sum_quantity DESC ", nativeQuery = true)
     List<Category> getBestSellerWithCategory();
+
+    @Query(value = "SELECT tbl_category.*, SUM(tbl_order_line.quantity) AS sum_quantity\n" +
+            "FROM tbl_category, tbl_products, tbl_variants, tbl_order_line\n" +
+            "WHERE tbl_category.category_id = tbl_products.category_id\n" +
+            "AND tbl_products.product_id = tbl_variants.product_id\n" +
+            "AND tbl_variants.variant_id = tbl_order_line.variant_id\n" +
+            "GROUP BY tbl_category.category_name,tbl_category.category_id\n" +
+            "ORDER BY sum_quantity DESC ", nativeQuery = true)
+    List<Category> getBestSellerCategory();
 
 //    List<Product> findById(String productName, Pageable pageable);
 }

@@ -20,9 +20,9 @@ import java.util.Date;
 public class Campaign {
 
     @Id
-    @Column(name = "campaignID")
+    @Column(name = "campaignId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long campaignID;
+    private Long campaignId;
 
     @Nullable
     @Column(name = "description", columnDefinition="TEXT")

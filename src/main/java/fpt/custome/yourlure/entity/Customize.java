@@ -19,8 +19,8 @@ public class Customize {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customizeID")
-    private Long customizeID;
+    @Column(name = "customizeId")
+    private Long customizeId;
 
     @Nullable
     @Column(name = "headColor")
@@ -57,12 +57,12 @@ public class Customize {
     @Nullable
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "productID", nullable = false)
+    @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
 }

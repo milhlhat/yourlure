@@ -20,8 +20,8 @@ public class OrderLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderLineID")
-    private Long orderLineID;
+    @Column(name = "orderLineId")
+    private Long orderLineId;
 
     @Nullable
     @Column(name = "quantity")
@@ -36,19 +36,19 @@ public class OrderLine {
     private Float sale;
 
     @NotNull
-    @JoinColumn(name = "variantID")
-    private Long variantID;
+    @JoinColumn(name = "variantId")
+    private Long variantId;
 
     @Nullable
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "customizeID")
+    @JoinColumn(name = "customizeId")
     private Customize customize;
 
     @Nullable
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "oderID", nullable = false)
+    @JoinColumn(name = "oderId", nullable = false)
     private Order order;
 
 }

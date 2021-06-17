@@ -20,8 +20,8 @@ public class UserAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userAddressID")
-    private Long userAddressID;
+    @Column(name = "userAddressId")
+    private Long userAddressId;
 
     @Nullable
     @Column(name = "description")
@@ -29,11 +29,11 @@ public class UserAddress {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "userWardID", nullable = false)
+    @JoinColumn(name = "userWardId", nullable = false)
     private Ward ward;
 
 }

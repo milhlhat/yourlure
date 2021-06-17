@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
         ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
                 .productOutList(productOutList)
                 .totalProduct(totalProduct)
-                .totalPage((int) Math.ceil((double) totalItem() / filter.getLimit()))
+                .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
                 .build();
         return Optional.of(result);
     }
@@ -115,7 +115,7 @@ public class ProductServiceImpl implements ProductService {
             if (id != null && productsDtoInp != null) {
                 if (productJPARepos.findById(id).isPresent()) {
                     Product productToUpdate = mapper.map(productsDtoInp, Product.class);
-                    productToUpdate.setProductID(id);
+                    productToUpdate.setProductId(id);
                     productJPARepos.save(productToUpdate);
                 } else {
                     return false;
