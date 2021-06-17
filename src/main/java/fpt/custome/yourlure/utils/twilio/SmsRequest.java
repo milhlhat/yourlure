@@ -1,12 +1,14 @@
 package fpt.custome.yourlure.utils.twilio;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @ToString
 public class SmsRequest {
 

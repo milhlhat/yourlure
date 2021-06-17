@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service("twilio")
 public class TwilioSmsSender implements SmsSender {
 
@@ -27,6 +29,7 @@ public class TwilioSmsSender implements SmsSender {
             PhoneNumber from = new PhoneNumber(twilioConfiguration.getTrialNumber());
             String message = smsRequest.getMessage();
             MessageCreator creator = Message.creator(to, from, message);
+
             creator.create();
             LOGGER.info("Send sms {}", smsRequest);
         } else {
@@ -38,7 +41,8 @@ public class TwilioSmsSender implements SmsSender {
     }
 
     private boolean isPhoneNumberValid(String phoneNumber) {
-        // TODO: Implement phone number validator
-        return true;
+        String regex = "^\\+{1}8{1}4{1}[1-9]{1}[0-9]{8}$";
+
+        return Pattern.matches(regex, phoneNumber);
     }
 }
