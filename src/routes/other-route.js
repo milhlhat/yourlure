@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
+import DEFINELINK from 'routes/define-link';
 const Campaign = React.lazy(() => import('pages/Campaign'));
 const About = React.lazy(() => import('pages/About'));
 const HomePage = React.lazy(() => import('pages/Home'));
@@ -14,13 +15,13 @@ export default function OtherRoute() {
 	return (
 		<Switch>
 			<Redirect exact from="/" to="/home" />
-			<Route path={`${match.url}about`} component={About} />
-			<Route path={`${match.url}campaign`} component={Campaign} />
-			<Route path={`${match.url}login`} component={Login} />
-			<Route path={`${match.url}register`} component={Register} />
-			<Route path={`${match.url}fogot-password`} component={FogotPassWord} />
+			<Route path={DEFINELINK.about} component={About} />
+			<Route path={DEFINELINK.campaign} component={Campaign} />
+			<Route path={DEFINELINK.login} component={Login} />
+			<Route path={DEFINELINK.register} component={Register} />
+			<Route path={DEFINELINK.forgotPassword} component={FogotPassWord} />
 			<Route
-				path={`${match.url}home`}
+				path={DEFINELINK.home}
 				component={HomePage}
 				// render={() => {
 				// 	return localStorage.getItem('YL-user') ? <HomePage /> : <Redirect to="/login" />;

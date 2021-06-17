@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import DEFINELINK from 'routes/define-link';
 import { Route, Switch } from 'react-router-dom';
 ProductRoute.propTypes = {};
 const Product = React.lazy(() => import('pages/Product'));
@@ -11,10 +12,10 @@ const NotFound = React.lazy(() => import('pages/Notfound'));
 function ProductRoute(props) {
 	return (
 		<Switch>
-			<Route exact path="/product" component={Product} />
-			<Route exact path="/product/detail/:id" component={ProductDetail} />
-			<Route exact path="/product/customize/:id" component={ProductCustomize} />
-			<Route exact path="/product/search" component={SearchProduct} />
+			<Route exact path={DEFINELINK.product} component={Product} />
+			<Route exact path={DEFINELINK.productDetail} component={ProductDetail} />
+			<Route exact path={DEFINELINK.productCustomize} component={ProductCustomize} />
+			<Route exact path={DEFINELINK.productSearch} component={SearchProduct} />
 			<Route component={NotFound} />
 		</Switch>
 	);

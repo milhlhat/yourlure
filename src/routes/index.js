@@ -6,6 +6,7 @@ import Loading from 'components/Loading';
 import CommonUtils from 'utils/common';
 import Footer from 'components/footer/Footer';
 
+import DEFINELINK from 'routes/define-link';
 import OtherRoute from './other-route';
 import CartRoute from './cart-router';
 const UserRoute = React.lazy(() => import('./user-route'));
@@ -22,9 +23,9 @@ function AppRouter() {
 				<div  className="main-container">
 					<div className="main">
 						<Switch>
-							<Route path="/user" component={UserRoute} />
-							<Route path="/product" component={ProductRoute} />
-							<Route path="/cart" component={CartRoute} />
+							<Route path={DEFINELINK.user} component={UserRoute} />
+							<Route path={DEFINELINK.product} component={ProductRoute} />
+							<Route path={DEFINELINK.cart} component={CartRoute} />
 							<Route path="/" component={OtherRoute} />
 							<Route component={NotFound} />
 						</Switch>
