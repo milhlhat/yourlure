@@ -38,7 +38,7 @@ function ProductShow(props) {
             </div>
           </div>
         </div>
-
+		<div className="m-auto p-4">
         {products.totalPage > 1 && (
           <Pagination
             itemClass="page-item"
@@ -50,6 +50,7 @@ function ProductShow(props) {
             onChange={handlePageChange}
           />
         )}
+		</div>
       </div>
     );
 }
