@@ -5,8 +5,9 @@ import customizeIdReducer from './customize-action/customize-id';
 import customizeInfoReducer from './customize-action/customize-info';
 import productFilterReducer from './product-action/fetch-filter';
 import cateFishForFilterReducer from './product-action/fetch-cate-fish';
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist/es/constants';
 const rootReducer = {
-	user: userReducer,
+	userLogin: userReducer,
 	customizeId: customizeIdReducer,
 	customizeInfo: customizeInfoReducer,
 	productFilter: productFilterReducer,
@@ -17,7 +18,7 @@ const store = configureStore({
 	reducer: rootReducer,
 	middleware: getDefaultMiddleware({
 		serializableCheck: {
-			ignoredActions: ['persist/PERSIST'],
+			ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
 		},
 	}),
 });

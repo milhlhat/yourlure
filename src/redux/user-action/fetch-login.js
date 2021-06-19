@@ -3,18 +3,25 @@ import UserApi from 'api/user-api';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-export const getUser = createAsyncThunk('user/getUser', async (params) => {
-	const user = await UserApi.login(params);
-	return user;
+export const login = createAsyncThunk('user/login', async (params) => {
+	// const response = await UserApi.login(params);
+	// return response;
+	try {
+		const response = await UserApi.login(params);
+		return response;
+	} catch (status) {
+		throw status.response.status;
+	}
 });
 
 const user = createSlice({
-	name: 'user',
+	name: 'user-login',
 	initialState: {
-		data: {},
+		accessToken: null,
 		loading: false,
 		success: false,
-		error: '',
+		status: 0,
+		loginAt: null,
 	},
 	reducers: {
 		setUser: (state, action) => {
@@ -22,23 +29,24 @@ const user = createSlice({
 			s = action.payload;
 			return s;
 		},
-		removeUser: (state, action) => {
-			state = {};
+		logout: (state, action) => {
+			state = null;
 		},
 	},
 	extraReducers: {
-		[getUser.pending]: (state, action) => {
+		[login.pending]: (state, action) => {
 			state.loading = true;
 		},
-		[getUser.rejected]: (state, action) => {
+		[login.rejected]: (state, action) => {
 			state.loading = false;
-			state.error = action.error;
+			state.status = action.error.message;
 			state.success = false;
 		},
-		[getUser.fulfilled]: (state, action) => {
+		[login.fulfilled]: (state, action) => {
 			state.loading = false;
-			state.data = action.payload;
+			state.accessToken = action.payload;
 			state.success = true;
+			state.status = 200;
 		},
 	},
 });
@@ -46,6 +54,7 @@ const persistConfig = {
 	keyPrefix: 'YL-',
 	key: 'user',
 	storage: storage,
+	whitelist: ['accessToken'],
 };
 
 const { reducer, actions } = user;

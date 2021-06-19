@@ -2,10 +2,8 @@ import AxiosClient from './axios-client';
 import queryString from 'query-string';
 const UserApi = {
 	login: (user) => {
-		const url = `/login`;
-		// return AxiosClient.post(url, user);
-
-		return user;
+		const url = '/users/signin';
+		return AxiosClient.post(url, user);
 	},
 	getAll: () => {
 		const url = '/customer';
@@ -38,10 +36,10 @@ const UserApi = {
 		const url = `/customer/update/${id}`;
 		return AxiosClient.patch(url, customer);
 	},
-	getAddress:(userId)=>{
+	getAddress: (userId) => {
 		const url = `/user/get-address-user/${userId}`;
 		return AxiosClient.get(url);
-	}
+	},
 };
 
 export default UserApi;
