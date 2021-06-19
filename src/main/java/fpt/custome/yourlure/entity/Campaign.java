@@ -29,6 +29,10 @@ public class Campaign {
     private String description;
 
     @Nullable
+    @Column(name = "content", columnDefinition="TEXT")
+    private String content;
+
+    @Nullable
     @Column(name = "startDate")
     private Date startDate;
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class AdminAdminProductControllerImpl implements AdminProductController {
+public class AdminProductControllerImpl implements AdminProductController {
 
     @Autowired
     private ProductJPARepos productRepos;
