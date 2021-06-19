@@ -23,6 +23,9 @@ public interface AdminProductController {
     @GetMapping("/{id}")
     ResponseEntity<Optional<Product>> getProductById(@PathVariable("id") Long id);
 
+    @GetMapping("/search-product")
+    ResponseEntity<List<Product>> searchProduct(@RequestParam("productName") String id);
+
     @PostMapping("/{id}")
     ResponseEntity<Product> editProduct(@PathVariable("id") Long id, @RequestBody @Validated Product product);
 

@@ -35,6 +35,11 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
+    public ResponseEntity<List<Product>> searchProduct(String id) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Product> editProduct(Long id, Product product) {
         return null;
     }
