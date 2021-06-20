@@ -18,6 +18,10 @@
   & .big-image {
     position: relative;
     align-items: center;
+    & img {
+      width: 100%;
+      object-fit: contain;
+    }
     & .big-image-edit {
       position: absolute;
       width: 50px;
@@ -25,27 +29,25 @@
       margin-top: 10px;
       margin-left: 10px;
       border-radius: 50%;
-      background:rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid $primary;
-      & .fa-pencil{
+      & .fa-pencil {
         font-size: 25px;
         color: $primary;
       }
-      &:hover{
-        & .fa-pencil{
+      &:hover {
+        & .fa-pencil {
           font-size: 30px;
         }
       }
     }
-    & .d-none{
+    & .d-none {
       display: none;
     }
   }
 }
 
 .product-action {
-  background: #fff;
-
   border-radius: 2px;
   display: flex;
   flex-direction: column;
@@ -78,12 +80,16 @@
         height: 50px;
         border: 1px solid;
         cursor: pointer;
+        display: flex;
         justify-content: center;
+        & img{
+          object-fit: contain;
+        }
       }
-      & .red {
+      & .đỏ {
         background-color: red;
       }
-      & .green {
+      & .xanh {
         background-color: green;
       }
       & .yellow {
@@ -93,12 +99,12 @@
         background-color: blue;
       }
       & .clicked-color {
-        border: 2px solid black;
+        border: 2px solid $primary;
       }
     }
   }
   & .product-quantity {
-    h5{
+    h5 {
       width: auto;
     }
     & .product-details-quantity {
@@ -121,5 +127,18 @@
   & .product-buy {
     display: flex;
     height: 50px;
+  }
+}
+
+.product-info-detail {
+  & .title-detail-description {
+    padding: 5px 20px;
+    background-color: #f5f5f5 !important;
+    & h3 {
+      border-bottom: 1px solid $primary;
+    }
+  }
+  & .descrip-content{
+    padding: 10px;
   }
 }

@@ -19,7 +19,14 @@
 	& .text-name-product::first-letter {
 		text-transform: uppercase;
 	}
-	.card-img-top {
+	& .thumb{
+		height: 12rem;
+		display: flex;
+		justify-content: center;
+		justify-items: center;
+	}
+	& .card-img-top{
+		object-fit: contain;
 	}
 }
 
@@ -33,5 +40,8 @@
 @media screen and (max-width: $mobile-width - 1px) {
 	.card-product {
 		width: 9rem;
+		& .thumb{
+			height: 9rem;
+		}
 	}
 }

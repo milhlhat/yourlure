@@ -13,8 +13,7 @@ function ProductImage(props) {
 		history.push(`/product/customize/${product.productId}`);
 	}
 	return (
-		<div className="product-media d-flex flex-column m-4">
-			{console.log(product ? product.imageCollection : 'null')}
+		<div className="bg-white bg-shadow product-media d-flex flex-column">
 			<div className="big-image object-fit">
 				<button
 					className={`big-image-edit ${product ? (product.customizable ? '' : 'd-none') : ''}`}

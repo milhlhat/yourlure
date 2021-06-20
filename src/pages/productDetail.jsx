@@ -4,6 +4,8 @@ import ProductImage from "components/product/product-detail/Product-media";
 import ProductAction from "components/product/product-detail/Product-action";
 import data from "assets/dumy-data/data-product.js";
 import ProductAPI from "api/product-api";
+import Carosel from 'components/card/Carosel';
+
 ProductDetail.propTypes = {};
 
 let dummyimg = [
@@ -12,11 +14,12 @@ let dummyimg = [
   "https://docautuankiet.com/uploads/products/05022020033936/moi-gia-orochi_05022020033936.jpg",
 ];
 function ProductDetail(props) {
-  const products = data.products();
-  const productByCate = products.filter((value) => value.categoryId == 1);
-  const [product, setProduct] = useState(null);
-
-  const [producDetailtList, setProductDetailListt] = useState({
+  const [productDetail, setProductDetail] = useState({
+    list: null,
+    isFetched: false,
+    failFetch: false,
+  });
+  const [productSameList, setProductSameList] = useState({
     list: null,
     isFetched: false,
     failFetch: false,
@@ -25,10 +28,27 @@ function ProductDetail(props) {
     try {
       const response = await ProductAPI.getProductByID(props.match.params.id);
       if (response.error) {
-        setProductDetailListt({ ...producDetailtList, failFetch: true });
+        setProductDetail({ ...productDetail, failFetch: true });
         throw new Error(response.error);
       } else {
-        setProductDetailListt({
+        setProductDetail({
+          list: response,
+          isFetched: true,
+          failFetch: false,
+        });
+      }
+    } catch (error) {
+      console.log("fail to fetch customer list");
+    }
+  };
+  const fetchProductSame = async () => {
+    try {
+      const response = await ProductAPI.getBestSeller();
+      if (response.error) {
+        setProductSameList({ ...productSameList, failFetch: true });
+        throw new Error(response.error);
+      } else {
+        setProductSameList({
           list: response,
           isFetched: true,
           failFetch: false,
@@ -40,30 +60,42 @@ function ProductDetail(props) {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetchProduct();
-    // console.log("detail");
-    // console.log(product);
-    // return (
-    //   fetchProduct()
-    // );
-    // setProduct(products[0]);
-    // console.log(product);
+    fetchProductSame();
   }, []);
   return (
-    <div className="">
+    <div className="container">
       <div className="d-flex m-2 row">
-        <div className="bg-white col-md-6 col-sm-12">
-          <ProductImage product={producDetailtList.list} data={dummyimg} />
+        <div className=" col-md-6 col-sm-12  mt-4">
+          <ProductImage product={productDetail.list}/>
         </div>
-        <div className="bg-white col-md-6 col-sm-12">
-          <ProductAction product={producDetailtList.list} />
+        <div className=" col-md-6 col-sm-12  mt-4">
+          <ProductAction product={productDetail.list} />
         </div>
       </div>
-
-      <div className="bg-white d-flex m-2">
-        {productByCate.map((value, index) => (
-          <CardProduct product={value} key={index} />
-        ))}
+      <div className="row">
+        <div className="col-12">
+          <div
+            className="product-info-detail bg-white bg-shadow m-2 my-5 p-3 p-md-4"
+            id="more-description"
+          >
+            <div className="title-detail-description bg-body">
+              <h3>Chi tiết sản phẩm</h3>
+            </div>
+            <div className="descrip-content">
+              {productDetail.list
+                ? productDetail.list.description
+                : "description null"}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white bg-shadow product-similar d-flex m-2">
+        <h3 className="ms-md-4 ms-2">Sản phẩm tương tự </h3>
+      </div>
+      <div className="bg-white bg-shadow product-similar d-flex m-2 mt-5">
+        <h3 className="ms-md-4 ms-2">Sản phẩm phổ biến </h3>
       </div>
     </div>
   );
