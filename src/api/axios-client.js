@@ -14,9 +14,11 @@ const AxiosClient = axios.create({
 // Add a request interceptor
 AxiosClient.interceptors.request.use(async (config) => {
 	// Do something before request is sent
-	const ls = localStorage.getItem('YL-user');
-	const accessToken = JSON.parse(ls).accessToken;
-	config.headers.Authorization = `Bearer ${JSON.parse(accessToken)}`;
+	if (!config.url.startsWith('api')) {
+		const ls = localStorage.getItem('YL-user');
+		const accessToken = JSON.parse(ls).accessToken;
+		config.headers.Authorization = `Bearer ${JSON.parse(accessToken)}`;
+	}
 	return config;
 });
 AxiosClient.interceptors.response.use(
