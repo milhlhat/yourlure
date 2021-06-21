@@ -5,13 +5,13 @@ const UserApi = {
 		const url = '/users/signin';
 		return AxiosClient.post(url, user);
 	},
-	getAll: () => {
-		const url = '/customer';
+	refreshToken: () => {
+		const url = '/users/refresh';
 		return AxiosClient.get(url);
 	},
 
-	get: (id) => {
-		const url = `/user/${id}`;
+	getMe: () => {
+		const url = `/users/me`;
 		return AxiosClient.get(url);
 	},
 	search: (filter) => {

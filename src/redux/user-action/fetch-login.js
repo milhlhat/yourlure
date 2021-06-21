@@ -4,8 +4,6 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 export const login = createAsyncThunk('user/login', async (params) => {
-	// const response = await UserApi.login(params);
-	// return response;
 	try {
 		const response = await UserApi.login(params);
 		return response;
@@ -24,13 +22,12 @@ const user = createSlice({
 		loginAt: null,
 	},
 	reducers: {
-		setUser: (state, action) => {
-			let s = state;
-			s = action.payload;
-			return s;
+		setUserLogin: (state, action) => {
+			state = { ...action.payload };
 		},
-		logout: (state, action) => {
-			state = null;
+		logout: (state) => {
+			state.loginAt = null;
+			state.accessToken = null;
 		},
 	},
 	extraReducers: {
@@ -46,6 +43,7 @@ const user = createSlice({
 			state.loading = false;
 			state.accessToken = action.payload;
 			state.success = true;
+			state.loginAt = new Date().toLocaleString();
 			state.status = 200;
 		},
 	},
@@ -58,6 +56,6 @@ const persistConfig = {
 };
 
 const { reducer, actions } = user;
-export const { setUser, removeUser } = actions;
+export const { setUserLogin, logout } = actions;
 export default persistReducer(persistConfig, reducer);
 // export default reducer;

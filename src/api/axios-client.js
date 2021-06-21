@@ -1,5 +1,6 @@
 import axios from 'axios';
 import queryString from 'query-string';
+import { getToken } from 'utils/user';
 
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
@@ -14,11 +15,7 @@ const AxiosClient = axios.create({
 // Add a request interceptor
 AxiosClient.interceptors.request.use(async (config) => {
 	// Do something before request is sent
-	if (!config.url.startsWith('api')) {
-		const ls = localStorage.getItem('YL-user');
-		const accessToken = JSON.parse(ls).accessToken;
-		config.headers.Authorization = `Bearer ${JSON.parse(accessToken)}`;
-	}
+	config.headers.Authorization = await getToken();
 	return config;
 });
 AxiosClient.interceptors.response.use(
