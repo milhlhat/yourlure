@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
-import CardProduct from 'components/card/card-product';
+import CardProduct from 'components/card/CardProduct';
 import 'assets/scss/scss-components/product/product-by-cate.scss';
 import YLButton from 'components/custom-field/YLButton';
-import Loading from 'components/Loading';
+import Loading from 'components/Loading-';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilter, saveFilter } from 'utils/product';
 import { useHistory } from 'react-router-dom';

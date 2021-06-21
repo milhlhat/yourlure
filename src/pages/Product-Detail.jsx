@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CardProduct from "components/card/card-product";
+import CardProduct from "components/card/CardProduct";
 import ProductImage from "components/product/product-detail/ProductMedia";
 import ProductAction from "components/product/product-detail/ProductAction";
 import data from "assets/dumy-data/data-product.js";

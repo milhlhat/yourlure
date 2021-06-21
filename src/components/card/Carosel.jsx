@@ -1,7 +1,7 @@
 import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import CardProduct from './card-product';
+import CardProduct from './CardProduct';
 import 'assets/scss/scss-components/carosel/carosel.scss';
 
 Carosel.propTypes = {};
