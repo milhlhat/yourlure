@@ -5,7 +5,7 @@ import DEFINELINK from 'routes/define-link';
 import { Route, Switch } from 'react-router-dom';
 ProductRoute.propTypes = {};
 const Product = React.lazy(() => import('pages/Product'));
-const ProductDetail = React.lazy(() => import('pages/ProductDetail'));
+const ProductDetail = React.lazy(() => import('pages/Product-Detail'));
 const ProductCustomize = React.lazy(() => import('pages/CustomizeLure'));
 const SearchProduct = React.lazy(() => import('pages/Search'));
 const NotFound = React.lazy(() => import('pages/Notfound'));

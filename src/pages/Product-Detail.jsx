@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CardProduct from "components/card/card-product";
-import ProductImage from "components/product/product-detail/Product-media";
-import ProductAction from "components/product/product-detail/Product-action";
+import ProductImage from "components/product/product-detail/ProductMedia";
+import ProductAction from "components/product/product-detail/ProductAction";
 import data from "assets/dumy-data/data-product.js";
 import ProductAPI from "api/product-api";
 import Carosel from 'components/card/Carosel';
 
 ProductDetail.propTypes = {};
 
-let dummyimg = [
-  "https://thegioidocau.vn/vnt_upload/product/2019/12/moi-ca-v5-fimax-31.jpg",
-  "https://salt.tikicdn.com/cache/w444/ts/product/c0/4a/ee/a32098a9fc5b043d015eb6c5e0e484a4.jpg",
-  "https://docautuankiet.com/uploads/products/05022020033936/moi-gia-orochi_05022020033936.jpg",
-];
+
 function ProductDetail(props) {
   const [productDetail, setProductDetail] = useState({
     list: null,
