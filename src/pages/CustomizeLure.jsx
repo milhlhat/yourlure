@@ -11,7 +11,7 @@ import { getMaterialsInfoBy, getNodesInfoBy, getMaterialsName, getColorMaterialB
 import { setListName } from 'redux/customize-action/customize-info';
 import { setMaterialId } from 'redux/customize-action/customize-id';
 // import { setMaterialInit } from 'redux/customize-action/customize-init-data';
-import Loading from 'components/Loading-';
+import Loading from 'components/Loading';
 import ErrorLoad from 'components/ErrorLoad';
 import ProductAPI from 'api/product-api';
 const BE_SERVER = process.env.REACT_APP_API_URL;

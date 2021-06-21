@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "assets/scss/scss-components/user/management-account.scss";
 import UserApi from "api/user-api";
-import Loading from "components/Loading-";
+import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
 import UserAddress from "./UserAddress";
 import ChangeAddress from './ChangeAddress';
