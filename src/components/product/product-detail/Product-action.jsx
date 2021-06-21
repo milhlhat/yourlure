@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import YLButton from "../../custom-field/YLButton";
-import data from "./dumy-data";
 
 function ProductAction(props) {
   const [quantity, setQuantity] = useState(1);
-  const [color, setColor] = useState(0);
+  const [color, setColor] = useState();
+  const [price, setPrice] = useState();
   const {product}=props;
-  var cl = 0;
   const decrement = () => {
     Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
-    console.log(quantity);
   };
   const increment = () => {
     setQuantity(Number(quantity) + 1);
-    console.log(quantity);
   };
-  const handleChooseColor = (index) => {
-    console.log(index);
+  function handleChooseColor (index)  {
     setColor(index);
-    cl = index;
-    console.log(cl);
   };
-  //example color product choosen
-  const productColor = data.productColor();
+  function handleChangePrice(value){
+    setPrice(value?value:product.defaultPrice);
+  }
+ 
   useEffect(()=>{
-    console.log('product');
-    console.log(product);
-  },[]);
+    setColor(product?product.variantCollection[0].backgroundColor:'');
+    setPrice(product?product.defaultPrice:'');
+    
+  },[product]);
   return (
-    <div className="product-action p-4">
+    <div className="bg-white bg-shadow product-action p-4">
       <span className="title">{product==null?"name":product.productName}</span>
       <div className="">
-      {product==null?"price":Number(product.defaultPrice).toLocaleString(
+      {product==null?"price":Number(price).toLocaleString(
                       undefined,
                       {
                         minimumFractionDigits: 0,
@@ -46,7 +43,7 @@ function ProductAction(props) {
           <span>MUA HÀNG</span>
         </div>
         <div className="detail-tab p-1">
-          <a href="#footer">CHI TIẾT</a>
+          <a href="#more-description">CHI TIẾT</a>
         </div>
         <div className="param-tab p-1">
           <Link to="#">THÔNG SỐ</Link>
@@ -56,15 +53,17 @@ function ProductAction(props) {
         <span>{product?product.description:''}</span>
       </div>
       <div className="product-choose-color">
-        <h5>Mã màu:</h5>
+        <h5>Mã màu: {color}</h5>
         <div className="choose-color">
-          {productColor.map((value, index) => (
+          {product && product.variantCollection.map((value, index) => (
             <div
               key={index}
-              className={"box-choose " + index == cl ? "clicked-color" : ""}
-              onClick={() => handleChooseColor(index)}
+              className={`box-choose `}
+              onClick={() => {handleChooseColor(product.variantCollection[index].backgroundColor);handleChangePrice(product.variantCollection[index].newPrice?product.variantCollection[index].newPrice:null)}}
             >
-              <div className={"box-color m-1 " + value}>{value}</div>
+              <div className={`box-color m-1 ${value.backgroundColor} ${product.variantCollection[index].backgroundColor==color?'clicked-color':''}`} >
+                <img src={product.variantCollection[index].imageUrl? product.variantCollection[index].imageUrl:product.imageCollection[0].linkImage} alt="lỗi" />
+                </div>
             </div>
           ))}
         </div>
