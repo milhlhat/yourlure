@@ -2,7 +2,7 @@ import React, { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows, Environment, useGLTF, OrbitControls, useTexture, Loader } from '@react-three/drei';
 import * as THREE from 'three';
-import m3d from 'assets/3d-models/model_4.glb';
+import m3d from 'assets/3d-models/moi_thia_dw06.glb';
 import whiteImg from 'assets/images/white-img.jpg';
 import 'assets/scss/scss-pages/customize-lure.scss';
 import TabSelectCustomize from 'components/tab-select-customize/TabSelectCustomize';
@@ -25,7 +25,8 @@ function RenderModel(props) {
 	let customizeInfo = props.customizeInfo;
 	// let customizeInit = props.customizeInit;
 	//Load 3d model
-	const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
+	// const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
+	const { nodes, materials } = useGLTF(m3d, true);
 
 	if (initMaterials.current.num < 1) {
 		initMaterials.current = {
@@ -69,6 +70,13 @@ function RenderModel(props) {
 	);
 
 	listTextures.push(texture0, texture1, texture2, texture3, texture4, texture5, texture6, texture7);
+	// disable flip texture (default is flip texture. wtf it's reverse my texture)
+	for (let i = 0; i < listTextures.length; i++) {
+		listTextures[i].flipY = false;
+		listTextures[i].flipX = false;
+		listTextures[i].flipZ = false;
+	}
+	
 	let listMesh = [];
 	for (let i = 0; i < listNodes.length; i++) {
 		let node = listNodes[i];
@@ -141,14 +149,14 @@ function RenderModel(props) {
 						receiveShadow
 						castShadow
 						{...item}
-						// material-map={listTextures[i]}
+					// material-map={listTextures[i]}
 
-						// geometry={item.geometry}
-						// material={listMaterials[i]}
+					// geometry={item.geometry}
+					// material={listMaterials[i]}
 
-						// material-color={
-						// 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
-						// }
+					// material-color={
+					// 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
+					// }
 					/>
 				))}
 			{/* {listNodes.length > 0 &&
@@ -216,9 +224,8 @@ function ListActionMaterials(props) {
 					<a
 						onClick={() => handleChangeMId(item.id)}
 						key={i}
-						className={`list-group-item list-group-item-action pointer ${
-							mId === item.id ? 'list-group-active' : ''
-						}`}
+						className={`list-group-item list-group-item-action pointer ${mId === item.id ? 'list-group-active' : ''
+							}`}
 					>
 						{item.name}
 					</a>

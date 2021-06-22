@@ -8,6 +8,7 @@ import { setMaterialId } from 'redux/customize-action/customize-id';
 import { HexColorPicker, RgbaColorPicker } from 'react-colorful';
 import 'assets/scss/scss-components/customize-lure.scss';
 import { setListName } from 'redux/customize-action/customize-info';
+import AddTextToModelTab from './AddTextToModelTab';
 
 function TabSelectCustomize(props) {
 	const [tabSelect, setTabSelect] = useState(0);
@@ -18,12 +19,15 @@ function TabSelectCustomize(props) {
 	const tablist = [
 		{ name: 'IMG', component: <ImgChoices mId={mId} /> },
 		{ name: 'Color', component: <ColorChoices mId={mId} /> },
+		{ name: 'Text', component: <AddTextToModelTab onAddText={handleAddTextToImg}/> },
 	];
 	function handleClickTab(i) {
 		setTabSelect(i);
 		setIsOpisOpen(true);
 	}
-
+	function handleAddTextToImg(img) {
+		images.push(img);
+	}
 	return (
 		<div className="tab-custom">
 			<div className="tab-menu">

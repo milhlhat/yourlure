@@ -12,10 +12,11 @@ import g11 from 'assets/images/texture11.jpg';
 import g12 from 'assets/images/texture12.jpg';
 import g15 from 'assets/images/texture15.png';
 import g16 from 'assets/images/texture16.png';
+import g17 from 'assets/images/lure_logo.jpeg';
 
 
 
-export const images = [g1, g2, g3, g4,g5, g6, g7, g8, g9, g10, g11, g12, g15, g16];
+export const images = [g1, g2, g3, g4,g5, g6, g7, g8, g9, g10, g11, g12, g15, g16, g17];
 export const color = [
 	'#640075',
 	'#5a00b9',
