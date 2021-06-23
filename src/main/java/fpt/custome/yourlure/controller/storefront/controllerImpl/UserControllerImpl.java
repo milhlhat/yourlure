@@ -1,7 +1,6 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.UserController;
-import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
@@ -16,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +33,8 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Boolean> updateUser(Long id, UserDtoInp userDtoInp) {
-        Boolean check = userService.updateUser(id, userDtoInp);
+    public ResponseEntity<Boolean> updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
+        Boolean check = userService.updateUser(req, userDtoInp);
         return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
@@ -63,15 +63,15 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(Long id) {
-        List<UserAddressDtoOut> result = userService.getAddressUser(id);
+    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req) {
+        List<UserAddressDtoOut> result = userService.getAddressUser(req);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Boolean> updateAddress(Long addressId, UserAddressInput userAddressInput) {
-        Boolean check = userService.updateAddress(addressId, userAddressInput);
-        return new ResponseEntity<>(check, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<Boolean> updateAddress(HttpServletRequest req, UserAddressInput userAddressInput) {
+//        Boolean check = userService.updateAddress(req, userAddressInput);
+//        return new ResponseEntity<>(check, HttpStatus.OK);
+//    }
 
 }

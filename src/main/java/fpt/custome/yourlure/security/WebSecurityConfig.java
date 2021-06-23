@@ -22,6 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
 
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -56,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         // Allow swagger to be accessed without authentication
         web.ignoring().antMatchers("/v2/api-docs")//
                 .antMatchers("/swagger-resources/**")//

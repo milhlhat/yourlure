@@ -79,5 +79,20 @@ public class User {
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;
 
+    public void update(User userUpdate){
+        setUsername(userUpdate.getUsername());
+        setUsername(userUpdate.getUsername());
+        setPhone(userUpdate.getPhone());
+        setEnabled(userUpdate.getEnabled());
+        setUserEmail(userUpdate.getUserEmail());
+        setProvider(userUpdate.getProvider());
+        setMaxCustomizable(userUpdate.getMaxCustomizable());
+        setGender(userUpdate.getGender());
+        setRoles(userUpdate.getRoles());
+        setUserAddressCollection(userUpdate.getUserAddressCollection());
+        setUserAddressCollection(userUpdate.getUserAddressCollection());
+        setPassword(userUpdate.getPassword());
+    }
+
 
 }

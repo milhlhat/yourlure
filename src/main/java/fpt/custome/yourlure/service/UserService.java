@@ -1,6 +1,5 @@
 package fpt.custome.yourlure.service;
 
-import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
@@ -32,11 +31,11 @@ public interface UserService {
 
     Optional<UserDtoOut> getUser(Long id);
 
-    List<UserAddressDtoOut> getAddressUser(Long id);
+    List<UserAddressDtoOut> getAddressUser(HttpServletRequest req);
 
-    Boolean updateUser(Long id, UserDtoInp userDtoInp);
+    Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp);
 
-    Boolean updateAddress(Long id, UserAddressInput userAddressInput);
+//    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput);
 
     List<Country> findAllCountry();
 

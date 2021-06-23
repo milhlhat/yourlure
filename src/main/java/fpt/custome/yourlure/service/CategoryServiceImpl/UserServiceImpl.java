@@ -140,9 +140,11 @@ public class UserServiceImpl implements UserService {
         }
 
         @Override
-        public List<UserAddressDtoOut> getAddressUser (Long id){
+        public List<UserAddressDtoOut> getAddressUser (HttpServletRequest req){
             List<UserAddressDtoOut> result = new ArrayList<>();
-            List<UserAddress> list = userAddressRepos.findAllByUser_UserId(id);
+            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
+
             for (UserAddress userAddress : list) {
                 UserAddressDtoOut dtoOut = new UserAddressDtoOut();
                 dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
@@ -157,44 +159,39 @@ public class UserServiceImpl implements UserService {
         }
 
         @Override
-        public Boolean updateUser (Long id, UserDtoInp userDtoInp){
+        public Boolean updateUser (HttpServletRequest req, UserDtoInp userDtoInp){
 
             try {
-                if (id != null && userDtoInp != null) {
-                    if (userRepos.findById(id).isPresent()) {
-                        User userUpdate = mapper.map(userDtoInp, User.class);
-                        userRepos.deleteById(id);
-                        userRepos.save(userUpdate);
-                    } else {
-                        return false;
-                    }
-                }
+                User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+                userUpdate.update(mapper.map(userDtoInp, User.class));
+                userRepos.save(userUpdate);
+
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                return false;
             }
             return true;
         }
 
-        @Override
-        public Boolean updateAddress (Long id, UserAddressInput userAddressInput){
-
-            try {
-                if (id != null && userAddressInput != null) {
-                    if (userAddressRepos.findById(id).isPresent()) {
-                        UserAddress userAddressUpdate = mapper.map(userAddressInput, UserAddress.class);
-                        userAddressUpdate.setUserAddressId(id);
-                        userAddressRepos.save(userAddressUpdate);
-                    } else {
-                        return false;
-                    }
-                }
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return true;
-        }
+//        @Override
+//        public Boolean updateAddress (HttpServletRequest req, UserAddressInput userAddressInput){
+//
+//            try {
+//                if (id != null && userAddressInput != null) {
+//                    if (userAddressRepos.findById(id).isPresent()) {
+//                        UserAddress userAddressUpdate = mapper.map(userAddressInput, UserAddress.class);
+//                        userAddressUpdate.setUserAddressId(id);
+//                        userAddressRepos.save(userAddressUpdate);
+//                    } else {
+//                        return false;
+//                    }
+//                }
+//            } catch (Exception e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            return true;
+//        }
 
         @Override
         public List<Country> findAllCountry () {
