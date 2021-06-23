@@ -1,22 +1,29 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.UserController;
+import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
+import fpt.custome.yourlure.entity.Role;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
 import fpt.custome.yourlure.entity.address.Ward;
 import fpt.custome.yourlure.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,6 +32,9 @@ public class UserControllerImpl implements UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public ResponseEntity<Optional<UserDtoOut>> getUser(Long id) {
@@ -68,10 +78,37 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-//    @Override
-//    public ResponseEntity<Boolean> updateAddress(HttpServletRequest req, UserAddressInput userAddressInput) {
-//        Boolean check = userService.updateAddress(req, userAddressInput);
-//        return new ResponseEntity<>(check, HttpStatus.OK);
-//    }
+    @Override
+    public List<UserResponseDTO> findAll() {
+        return userService.findAll();
+    }
+
+    @Override
+    public UserResponseDTO whoami(HttpServletRequest req) {
+        return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
+    }
+
+    @Override
+    public String refresh(HttpServletRequest req) {
+        return userService.refresh(req.getRemoteUser());
+    }
+
+    @Override
+    public UserResponseDTO search(String phone) {
+        return modelMapper.map(userService.search(phone), UserResponseDTO.class);
+    }
+
+    @Override
+    public String signup(UserDataDTO user) {
+        user.setRoles(Collections.singletonList(Role.ROLE_CUSTOMER));
+        return userService.signup(modelMapper.map(user, User.class));
+    }
+
+    @Override
+    public String login(Map<String, String> user) {
+        String phone = user.get("phone");
+        String password = user.get("password");
+        return userService.signin(phone, password);
+    }
 
 }
