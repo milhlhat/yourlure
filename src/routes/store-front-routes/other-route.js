@@ -11,15 +11,15 @@ const NotFound = React.lazy(() => import('pages/Notfound'));
 
 export default function OtherRoute() {
 	const match = useRouteMatch();
- 
+	const path = match.path === '/' ? '' : match.path;
 	return (
 		<Switch>
 			<Redirect exact from="/" to="/home" />
-			<Route path={DEFINELINK.about} component={About} />
-			<Route path={DEFINELINK.campaign} component={Campaign} />
-			<Route path={DEFINELINK.login} component={Login} />
-			<Route path={DEFINELINK.register} component={Register} />
-			<Route path={DEFINELINK.forgotPassword} component={FogotPassWord} />
+			<Route path={path + DEFINELINK.about} component={About} />
+			<Route path={path + DEFINELINK.campaign} component={Campaign} />
+			<Route path={path + DEFINELINK.login} component={Login} />
+			<Route path={path + DEFINELINK.register} component={Register} />
+			<Route path={path + DEFINELINK.forgotPassword} component={FogotPassWord} />
 			<Route
 				path={DEFINELINK.home}
 				component={HomePage}

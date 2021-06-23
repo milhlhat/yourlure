@@ -7,6 +7,8 @@ import ProductAPI from 'api/product-api';
 import Loading from 'components/Loading';
 import ErrorLoad from 'components/ErrorLoad';
 import banner from 'assets/images/urban-fishing-in-boston-social.jpg';
+import { Can } from 'ability/can';
+
 Home.propTypes = {};
 
 function Home(props) {
@@ -85,8 +87,11 @@ function Home(props) {
 						</h3>
 						<h3>Lorem ipsum dolo</h3>
 						<div className="button-discover">
-							<YLButton value="Discover me" variant="primary" />
+							<Can I="read" a="all" passThrough>
+								{(allowed) => <YLButton value="Discover me" disabled={!allowed} variant="primary"></YLButton>}
+							</Can>
 						</div>
+						 
 					</div>
 				</div>
 				<div className="top-product-sale bg-white bg-shadow p-2">

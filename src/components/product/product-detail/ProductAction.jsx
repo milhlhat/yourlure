@@ -21,7 +21,7 @@ function ProductAction(props) {
   }
  
   useEffect(()=>{
-    setColor(product?product.variantCollection[0].backgroundColor:'');
+    setColor(product && product.variantCollection[0]?product.variantCollection[0].backgroundColor:'');
     setPrice(product?product.defaultPrice:'');
     
   },[product]);
