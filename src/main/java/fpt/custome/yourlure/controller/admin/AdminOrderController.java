@@ -17,6 +17,9 @@ public interface AdminOrderController {
     @PostMapping("/search")
     List<Order> search(@RequestBody Filter filter);
 
+    @GetMapping("/get-user-order/{userId}")
+    List<Order> getUserOrder(@PathVariable("userId") Long userId);
+
     @PostMapping("/add")
     Boolean addOrder(@RequestBody Order order);
 
@@ -28,4 +31,5 @@ public interface AdminOrderController {
 
     @DeleteMapping("/{id}")
     Boolean deleteOrder(@PathVariable("id") Long id);
+
 }

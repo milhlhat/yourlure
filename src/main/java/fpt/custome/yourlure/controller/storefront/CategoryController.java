@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+
 @RequestMapping(path = "/api/category")
 public interface CategoryController {
 

@@ -25,9 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        // Disable CSRF (cross site request forgery)
-        http.csrf().disable();
 
+        // Disable CSRF (cross site request forgery)
+        http.cors();
+//        http.csrf().disable();
         // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -35,9 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()//
                 .antMatchers("/users/signin").permitAll()//
                 .antMatchers("/users/signup").permitAll()//
+                .antMatchers("/users/refresh").permitAll()//
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/**/**").permitAll()
+
 
 //                .antMatchers("/api/product/model-download").permitAll()
                 // Disallow everything else..

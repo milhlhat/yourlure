@@ -76,6 +76,10 @@ public class Product {
     private String brand;
 
     @Nullable
+    @Column(name = "visibleInStorefront")
+    private Boolean visibleInStorefront;
+
+    @Nullable
     @Column(name = "dateCreate")
     private Date dateCreate;
 

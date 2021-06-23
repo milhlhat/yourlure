@@ -1,9 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
-import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.ProductJPARepos;
@@ -29,30 +27,44 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepos productRepos;
 
-    // Tạo mapper object
-    ModelMapper mapper = new ModelMapper();
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
-    public List<ProductsDetailDtoOut> getAll(Pageable pageable) {
-
-        List<ProductsDetailDtoOut> results = new ArrayList<>();
-        List<Product> list = productJPARepos.findAll(pageable).getContent();
-        for (Product item : list) {
-            ProductsDetailDtoOut dtoOut = mapper.map(item, ProductsDetailDtoOut.class);
-            results.add(dtoOut);
+    public List<AdminProductDtoOut> getAll(Pageable pageable) {
+        List<AdminProductDtoOut> results = new ArrayList<>();
+        try {
+            List<Product> list = productJPARepos.findAll(pageable).getContent();
+            for (Product item : list) {
+                AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
+                results.add(dtoOut);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return results;
     }
 
     @Override
     public Integer totalItem() {
-        return productJPARepos.findAll().size();
+        try {
+            return productJPARepos.findAll().size();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public ProductsDetailDtoOut getById(Long id) {
-        Optional<Product> findProduct = productJPARepos.findById(id);
-        return findProduct.map(product -> mapper.map(product, ProductsDetailDtoOut.class)).orElse(null);
+        try {
+            Optional<Product> findProduct = productJPARepos.findById(id);
+            return findProduct.map(product -> mapper.map(product, ProductsDetailDtoOut.class)).orElse(null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -140,11 +152,27 @@ public class ProductServiceImpl implements ProductService {
             }
         } catch (
                 Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    @Override
+    public AdminProductDetailDtoOut adminGetById(Long id) {
+        Optional<Product> findProduct = productJPARepos.findById(id);
+        return findProduct.map(product -> mapper.map(product, AdminProductDetailDtoOut.class)).orElse(null);
+    }
+
+    @Override
+    public List<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable) {
+        List<AdminProductDtoOut> result = new ArrayList<>();
+        List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
+        for (Product item : list) {
+            AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
+            result.add(dtoOut);
+        }
+        return result;
     }
 
     @Override

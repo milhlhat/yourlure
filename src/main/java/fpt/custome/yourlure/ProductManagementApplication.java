@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
-@CrossOrigin
+
 public class ProductManagementApplication implements CommandLineRunner {
     @Autowired
     UserService userService;

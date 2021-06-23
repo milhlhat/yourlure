@@ -1,6 +1,7 @@
-package fpt.custome.yourlure.dto.dtoInp;
+package fpt.custome.yourlure.dto.dtoOut;
 
 import fpt.custome.yourlure.entity.Image;
+import fpt.custome.yourlure.entity.Variant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductsDtoInp {
+public class AdminProductDetailDtoOut {
 
     private Long productId;
     private String productName;
@@ -29,9 +30,11 @@ public class ProductsDtoInp {
     private String deepDiving;
     private Boolean customizable;
     private String brand;
+    private Boolean visibleInStorefront;
     private Date dateCreate;
     private String imgUrlModel;
     private Float categoryId;
     private Collection<Image> imageCollection;
+    private Collection<Variant> variantCollection;
 
 }
