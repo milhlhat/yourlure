@@ -17,33 +17,34 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandlerController {
 
-  @Bean
-  public ErrorAttributes errorAttributes() {
-    // Hide exception field in the return object
-    return new DefaultErrorAttributes(){
-      @Override
-      public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
-        Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
-        errorAttributes.remove("exception");
-        errorAttributes.remove("trace");
-        return errorAttributes;
-      }
-    };
-  }
+    @Bean
+    public ErrorAttributes errorAttributes() {
+        // Hide exception field in the return object
+        return new DefaultErrorAttributes() {
+            @Override
+            public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
+                Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
+                System.out.println(errorAttributes);
+                errorAttributes.remove("exception");
+                errorAttributes.remove("trace");
+                return errorAttributes;
+            }
+        };
+    }
 
-  @ExceptionHandler(CustomException.class)
-  public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-    res.sendError(ex.getHttpStatus().value(), ex.getMessage());
-  }
+    @ExceptionHandler(CustomException.class)
+    public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
+        res.sendError(ex.getHttpStatus().value(), ex.getMessage());
+    }
 
-  @ExceptionHandler(AccessDeniedException.class)
-  public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
-    res.sendError(HttpStatus.FORBIDDEN.value(), "Access denied");
-  }
+    @ExceptionHandler(AccessDeniedException.class)
+    public void handleAccessDeniedException(HttpServletResponse res) throws IOException {
+        res.sendError(HttpStatus.FORBIDDEN.value(), "Access denied");
+    }
 
-  @ExceptionHandler(Exception.class)
-  public void handleException(HttpServletResponse res) throws IOException {
-    res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
-  }
+    @ExceptionHandler(Exception.class)
+    public void handleException(HttpServletResponse res) throws IOException {
+        res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
+    }
 
 }

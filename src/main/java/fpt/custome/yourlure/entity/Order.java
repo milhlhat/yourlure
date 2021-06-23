@@ -56,8 +56,15 @@ public class Order {
     private User User;
 
     @JsonIgnore
+    @ManyToOne
+    @Nullable
+    @JoinColumn(name = "discountVoucherId")
+    private DiscountVoucher discountVoucher;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến order ở trong orderline.
     //1 order có nhiều orderline
     private Collection<OrderLine> orderLineCollection;
+
 }

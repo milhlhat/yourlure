@@ -1,4 +1,4 @@
-package fpt.custome.yourlure.service.CategoryServiceImpl;
+package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import fpt.custome.yourlure.entity.Campaign;

@@ -1,7 +1,6 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.ProductController;
-import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileInputStream;
@@ -25,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+
 @RestController // This means that this class is a Controller
 public class ProductControllerImpl implements ProductController {
 
@@ -74,25 +72,6 @@ public class ProductControllerImpl implements ProductController {
         List<ProductsDtoOut> dtoOuts = productService.findAllByProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
-    }
-
-
-    @Override
-    public ResponseEntity<Boolean> updateProduct(ProductsDtoInp productsDtoInp, Long id) {
-        Boolean check = productService.updateProduct(productsDtoInp, id);
-        return new ResponseEntity<>(check, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Boolean> saveCate(ProductsDtoInp productsDtoInp) {
-        Boolean check = productService.save(productsDtoInp);
-        return new ResponseEntity<>(check, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Boolean> removeCategory(Long id) {
-        Boolean check = productService.remove(id);
-        return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
     @Override

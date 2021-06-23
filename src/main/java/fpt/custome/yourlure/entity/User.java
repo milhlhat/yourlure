@@ -55,6 +55,10 @@ public class User {
     @Column(name = "maxCustomizable", columnDefinition = "integer default 5")
     private Integer maxCustomizable;
 
+    @Nullable
+    @Column(name = "note")
+    private String note;
+
     @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 

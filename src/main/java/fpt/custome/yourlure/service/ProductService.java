@@ -1,9 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
-import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.data.domain.Pageable;
 
@@ -12,8 +10,8 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    List<ProductsDetailDtoOut> getAll(Pageable pageable);
 
+    // store front **************************
     Integer totalItem();
 
     ProductsDetailDtoOut getById(Long id);
@@ -26,9 +24,17 @@ public interface ProductService {
 
     List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable);
 
-    Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
+    // Admin front **************************
+
+    List<AdminProductDtoOut> getAll(Pageable pageable);
 
     Boolean save(ProductsDtoInp productsDtoInp);
+
+    AdminProductDetailDtoOut adminGetById(Long id);
+
+    List<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable);
+
+    Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
 
     Boolean remove(Long id);
 

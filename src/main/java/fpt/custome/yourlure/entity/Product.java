@@ -36,6 +36,10 @@ public class Product {
     private String description;
 
     @Nullable
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
+
+    @Nullable
     @Column(name = "minWeight")
     private Float minWeight;
 
@@ -72,8 +76,8 @@ public class Product {
     private String brand;
 
     @Nullable
-    @Column(name = "sale")
-    private Float sale;
+    @Column(name = "visibleInStorefront")
+    private Boolean visibleInStorefront;
 
     @Nullable
     @Column(name = "dateCreate")

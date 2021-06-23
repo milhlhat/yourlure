@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @SpringBootApplication
-@CrossOrigin
+
 public class ProductManagementApplication implements CommandLineRunner {
     @Autowired
     UserService userService;

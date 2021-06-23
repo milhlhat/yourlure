@@ -1,6 +1,5 @@
 package fpt.custome.yourlure.controller.storefront;
 
-import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin
+
 @RequestMapping(path = "/api/product")
 public interface ProductController {
 
@@ -35,15 +34,6 @@ public interface ProductController {
     ResponseEntity<List<ProductsDtoOut>> getProductByName(@RequestBody Filter filter);
 
     //TODO: getmapping customize
-
-    @PostMapping("/{id}")
-    ResponseEntity<Boolean> updateProduct(@RequestBody ProductsDtoInp productsDtoInp, @PathVariable Long id);
-
-    @GetMapping("/save")
-    ResponseEntity<Boolean> saveCate(@RequestBody ProductsDtoInp productsDtoInp);
-
-    @DeleteMapping("/remove{id}")
-    ResponseEntity<Boolean> removeCategory(@PathVariable Long id);
 
     @GetMapping("/model-download")
     ResponseEntity<Resource> download(String path);
