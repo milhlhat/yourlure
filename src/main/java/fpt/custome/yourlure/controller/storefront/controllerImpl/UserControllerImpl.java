@@ -85,6 +85,11 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public List<Role> getRoles(HttpServletRequest req) {
+        return userService.getRoles(req);
+    }
+
+    @Override
     public UserResponseDTO whoami(HttpServletRequest req) {
         return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
     }

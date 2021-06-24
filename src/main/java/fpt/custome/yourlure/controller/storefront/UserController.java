@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
+import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
@@ -60,6 +61,16 @@ public interface UserController {
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     List<UserResponseDTO> findAll();
+
+    @GetMapping(value = "/roles")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @ApiOperation(value = "${UserController.roles}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    List<Role> getRoles(HttpServletRequest req);
+
 
     @GetMapping(value = "/me")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")

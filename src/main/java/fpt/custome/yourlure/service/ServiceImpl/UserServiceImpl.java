@@ -2,9 +2,9 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Provider;
+import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.UserAddress;
 import fpt.custome.yourlure.entity.address.Country;
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,17 +127,26 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<UserDtoOut> getUser(Long id) {
+    public Optional<UserResponseDTO> getUser(Long id) {
         try {
             Optional<User> user = userRepos.findById(id);
             if (user.isPresent()) {
-                UserDtoOut result = mapper.map(user.get(), UserDtoOut.class);
+                UserResponseDTO result = mapper.map(user.get(), UserResponseDTO.class);
                 return Optional.of(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<Role> getRoles(HttpServletRequest rq) {
+        User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
+        if(user != null){
+            return user.getRoles();
+        }
+        return Collections.emptyList();
     }
 
     @Override
