@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
 import DEFINELINK from 'routes/define-link';
-const Campaign = React.lazy(() => import('pages/Campaign'));
-const About = React.lazy(() => import('pages/About'));
-const HomePage = React.lazy(() => import('pages/Home'));
-const Login = React.lazy(() => import('pages/Login'));
-const Register = React.lazy(() => import('pages/Register'));
-const FogotPassWord = React.lazy(() => import('pages/FogotPassWord'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const Campaign = React.lazy(() => import('store-front-pages/Campaign'));
+const About = React.lazy(() => import('store-front-pages/About'));
+const HomePage = React.lazy(() => import('store-front-pages/Home'));
+const Login = React.lazy(() => import('store-front-pages/Login'));
+const Register = React.lazy(() => import('store-front-pages/Register'));
+const FogotPassWord = React.lazy(() => import('store-front-pages/FogotPassWord'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 
 export default function OtherRoute() {
 	const match = useRouteMatch();

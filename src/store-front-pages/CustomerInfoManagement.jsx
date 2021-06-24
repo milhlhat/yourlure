@@ -3,11 +3,11 @@ import "assets/scss/scss-components/user/management-account.scss";
 import UserApi from "api/user-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
-import UserAddress from "./UserAddress";
-import ChangeAddress from './ChangeAddress';
-import UserPayment from "./UserPayment";
-import ChangeInformation from "./ChangeInformation";
-import UserInformation from "./UserInformation";
+import UserAddress from "../components/customer/CustomerAddress";
+import ChangeAddress from '../components/customer/ChangeAddress';
+import UserPayment from "../components/customer/CutomerOrder";
+import ChangeInformation from "../components/customer/ChangeInformation";
+import UserInformation from "../components/customer/CustomerAccount";
 
 function ManagementAccount(props) {
   const id = 1;

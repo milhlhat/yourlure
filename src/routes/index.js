@@ -11,7 +11,7 @@ import UserApi from 'api/user-api';
 
 const ManagementRouter = React.lazy(() => import('./manager-routes/index'));
 const StoreRoute = React.lazy(() => import('./store-front-routes/index'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 function AppRouter() {
 	const [ability, setAbility] = useState(defineAbilityFor({}));
 	useEffect(() => {

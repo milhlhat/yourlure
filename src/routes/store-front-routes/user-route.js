@@ -2,8 +2,8 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import DEFINELINK from 'routes/define-link';
 UserRoute.propTypes = {};
-const ManagementAccount = React.lazy(() => import('components/user/ManagementAccount'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const ManagementAccount = React.lazy(() => import('store-front-pages/CustomerInfoManagement'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 
 function UserRoute() {
 	const match = useRouteMatch();

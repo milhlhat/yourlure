@@ -3,8 +3,8 @@ import DEFINELINK from 'routes/define-link';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 CartRoute.propTypes = {};
 const CartProduct = React.lazy(() => import('components/cart/CartProduct'));
-const Payment = React.lazy(() => import('pages/Payment'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const Payment = React.lazy(() => import('store-front-pages/Payment'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 
 function CartRoute() {
 	const match = useRouteMatch();

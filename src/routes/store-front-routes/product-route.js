@@ -3,11 +3,11 @@ import React from 'react';
 import DEFINELINK from 'routes/define-link';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 ProductRoute.propTypes = {};
-const Product = React.lazy(() => import('pages/Product'));
-const ProductDetail = React.lazy(() => import('pages/ProductDetail'));
-const ProductCustomize = React.lazy(() => import('pages/CustomizeLure'));
-const SearchProduct = React.lazy(() => import('pages/Search'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const Product = React.lazy(() => import('store-front-pages/Product'));
+const ProductDetail = React.lazy(() => import('store-front-pages/ProductDetail'));
+const ProductCustomize = React.lazy(() => import('store-front-pages/CustomizeLure'));
+const SearchProduct = React.lazy(() => import('store-front-pages/Search'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 function ProductRoute() {
 	const match = useRouteMatch();
 	const path = match.path === '/' ? '' : match.path;

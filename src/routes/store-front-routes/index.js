@@ -7,7 +7,7 @@ const OtherRoute = React.lazy(() => import('./other-route'));
 const CartRoute = React.lazy(() => import('./cart-router'));
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
-const NotFound = React.lazy(() => import('pages/Notfound'));
+const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 function StoreFrontRouter() {
 	return (
 		<StoreFrontLayout>
