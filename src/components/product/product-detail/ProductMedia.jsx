@@ -14,7 +14,7 @@ function ProductImage(props) {
 	}
 	return (
 		<div className="bg-white bg-shadow product-media d-flex flex-column">
-			<div className="big-image object-fit">
+			<div className="big-image object-fit p-md-3 p-1">
 				<button
 					className={`big-image-edit ${product ? (product.customizable ? '' : 'd-none') : ''}`}
 					onClick={goToCustomize}
@@ -29,7 +29,7 @@ function ProductImage(props) {
 					alt="Ảnh sản phẩm"
 				/>
 			</div>
-			<div className="gallery mt-1">
+			<div className="gallery my-2 p-md-3 p-1">
 				{product &&
 					product.imageCollection.map((item, i) => (
 						<div

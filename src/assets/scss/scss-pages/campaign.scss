@@ -1,10 +1,18 @@
 @import "../base/variable";
+
+.hidden{
+  display: none;
+}
 .campaign {
   & .banner {
     object-fit: contain;
     & .img-banner {
       object-fit: cover;
       width: 100%;
+    }
+    & .countdown {
+      display: flex;
+      align-items: baseline;
     }
   }
   & .campaign-main {
@@ -13,6 +21,7 @@
       text-align: right;
       & .information {
         height: 100%;
+        text-align: justify;
       }
     }
     & .campaign-register {
@@ -33,17 +42,35 @@
     flex-direction: column;
     align-items: center;
     & .list-img {
-        justify-content: center;
+      justify-content: center;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
     }
   }
+  & .campaign-orther-list {
+    display: block;
+    width: 100%;
+    & ul {
+      & li {
+        display: flex;
+        justify-content: center;
+      }
+    }
+    & .campaign-list-card {
+      display: flex;
+      flex-direction: column;
+      align-content: center;
+      justify-content: space-between;
+      text-align: center;
+      & img{
+        width: 100%;
+        object-fit: contain;
+        // height: 80px;
+      }
+    }
+  }
 }
-
-
-
-
 
 @media screen and (max-width: $mobile-width - 1px) {
   & .banner {
@@ -51,7 +78,7 @@
       height: 200px;
     }
     & .countdown {
-      width: 200px;
+      // width: 200px;
       font-size: 34px;
       float: right;
     }
@@ -78,7 +105,7 @@
       height: 300px;
     }
     & .countdown {
-      width: 200px;
+      // width: 200px;
       font-size: 40px;
       float: right;
     }
@@ -105,7 +132,7 @@
       height: 400px;
     }
     & .countdown {
-      width: 200px;
+      // width: 200px;
       font-size: 46px;
       float: right;
     }
@@ -133,7 +160,7 @@
       height: 500px;
     }
     & .countdown {
-      width: 200px;
+      // width: 200px;
       font-size: 52px;
       float: right;
     }
