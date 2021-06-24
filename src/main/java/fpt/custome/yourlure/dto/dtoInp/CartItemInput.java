@@ -1,6 +1,5 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.Customize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CartItemInput {
 
-    private Long Id;
-    private Long productID;
-    private Long variantID;
-    private Long userID;
+    private Long imageUrl;
+    private Float price;
+    private Long productId;
+    private Long variantId;
+    private Long cartId;
     private Integer quantity;
     private Float weight;
-    private Customize customize;
+    private CustomizeDtoInput customizeDtoInput;
+
 }

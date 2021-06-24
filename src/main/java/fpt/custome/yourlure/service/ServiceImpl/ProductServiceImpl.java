@@ -2,9 +2,13 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.*;
+import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.entity.Fish;
 import fpt.custome.yourlure.entity.Product;
-import fpt.custome.yourlure.repositories.ProductJPARepos;
+import fpt.custome.yourlure.repositories.CategoryRepos;
+import fpt.custome.yourlure.repositories.FishRepos;
+import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.repositories.ProductRepos;
 import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
@@ -22,10 +26,16 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductJPARepos productJPARepos;
+    private ProductJpaRepos productJPARepos;
 
     @Autowired
     private ProductRepos productRepos;
+
+    @Autowired
+    private CategoryRepos categoryRepos;
+
+    @Autowired
+    private FishRepos fishRepos;
 
     @Autowired
     private ModelMapper mapper;
@@ -134,7 +144,6 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return true;
@@ -145,8 +154,17 @@ public class ProductServiceImpl implements ProductService {
         try {
             Product product;
             if (productsDtoInp != null) {
+                //save product
                 product = mapper.map(productsDtoInp, Product.class);
+                Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
+                product.setCategory(categoryInput.get());
                 productJPARepos.save(product);
+
+                //save fish_product
+                Optional<Fish> fishOptional = fishRepos.findById(productsDtoInp.getFishId());
+                Fish fishInput = fishOptional.get();
+                fishInput.getProducts().add(product);
+                fishRepos.save(fishInput);
             } else {
                 return false;
             }
@@ -166,13 +184,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable) {
-        List<AdminProductDtoOut> result = new ArrayList<>();
-        List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
-        for (Product item : list) {
-            AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
-            result.add(dtoOut);
+        try {
+            List<AdminProductDtoOut> result = new ArrayList<>();
+            List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
+            for (Product item : list) {
+                AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
+                result.add(dtoOut);
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
     @Override

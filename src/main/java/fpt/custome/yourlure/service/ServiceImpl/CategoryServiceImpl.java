@@ -5,7 +5,7 @@ import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.CategoryRepos;
-import fpt.custome.yourlure.repositories.ProductJPARepos;
+import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepos categoryRepos;
 
     @Autowired
-    private ProductJPARepos productJPARepos;
+    private ProductJpaRepos productJPARepos;
 
     // Tạo mapper object
     ModelMapper mapper = new ModelMapper();

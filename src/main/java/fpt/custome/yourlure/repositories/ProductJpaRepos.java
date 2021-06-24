@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 
-public interface ProductJPARepos extends JpaRepository<Product, Long> {
+public interface ProductJpaRepos extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT tbl_products.*, SUM(tbl_order_line.quantity)AS sumQuantity \n" +
             "FROM tbl_order_line,tbl_variants,tbl_products\n" +

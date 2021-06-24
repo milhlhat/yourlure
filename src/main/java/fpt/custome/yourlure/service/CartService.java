@@ -1,10 +1,9 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
-import fpt.custome.yourlure.entity.Order;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
@@ -13,18 +12,18 @@ public interface CartService {
     /**
      * lấy giỏ hàng của user
      *
-     * @param userId user
+     * @param req user
      * @return
      */
-    Optional<CartDtoOut> getCart(Long userId);
+    Optional<CartDtoOut> getCart(HttpServletRequest req);
 
     /**
      * Thêm sản phẩm vào giỏ hàng
      *
-     * @param cartId
+     * @param req
      * @param cartItemInput
      */
-    Boolean addProduct(Long userId,Long cartId, CartItemInput cartItemInput);
+    Boolean addProduct(HttpServletRequest req, CartItemInput cartItemInput);
 
     /**
      * xoá SP khỏi giỏ hàng
@@ -42,15 +41,6 @@ public interface CartService {
      * @param quantity
      */
     Boolean setProductQuantity(Long cartId, Long cartItemId, int quantity);
-
-    /**
-     * user thực hiện order
-     *
-     * @param userId user
-     * @param order
-     * @return
-     */
-    Optional<OrderDtoInput> createOrder(Long userId, Order order);
 
 
 }

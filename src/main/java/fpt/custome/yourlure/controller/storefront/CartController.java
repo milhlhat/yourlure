@@ -6,6 +6,7 @@ import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
@@ -19,7 +20,7 @@ public interface CartController {
      * @return
      */
     @GetMapping("/{id}")
-    ResponseEntity<Optional<CartDtoOut>> getCart(@PathVariable Long id);
+    ResponseEntity<Optional<CartDtoOut>> getCart(@RequestParam("req") HttpServletRequest req);
 
     /**
      * Thêm sản phẩm vào giỏ hàng
@@ -28,8 +29,7 @@ public interface CartController {
      * @param cartItemInput
      */
     @PostMapping("/add-product")
-    ResponseEntity<Boolean> addProduct(@RequestParam("userId") Long userId,
-                                       @RequestParam("cartId") Long cartId,
+    ResponseEntity<Boolean> addProduct(@RequestParam("req") HttpServletRequest req,
                                        @RequestBody CartItemInput cartItemInput);
 
     /**
