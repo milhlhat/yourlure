@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
     @Autowired
     private UserAddressRepos userAddressRepos;
 
@@ -172,25 +173,6 @@ public class UserServiceImpl implements UserService {
             return true;
         }
 
-//        @Override
-//        public Boolean updateAddress (HttpServletRequest req, UserAddressInput userAddressInput){
-//
-//            try {
-//                if (id != null && userAddressInput != null) {
-//                    if (userAddressRepos.findById(id).isPresent()) {
-//                        UserAddress userAddressUpdate = mapper.map(userAddressInput, UserAddress.class);
-//                        userAddressUpdate.setUserAddressId(id);
-//                        userAddressRepos.save(userAddressUpdate);
-//                    } else {
-//                        return false;
-//                    }
-//                }
-//            } catch (Exception e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//            return true;
-//        }
 
         @Override
         public List<Country> findAllCountry () {
