@@ -108,7 +108,7 @@ function Header(props) {
 								</Link>
 							</div>
 							<div>
-								<Link className="nav-link item-hover" to="/product/customize/:id">
+								<Link className="nav-link item-hover" to="/product/customize/14">
 									Tùy biến
 								</Link>
 							</div>

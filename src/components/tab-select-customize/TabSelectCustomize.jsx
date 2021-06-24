@@ -5,7 +5,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import YLButton from 'components/custom-field/YLButton';
 import { Link } from 'react-router-dom';
 import { setMaterialId } from 'redux/customize-action/customize-id';
-import { HexColorPicker, RgbaColorPicker } from 'react-colorful';
+import { HexColorPicker } from 'react-colorful';
 import 'assets/scss/scss-components/customize-lure.scss';
 import { setListName } from 'redux/customize-action/customize-info';
 import AddTextToModelTab from './AddTextToModelTab';
@@ -19,7 +19,7 @@ function TabSelectCustomize(props) {
 	const tablist = [
 		{ name: 'IMG', component: <ImgChoices mId={mId} /> },
 		{ name: 'Color', component: <ColorChoices mId={mId} /> },
-		{ name: 'Text', component: <AddTextToModelTab onAddText={handleAddTextToImg}/> },
+		{ name: 'Text', component: <AddTextToModelTab onAddText={handleAddTextToImg} /> },
 	];
 	function handleClickTab(i) {
 		setTabSelect(i);

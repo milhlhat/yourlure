@@ -1,34 +1,25 @@
-const Home = '/home';
-const Product = '/product';
-const Cart = '/cart';
-const User = '/user';
-
-const Payment = '/cart/payment';
-const ProductDetail = '/product/detail/:id';
-const ProductCustomize = '/product/customize/:id';
-const ProductSearch = '/product/search';
-
-const Account = '/user/account';
-const manager = '/manager';
-const store = '/';
-
 const DEFINELINK = {
-	home: Home,
-	user: User,
-	product: Product,
-	cart: Cart,
-	about: '/about',
-	campaign: '/campaign',
-	payment: Payment,
-	productDetail: ProductDetail,
-	productCustomize: ProductCustomize,
-	productSearch: ProductSearch,
+	//path for store front
+	store: '/',
+	home: '/home',
 	login: '/login',
 	register: '/register',
 	forgotPassword: '/fogot-password',
-	account: Account,
+	about: '/about',
+	campaign: '/campaign',
 
-	manager: manager,
-	store: store,
+	user: '/user',
+	account: '/account',
+
+	cart: '/cart',
+	payment: '/payment', // /cart/payment
+
+	product: '/product',
+	productDetail: '/detail/:id', // /product/detail/:id
+	productCustomize: '/customize/:id', // /product/customize/:id
+	productSearch: '/search', // /product/search
+
+	//path for manager page
+	manager: '/manager',
 };
 export default DEFINELINK;

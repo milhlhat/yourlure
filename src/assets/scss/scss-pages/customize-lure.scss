@@ -38,7 +38,7 @@
 .picker {
 	position: absolute !important;
 	top: 50px;
-	right: 0px;
+	right: 5px;
 	color: $text-color;
 	& .list-group-active {
 		color: #ffffff;
@@ -47,6 +47,12 @@
 	& a {
 		min-width: 120px;
 	}
+}
+.export {
+	position: absolute !important;
+	top: 5px;
+	right: 5px;
+	z-index: 2;
 }
 .tab-custom {
 	display: flex;

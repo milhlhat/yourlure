@@ -2,16 +2,16 @@ import AxiosClient from './axios-client';
 import queryString from 'query-string';
 const UserApi = {
 	login: (user) => {
-		const url = '/users/signin';
+		const url = '/user/signin';
 		return AxiosClient.post(url, user);
 	},
 	refreshToken: () => {
-		const url = '/users/refresh';
+		const url = '/user/refresh';
 		return AxiosClient.get(url);
 	},
 
 	getMe: () => {
-		const url = `/users/me`;
+		const url = `/user/me`;
 		return AxiosClient.get(url);
 	},
 	search: (filter) => {

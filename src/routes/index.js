@@ -1,10 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Container } from 'reactstrap';
-import Header from 'components/header/Header';
+
 import Loading from 'components/Loading';
-import CommonUtils from 'utils/common';
-import Footer from 'components/footer/Footer';
 
 import DEFINELINK from 'routes/define-link';
 

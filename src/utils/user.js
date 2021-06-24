@@ -26,7 +26,7 @@ const userUtils = {
 			headers: myHeaders,
 		};
 
-		fetch(process.env.REACT_APP_API_URL + 'users/refresh', requestOptions)
+		fetch(process.env.REACT_APP_API_URL + 'user/refresh', requestOptions)
 			.then((response) => response.text())
 			.then((result) => {
 				saveLocalStorage(userConfig.LOCAL_STORE_ACCESS_TOKEN, result);

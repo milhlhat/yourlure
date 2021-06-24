@@ -1,6 +1,5 @@
 import YLButton from 'components/custom-field/YLButton';
 import React, { useState } from 'react';
-import { handleChangeInput } from 'utils/input';
 import doraemon from 'assets/images/lure_logo.jpeg'
 
 function AddTextToModelTab(props) {
@@ -72,7 +71,7 @@ function AddTextToModelTab(props) {
 
     return (
         <div>
-            <input type='text' defaultValue={text} onChange={(e) => setText(e.target.value)} />
+            <input type='text' className="w-100" defaultValue={text} onChange={(e) => setText(e.target.value)} />
             <YLButton variant="primary" type="button" name="canvasText" onClick={captureImg}>Capture</YLButton>
             <CanvasText />
         </div>

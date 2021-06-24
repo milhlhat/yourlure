@@ -3,10 +3,15 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import DEFINELINK from 'routes/define-link';
 UserRoute.propTypes = {};
 const ManagementAccount = React.lazy(() => import('components/user/ManagementAccount'));
-function UserRoute(props) {
+const NotFound = React.lazy(() => import('pages/Notfound'));
+
+function UserRoute() {
+	const match = useRouteMatch();
+	const path = match.path === '/' ? '' : match.path;
 	return (
 		<Switch>
-			<Route path={DEFINELINK.account} component={ManagementAccount} />
+			<Route path={path + DEFINELINK.account} component={ManagementAccount} />
+			<Route component={NotFound} />
 		</Switch>
 	);
 }

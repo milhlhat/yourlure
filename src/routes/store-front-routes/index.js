@@ -2,9 +2,9 @@ import { Route, Switch } from 'react-router-dom';
 import React from 'react';
 import StoreFrontLayout from 'layout/StoreFrontLayout';
 import DEFINELINK from 'routes/define-link';
-import OtherRoute from './other-route';
-import CartRoute from './cart-router';
 
+const OtherRoute = React.lazy(() => import('./other-route'));
+const CartRoute = React.lazy(() => import('./cart-router'));
 const UserRoute = React.lazy(() => import('./user-route'));
 const ProductRoute = React.lazy(() => import('./product-route'));
 const NotFound = React.lazy(() => import('pages/Notfound'));
