@@ -1,9 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
-import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Provider;
 import fpt.custome.yourlure.entity.User;
@@ -129,14 +127,15 @@ public class UserServiceImpl implements UserService {
 
 
         @Override
-        public Optional<UserDtoOut> getUser (Long id){
+        public Optional<UserResponseDTO> getUser (Long id){
 
             Optional<User> user = userRepos.findById(id);
             if (user.isPresent()) {
-                UserDtoOut result = mapper.map(user.get(), UserDtoOut.class);
+                UserResponseDTO result = mapper.map(user.get(), UserResponseDTO.class);
                 return Optional.of(result);
             }
             return Optional.empty();
+
         }
 
         @Override

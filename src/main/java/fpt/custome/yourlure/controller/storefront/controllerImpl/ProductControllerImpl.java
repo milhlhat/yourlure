@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileInputStream;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
 
 @RestController // This means that this class is a Controller
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ProductControllerImpl implements ProductController {
 
     @Autowired

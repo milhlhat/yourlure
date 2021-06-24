@@ -2,7 +2,6 @@ package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
@@ -29,7 +28,7 @@ public interface UserService {
 
     String refresh(String phone);
 
-    Optional<UserDtoOut> getUser(Long id);
+    Optional<UserResponseDTO> getUser(Long id);
 
     List<UserAddressDtoOut> getAddressUser(HttpServletRequest req);
 

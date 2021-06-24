@@ -4,7 +4,6 @@ import fpt.custome.yourlure.controller.storefront.UserController;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
@@ -18,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserControllerImpl implements UserController {
 
     @Autowired
@@ -37,9 +38,9 @@ public class UserControllerImpl implements UserController {
     private ModelMapper modelMapper;
 
     @Override
-    public ResponseEntity<Optional<UserDtoOut>> getUser(Long id) {
-        Optional<UserDtoOut> userDtoOut = userService.getUser(id);
-        return new ResponseEntity<>(userDtoOut, HttpStatus.OK);
+    public ResponseEntity<UserResponseDTO> getUser(Long id) {
+        Optional<UserResponseDTO> userDtoOut = userService.getUser(id);
+        return new ResponseEntity<>(userDtoOut.orElse(null), HttpStatus.OK);
     }
 
     @Override
