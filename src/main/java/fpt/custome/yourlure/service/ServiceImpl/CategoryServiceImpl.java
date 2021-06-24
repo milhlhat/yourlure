@@ -5,7 +5,7 @@ import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.CategoryRepos;
-import fpt.custome.yourlure.repositories.ProductJPARepos;
+import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepos categoryRepos;
 
     @Autowired
-    private ProductJPARepos productJPARepos;
+    private ProductJpaRepos productJPARepos;
 
-    // Tạo mapper object
-    ModelMapper mapper = new ModelMapper();
+    @Autowired
+    ModelMapper mapper;
 
     @Override
     public List<CategoryDtoOut> getAll() {
@@ -52,14 +52,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDtoOutWithCategory> getBestSellerWithCategory() {
-//        List<CategoryDtoOutWithCategory> result = new ArrayList<>();
-//        List<Category> list = categoryRepos.getBestSellerWithCategory();
-//        for (Category item : list) {
-//            CategoryDtoOutWithCategory dtoOut = mapper.map(item, CategoryDtoOutWithCategory.class);
-//            result.add(dtoOut);
-//        }
-//        return result;
-
         List<CategoryDtoOutWithCategory> result = new ArrayList<>();
         List<Category> list = categoryRepos.getBestSellerCategory();
         //set lai danh sach product theo category
@@ -78,16 +70,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean updateCategory(Category categoryInput, Long idInput) {
         try {
-            //todo: thêm validate
             if (idInput != null && categoryInput != null) {
                 Category categoryToUpdate = categoryRepos.findById(idInput).get();
                 categoryToUpdate.builder()
                         .categoryName(categoryInput.getCategoryName())
                         .build();
                 categoryRepos.save(categoryToUpdate);
+            } else {
+                return false;
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }

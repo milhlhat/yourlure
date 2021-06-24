@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
+import fpt.custome.yourlure.entity.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +12,13 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDtoOut {
+public class OrderDetailDtoOut {
 
     private Long orderID;
     private Date orderDate;
     private String address;
     private String phone;
     private String name;
-    private String statusName;
-    private Float total;
-
+    private String note;
+    private Payment payment;
 }

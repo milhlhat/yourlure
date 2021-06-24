@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
@@ -23,16 +24,15 @@ public class CartControllerImpl implements CartController {
     private CartService cartService;
 
     @Override
-    public ResponseEntity<Optional<CartDtoOut>> getCart(Long id) {
-        Optional<CartDtoOut> result = cartService.getCart(id);
+    public ResponseEntity<Optional<CartDtoOut>> getCart(HttpServletRequest req) {
+        Optional<CartDtoOut> result = cartService.getCart(req);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> addProduct(Long userId,
-                                              Long cartId,
+    public ResponseEntity<Boolean> addProduct(HttpServletRequest req,
                                               CartItemInput cartItemInput) {
-        Boolean result = cartService.addProduct(userId, cartId, cartItemInput);
+        Boolean result = cartService.addProduct(req, cartItemInput);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

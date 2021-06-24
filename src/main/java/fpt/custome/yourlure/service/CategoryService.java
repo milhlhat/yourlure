@@ -9,16 +9,18 @@ import java.util.Optional;
 
 public interface CategoryService {
 
-    List<CategoryDtoOut> getAll();
-
-    Optional<CategoryDtoOut> getById(Long id);
-
+    //store front --------------------------------------
     List<CategoryDtoOutWithCategory> getBestSellerWithCategory();
 
-    Boolean updateCategory(Category categoryInput, Long idInput);
+    //common service --------------------------------------
+    List<CategoryDtoOut> getAll();
+
+    //admin front --------------------------------------
+    Optional<CategoryDtoOut> getById(Long id);
 
     Boolean saveCate(Category categoryInput);
 
     Boolean removeCategory(Long idInput);
 
+    Boolean updateCategory(Category categoryInput, Long idInput);
 }

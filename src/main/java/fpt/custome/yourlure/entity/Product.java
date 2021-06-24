@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -113,5 +114,25 @@ public class Product {
     // MapopedBy trỏ tới tên biến products ở trong Customize .
     //1 product có nhiều Customize
     private Collection<Customize> customizeCollection;
+
+    public void update(ProductsDtoInp productsDtoInp) {
+        Product.builder()
+                .brand(productsDtoInp.getBrand())
+                .content(productsDtoInp.getContent())
+                .customizable(productsDtoInp.getCustomizable())
+                .deepDiving(productsDtoInp.getDeepDiving())
+                .defaultPrice(productsDtoInp.getDefaultPrice())
+                .defaultWeight(productsDtoInp.getDefaultWeight())
+                .description(productsDtoInp.getDescription())
+                .hookSize(productsDtoInp.getHookSize())
+                .productName(productsDtoInp.getProductName())
+                .imgUrlModel(productsDtoInp.getImgUrlModel())
+                .length(productsDtoInp.getLength())
+                .material(productsDtoInp.getMaterial())
+                .dateCreate(productsDtoInp.getDateCreate())
+                .maxWeight(productsDtoInp.getMaxWeight())
+                .minWeight(productsDtoInp.getMinWeight())
+                .build();
+    }
 
 }

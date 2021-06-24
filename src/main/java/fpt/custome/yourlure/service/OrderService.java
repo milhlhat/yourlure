@@ -1,10 +1,18 @@
 package fpt.custome.yourlure.service;
 
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.OrderDetailDtoOut;
+import org.springframework.data.domain.Pageable;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
 
-    Boolean processOrder(HttpServletRequest rq, OrderDtoInput orderDto);
+    //admin store ------------------------------
+    List<OrderDetailDtoOut> getAll(Pageable pageable);
+
+    Optional<OrderDetailDtoOut> getById(Long id);
+
+    Boolean remove(Long id);
+
 }

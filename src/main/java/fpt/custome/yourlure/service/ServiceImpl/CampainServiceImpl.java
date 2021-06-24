@@ -18,9 +18,6 @@ public class CampainServiceImpl implements CampaignService {
     @Autowired
     private CampaignRepos campaignRepos;
 
-    // Tạo mapper object
-//    ModelMapper mapper = new ModelMapper();
-
     @Autowired
     private ModelMapper mapper;
 

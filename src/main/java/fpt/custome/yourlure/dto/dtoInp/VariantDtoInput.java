@@ -9,15 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemInput {
+public class VariantDtoInput {
 
-    private Long imageUrl;
-    private Float price;
-    private Long productId;
-    private Long variantId;
-    private Long cartId;
+    private String backgroundColor;
     private Integer quantity;
-    private Float weight;
-    private CustomizeDtoInput customizeDtoInput;
+    private Float newPrice;
+    private String imageUrl;
+    private Long productId;
 
 }

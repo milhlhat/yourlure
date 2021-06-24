@@ -19,6 +19,7 @@ public class UserDtoOut {
     private String phone;
     private Boolean gender;
     private String userEmail;
+    private String note;
     private Integer maxCustomizable;
     List<Role> roles;
 

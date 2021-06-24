@@ -31,7 +31,8 @@ public class ProductsDtoInp {
     private String brand;
     private Date dateCreate;
     private String imgUrlModel;
-    private Float categoryId;
+    private Long categoryId;
+    private Long fishId;
     private Collection<Image> imageCollection;
 
 }

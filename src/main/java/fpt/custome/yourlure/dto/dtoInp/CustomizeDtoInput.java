@@ -9,15 +9,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomizeInput {
+public class CustomizeDtoInput {
 
-    private Long customizeID;
+    private Long customizeId;
     private String headColor;
     private String bodyColor;
-    private String eyeColor;
     private String tailColor;
     private String backColor;
     private String hookColor;
     private String textureImg;
+    private Float price;
+    private Long userId;
+    private Long productId;
 
 }

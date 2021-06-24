@@ -2,6 +2,7 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Provider;
 import fpt.custome.yourlure.entity.User;
@@ -58,17 +59,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserWardRepos userWardRepos;
 
-
-    // Tạo mapper object
-//    ModelMapper mapper = new ModelMapper();
-
     @Autowired
     private ModelMapper mapper;
+
     @Override
     public String signin(String phone, String password) {
         try {
             User findUser = userRepos.findByPhone(phone);
-            if(findUser.getEnabled()){
+            if (findUser.getEnabled()) {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
             }
@@ -79,123 +77,125 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public String signup (User user){
-            if (!userRepos.existsByPhone(user.getPhone())) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-                user.setProvider(Provider.LOCAL);
-                user.setEnabled(true);
-                user.setMaxCustomizable(5);
-                userRepos.save(user);
-                return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
-            } else {
-                throw new CustomException("Username or phone is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
-            }
+    public String signup(User user) {
+        if (!userRepos.existsByPhone(user.getPhone())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setProvider(Provider.LOCAL);
+            user.setEnabled(true);
+            user.setMaxCustomizable(5);
+            userRepos.save(user);
+            return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
+        } else {
+            throw new CustomException("Username or phone is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
 
-        public void delete (String phone){
-            User findUser = userRepos.findByPhone(phone);
-            findUser.setEnabled(false);
-            userRepos.save(findUser);
+    public void delete(String phone) {
+        User findUser = userRepos.findByPhone(phone);
+        findUser.setEnabled(false);
+        userRepos.save(findUser);
 //            userRepos.deleteByPhone(phone);
-        }
+    }
 
-        public User search (String phone){
-            User user = userRepos.findByPhone(phone);
-            if (user == null) {
-                throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
-            }
-            return user;
+    public User search(String phone) {
+        User user = userRepos.findByPhone(phone);
+        if (user == null) {
+            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
         }
+        return user;
+    }
 
     @Override
     public List<UserResponseDTO> findAll() {
         List<User> users = userRepos.findAll();
         List<UserResponseDTO> result = new ArrayList<>();
-        for(User user: users){
+        for (User user : users) {
             result.add(mapper.map(user, UserResponseDTO.class));
 
         }
         return result;
     }
 
-    public User whoami (HttpServletRequest req){
-            return userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-        }
+    public User whoami(HttpServletRequest req) {
+        return userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+    }
 
-        public String refresh (String phone){
-            return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
-        }
+    public String refresh(String phone) {
+        return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
+    }
 
 
-        @Override
-        public Optional<UserResponseDTO> getUser (Long id){
-
+    @Override
+    public Optional<UserDtoOut> getUser(Long id) {
+        try {
             Optional<User> user = userRepos.findById(id);
             if (user.isPresent()) {
-                UserResponseDTO result = mapper.map(user.get(), UserResponseDTO.class);
+                UserDtoOut result = mapper.map(user.get(), UserDtoOut.class);
                 return Optional.of(result);
             }
-            return Optional.empty();
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        @Override
-        public List<UserAddressDtoOut> getAddressUser (HttpServletRequest req){
-            List<UserAddressDtoOut> result = new ArrayList<>();
-            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-            List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
-
-            for (UserAddress userAddress : list) {
-                UserAddressDtoOut dtoOut = new UserAddressDtoOut();
-                dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
-                dtoOut.setUserDistrictName(userAddress.getWard().getUserDistrict().getUserDistrictName());
-                dtoOut.setUserProvinceName(userAddress.getWard().getUserDistrict().getUserProvince().getUserProvinceName());
-                dtoOut.setUserCountryName(userAddress.getWard().getUserDistrict().getUserProvince().getUserCountry()
-                        .getUserCountryName());
-                dtoOut.setDescription(userAddress.getDescription());
-                result.add(dtoOut);
-            }
-            return result;
-        }
-
-        @Override
-        public Boolean updateUser (HttpServletRequest req, UserDtoInp userDtoInp){
-
-            try {
-                User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-                userUpdate.update(mapper.map(userDtoInp, User.class));
-                userRepos.save(userUpdate);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        }
-
-
-        @Override
-        public List<Country> findAllCountry () {
-            List<Country> result = userCountryRepos.findAll();
-            return result;
-        }
-
-        @Override
-        public Optional<Province> findProvinceById (Long id){
-            Optional<Province> result = userProvinceRepos.findById(id);
-            return result;
-        }
-
-        @Override
-        public Optional<District> findDistrictById (Long id){
-            Optional<District> result = userDistrictRepos.findById(id);
-            return result;
-        }
-
-        @Override
-        public Optional<Ward> findWardById (Long id){
-            Optional<Ward> result = userWardRepos.findById(id);
-            return result;
-        }
-
+        return Optional.empty();
     }
+
+    @Override
+    public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
+        List<UserAddressDtoOut> result = new ArrayList<>();
+        User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+        List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
+
+        for (UserAddress userAddress : list) {
+            UserAddressDtoOut dtoOut = new UserAddressDtoOut();
+            dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
+            dtoOut.setUserDistrictName(userAddress.getWard().getUserDistrict().getUserDistrictName());
+            dtoOut.setUserProvinceName(userAddress.getWard().getUserDistrict().getUserProvince().getUserProvinceName());
+            dtoOut.setUserCountryName(userAddress.getWard().getUserDistrict().getUserProvince().getUserCountry()
+                    .getUserCountryName());
+            dtoOut.setDescription(userAddress.getDescription());
+            result.add(dtoOut);
+        }
+        return result;
+    }
+
+    @Override
+    public Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
+
+        try {
+            User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            userUpdate.update(mapper.map(userDtoInp, User.class));
+            userRepos.save(userUpdate);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public List<Country> findAllCountry() {
+        List<Country> result = userCountryRepos.findAll();
+        return result;
+    }
+
+    @Override
+    public Optional<Province> findProvinceById(Long id) {
+        Optional<Province> result = userProvinceRepos.findById(id);
+        return result;
+    }
+
+    @Override
+    public Optional<District> findDistrictById(Long id) {
+        Optional<District> result = userDistrictRepos.findById(id);
+        return result;
+    }
+
+    @Override
+    public Optional<Ward> findWardById(Long id) {
+        Optional<Ward> result = userWardRepos.findById(id);
+        return result;
+    }
+
+}
