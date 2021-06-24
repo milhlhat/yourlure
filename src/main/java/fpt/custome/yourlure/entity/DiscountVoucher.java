@@ -7,8 +7,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -73,21 +71,7 @@ public class DiscountVoucher {
     @Column(name = "applyOncePerCustomer")
     private Integer applyOncePerCustomer;
 
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "tbl_discount_voucher_product", //Tạo ra một join Table tên là "tbl_discount_sale_product"
-            joinColumns = @JoinColumn(name = "discountVoucherId"),  // TRong đó, khóa ngoại chính là discountVoucherId trỏ tới class hiện tại (Address)
-            inverseJoinColumns = @JoinColumn(name = "productId") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (product)
-    )
-    private Set<Product> products = new HashSet<>();
-
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "tbl_discount_voucher_category", //Tạo ra một join Table tên là "tbl_discount_sale_category"
-            joinColumns = @JoinColumn(name = "discountVoucherId"),  // TRong đó, khóa ngoại chính là discountVoucherId trỏ tới class hiện tại (Address)
-            inverseJoinColumns = @JoinColumn(name = "categoryId") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (category)
-    )
-    private Set<Category> categories = new HashSet<>();
+    // todo: xoa cai noi voi product category. ap dung discount voi tat ca ko phan biet
 
     @JsonIgnore
     @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)

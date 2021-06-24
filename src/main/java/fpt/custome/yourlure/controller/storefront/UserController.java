@@ -3,7 +3,6 @@ package fpt.custome.yourlure.controller.storefront;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
@@ -23,25 +22,33 @@ import java.util.Optional;
 @RequestMapping(path = "/user")
 public interface UserController {
 
-    @GetMapping("/{id}")
-    ResponseEntity<Optional<UserDtoOut>> getUser(@PathVariable Long id);
+    @GetMapping("/find-by-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})
+    ResponseEntity<UserResponseDTO> getUser(@RequestParam Long id);
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Boolean> updateUser(HttpServletRequest req, @RequestBody UserDtoInp userDtoInp);
 
     @GetMapping("/get-all-country")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     ResponseEntity<List<Country>> getAllCountry();
 
-    @PostMapping("/{provinceId}")
-    ResponseEntity<Optional<Province>> findProvinceById(@PathVariable(name = "provinceId") Long id);
+    @PostMapping("/find-by-province-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Optional<Province>> findProvinceById(@RequestParam Long id);
 
-    @PostMapping("/{districtId}")
-    ResponseEntity<Optional<District>> findDistrictById(@PathVariable(name = "districtId") Long id);
+    @PostMapping("/find-by-district-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Optional<District>> findDistrictById(@RequestParam Long id);
 
-    @PostMapping("/{wardId}")
-    ResponseEntity<Optional<Ward>> findWardById(@PathVariable(name = "wardId") Long id);
+    @PostMapping("/find-by-ward-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Optional<Ward>> findWardById(@RequestParam Long id);
 
     @PostMapping("/get-address-se")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req);
 
     @GetMapping(value = "/all")

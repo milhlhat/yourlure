@@ -88,6 +88,10 @@ public class Product {
     @Column(name = "imgUrlModel")
     private String imgUrlModel;
 
+    @Nullable
+    @Column(name = "imgUrlFillText")
+    private String imgUrlFillText;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoryId", nullable = false)

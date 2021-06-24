@@ -46,6 +46,10 @@ public class CartItem {
     @Column(name = "imgUrl")
     private String imgUrl;
 
+    @Nullable
+    @Column(name = "customizeId")
+    private Long customizeId;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cartId", nullable = false)

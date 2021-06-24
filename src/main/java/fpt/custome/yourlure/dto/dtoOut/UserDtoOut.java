@@ -14,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDtoOut {
 
-    private Long userID;
-    private String userName;
+    private Long userId;
+    private String username;
     private String phone;
     private Boolean gender;
     private String userEmail;

@@ -55,11 +55,8 @@ public class Order {
     @JoinColumn(name = "userId")
     private User User;
 
-    @JsonIgnore
-    @ManyToOne
-    @Nullable
-    @JoinColumn(name = "discountVoucherId")
-    private DiscountVoucher discountVoucher;
+    // todo: sua discountID thanh discount code. de khi xoa discountId van ko anh houng toi order
+    private String discountVoucher;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
