@@ -31,19 +31,42 @@ public class OrderLine {
     @Column(name = "price")
     private Float price;
 
-    @Nullable
-    @Column(name = "sale")
-    private Float sale;
 
     @NotNull
-    @JoinColumn(name = "variantId")
+    @Column(name = "productId")
+    private Long productId;
+
+    @Nullable
+    @Column(name = "variantId")
     private Long variantId;
 
     @Nullable
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "customizeId")
-    private Customize customize;
+    @Column(name = "headColor")
+    private String headColor;
+
+    @Nullable
+    @Column(name = "bodyColor")
+    private String bodyColor;
+
+    @Nullable
+    @Column(name = "eyeColor")
+    private String eyeColor;
+
+    @Nullable
+    @Column(name = "tailColor")
+    private String tailColor;
+
+    @Nullable
+    @Column(name = "backColor")
+    private String backColor;
+
+    @Nullable
+    @Column(name = "hookColor")
+    private String hookColor;
+
+    @Nullable
+    @Column(name = "textureImg")
+    private String textureImg;
 
     @Nullable
     @JsonIgnore

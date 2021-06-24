@@ -1,21 +1,25 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
 
-import fpt.custome.yourlure.entity.CartItem;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDtoInput {
 
-    public long id;
-    public String name;
     private String address;
     private String phone;
     private String note;
-    public String totalPrice;
+    private String totalPrice;
     private Date orderDate;
+    private Long paymentId;
 
-    //Todo: cần check lại
-    public List<CartItem> cartItems;
+    public String discountCode;
+    public List<Long> cartItemIds;
 }

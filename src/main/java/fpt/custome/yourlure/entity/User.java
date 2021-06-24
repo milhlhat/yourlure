@@ -66,10 +66,10 @@ public class User {
     private Provider provider;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "assigner", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến user ở trong status.
     //1 user có nhiều status
-    private Collection<Status> statusCollection;
+    private Collection<OrderActivity> orderActivities;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
