@@ -6,10 +6,7 @@ import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.entity.Fish;
 import fpt.custome.yourlure.entity.Product;
-import fpt.custome.yourlure.repositories.CategoryRepos;
-import fpt.custome.yourlure.repositories.FishRepos;
-import fpt.custome.yourlure.repositories.ProductJpaRepos;
-import fpt.custome.yourlure.repositories.ProductRepos;
+import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +30,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepos categoryRepos;
+
+    @Autowired
+    private VariantRepos variantRepos;
 
     @Autowired
     private FishRepos fishRepos;
@@ -136,8 +136,9 @@ public class ProductServiceImpl implements ProductService {
         try {
             if (id != null && productsDtoInp != null) {
                 if (productJPARepos.findById(id).isPresent()) {
-                    Product productToUpdate = mapper.map(productsDtoInp, Product.class);
-                    productToUpdate.setProductId(id);
+                    Optional<Product> productOptional = productJPARepos.findById(id);
+                    Product productToUpdate = productOptional.get();
+                    productToUpdate.update(productsDtoInp);
                     productJPARepos.save(productToUpdate);
                 } else {
                     return false;

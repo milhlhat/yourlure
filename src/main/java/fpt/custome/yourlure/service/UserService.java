@@ -15,21 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
+
+    //store front -------------------------------------------
     String signin(String phone, String password);
 
     String signup(User user);
 
-    void delete(String phone);
-
-    User search(String phone);
-
-    List<UserResponseDTO> findAll();
-
     User whoami(HttpServletRequest req);
 
     String refresh(String phone);
-
-    Optional<UserDtoOut> getUser(Long id);
 
     List<UserAddressDtoOut> getAddressUser(HttpServletRequest req);
 
@@ -37,6 +31,7 @@ public interface UserService {
 
 //    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput);
 
+    //common service -------------------------------------------
     List<Country> findAllCountry();
 
     Optional<Province> findProvinceById(Long id);
@@ -44,6 +39,16 @@ public interface UserService {
     Optional<District> findDistrictById(Long id);
 
     Optional<Ward> findWardById(Long id);
+
+    //admin front -------------------------------------------
+
+    void delete(String phone);
+
+    User search(String phone);
+
+    List<UserResponseDTO> findAll();
+
+    Optional<UserDtoOut> getUser(Long id);
 
 
 }
