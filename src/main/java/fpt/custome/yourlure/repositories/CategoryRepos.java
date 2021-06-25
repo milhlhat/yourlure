@@ -1,12 +1,13 @@
 package fpt.custome.yourlure.repositories;
 
 import fpt.custome.yourlure.entity.Category;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface CategoryRepos extends JpaRepository<Category, Long>{
+public interface CategoryRepos extends JpaRepository<Category, Long> {
 
     @Query(value = "SELECT * \n" +
             "FROM  (SELECT tbl_category.*, SUM(tbl_order_line.quantity) AS sum_quantity\n" +
@@ -29,5 +30,5 @@ public interface CategoryRepos extends JpaRepository<Category, Long>{
             "ORDER BY sum_quantity DESC ", nativeQuery = true)
     List<Category> getBestSellerCategory();
 
-//    List<Product> findById(String productName, Pageable pageable);
+    List<Category> findByCategoryNameContainsIgnoreCase(String keyword, Pageable pageable);
 }

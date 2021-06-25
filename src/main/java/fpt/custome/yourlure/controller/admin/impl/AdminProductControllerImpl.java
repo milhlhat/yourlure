@@ -25,8 +25,8 @@ public class AdminProductControllerImpl implements AdminProductController {
     private ProductService productService;
 
     @Override
-    public ResponseEntity<List<AdminProductDtoOut>> findAll(Filter filter) {
-        List<AdminProductDtoOut> result = productService.getAll(PageRequest.of(filter.getPage(),
+    public ResponseEntity<Optional<AdminProductDtoOut>> findAll(Filter filter) {
+        Optional<AdminProductDtoOut> result = productService.getAll(PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -44,8 +44,8 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
-    public ResponseEntity<List<AdminProductDtoOut>> getProductByName(Filter filter) {
-        List<AdminProductDtoOut> dtoOuts = productService.adminSearchProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
+    public ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(Filter filter) {
+        Optional<AdminProductDtoOut> dtoOuts = productService.adminSearchProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }

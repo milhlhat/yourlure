@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface AdminProductController {
 
     @PostMapping("/all")
-    ResponseEntity<List<AdminProductDtoOut>> findAll(@RequestBody Filter filter);
+    ResponseEntity<Optional<AdminProductDtoOut>> findAll(@RequestBody Filter filter);
 
     @PostMapping("/save")
     ResponseEntity<Boolean> saveProduct(@RequestBody ProductsDtoInp productsDtoInp);
@@ -27,7 +27,7 @@ public interface AdminProductController {
     ResponseEntity<Optional<AdminProductDetailDtoOut>> getProductById(@PathVariable("id") Long id);
 
     @PostMapping("/find-by-name")
-    ResponseEntity<List<AdminProductDtoOut>> getProductByName(@RequestBody Filter filter);
+    ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(@RequestBody Filter filter);
 
     @PostMapping("/{id}")
     ResponseEntity<Boolean> editProduct(@PathVariable("id") Long id, @RequestBody @Validated ProductsDtoInp productsDtoInp);

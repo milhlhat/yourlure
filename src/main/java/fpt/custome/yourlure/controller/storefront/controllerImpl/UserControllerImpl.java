@@ -79,10 +79,7 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Override
-    public List<UserResponseDTO> findAll() {
-        return userService.findAll();
-    }
+
 
     @Override
     public List<Role> getRoles(HttpServletRequest req) {

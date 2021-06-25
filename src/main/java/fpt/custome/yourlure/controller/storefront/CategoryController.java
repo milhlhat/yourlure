@@ -1,8 +1,8 @@
 package fpt.custome.yourlure.controller.storefront;
 
+import fpt.custome.yourlure.dto.dtoInp.CategoryDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
-import fpt.custome.yourlure.entity.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +23,10 @@ public interface CategoryController {
     ResponseEntity<List<CategoryDtoOutWithCategory>> getBestSellerWithCategory();
 
     @PostMapping("/{id}")
-    ResponseEntity<Boolean> updateCategory(@RequestBody Category categoryInput, @PathVariable Long id);
+    ResponseEntity<Boolean> updateCategory(@RequestBody CategoryDtoInput categoryInput, @PathVariable Long id);
 
     @PostMapping("/save")
-    ResponseEntity<Boolean> saveCate(@RequestBody Category categoryInput);
+    ResponseEntity<Boolean> saveCate(@RequestBody CategoryDtoInput categoryInput);
 
     @DeleteMapping("/remove/{id}")
     ResponseEntity<Boolean> removeCategory(@PathVariable Long id);

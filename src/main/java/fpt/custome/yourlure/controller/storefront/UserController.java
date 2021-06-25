@@ -52,16 +52,6 @@ public interface UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req);
 
-    @GetMapping(value = "/all")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})
-    @ApiResponses(value = {//
-            @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 404, message = "The user doesn't exist"), //
-            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    List<UserResponseDTO> findAll();
-
     @GetMapping(value = "/roles")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     @ApiOperation(value = "${UserController.roles}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})

@@ -41,18 +41,24 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper mapper;
 
     @Override
-    public List<AdminProductDtoOut> getAll(Pageable pageable) {
-        List<AdminProductDtoOut> results = new ArrayList<>();
+    public Optional<AdminProductDtoOut> getAll(Pageable pageable) {
+        List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
         try {
             List<Product> list = productJPARepos.findAll(pageable).getContent();
             for (Product item : list) {
-                AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
-                results.add(dtoOut);
+                AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
+                listResult.add(dtoOut);
             }
+            AdminProductDtoOut results = AdminProductDtoOut.builder()
+                    .productOutputList(listResult)
+                    .totalProduct((int) productJPARepos.findAll(pageable).getTotalElements())
+                    .totalPage(productJPARepos.findAll(pageable).getTotalPages())
+                    .build();
+            return Optional.of(results);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return results;
     }
 
     @Override
@@ -101,35 +107,40 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Optional<ProductsFilterDtoOut> getProductFilter(Filter filter) {
-        Query query = productRepos.getProductFilter(filter);
-        int totalProduct = query.getResultList().size();
-        query.setFirstResult(filter.getLimit() * filter.getPage());
-        query.setMaxResults(filter.getLimit());
-        List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
-        List<Product> list = query.getResultList();
-        for (Product item : list) {
-            ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
-            productOutList.add(dtoOut);
-        }
+        try {
+            Query query = productRepos.getProductFilter(filter);
+            int totalProduct = query.getResultList().size();
+            query.setFirstResult(filter.getLimit() * filter.getPage());
+            query.setMaxResults(filter.getLimit());
+            List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
+            List<Product> list = query.getResultList();
+            for (Product item : list) {
+                ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
+                productOutList.add(dtoOut);
+            }
 
-        ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
-                .productOutList(productOutList)
-                .totalProduct(totalProduct)
-                .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
-                .build();
-        return Optional.of(result);
+            ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
+                    .productOutList(productOutList)
+                    .totalProduct(totalProduct)
+                    .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
+                    .build();
+            return Optional.of(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
-    @Override
-    public List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable) {
-        List<ProductsDtoOut> result = new ArrayList<>();
-        List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
-        for (Product item : list) {
-            ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
-            result.add(dtoOut);
-        }
-        return result;
-    }
+//    @Override
+//    public List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable) {
+//        List<ProductsDtoOut> result = new ArrayList<>();
+//        List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
+//        for (Product item : list) {
+//            ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
+//            result.add(dtoOut);
+//        }
+//        return result;
+//    }
 
     @Override
     public Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id) {
@@ -146,6 +157,7 @@ public class ProductServiceImpl implements ProductService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
         return true;
     }
@@ -184,19 +196,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable) {
+    public Optional<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable) {
         try {
-            List<AdminProductDtoOut> result = new ArrayList<>();
-            List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
+            List<AdminProductDtoOut.ProductOutput> resultList = new ArrayList<>();
+            List<Product> list = (List<Product>) productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
             for (Product item : list) {
-                AdminProductDtoOut dtoOut = mapper.map(item, AdminProductDtoOut.class);
-                result.add(dtoOut);
+                AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
+                resultList.add(dtoOut);
             }
-            return result;
+            AdminProductDtoOut result = AdminProductDtoOut.builder()
+                    .totalPage(productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable).getTotalPages())
+                    .totalProduct(productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable).getNumberOfElements())
+                    .build();
+            return Optional.of(result);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return null;
     }
 
     @Override

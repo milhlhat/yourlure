@@ -22,7 +22,7 @@ public class FishServiceImpl implements FishService {
     private FishRepos fishRepos;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     @Override
     public List<FishDtoOut> getAll() {

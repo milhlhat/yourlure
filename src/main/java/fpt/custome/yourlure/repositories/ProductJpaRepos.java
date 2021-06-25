@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.repositories;
 
 import fpt.custome.yourlure.entity.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,6 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
     List<Product> bestSellerProductByCategory(Long id);
 
 
-    List<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
+    Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
 
 }

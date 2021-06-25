@@ -1,8 +1,10 @@
 package fpt.custome.yourlure.service;
 
+import fpt.custome.yourlure.dto.dtoInp.CategoryDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +20,11 @@ public interface CategoryService {
     //admin front --------------------------------------
     Optional<CategoryDtoOut> getById(Long id);
 
-    Boolean saveCate(Category categoryInput);
+    List<CategoryDtoOut> search(String keyword, Pageable pageable);
+
+    Boolean saveCate(CategoryDtoInput categoryInput);
 
     Boolean removeCategory(Long idInput);
 
-    Boolean updateCategory(Category categoryInput, Long idInput);
+    Boolean updateCategory(CategoryDtoInput categoryInput, Long idInput);
 }

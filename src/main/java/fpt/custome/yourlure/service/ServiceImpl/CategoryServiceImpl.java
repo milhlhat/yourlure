@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
+import fpt.custome.yourlure.dto.dtoInp.CategoryDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
@@ -9,6 +10,7 @@ import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     private ProductJpaRepos productJPARepos;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     @Override
     public List<CategoryDtoOut> getAll() {
@@ -51,6 +53,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<CategoryDtoOut> search(String keyword, Pageable pageable) {
+        try {
+            List<CategoryDtoOut> result = new ArrayList<>();
+            List<Category> list = categoryRepos.findByCategoryNameContainsIgnoreCase(keyword, pageable);
+            for (Category item : list) {
+                CategoryDtoOut dtoOut = mapper.map(item, CategoryDtoOut.class);
+                result.add(dtoOut);
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public List<CategoryDtoOutWithCategory> getBestSellerWithCategory() {
         List<CategoryDtoOutWithCategory> result = new ArrayList<>();
         List<Category> list = categoryRepos.getBestSellerCategory();
@@ -68,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean updateCategory(Category categoryInput, Long idInput) {
+    public Boolean updateCategory(CategoryDtoInput categoryInput, Long idInput) {
         try {
             if (idInput != null && categoryInput != null) {
                 Category categoryToUpdate = categoryRepos.findById(idInput).get();
@@ -87,7 +105,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Boolean saveCate(Category categoryInput) {
+    public Boolean saveCate(CategoryDtoInput categoryInput) {
         Category category;
         if (categoryInput != null)
             category = mapper.map(categoryInput, Category.class);
