@@ -14,9 +14,8 @@ const UserApi = {
 		const url = `/user/me`;
 		return AxiosClient.get(url);
 	},
-	search: (filter) => {
-		let _paramString = queryString.stringify(filter);
-		const url = `/customer/search?${_paramString}`;
+	getAddress: (userId) => {
+		const url = `/user/get-address-user/${userId}`;
 		return AxiosClient.get(url);
 	},
 	getIdentitiy: (id) => {
@@ -36,8 +35,9 @@ const UserApi = {
 		const url = `/customer/update/${id}`;
 		return AxiosClient.patch(url, customer);
 	},
-	getAddress: (userId) => {
-		const url = `/user/get-address-user/${userId}`;
+	search: (filter) => {
+		let _paramString = queryString.stringify(filter);
+		const url = `/customer/search?${_paramString}`;
 		return AxiosClient.get(url);
 	},
 };

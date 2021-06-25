@@ -1,0 +1,29 @@
+@import "../../base/variable";
+.management-account {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  & .tab-switch {
+    font-size: larger;
+    height: 68vh;
+  }
+  & .cursor-pointer {
+    cursor: pointer;
+  }
+  & .active {
+    color: $primary;
+  }
+}
+.tab-show {
+  padding: 0 30px;
+}
+.bg-box {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.table-account {
+  border-spacing: 15px;
+  border-collapse: unset;
+}

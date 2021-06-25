@@ -1,147 +1,121 @@
 import React, { useEffect, useState } from "react";
-import "assets/scss/scss-components/user/management-account.scss";
+import "assets/scss/scss-components/customer/management-account.scss";
 import UserApi from "api/user-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
-import UserAddress from "../components/customer/CustomerAddress";
-import ChangeAddress from '../components/customer/ChangeAddress';
-import UserPayment from "../components/customer/CutomerOrder";
+import CustomerAddress from "../components/customer/CustomerAddress";
+import ChangeAddress from "../components/customer/ChangeAddress";
+import CutomerOrder from "../components/customer/CutomerOrder";
 import ChangeInformation from "../components/customer/ChangeInformation";
 import UserInformation from "../components/customer/CustomerAccount";
 
 function ManagementAccount(props) {
   const id = 1;
   const [account, setAccount] = useState({
-    list: null,
-    isFetched: false,
-    failFetch: false,
+    data: null,
+    isLoading: false,
+    isSuccess: false,
   });
-  const [addressList, setAddressList] = useState({
-    list: [],
-    isFetched: false,
-    failFetch: false,
-  });
-  const fetchUser = async () => {
-    try {
-      const response = await UserApi.get(id);
-      if (response.error) {
-        setAccount({ ...account, failFetch: true });
-        throw new Error(response.error);
-      } else {
-        setAccount({
-          list: response,
-          isFetched: true,
-          failFetch: false,
-        });
-      }
-    } catch (error) {
-      setAccount({ failFetch: true });
-      console.log("fail to fetch customer list");
-    }
-  };
-  const [u, setU] = useState();
-  const fetchUserAddress = async () => {
-    try {
-      const response = await UserApi.getAddress(id);
-      if (response.error) {
-        setAddressList({ ...addressList, failFetch: true });
-        throw new Error(response.error);
-      } else {
-        setU(response);
-        setAddressList({
-          list: response,
-          isFetched: true,
-          failFetch: false,
-        });
-      }
-    } catch (error) {
-      setAddressList({ failFetch: true });
-      console.log("fail to fetch customer list");
-    }
-  };
+
   const changeTab = (value) => {
     setTabOpen(value);
   };
   const listTab = [
     {
       name: "tab-account",
-      component: <UserInformation account={account.list} changeTab={changeTab} />,
+      component: (
+        <UserInformation account={account.data} changeTab={changeTab} />
+      ),
     },
     {
       name: "change-info",
       component: (
-        <ChangeInformation account={account.list} changeTab={changeTab} />
+        <ChangeInformation account={account.data} changeTab={changeTab} />
       ),
     },
-    { name: "tab-payment", component: <UserPayment /> },
+    { name: "tab-payment", component: <CutomerOrder /> },
     {
       name: "show-address",
-      component: <UserAddress address={addressList.list} changeTab={changeTab} />,
-    },
-    {
-      name: "change-address",
       component: (
-        <ChangeAddress address={addressList.list} changeTab={changeTab} />
+        <CustomerAddress
+          address={account.data && account.data.userAddressCollection}
+          changeTab={changeTab}
+        />
       ),
     },
+    // ,
+    // {
+    //   name: "change-address",
+    //   component: (
+    //     <ChangeAddress address={addressList.list} changeTab={changeTab} />
+    //   ),
+    // },
   ];
   const [tabOpen, setTabOpen] = useState(0);
   useEffect(() => {
-    fetchUser();
-    fetchUserAddress();
-    console.log(u);
-    return fetchUser(), fetchUserAddress();
+    const fetchCustomAccount = async () => {
+      setAccount((prevState) => {
+        return { ...prevState, isLoading: true };
+      });
+      try {
+        const response = await UserApi.getMe(id);
+
+        setAccount({ data: response, isLoading: false, isSuccess: true });
+      } catch (error) {
+        setAccount({ isLoading: true });
+        console.log("fail to fetch information");
+      }
+    };
+    fetchCustomAccount();
+    return fetchCustomAccount();
   }, []);
-  // if (fetchUserAddress.failFetch || fetchUser.failFetch) {
-  //   return <ErrorLoad />;
-  // } else if (!fetchUserAddress.isFetched || !fetchUser.isFetched) {
+  // if (account.isLoading) {
   //   return <Loading />;
+  // } else if (!account.isSuccess) {
+  //   return <ErrorLoad />;
   // } else
-  return (
-    <div className="management-account container">
-      <div className="tab-switch">
-        <div className="account-name">
-          <i class="fa fa-user-circle"></i>
-          <span className="ms-2">
-            {account.list != null ? account.list.userName : ""}
-          </span>
-        </div>
-        <hr />
-        <div className="tab-choosen row">
-          <div
-            className={`my-account col-6 col-md-12 ${
-              tabOpen < 2 ? "active" : ""
-            }`}
-            onClick={() => changeTab(0)}
-          >
-            <i class="fa fa-user-circle "></i>
-            <span className="cursor-pointer ms-2">Tài khoản</span>
+    return (
+      <div className="management-account container">
+        <div className="row w-100">
+          <div className="tab-switch bg-white col-3">
+            <div className="account-name pt-2 ps-2">
+              <i class="fa fa-user-circle"></i>
+              <span className="ms-2">
+                {account.list != null ? account.list.userName : ""}
+              </span>
+            </div>
+            <hr />
+
+            <div className="tab-choosen p-2">
+              <div
+                className={`  ${tabOpen < 2 ? "active" : ""}`}
+                onClick={() => changeTab(0)}
+              >
+                <i class="fa fa-user-circle "></i>
+                <span className="cursor-pointer ms-2">Tài khoản</span>
+              </div>
+              <div
+                className={` ${tabOpen == 2 ? "active" : ""}`}
+                onClick={() => changeTab(2)}
+              >
+                <i class="fa fa-clipboard cursor-pointer"></i>
+                <span className="cursor-pointer ms-2">Đơn hàng</span>
+              </div>
+              <div
+                className={`   ${tabOpen == 3 || tabOpen == 4 ? "active" : ""}`}
+                onClick={() => changeTab(3)}
+              >
+                <i class="fa fa-address-card cursor-pointer"></i>
+                <span className="cursor-pointer ms-2">Địa chỉ</span>
+              </div>
+            </div>
           </div>
-          <div
-            className={`my-payment col-6 col-md-12 ${
-              tabOpen == 2 ? "active" : ""
-            }`}
-            onClick={() => changeTab(2)}
-          >
-            <i class="fa fa-clipboard cursor-pointer"></i>
-            <span className="cursor-pointer ms-2">Đơn hàng</span>
-          </div>
-          <div
-            className={`my-address col-6 col-md-12 ${
-              tabOpen == 3 || tabOpen == 4 ? "active" : ""
-            }`}
-            onClick={() => changeTab(3)}
-          >
-            <i class="fa fa-address-card cursor-pointer"></i>
-            <span className="cursor-pointer ms-2">Địa chỉ</span>
+          <div className="tab-show  col-9">
+            <div>{listTab[tabOpen].component}</div>
           </div>
         </div>
       </div>
-      <div className="tab-show bg-white">
-        <div>{listTab[tabOpen].component}</div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default ManagementAccount;

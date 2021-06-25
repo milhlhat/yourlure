@@ -1,0 +1,44 @@
+@import "../../base/variable";
+.my-address {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+.list-my-address {
+  .address-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 20px;
+    align-items: center;
+    padding-right: 10px;
+    .address-info {
+      border-spacing: 15px;
+      border-collapse: unset;
+
+      .address-title {
+        white-space: nowrap;
+        text-align: right;
+        vertical-align: top;
+      }
+    }
+    .address-action {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      align-items: flex-end;
+      padding: 10px;
+    }
+  }
+}
+.default-address-btn {
+  max-width: 145px;
+}
