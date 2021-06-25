@@ -12,13 +12,13 @@ import java.util.List;
 public class UserResponseDTO {
 
   @ApiModelProperty(position = 0)
-  private Long id;
+  private Long userId;
   @ApiModelProperty(position = 1)
   private String username;
   @ApiModelProperty(position = 2)
   private String phone;
   @ApiModelProperty(position = 3)
-  private String email;
+  private String userEmail;
   @ApiModelProperty(position = 4)
   private Collection<UserAddress> userAddressCollection;
   @ApiModelProperty(position = 5)

@@ -2,6 +2,7 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
+import fpt.custome.yourlure.entity.customizemodel.Material;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,10 @@ public class Product {
     @Nullable
     @Column(name = "defaultPrice")
     private Float defaultPrice;
+
+    @Nullable
+    @Column(name = "nonColorPrice")
+    private Float nonColorPrice;
 
     @Nullable
     @Column(name = "description")
@@ -113,7 +118,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến products ở trong Customize .
     //1 product có nhiều Customize
-    private Collection<Customize> customizeCollection;
+    private Collection<Material> materials;
 
     public void update(ProductsDtoInp productsDtoInp) {
         Product.builder()

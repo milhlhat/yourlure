@@ -2,6 +2,7 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
+import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -75,7 +76,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
-    private Collection<Customize> customizeCollection;
+    private Collection<CustomizeModel> customizeCollection;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
