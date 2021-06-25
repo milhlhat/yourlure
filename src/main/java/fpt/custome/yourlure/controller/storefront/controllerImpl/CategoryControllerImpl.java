@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CategoryController;
+import fpt.custome.yourlure.dto.dtoInp.CategoryDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
 import fpt.custome.yourlure.entity.Category;
@@ -33,7 +34,7 @@ public class CategoryControllerImpl implements CategoryController {
      * @return if add successful return true else false
      */
     @Override
-    public ResponseEntity<Boolean> saveCate(Category categoryInput) {
+    public ResponseEntity<Boolean> saveCate(CategoryDtoInput categoryInput) {
         Boolean save = categoryService.saveCate(categoryInput);
         return new ResponseEntity<>(save, HttpStatus.OK);
 
@@ -88,7 +89,7 @@ public class CategoryControllerImpl implements CategoryController {
      * @return if update successful return true else false
      */
     @Override
-    public ResponseEntity<Boolean> updateCategory(Category categoryInput, Long id) {
+    public ResponseEntity<Boolean> updateCategory(CategoryDtoInput categoryInput, Long id) {
         Boolean update = categoryService.updateCategory(categoryInput, id);
         return new ResponseEntity<>(update, HttpStatus.OK);
     }

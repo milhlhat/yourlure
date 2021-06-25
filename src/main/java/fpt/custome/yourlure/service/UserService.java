@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
@@ -9,6 +10,7 @@ import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
 import fpt.custome.yourlure.entity.address.Ward;
+import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -46,7 +48,7 @@ public interface UserService {
 
     User search(String phone);
 
-    List<UserResponseDTO> findAll();
+    List<AdminUserDtoOut> adminFindAll(Pageable pageable);
 
     Optional<UserResponseDTO> getUser(Long id);
 

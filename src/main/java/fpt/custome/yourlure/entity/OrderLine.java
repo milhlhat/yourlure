@@ -31,6 +31,9 @@ public class OrderLine {
     @Column(name = "price")
     private Float price;
 
+    @Nullable
+    @Column(name = "weight")
+    private Integer weight;
 
     @NotNull
     @Column(name = "productId")

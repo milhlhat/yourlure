@@ -22,17 +22,17 @@ public interface ProductService {
 
     Optional<ProductsFilterDtoOut> getProductFilter(Filter filter);
 
-    List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable);
+//    List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable);
 
     // Admin front **************************
 
-    List<AdminProductDtoOut> getAll(Pageable pageable);
+    Optional<AdminProductDtoOut> getAll(Pageable pageable);
 
     Boolean save(ProductsDtoInp productsDtoInp);
 
     AdminProductDetailDtoOut adminGetById(Long id);
 
-    List<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable);
+    Optional<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable);
 
     Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
 

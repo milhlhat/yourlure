@@ -69,12 +69,12 @@ public class ProductControllerImpl implements ProductController {
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<ProductsDtoOut>> getProductByName(Filter filter) {
-        List<ProductsDtoOut> dtoOuts = productService.findAllByProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
-                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
-        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<List<ProductsDtoOut>> getProductByName(Filter filter) {
+//        List<ProductsDtoOut> dtoOuts = productService.findAllByProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
+//                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+//        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<Resource> download(String path) {

@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
     private UserService userService;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     @Override
     public Optional<CartDtoOut> getCart(HttpServletRequest req) {

@@ -22,7 +22,7 @@ public class SeasonServiceImpl implements SeasonService {
     private SeasonRepos seasonRepos;
 
     @Autowired
-    ModelMapper mapper;
+    private ModelMapper mapper;
 
     @Override
     public List<SeasonDtoOutput> getAll() {

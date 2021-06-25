@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Provider;
@@ -17,6 +18,7 @@ import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-    
+
     @Autowired
     private UserAddressRepos userAddressRepos;
 
@@ -107,14 +109,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDTO> findAll() {
-        List<User> users = userRepos.findAll();
-        List<UserResponseDTO> result = new ArrayList<>();
-        for (User user : users) {
-            result.add(mapper.map(user, UserResponseDTO.class));
-
+    public List<AdminUserDtoOut> adminFindAll(Pageable pageable) {
+        List<AdminUserDtoOut> results = new ArrayList<>();
+        try {
+            List<User> list = userRepos.findAll(pageable).getContent();
+            for (User item : list) {
+                AdminUserDtoOut dtoOut = mapper.map(item, AdminUserDtoOut.class);
+                results.add(dtoOut);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return result;
+        return results;
     }
 
     public User whoami(HttpServletRequest req) {
@@ -143,7 +149,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> getRoles(HttpServletRequest rq) {
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
-        if(user != null){
+        if (user != null) {
             return user.getRoles();
         }
         return Collections.emptyList();
