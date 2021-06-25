@@ -1,9 +1,10 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
-import fpt.custome.yourlure.dto.dtoInp.CustomizeDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
-import fpt.custome.yourlure.entity.*;
+import fpt.custome.yourlure.entity.Cart;
+import fpt.custome.yourlure.entity.CartItem;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.CartService;
 import fpt.custome.yourlure.service.UserService;
@@ -63,15 +64,15 @@ public class CartServiceImpl implements CartService {
                         .build();
                 cart = cartRepos.save(cartInput);
             }
-            // add vao bang customize voi userid
-            if (cartItemInput.getCustomizeDtoInput() != null) {
-                CustomizeDtoInput customizeDtoInput = cartItemInput.getCustomizeDtoInput();
-                Customize customizeInput = mapper.map(customizeDtoInput, Customize.class);
-                customizeInput.setUser(user);
-                Optional<Product> productInput = productJpaRepos.findById(cartItemInput.getProductId());
-                customizeInput.setProduct(productInput.get());
-                customizeRepos.save(customizeInput);
-            }
+//            // add vao bang customize voi userid
+//            if (cartItemInput.getCustomizeDtoInput() != null) {
+//                CustomizeDtoInput customizeDtoInput = cartItemInput.getCustomizeDtoInput();
+//                CustomizeModel customizeInput = mapper.map(customizeDtoInput, CustomizeModel.class);
+//                customizeInput.setUser(user);
+//                Optional<Product> productInput = productJpaRepos.findById(cartItemInput.getProductId());
+//                customizeInput.setProduct(productInput.get());
+//                customizeRepos.save(customizeInput);
+//            }
             // add vao bang cart item voi carid
             cartItemInput.setCartId(cart.getCartId());
             CartItem cartItem = mapper.map(cartItemInput, CartItem.class);
