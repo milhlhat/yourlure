@@ -4,8 +4,7 @@ import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
 import UserApi from "api/user-api";
 
-function ChangeAddress(props) {
-  console.log(props.properties);
+function AddNewAddress(props) {
   const defaultValues = { name: "" };
   const {
     register,
@@ -232,7 +231,7 @@ function ChangeAddress(props) {
               <td className="text-end title-table"></td>
               <td>
                 <YLButton variant="primary" type="submit">
-                  Cập nhật
+                  Thêm
                 </YLButton>
               </td>
             </tr>
@@ -243,4 +242,4 @@ function ChangeAddress(props) {
   );
 }
 
-export default ChangeAddress;
+export default AddNewAddress;

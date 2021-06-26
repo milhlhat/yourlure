@@ -48,7 +48,7 @@ function CutomerOrder(props) {
           <div className="order-action-btn">
             <ComfirmPopup
               btnText="Hủy Đơn"
-              btnHeight="30px"
+              height="30px"
               title="Hủy đơn"
               content="Bạn chắc chắn hủy đơn hàng?"
             />

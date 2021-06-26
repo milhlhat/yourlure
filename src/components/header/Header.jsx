@@ -127,17 +127,17 @@ function Header(props) {
 								<NavItem className="d-flex ms-auto search-form px-3 ">
 									<input
 										type="search"
-										className="search"
+										className="search "
 										placeholder="Tìm kiếm..."
 										name="keyword"
 										onKeyDown={(e) => onChangeTextSearch(e)}
 									/>
-									<i className="fa fa-search" onClick={() => handleSubmitSearch()}></i>
+									<i className="fad fa-search text-success" onClick={() => handleSubmitSearch()}></i>
 								</NavItem>
 							</div>
 							<NavItem className="header-cart ms-2 ">
 								<Link className="nav-link" to="/cart">
-									<i className="fa fa-shopping-cart"></i>
+								<i class="fad fa-shopping-cart"></i>
 								</Link>
 							</NavItem>
 							<NavItem className="header-user ms-2 me-2 ">

@@ -44,7 +44,7 @@ function TabSelectCustomize(props) {
 			</div>
 			<div className={`tab-detail ${!isOpen ? 'd-none' : ''}`}>
 				<div className="tab-detail-close pointer p-0 m-0">
-					<i onClick={() => setIsOpisOpen(false)} className={`fa fa-times-circle `}></i>
+					<i onClick={() => setIsOpisOpen(false)} className={`fad fa-times-circle `}></i>
 				</div>
 
 				<SwitchMaterial materials={materials} mId={mId} />

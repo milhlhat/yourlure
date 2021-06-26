@@ -2,6 +2,8 @@ import UserApi from "api/user-api";
 import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/manage-address.scss";
+import YLSelectAddress from "components/custom-field/YLSelectAddress";
+import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 function CustomerAddress(props) {
   const { changeTab } = props;
   const dumy = [
@@ -48,12 +50,22 @@ function CustomerAddress(props) {
           </div>
           <div className="address-action col-sm-12 col-md-4">
             <div className="d-flex gap-1 justify-content-center">
-              <YLButton variant="primary" width="70px" height="25px">
+              <YLButton
+                variant="primary"
+                width="70px"
+                height="25px"
+                onClick={() => changeTab(5, 3)}
+              >
                 Sửa
               </YLButton>
-              <YLButton variant="danger" width="70px" height="25px">
-                Xóa
-              </YLButton>
+              <ConfirmPopup
+                variant="danger"
+                width="70px"
+                height="25px"
+                btnText="Xóa"
+                title="Xóa"
+                content="Bạn chắc chắn muốn xóa địa chỉ?"
+              />
             </div>
             <YLButton variant="light" disabled height="25px" width="145px">
               Đặt làm mặc định
@@ -61,6 +73,7 @@ function CustomerAddress(props) {
           </div>
         </div>
       </div>
+      <YLSelectAddress />
     </>
   );
 }

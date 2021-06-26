@@ -25,19 +25,22 @@ function ManagementAccount(props) {
   };
   const listTab = [
     {
+      id: 0,
       name: "tab-account",
       component: (
         <UserInformation account={account.data} changeTab={changeTab} />
       ),
     },
     {
+      id: 1,
       name: "change-info",
       component: (
         <ChangeInformation account={account.data} changeTab={changeTab} />
       ),
     },
-    { name: "tab-payment", component: <CutomerOrder /> },
+    { id: 2, name: "tab-payment", component: <CutomerOrder /> },
     {
+      id: 3,
       name: "show-address",
       component: (
         <CustomerAddress
@@ -47,8 +50,16 @@ function ManagementAccount(props) {
       ),
     },
     {
+      id: 4,
       name: "add-new-address",
       component: <AddNewAddress changeTab={changeTab} />,
+    },
+    {
+      id: 5,
+      name: "change-address",
+      component: (
+        <ChangeAddress properties={properties} changeTab={changeTab} />
+      ),
     },
   ];
   const [tabOpen, setTabOpen] = useState(0);
@@ -79,34 +90,36 @@ function ManagementAccount(props) {
       <div className="row w-100">
         <div className="tab-switch bg-white col-3">
           <div className="account-name pt-2 ps-2">
-            <i class="fa fa-user-circle"></i>
+            <i class="fad fa-user"></i>
             <span className="ms-2">
               {account.list != null ? account.list.userName : ""}
             </span>
           </div>
           <hr />
 
-          <div className="tab-choosen p-2">
+          <div className="tab-choosen p-2 cursor-pointer">
             <div
-              className={`  ${tabOpen < 2 ? "active" : ""}`}
+              className={`mb-3  ${tabOpen < 2 ? "active" : ""}`}
               onClick={() => changeTab(0)}
             >
-              <i class="fa fa-user-circle "></i>
-              <span className="cursor-pointer ms-2">Tài khoản</span>
+              <i class="fad fa-user me-1"></i>
+              <span className=" ms-2">Tài khoản</span>
             </div>
+
             <div
-              className={` ${tabOpen == 2 ? "active" : ""}`}
+              className={`mb-3 ${tabOpen == 2 ? "active" : ""}`}
               onClick={() => changeTab(2)}
             >
-              <i class="fa fa-clipboard cursor-pointer"></i>
-              <span className="cursor-pointer ms-2">Đơn hàng</span>
+              <i class="fad fa-receipt me-2"></i>
+              <span className=" ms-2">Đơn hàng</span>
             </div>
+
             <div
-              className={`   ${tabOpen >= 3 ? "active" : ""}`}
+              className={`mb-3   ${tabOpen >= 3 ? "active" : ""}`}
               onClick={() => changeTab(3)}
             >
-              <i class="fa fa-address-card cursor-pointer"></i>
-              <span className="cursor-pointer ms-2">Địa chỉ</span>
+              <i class="fad fa-address-card "></i>
+              <span className=" ms-2">Địa chỉ</span>
             </div>
           </div>
         </div>
