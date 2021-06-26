@@ -21,5 +21,13 @@ const DEFINELINK = {
 
 	//path for manager page
 	manager: '/manager',
+	
+	//manager user route
+	managementUser:'/user',
+	
+	//manager product router	
+	managementProduct:'/product',
+	managerProductAddNew:'/addnew'
+
 };
 export default DEFINELINK;

@@ -49,3 +49,13 @@ body {
 .pointer {
   cursor: pointer;
 }
+.manager-main{
+  display: flex;
+  align-items: stretch;
+}
+.manager-main-container{
+  width: 80%;
+}
+.manager-slidebar{
+  width: 20%;
+}

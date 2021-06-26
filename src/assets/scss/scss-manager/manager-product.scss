@@ -1,0 +1,15 @@
+.product-head-row{
+    display: flex;
+    justify-content: space-between;
+    
+}
+.manager-product-show{
+    padding: 20px;
+    border-radius: 15px;
+    & table{
+        width: 100%;
+        & tr{
+            border-bottom: 1px solid;
+        }
+    }
+}

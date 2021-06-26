@@ -6,6 +6,8 @@ import customizeInfoReducer from "./customize-action/customize-info";
 import productFilterReducer from "./product-action/fetch-filter";
 import cateFishForFilterReducer from "./product-action/fetch-cate-fish";
 import isCaptureReducer from "./customize-action/capture-model";
+import managerProductFilterReducer from "./product-action/manager/fetch-manager-filter";
+import backActionHistory from "./back-action/back-action";
 import {
   FLUSH,
   REHYDRATE,
@@ -22,10 +24,16 @@ const customizeReducer = {
   productFilter: productFilterReducer,
 };
 
+const managerStore = {
+  backActionHistory: backActionHistory,
+  managerProductFilter: managerProductFilterReducer,
+};
+
 const rootReducer = {
   userLogin: userReducer,
   cateFishForFilter: cateFishForFilterReducer,
   ...customizeReducer,
+  ...managerStore,
 };
 
 const store = configureStore({

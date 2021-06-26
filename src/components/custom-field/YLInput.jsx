@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import { ErrorMessage } from "formik";
 import "assets/scss/scss-components/custom-field/InputField.scss";
+import { ref } from "yup";
 
 
 InputField.propTypes = {
@@ -23,8 +24,6 @@ InputField.defaultProps = {
 };
 
 function InputField(props) {
-  const showIcon = () => <i class="fa fa-eye" aria-hidden="true"></i>;
-  const hideIcon = () => <i class="fa fa-eye-slash" aria-hidden="true"></i>;
   const { field, form, type, label, placeholder, disabled } = props;
   const { name, value, onChange, onBlur } = field;
   const [isPassword, setIsPassWord] = useState(type);
@@ -33,6 +32,7 @@ function InputField(props) {
   function handleChangeType() {
     setIsPassWord(isPassword == "text" ? "password" : "text");
   }
+
   return (
     <FormGroup>
       {label && <Label for={name}>{label}</Label>}
@@ -45,7 +45,7 @@ function InputField(props) {
           placeholder={placeholder}
           invalid={showError}
         />
-        <div className={`display-eye ${type == "password" ? "" : "d-none"}`}>
+        <div className={`display-eye ${type == "password"  && value!='' ? "" : "d-none"}`}>
           <div
             className={`${isPassword == "text" ? "d-none" : ""}`}
             onClick={handleChangeType}
