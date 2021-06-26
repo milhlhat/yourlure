@@ -68,7 +68,7 @@ function RegisterBase(props) {
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
       .required("Không được để trống."),
     rePassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
       .required("Không được để trống."),

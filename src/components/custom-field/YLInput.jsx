@@ -45,7 +45,7 @@ function InputField(props) {
           placeholder={placeholder}
           invalid={showError}
         />
-        <div className={`display-eye ${type == "password"  && value!='' ? "" : "d-none"}`}>
+        <div className={`display-eye ${type == "password"  && value!='' && !showError? "" : "d-none"}`}>
           <div
             className={`${isPassword == "text" ? "d-none" : ""}`}
             onClick={handleChangeType}

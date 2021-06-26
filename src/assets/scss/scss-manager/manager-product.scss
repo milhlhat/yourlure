@@ -6,6 +6,10 @@
 .manager-product-show{
     padding: 20px;
     border-radius: 15px;
+    & span{
+        border-bottom: 4px solid #0356F6;
+        padding: 15px 0;
+    }
     & table{
         width: 100%;
         & tr{
@@ -13,3 +17,12 @@
         }
     }
 }
+@media screen and(max-width:500px) {
+    .manager-product-show{
+        padding: 20px 0;
+        width: 100%;
+    }
+    .manager-container{
+        margin: 0 !important;
+    }
+  }

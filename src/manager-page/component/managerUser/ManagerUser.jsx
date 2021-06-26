@@ -9,14 +9,21 @@ ManagerUser.propTypes = {};
 
 function ManagerUser(props) {
   
+  const dispatch = useDispatch();
   useEffect(()=>{
+    console.log("object");
+    const action = setIsBack({
+      canBack: true,
+      path: "/manager/product",
+      label: "Product",
+    });
+    dispatch(action);
   },[])
   return (
     <>
-      <div className="product-head-row">
+      <div className="user-head-row">
         <h3>Khách hàng</h3>
         <div className="product-add-new">
-          <YLButton variant="primary" value="Thêm" />
         </div>
       </div>
     </>

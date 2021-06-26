@@ -12,10 +12,11 @@ import Pagination from "react-js-pagination";
 import { filterConfig } from "constant/filter-setting";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-manager/manager-product.scss";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
+import ManagerSort from 'manager-page/component/sort/ManagerSort';
 
 ManagerProduct.propTypes = {};
 
@@ -30,6 +31,7 @@ function ManagerProduct(props) {
   const [activePage, setActivePage] = useState(1);
 
   const history = useHistory();
+  const location = useLocation()
 
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -39,6 +41,11 @@ function ManagerProduct(props) {
     });
     dispatch(filterAction);
   }
+  const setBack = {
+    canBack: true,
+    path: location,
+    label: "Sản phẩm",
+  };
   useEffect(() => {
     fetchFilter(dispatch, productFilter);
   }, [productFilter]);
@@ -47,66 +54,69 @@ function ManagerProduct(props) {
   } else if (!success) {
     return <ErrorLoad />;
   } else
-  return (
-    <>
-      <div className="product-head-row">
-        <h3>Sản phẩm</h3>
-        <div className="product-add-new">
-          <Link to="/manager/product/addnew">back</Link>
-          <YLButton
-            variant="primary"
-            value="Thêm"
-            to="/manager/product/addnew"
-          />
-        </div>
-      </div>
-      <div className="manager-product-show mt-3 bg-white bg-shadow">
-        {products.productOutputList &&
-          products.productOutputList.length <= 0 && <p>Không có sản phẩm </p>}
-        <table>
-          <tbody>
-            <tr>
-              <th>ID</th>
-              <th>Tên sản phẩm</th>
-              <th>Danh mục</th>
-              <th>Đã đăng tải</th>
-              <th>Giá</th>
-              <th></th>
-            </tr>
-            {products.productOutputList &&
-              products.productOutputList.map((item, i) => (
-                <tr key={i}>
-                  <td>{item.productId}</td>
-                  <td>{item.productName}</td>
-                  <td>{item.category.categoryName}</td>
-                  <td>
-                    {item.visibleInStorefront ? "Hoạt động" : "Không hoạt động"}
-                  </td>
-                  <td>{item.defaultPrice}</td>
-                  <td>
-                    <img src={Editor} alt="" />
-                    <img src={Trash} alt="" />
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        <div className="m-auto p-4">
-          {products.totalPage > 1 && (
-            <Pagination
-              itemClass="page-item"
-              linkClass="page-link"
-              activePage={activePage}
-              itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
-              totalItemsCount={products.totalProduct}
-              pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
-              onChange={handlePageChange}
+    return (
+      <>
+        <div className="product-head-row">
+          <h3>Sản phẩm</h3>
+          <div className="product-add-new">
+            <YLButton
+              variant="warning"
+              onClick={() => history.push("/manager/product/addnew")}
+              value="Thêm"
+              to={{pathname:"/manager/product/addnew",canBack:setBack}}
             />
-          )}
+          </div>
         </div>
-      </div>
-    </>
-  );
+        <div className="manager-product-show mt-3 bg-white bg-shadow">
+          <span>tất cả sản phẩm</span>
+          <hr />
+          <ManagerSort/>
+          {products.productOutputList &&
+            products.productOutputList.length <= 0 && <p>Không có sản phẩm </p>}
+          <table>
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Đã đăng tải</th>
+                <th>Giá</th>
+                <th></th>
+              </tr>
+              {products.productOutputList &&
+                products.productOutputList.map((item, i) => (
+                  <tr key={i}>
+                    <td>{(activePage-1)*filterConfig.LIMIT_DATA_PER_PAGE+i+1}</td>
+                    <td>{item.productName}</td>
+                    <td>{item.category.categoryName}</td>
+                    <td>
+                    <input type="checkbox" checked={item.visibleInStorefront} disabled/>
+                    </td>
+                    <td>{item.defaultPrice}</td>
+                    <td>
+                      <img src={Editor} alt="" />
+                      <img src={Trash} alt="" />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+          <div className="m-auto p-4">
+            {products.totalPage > 1 && (
+              <Pagination
+                itemClass="page-item"
+                linkClass="page-link"
+                activePage={activePage}
+                itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
+                totalItemsCount={products.totalProduct}
+                pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
+                onChange={handlePageChange}
+              />
+            )}
+          </div>
+        </div>
+      </>
+    );
 }
 
 export default ManagerProduct;

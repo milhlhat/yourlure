@@ -7,7 +7,7 @@ const ManagerProductAPI = {
 		return AxiosClient.get(url);
 	},
 	getProductByFilter: (param) => {
-		const url = 'api/admin/product/all';
+		const url = '/admin/product/all';
 		return AxiosClient.post(url, param);
 	},
 };

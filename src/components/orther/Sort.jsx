@@ -5,6 +5,7 @@ import { setFilter } from 'redux/product-action/fetch-filter';
 function Sort(props) {
 	const totalProduct = useSelector((state) => state.productFilter.data.totalProduct);
 	const sortBy = useSelector((state) => state.productFilter.filter.sortBy);
+	const isAsc = useSelector((state) => state.productFilter.filter.isAsc);
 
 	const dispatch = useDispatch();
 	function getSortSelectedByList(list, value) {
@@ -15,15 +16,18 @@ function Sort(props) {
 					return { sortBy: item.sortBy, isAsc: item.isAsc };
 				}
 			}
+
 			return {};
 		} else {
 			return {};
 		}
 	}
-	function handleSelectSort(e) {
+	async function handleSelectSort(e) {
+		
 		const value = getSortSelectedByList(filterConfig.SORT_OPTIONS, e.target.value);
-		const action = setFilter({ ...value });
-		dispatch(action);
+		console.log(value);
+		const action =await setFilter({ ...value });
+		await dispatch(action);
 	}
 
 	return (
@@ -37,7 +41,7 @@ function Sort(props) {
 							value={item.value}
 							key={`sort-${i}`}
 							className="pointer"
-							selected={item.sortBy === sortBy}
+							selected={item.sortBy === sortBy && item.isAsc === isAsc}
 						>
 							{item.display}
 						</option>

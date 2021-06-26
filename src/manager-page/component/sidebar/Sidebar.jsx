@@ -1,15 +1,149 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link, useLocation } from "react-router-dom";
-import 'assets/scss/scss-manager/manager-sidebar.scss';
+import "assets/scss/scss-manager/manager-sidebar.scss";
+import Fish from "assets/icon/fish.svg";
 
 Sidebar.propTypes = {};
+
+function openNav() {
+  document.getElementById("myNav").style.width = "100%";
+}
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
 
 function Sidebar(props) {
   const location = useLocation();
   let path = location.pathname;
   return (
-    <div
+    <>
+      <div id="myNav" className="overlay">
+        <span className="closebtn" onClick={closeNav}>
+          <div className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white">
+            <a
+              href="#"
+              className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+            >
+              <span className="fs-4">Sidebar</span>
+            </a>
+            <hr />
+            <ul className="nav nav-pills flex-column mb-auto">
+              <li className="nav-item">
+                <Link
+                  to="/manager/home"
+                  className={`nav-link ${
+                    path.indexOf("manager/home") > -1 ? "active" : "link-dark"
+                  }`}
+                >
+                  <span className="text-side-bar">  Home</span>
+                
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/user"
+                  className={`nav-link ${
+                    path.indexOf("manager/user") > -1 ? "active" : "link-dark"
+                  }`}
+                >
+                  <i className="fas fa-users-cog"></i>
+                  <span className="text-side-bar"> Tài khoản</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/product"
+                  className={`nav-link ${
+                    path.indexOf("manager/product") > -1
+                      ? "active"
+                      : "link-dark"
+                  }`}
+                >
+                  <i className="far fa-box"></i>
+                  <span className="text-side-bar"> Sản phẩm</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/category"
+                  className={`nav-link ${
+                    path.indexOf("manager/category") > -1
+                      ? "active"
+                      : "link-dark"
+                  }`}
+                >
+                  <i className="far fa-list-alt"></i>
+                  <span className="text-side-bar"> Danh mục</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/fish"
+                  className={`nav-link ${
+                    path.indexOf("manager/fish") > -1 ? "active" : "link-dark"
+                  }`}
+                >
+                  <i className="fal fa-fish-cooked"></i>
+                  <span className="text-side-bar"> Loại cá</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/order"
+                  className={`nav-link ${
+                    path.indexOf("manager/order") > -1 ? "active" : "link-dark"
+                  }`}
+                >
+                  <i className="fal fa-clipboard-prescription"></i>
+                  <span className="text-side-bar"> Đơn hàng</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/staff"
+                  className={`nav-link ${
+                    path.indexOf("manager/staff") > -1 ? "active" : "link-dark"
+                  }`}
+                >
+                  <i className="fal fa-suitcase"></i>
+                  <span className="text-side-bar"> Nhân viên</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/voucher"
+                  className={`nav-link ${
+                    path.indexOf("manager/voucher") > -1
+                      ? "active"
+                      : "link-dark"
+                  }`}
+                >
+                  <i className="fal fa-box-heart"></i>
+                  <span className="text-side-bar"> Mã giảm giá</span>
+                </Link>
+              </li>
+              <li>
+                <button className="d-none close-button">
+                  <i class="fas fa-times"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </span>
+      </div>
+
+      <span onClick={openNav}>
+        <button>
+          <i className="fal fa-bars"></i>
+        </button>
+      </span>
+
+      {/**
+       * mobile screen
+       */}
+
+      {/* <div
       className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white"
     >
       <a
@@ -27,114 +161,42 @@ function Sidebar(props) {
         </li>
         <li>
           <Link to="/manager/user" className={`nav-link ${path.indexOf('manager/user') > -1 ? 'active' :'link-dark'}`}>
-            Tài khoản
+          <i className="fas fa-users-cog"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/product" className={`nav-link ${path.indexOf('manager/product') > -1 ? 'active' :'link-dark'}`}>
-          Sản phẩm
+          <i className="far fa-box"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/category" className={`nav-link ${path.indexOf('manager/category') > -1 ? 'active' :'link-dark'}`}>
-          Danh mục
+          <i className="far fa-list-alt"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/fish" className={`nav-link ${path.indexOf('manager/fish') > -1 ? 'active' :'link-dark'}`}>
-          Loại cá
+          <i className="fal fa-fish-cooked"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/order" className={`nav-link ${path.indexOf('manager/order') > -1 ? 'active' :'link-dark'}`}>
-          Đơn hàng
+          <i className="fal fa-clipboard-prescription"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/staff" className={`nav-link ${path.indexOf('manager/staff') > -1 ? 'active' :'link-dark'}`}>
-          Nhân viên
+          <i className="fal fa-suitcase"></i>
           </Link>
         </li>
         <li>
           <Link to="/manager/voucher" className={`nav-link ${path.indexOf('manager/voucher') > -1 ? 'active' :'link-dark'}`}>
-          Mã giảm giá
+          <i className="fal fa-box-heart"></i>
           </Link>
         </li>
       </ul>
-    </div>
-
-    // <div
-    //   className="d-flex flex-column flex-shrink-0 bg-light"
-    // >
-    //   <a
-    //     href="/"
-    //     className="d-block p-3 link-dark text-decoration-none"
-    //     title=""
-    //     data-bs-toggle="tooltip"
-    //     data-bs-placement="right"
-    //     data-bs-original-title="Icon-only"
-    //   >
-    //     <span className="visually-hidden">Icon-only</span>
-    //   </a>
-    //   <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
-    //     <li className="nav-item">
-    //       <a
-    //         href="#"
-    //         className="nav-link active py-3 border-bottom"
-    //         aria-current="page"
-    //         title=""
-    //         data-bs-toggle="tooltip"
-    //         data-bs-placement="right"
-    //         data-bs-original-title="Home"
-    //       >
-    //       </a>
-    //     </li>
-    //     <li>
-    //       <a
-    //         href="#"
-    //         className="nav-link py-3 border-bottom"
-    //         title=""
-    //         data-bs-toggle="tooltip"
-    //         data-bs-placement="right"
-    //         data-bs-original-title="Dashboard"
-    //       >
-    //       </a>
-    //     </li>
-    //     <li>
-    //       <a
-    //         href="#"
-    //         className="nav-link py-3 border-bottom"
-    //         title=""
-    //         data-bs-toggle="tooltip"
-    //         data-bs-placement="right"
-    //         data-bs-original-title="Orders"
-    //       >
-    //       </a>
-    //     </li>
-    //     <li>
-    //       <a
-    //         href="#"
-    //         className="nav-link py-3 border-bottom"
-    //         title=""
-    //         data-bs-toggle="tooltip"
-    //         data-bs-placement="right"
-    //         data-bs-original-title="Products"
-    //       >
-    //       </a>
-    //     </li>
-    //     <li>
-    //       <a
-    //         href="#"
-    //         className="nav-link py-3 border-bottom"
-    //         title=""
-    //         data-bs-toggle="tooltip"
-    //         data-bs-placement="right"
-    //         data-bs-original-title="Customers"
-    //       >
-    //       </a>
-    //     </li>
-    //   </ul>
-    // </div>
+    </div> */}
+    </>
   );
 }
 

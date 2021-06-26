@@ -99,6 +99,7 @@ function ProductChooseFilter(props) {
 			limit: filterConfig.LIMIT_DATA_PER_PAGE,
 			custom: isCustom,
 			isAsc: false,
+			sortBy:"sumQuantity"
 		});
 		dispatch(action);
 	}

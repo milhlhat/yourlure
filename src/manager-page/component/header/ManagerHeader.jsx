@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import "assets/scss/scss-manager/manager-header.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {setIsBack} from 'redux/back-action/back-action';
 
 ManagerHeader.propTypes = {};
@@ -13,26 +13,35 @@ function ManagerHeader(props) {
   const label = useSelector((state) => state.backActionHistory.label);
   const history = useHistory();
   const dispatch = useDispatch();
+  const location = useLocation();
   function handleBackOnclick(e) {
+    
+    history.push(path);
     //save
     const action = setIsBack({
       canBack: false,
-      path: "/manager/product",
-      label: "Product",
+      path: null,
+      label: null,
     });
     dispatch(action);
   }
+  useEffect(()=>{
+    const action = setIsBack({
+      canBack: false,
+      path: null,
+      label: null,
+    });
+    dispatch(action);
+  },[location])
   return (
     <div className="bg-white manager-header">
-      {console.log({ canBack })}
       <div
         className={`back-button ${canBack ? "" : "d-none"}`}
         onClick={handleBackOnclick}
       >
-        <i class="far fa-arrow-alt-square-left"></i>
+        <i className="far fa-arrow-alt-square-left"></i>
         <span>{label}</span>
       </div>
-      header work
     </div>
   );
 }
