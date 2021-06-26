@@ -3,6 +3,7 @@ import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
 import UserApi from "api/user-api";
+import DEFINELINK from "routes/define-link";
 
 function ChangeAddress(props) {
   console.log(props.properties);
@@ -229,7 +230,14 @@ function ChangeAddress(props) {
               </td>
             </tr>
             <tr>
-              <td className="text-end title-table"></td>
+              <td className="text-end title-table d-flex flex-end">
+                <YLButton
+                  variant="warning"
+                  to={DEFINELINK.customer + DEFINELINK.address}
+                >
+                  Hủy
+                </YLButton>
+              </td>
               <td>
                 <YLButton variant="primary" type="submit">
                   Cập nhật

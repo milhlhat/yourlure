@@ -31,3 +31,19 @@
   font-weight: 500;
   vertical-align: top;
 }
+.tab-choosen {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 15px;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  .mr-13px {
+    margin-right: 13px;
+  }
+  .mr-15px {
+    margin-right: 15px;
+  }
+}

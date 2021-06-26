@@ -8,8 +8,12 @@ const DEFINELINK = {
 	about: '/about',
 	campaign: '/campaign',
 
-	user: '/user',
+	customer: '/customer',
 	account: '/account',
+	order: '/order',
+	address: '/address',
+	addressAdd: '/address/add',
+	addressEdit: '/address/edit/:id',
 
 	cart: '/cart',
 	payment: '/payment', // /cart/payment

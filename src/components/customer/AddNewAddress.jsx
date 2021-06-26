@@ -3,7 +3,8 @@ import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
 import UserApi from "api/user-api";
-
+import DEFINELINK from "routes/define-link";
+import YLSelectAddress from "components/custom-field/YLSelectAddress";
 function AddNewAddress(props) {
   const defaultValues = { name: "" };
   const {
@@ -81,7 +82,10 @@ function AddNewAddress(props) {
       setDistrictSelected(false);
     }
   }
-
+  // const [wardIdSelected, setWardIdSelected] = useState("Chọn Phường/Xã");
+  function onChangeSelectAddress(id) {
+    setValue("ward", id);
+  }
   return (
     <div className="bg-box">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -119,7 +123,7 @@ function AddNewAddress(props) {
                 )}
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td className="text-end title-table">Tỉnh/TP(*)</td>
               <td>
                 <select
@@ -200,7 +204,8 @@ function AddNewAddress(props) {
                   <span className="text-danger">(*) Chọn Chọn Phường/Xã</span>
                 )}
               </td>
-            </tr>
+            </tr> */}
+            <YLSelectAddress onChange={onChangeSelectAddress} />
             <tr>
               <td className="text-end title-table">Địa Chỉ(*)</td>
               <td>
@@ -228,7 +233,14 @@ function AddNewAddress(props) {
               </td>
             </tr>
             <tr>
-              <td className="text-end title-table"></td>
+              <td className="text-end title-table d-flex flex-end">
+                <YLButton
+                  variant="warning"
+                  to={DEFINELINK.customer + DEFINELINK.address}
+                >
+                  Hủy
+                </YLButton>
+              </td>
               <td>
                 <YLButton variant="primary" type="submit">
                   Thêm

@@ -4,8 +4,10 @@ import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/manage-address.scss";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import DEFINELINK from "routes/define-link";
 function CustomerAddress(props) {
-  const { changeTab } = props;
+  const { account } = props;
+  console.log(account);
   const dumy = [
     {
       description: "string",
@@ -21,7 +23,10 @@ function CustomerAddress(props) {
     <>
       <div className="my-address ">
         <h2>Địa chỉ của tôi</h2>
-        <YLButton variant="primary" type="button" onClick={() => changeTab(4)}>
+        <YLButton
+          variant="primary"
+          to={DEFINELINK.customer + DEFINELINK.addressAdd}
+        >
           <i class="fa fa-plus"></i>Thêm địa chỉ
         </YLButton>
       </div>
@@ -50,12 +55,7 @@ function CustomerAddress(props) {
           </div>
           <div className="address-action col-sm-12 col-md-4">
             <div className="d-flex gap-1 justify-content-center">
-              <YLButton
-                variant="primary"
-                width="70px"
-                height="25px"
-                onClick={() => changeTab(5, 3)}
-              >
+              <YLButton variant="primary" width="70px" height="25px" to={DEFINELINK.customer+"/address/edit/:id"}>
                 Sửa
               </YLButton>
               <ConfirmPopup

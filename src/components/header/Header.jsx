@@ -5,6 +5,7 @@ import 'assets/scss/scss-components/header.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { findByFilter, setFilter } from 'redux/product-action/fetch-filter';
 import { filterConfig } from 'constant/filter-setting';
+import DEFINELINK from 'routes/define-link';
 
 function Header(props) {
 	const productFilter = useSelector((state) => state.productFilter.filter);
@@ -136,12 +137,12 @@ function Header(props) {
 								</NavItem>
 							</div>
 							<NavItem className="header-cart ms-2 ">
-								<Link className="nav-link" to="/cart">
+								<Link className="nav-link" to={DEFINELINK.cart}>
 								<i class="fad fa-shopping-cart"></i>
 								</Link>
 							</NavItem>
 							<NavItem className="header-user ms-2 me-2 ">
-								<Link className="nav-link" to="/user/account">
+								<Link className="nav-link" to={DEFINELINK.customer}>
 									<i className="fa fa-user"></i>
 								</Link>
 							</NavItem>
