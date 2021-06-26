@@ -8,7 +8,7 @@ import ChangeAddress from "../components/customer/ChangeAddress";
 import CutomerOrder from "../components/customer/CutomerOrder";
 import ChangeInformation from "../components/customer/ChangeInformation";
 import UserInformation from "../components/customer/CustomerAccount";
-
+import AddNewAddress from "components/customer/AddNewAddress";
 function ManagementAccount(props) {
   const id = 1;
   const [account, setAccount] = useState({
@@ -16,9 +16,12 @@ function ManagementAccount(props) {
     isLoading: false,
     isSuccess: false,
   });
-
-  const changeTab = (value) => {
+  const [properties, setProperties] = useState({
+    addressId: null,
+  });
+  const changeTab = (value, pro) => {
     setTabOpen(value);
+    if (pro) setProperties(pro);
   };
   const listTab = [
     {
@@ -43,13 +46,10 @@ function ManagementAccount(props) {
         />
       ),
     },
-    // ,
-    // {
-    //   name: "change-address",
-    //   component: (
-    //     <ChangeAddress address={addressList.list} changeTab={changeTab} />
-    //   ),
-    // },
+    {
+      name: "add-new-address",
+      component: <AddNewAddress changeTab={changeTab} />,
+    },
   ];
   const [tabOpen, setTabOpen] = useState(0);
   useEffect(() => {
@@ -74,48 +74,48 @@ function ManagementAccount(props) {
   // } else if (!account.isSuccess) {
   //   return <ErrorLoad />;
   // } else
-    return (
-      <div className="management-account container">
-        <div className="row w-100">
-          <div className="tab-switch bg-white col-3">
-            <div className="account-name pt-2 ps-2">
-              <i class="fa fa-user-circle"></i>
-              <span className="ms-2">
-                {account.list != null ? account.list.userName : ""}
-              </span>
-            </div>
-            <hr />
-
-            <div className="tab-choosen p-2">
-              <div
-                className={`  ${tabOpen < 2 ? "active" : ""}`}
-                onClick={() => changeTab(0)}
-              >
-                <i class="fa fa-user-circle "></i>
-                <span className="cursor-pointer ms-2">Tài khoản</span>
-              </div>
-              <div
-                className={` ${tabOpen == 2 ? "active" : ""}`}
-                onClick={() => changeTab(2)}
-              >
-                <i class="fa fa-clipboard cursor-pointer"></i>
-                <span className="cursor-pointer ms-2">Đơn hàng</span>
-              </div>
-              <div
-                className={`   ${tabOpen == 3 || tabOpen == 4 ? "active" : ""}`}
-                onClick={() => changeTab(3)}
-              >
-                <i class="fa fa-address-card cursor-pointer"></i>
-                <span className="cursor-pointer ms-2">Địa chỉ</span>
-              </div>
-            </div>
+  return (
+    <div className="management-account container">
+      <div className="row w-100">
+        <div className="tab-switch bg-white col-3">
+          <div className="account-name pt-2 ps-2">
+            <i class="fa fa-user-circle"></i>
+            <span className="ms-2">
+              {account.list != null ? account.list.userName : ""}
+            </span>
           </div>
-          <div className="tab-show  col-9">
-            <div>{listTab[tabOpen].component}</div>
+          <hr />
+
+          <div className="tab-choosen p-2">
+            <div
+              className={`  ${tabOpen < 2 ? "active" : ""}`}
+              onClick={() => changeTab(0)}
+            >
+              <i class="fa fa-user-circle "></i>
+              <span className="cursor-pointer ms-2">Tài khoản</span>
+            </div>
+            <div
+              className={` ${tabOpen == 2 ? "active" : ""}`}
+              onClick={() => changeTab(2)}
+            >
+              <i class="fa fa-clipboard cursor-pointer"></i>
+              <span className="cursor-pointer ms-2">Đơn hàng</span>
+            </div>
+            <div
+              className={`   ${tabOpen >= 3 ? "active" : ""}`}
+              onClick={() => changeTab(3)}
+            >
+              <i class="fa fa-address-card cursor-pointer"></i>
+              <span className="cursor-pointer ms-2">Địa chỉ</span>
+            </div>
           </div>
         </div>
+        <div className="tab-show  col-9">
+          <div>{listTab[tabOpen].component}</div>
+        </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default ManagementAccount;

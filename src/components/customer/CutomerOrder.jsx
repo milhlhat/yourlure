@@ -1,5 +1,6 @@
 import React from "react";
 import YLButton from "components/custom-field/YLButton";
+import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
 import "assets/scss/scss-components/customer/manage-order.scss";
 function CutomerOrder(props) {
   return (
@@ -45,9 +46,12 @@ function CutomerOrder(props) {
             Địa chỉ: Thôn 3 thạch hòa, thạch thất, hà nội
           </div>
           <div className="order-action-btn">
-            <YLButton variant="warning" height="30px">
-              Hủy Đơn
-            </YLButton>
+            <ComfirmPopup
+              btnText="Hủy Đơn"
+              btnHeight="30px"
+              title="Hủy đơn"
+              content="Bạn chắc chắn hủy đơn hàng?"
+            />
           </div>
         </div>
       </div>

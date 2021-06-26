@@ -1,7 +1,7 @@
 import React from "react";
 import YLButton from "components/custom-field/YLButton";
 function UserInformation(props) {
-  const { account, changeTab } = props;
+  const { account } = props;
   return (
     <div className="bg-box ">
       {account && (
@@ -26,7 +26,12 @@ function UserInformation(props) {
           </tr>
           <tr>
             <td className="d-flex justify-content-end">
-              <YLButton variant="primary" width="70px" height="25px" className="float-end">
+              <YLButton
+                variant="primary"
+                width="70px"
+                height="25px"
+                className="float-end"
+              >
                 Sửa
               </YLButton>
             </td>
