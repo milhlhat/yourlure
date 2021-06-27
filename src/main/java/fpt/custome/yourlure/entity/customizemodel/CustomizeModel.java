@@ -1,7 +1,6 @@
 package fpt.custome.yourlure.entity.customizemodel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.Nullable;
 import fpt.custome.yourlure.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,18 +23,24 @@ public class CustomizeModel {
     @Column(name = "customizeId")
     private Long customizeId;
 
+    private String name;
     private String thumbnailUrl;
 
-    @Nullable
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "modelId", nullable = false)
+    private Model3d model3d;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "customizeModel", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
-    private Collection<Material> materials;
+    private Collection<MaterialValue> materialValues;
+
 
 }
