@@ -2,7 +2,6 @@ import UserApi from "api/user-api";
 import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/manage-address.scss";
-import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import DEFINELINK from "routes/define-link";
 function CustomerAddress(props) {
@@ -55,7 +54,12 @@ function CustomerAddress(props) {
           </div>
           <div className="address-action col-sm-12 col-md-4">
             <div className="d-flex gap-1 justify-content-center">
-              <YLButton variant="primary" width="70px" height="25px" to={DEFINELINK.customer+"/address/edit/:id"}>
+              <YLButton
+                variant="primary"
+                width="70px"
+                height="25px"
+                to={DEFINELINK.customer + "/address/edit/:id"}
+              >
                 Sửa
               </YLButton>
               <ConfirmPopup
@@ -73,7 +77,6 @@ function CustomerAddress(props) {
           </div>
         </div>
       </div>
-      <YLSelectAddress />
     </>
   );
 }
