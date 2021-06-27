@@ -14,7 +14,7 @@ const UserApi = {
     const url = `/user/me`;
     return AxiosClient.get(url);
   },
-  getAllProvice: () => {
+  getAllProvince: () => {
     const url = `/user/get-all-province`;
     return AxiosClient.get(url);
   },
