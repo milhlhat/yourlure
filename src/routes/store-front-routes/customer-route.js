@@ -6,6 +6,9 @@ import CustomerInfoLayout from "components/customer/CustomerInfoLayout";
 const CustomerAccount = React.lazy(() =>
   import("components/customer/CustomerAccount")
 );
+const EditCustomerAccount = React.lazy(() =>
+  import("components/customer/EditCustomerAccount")
+);
 const CutomerOrder = React.lazy(() =>
   import("components/customer/CutomerOrder")
 );
@@ -16,7 +19,10 @@ const AddNewAddress = React.lazy(() =>
   import("components/customer/AddNewAddress")
 );
 const ChangeAddress = React.lazy(() =>
-  import("components/customer/ChangeAddress")
+  import("components/customer/EditAddress")
+);
+const ChangePassword = React.lazy(() =>
+  import("components/customer/ChangePassword")
 );
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 
@@ -32,6 +38,11 @@ function CutomerInfoRoute() {
             exact
             path={path + DEFINELINK.account}
             render={() => <CustomerAccount account={account} />}
+          />
+          <Route
+            
+            path={path + DEFINELINK.accountEdit}
+            render={() => <EditCustomerAccount account={account} />}
           />
           <Route
             path={path + DEFINELINK.order}
@@ -50,6 +61,10 @@ function CutomerInfoRoute() {
           <Route
             path={path + DEFINELINK.addressAdd}
             component={AddNewAddress}
+          />
+          <Route
+            path={path + DEFINELINK.changePassword}
+            component={ChangePassword}
           />
           <Route component={NotFound} />
         </Switch>

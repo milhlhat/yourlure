@@ -1,72 +1,78 @@
-@import '../base/variable.scss';
+@import "../base/variable.scss";
 $grid-breakpoints: (
-	xs: 0,
-	sm: 576px,
-	md: 768px,
-	lg: 992px,
-	xl: 1200px,
-	xxl: 1400px,
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
 );
 .flex-end {
-	justify-content: flex-end !important;
-	& .search-form {
-		background: white;
-		border-radius: 50px;
-		padding-left: 5px;
-		display: flex;
-		align-items: center;
-		border: 1px solid $text-color;
-		justify-content: center;
-	}
+  justify-content: flex-end !important;
+  & .search-form {
+    background: white;
+    border-radius: 50px;
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid $text-color;
+    justify-content: center;
+  }
 
-	& .search-form input {
-		border-radius: 50px;
-		width: 90%;
-		border: none;
-	}
+  & .search-form input {
+    border-radius: 50px;
+    width: 90%;
+    border: none;
+  }
 
-	& .fa-search {
-		cursor: pointer;
-	}
+  & .fa-search {
+    cursor: pointer;
+  }
 
-	& .search:focus-visible {
-		outline: none !important;
-	}
+  & .search:focus-visible {
+    outline: none !important;
+  }
 
-	& .navbar-toggler :focus {
-		text-decoration: none;
-		outline: 0;
-		box-shadow: 0;
-	}
-	& .header-cart {
-		color: $primary;
-	}
-	& .header-user {
-		color: $primary;
-	}
-	& .active {
-		& a {
-			color: $primary !important;
-			cursor: default;
-		}
-	}
-	& .item-hover {
-		&:hover {
-			font-weight: bold;
-		}
-	}
-	& .navbar-toggler {
-		border: none;
-		&:focus {
-			outline: none;
-			box-shadow: none;
-		}
-	}
-	& .navbar-nav {
-		width: 100%;
-		justify-content: space-evenly;
-	}
-	& .nav-link {
-		font-weight: bold;
-	}
+  & .navbar-toggler :focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0;
+  }
+  & .header-cart {
+    & .active {
+      color: $primary !important;
+      cursor: default;
+    }
+  }
+  & .header-user {
+    & .active {
+      color: $primary !important;
+      cursor: default;
+    }
+  }
+  & .active {
+    & a {
+      color: $primary !important;
+      cursor: default;
+    }
+  }
+  & .item-hover {
+    &:hover {
+      font-weight: bold;
+    }
+  }
+  & .navbar-toggler {
+    border: none;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  & .navbar-nav {
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  & .nav-link {
+    font-weight: bold;
+  }
 }

@@ -15,6 +15,7 @@ function ManagementAccount({ children }) {
   const ACCOUNT_PATH = DEFINELINK.customer + DEFINELINK.account;
   const ORDER_PATH = DEFINELINK.customer + DEFINELINK.order;
   const ADDRESS_PATH = DEFINELINK.customer + DEFINELINK.address;
+  const CHANGEPASSWORD_PATH = DEFINELINK.customer + DEFINELINK.changePassword;
   useEffect(() => {
     const fetchCustomAccount = async () => {
       setAccount((prevState) => {
@@ -56,7 +57,7 @@ function ManagementAccount({ children }) {
                 location.indexOf(ACCOUNT_PATH) > -1 ? "active" : ""
               }`}
             >
-              <i class="fad fa-user mr-15px"></i>
+              <i class="fad fa-user  "></i>
               Tài khoản
             </Link>
 
@@ -64,7 +65,7 @@ function ManagementAccount({ children }) {
               to={ORDER_PATH}
               className={`${location.indexOf(ORDER_PATH) > -1 ? "active" : ""}`}
             >
-              <i class="fad fa-receipt  mr-13px"></i>
+              <i class="fad fa-receipt   "></i>
               Đơn hàng
             </Link>
 
@@ -74,8 +75,17 @@ function ManagementAccount({ children }) {
                 location.indexOf(ADDRESS_PATH) > -1 ? "active" : ""
               }`}
             >
-              <i class="fad fa-address-card me-2"></i>
+              <i class="fad fa-address-card  "></i>
               Địa chỉ
+            </Link>
+            <Link
+              to={CHANGEPASSWORD_PATH}
+              className={`${
+                location.indexOf(CHANGEPASSWORD_PATH) > -1 ? "active" : ""
+              }`}
+            >
+              <i class="fad fa-shield"></i>
+              Đổi mật khẩu
             </Link>
           </div>
         </div>

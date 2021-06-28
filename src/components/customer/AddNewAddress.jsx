@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
@@ -6,12 +6,8 @@ import { useForm } from "react-hook-form";
 import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 function AddNewAddress() {
-  const defaultValues = {
-    province: null,
-    district: "259",
-    ward: "9250",
-  };
-  const methods = useForm({ defaultValues: defaultValues });
+ 
+  const methods = useForm();
   const {
     register,
     handleSubmit,
@@ -58,7 +54,7 @@ function AddNewAddress() {
                 )}
               </td>
             </tr>
-            <YLSelectAddress {...methods} isEdit />
+            <YLSelectAddress {...methods} />
             <tr>
               <td className="text-end title-table">Địa Chỉ(*)</td>
               <td>
