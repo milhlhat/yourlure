@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CustomizeModelService {
 
-    Model3d createModel3d()
+    Model3d createModel3d();
 
     CustomizeModel createCustomizeModel(HttpServletRequest rq, CustomModelDto customModelDto) throws IOException;
 
