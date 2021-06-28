@@ -26,7 +26,7 @@ public interface ProductService {
 
     // Admin front **************************
 
-    Optional<AdminProductDtoOut> getAll(Pageable pageable);
+    Optional<AdminProductDtoOut> getAll(String keyword, Pageable pageable);
 
     Boolean save(ProductsDtoInp productsDtoInp);
 

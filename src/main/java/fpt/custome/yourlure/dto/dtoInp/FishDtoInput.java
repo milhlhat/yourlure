@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FishDtoInput {
 
-    private Long fishId;
     private String fishName;
 
 }

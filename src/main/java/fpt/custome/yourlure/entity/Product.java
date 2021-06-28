@@ -2,7 +2,6 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
-import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -114,29 +114,45 @@ public class Product {
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "modelId")
-    private Model3d model3d;
+    @ManyToMany(mappedBy = "products")
+    private Collection<Fish> fishList = new ArrayList<>();
+
+    /**
+     * add fish to product
+     *
+     * @param f
+     */
+    public void addFish(Fish f) {
+        this.fishList.add(f);
+        f.getProducts().add(this);
+    }
+
+    /**
+     * remove fish on product
+     *
+     * @param f
+     */
+    public void removeFish(Fish f) {
+        this.fishList.remove(f);
+        f.getProducts().remove(this);
+    }
 
     public void update(ProductsDtoInp productsDtoInp) {
-        Product.builder()
-                .brand(productsDtoInp.getBrand())
-                .content(productsDtoInp.getContent())
-                .customizable(productsDtoInp.getCustomizable())
-                .deepDiving(productsDtoInp.getDeepDiving())
-                .defaultPrice(productsDtoInp.getDefaultPrice())
-                .defaultWeight(productsDtoInp.getDefaultWeight())
-                .description(productsDtoInp.getDescription())
-                .hookSize(productsDtoInp.getHookSize())
-                .productName(productsDtoInp.getProductName())
-                .imgUrlModel(productsDtoInp.getImgUrlModel())
-                .length(productsDtoInp.getLength())
-                .material(productsDtoInp.getMaterial())
-                .dateCreate(productsDtoInp.getDateCreate())
-                .maxWeight(productsDtoInp.getMaxWeight())
-                .minWeight(productsDtoInp.getMinWeight())
-                .build();
+        this.brand = productsDtoInp.getBrand();
+        this.content = productsDtoInp.getContent();
+        this.customizable = productsDtoInp.getCustomizable();
+        this.deepDiving = productsDtoInp.getDeepDiving();
+        this.defaultPrice = productsDtoInp.getDefaultPrice();
+        this.defaultWeight = productsDtoInp.getDefaultWeight();
+        this.description = productsDtoInp.getDescription();
+        this.hookSize = productsDtoInp.getHookSize();
+        this.productName = productsDtoInp.getProductName();
+        this.imgUrlModel = productsDtoInp.getImgUrlModel();
+        this.length = productsDtoInp.getLength();
+        this.material = productsDtoInp.getMaterial();
+        this.dateCreate = productsDtoInp.getDateCreate();
+        this.maxWeight = productsDtoInp.getMaxWeight();
+        this.minWeight = productsDtoInp.getMinWeight();
     }
 
 }

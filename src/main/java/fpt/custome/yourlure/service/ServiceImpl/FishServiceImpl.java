@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.FishDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminFishDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.FishDtoOut;
 import fpt.custome.yourlure.entity.Fish;
 import fpt.custome.yourlure.repositories.FishRepos;
@@ -36,18 +37,25 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public List<FishDtoOut> adminGetAll(Pageable pageable) {
-        List<FishDtoOut> results = new ArrayList<>();
+    public Optional<AdminFishDtoOut> adminGetAll(String keyword, Pageable pageable) {
+        List<FishDtoOut> fishDtoOuts = new ArrayList<>();
         try {
-            Page<Fish> list = fishRepos.findAll(pageable);
+            Page<Fish> list = fishRepos.findByFishNameContainsIgnoreCase(keyword, pageable);
             for (Fish item : list) {
                 FishDtoOut dtoOut = mapper.map(item, FishDtoOut.class);
-                results.add(dtoOut);
+                fishDtoOuts.add(dtoOut);
             }
+            AdminFishDtoOut result = AdminFishDtoOut.builder()
+                    .fishDtoOuts(fishDtoOuts)
+                    .totalItem((int) list.getTotalElements())
+                    .totalPage(list.getTotalPages())
+                    .build();
+            return Optional.of(result);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return results;
+
     }
 
     @Override

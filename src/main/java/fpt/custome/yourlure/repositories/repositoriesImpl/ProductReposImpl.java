@@ -49,15 +49,19 @@ public class ProductReposImpl implements ProductRepos {
          */
         if (!(filter.getSortBy().isEmpty())) {
             query.append(" order by " + filter.getSortBy());
-            if (!filter.getIsAsc()){
+            if (!filter.getIsAsc()) {
                 query.append(" DESC");
             }
         }
 
-        Query result = em.createNativeQuery(query.toString(),Product.class);
+        Query result = em.createNativeQuery(query.toString(), Product.class);
         if (!filter.getListCateId().isEmpty()) result.setParameter("cateIds", filter.getListCateId());
         if (!filter.getListFishId().isEmpty()) result.setParameter("fishIds", filter.getListFishId());
         if (!filter.getKeyword().isEmpty()) result.setParameter("keyword", "%" + filter.getKeyword().trim() + "%");
         return result;
+    }
+
+    public void remove(Product product) {
+        em.remove(product);
     }
 }

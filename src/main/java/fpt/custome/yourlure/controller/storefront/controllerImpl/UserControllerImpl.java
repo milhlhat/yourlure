@@ -37,11 +37,6 @@ public class UserControllerImpl implements UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
-    public ResponseEntity<UserResponseDTO> getUser(Long id) {
-        Optional<UserResponseDTO> userDtoOut = userService.getUser(id);
-        return new ResponseEntity<>(userDtoOut.orElse(null), HttpStatus.OK);
-    }
 
     @Override
     public ResponseEntity<Boolean> updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
@@ -62,14 +57,20 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Optional<District>> findDistrictById(Long id) {
-        Optional<District> result = userService.findDistrictById(id);
+    public ResponseEntity<List<District>> findDistrictById(Long id) {
+        List<District> result = userService.findDistrictById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<Ward>> findWardById(Long id) {
-        Optional<Ward> result = userService.findWardById(id);
+    public ResponseEntity<List<Province>> getAllProvince() {
+        List<Province> result = userService.findAllProvince();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Ward>> findWardById(Long id) {
+        List<Ward> result = userService.findWardById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -79,7 +80,11 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(Long id) {
+        List<UserAddressDtoOut> result = userService.adminGetAddressUser(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @Override
     public List<Role> getRoles(HttpServletRequest req) {
@@ -96,10 +101,6 @@ public class UserControllerImpl implements UserController {
         return userService.refresh(req.getRemoteUser());
     }
 
-    @Override
-    public UserResponseDTO search(String phone) {
-        return modelMapper.map(userService.search(phone), UserResponseDTO.class);
-    }
 
     @Override
     public String signup(UserDataDTO user) {

@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderDetailDtoOut {
+public class AdminOrderDetailDtoOut {
 
     private Long orderID;
     private String address;

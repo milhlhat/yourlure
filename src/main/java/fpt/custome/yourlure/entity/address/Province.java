@@ -30,6 +30,7 @@ public class Province {
     private String type;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "userCountryID", nullable = false)
     private Country userCountry;
 

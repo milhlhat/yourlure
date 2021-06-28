@@ -31,4 +31,5 @@ public interface CategoryRepos extends JpaRepository<Category, Long> {
     List<Category> getBestSellerCategory();
 
     List<Category> findByCategoryNameContainsIgnoreCase(String keyword, Pageable pageable);
+
 }

@@ -8,6 +8,7 @@ import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,11 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Optional<AdminProductDtoOut>> findAll(Filter filter) {
-        Optional<AdminProductDtoOut> result = productService.getAll(PageRequest.of(filter.getPage(),
-                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+        Pageable pageable = PageRequest.of(filter.getPage(),
+                filter.getLimit(),
+                filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending());
+
+        Optional<AdminProductDtoOut> result = productService.getAll(filter.getKeyword(), pageable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -43,12 +47,12 @@ public class AdminProductControllerImpl implements AdminProductController {
         return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(Filter filter) {
-        Optional<AdminProductDtoOut> dtoOuts = productService.adminSearchProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
-                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
-        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(Filter filter) {
+//        Optional<AdminProductDtoOut> dtoOuts = productService.adminSearchProductName(filter.getKeyword(), PageRequest.of(filter.getPage(),
+//                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+//        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<Boolean> editProduct(Long id, ProductsDtoInp productsDtoInp) {

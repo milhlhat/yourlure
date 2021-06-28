@@ -10,4 +10,6 @@ public interface ProductRepos extends Repository<Product, Long> {
 
     Query getProductFilter(Filter filter);
 
+    void remove(Product product);
+
 }

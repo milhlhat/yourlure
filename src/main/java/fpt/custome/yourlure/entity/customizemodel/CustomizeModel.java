@@ -24,6 +24,7 @@ public class CustomizeModel {
     private Long customizeId;
 
     private String name;
+
     private String thumbnailUrl;
 
     @JsonIgnore

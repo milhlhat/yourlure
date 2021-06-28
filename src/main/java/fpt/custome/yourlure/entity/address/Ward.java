@@ -31,6 +31,7 @@ public class Ward {
     private String type;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "districtID", nullable = false)
     private District userDistrict;
 

@@ -53,7 +53,7 @@ public class Order {
     @ManyToOne
     @Nullable
     @JoinColumn(name = "userId")
-    private User User;
+    private User user;
 
     // todo: sua discountID thanh discount code. de khi xoa discountId van ko anh houng toi order
     private String discountVoucher;

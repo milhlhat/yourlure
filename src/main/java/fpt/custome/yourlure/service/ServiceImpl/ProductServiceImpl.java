@@ -2,10 +2,7 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.*;
-import fpt.custome.yourlure.entity.Category;
-import fpt.custome.yourlure.entity.Filter;
-import fpt.custome.yourlure.entity.Fish;
-import fpt.custome.yourlure.entity.Product;
+import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
@@ -15,9 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -41,18 +37,23 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper mapper;
 
     @Override
-    public Optional<AdminProductDtoOut> getAll(Pageable pageable) {
+    public Optional<AdminProductDtoOut> getAll(String keyword, Pageable pageable) {
         List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
         try {
-            List<Product> list = productJPARepos.findAll(pageable).getContent();
+            int numberOfProduct = 0;
+            List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable).getContent();
             for (Product item : list) {
                 AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
+                for (Variant variant : item.getVariantCollection()) {
+                    numberOfProduct += variant.getQuantity();
+                }
+                dtoOut.setNumberOfVariantProduct(numberOfProduct);
                 listResult.add(dtoOut);
             }
             AdminProductDtoOut results = AdminProductDtoOut.builder()
                     .productOutputList(listResult)
-                    .totalProduct((int) productJPARepos.findAll(pageable).getTotalElements())
-                    .totalPage(productJPARepos.findAll(pageable).getTotalPages())
+                    .totalProduct((int) productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable).getTotalElements())
+                    .totalPage(productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable).getTotalPages())
                     .build();
             return Optional.of(results);
         } catch (Exception e) {
@@ -162,6 +163,7 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
+    @Transactional
     @Override
     public Boolean save(ProductsDtoInp productsDtoInp) {
         try {
@@ -171,12 +173,16 @@ public class ProductServiceImpl implements ProductService {
                 product = mapper.map(productsDtoInp, Product.class);
                 Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
                 product.setCategory(categoryInput.get());
-                productJPARepos.save(product);
+                Product imgProduct = productJPARepos.save(product);
+
+                //todo: chua add image
 
                 //save fish_product
                 Optional<Fish> fishOptional = fishRepos.findById(productsDtoInp.getFishId());
                 Fish fishInput = fishOptional.get();
-                fishInput.getProducts().add(product);
+                fishInput.addProduct(product);
+                //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
+//                fishInput.getProducts().add(product);
                 fishRepos.save(fishInput);
             } else {
                 return false;
@@ -215,17 +221,23 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
     @Override
     public Boolean remove(Long id) {
         try {
-            productJPARepos.deleteById(id);
+            Optional<Product> productOptional = productJPARepos.findById(id);
+            List<Fish> productList = (List<Fish>) productOptional.get().getFishList();
+            for (ListIterator<Fish> iter = productList.listIterator(); iter.hasNext(); ) {
+                iter.remove();
+            }
+            productRepos.remove(productOptional.get());
+            return true;
         } catch (
                 Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
-        return true;
+
     }
 
 

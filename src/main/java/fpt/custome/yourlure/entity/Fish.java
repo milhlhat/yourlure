@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -29,11 +29,43 @@ public class Fish {
     private String fishName;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "tbl_fish_product", //Tạo ra một join Table tên là "fish_product"
             joinColumns = @JoinColumn(name = "fishId"),  // TRong đó, khóa ngoại chính là address_id trỏ tới class hiện tại (Address)
             inverseJoinColumns = @JoinColumn(name = "productId") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (Person)
     )
-    private Set<Product> products = new HashSet<>();
+    private Collection<Product> products = new HashSet<>();
+
+
+    /**
+     * add product to fish
+     *
+     * @param p
+     */
+    public void addProduct(Product p) {
+        this.products.add(p);
+        p.getFishList().add(this);
+    }
+
+    /**
+     * remove product on fish
+     *
+     * @param p
+     */
+    public void removeProduct(Product p) {
+        this.products.remove(p);
+        p.getFishList().remove(this);
+    }
+
+//    public void removeByProductId(Long id) {
+//        if (!this.getProducts().isEmpty()) {
+//            for (Iterator<Product> iter = this.getProducts().listIterator(); iter.hasNext(); ) {
+//                Product a = iter.next();
+//                if (a.getProductId() == id) {
+//                    iter.remove();
+//                }
+//            }
+//        }
+//    }
 
 }

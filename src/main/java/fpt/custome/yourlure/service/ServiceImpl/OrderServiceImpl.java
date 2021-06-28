@@ -1,14 +1,18 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
-import fpt.custome.yourlure.dto.dtoOut.OrderDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.OrderDtoOut;
-import fpt.custome.yourlure.entity.*;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
+import fpt.custome.yourlure.entity.Order;
+import fpt.custome.yourlure.entity.OrderActivity;
+import fpt.custome.yourlure.entity.OrderLine;
 import fpt.custome.yourlure.repositories.*;
+import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,48 +44,48 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper mapper;
 
     @Override
-    public List<OrderDtoOut> getAll(Pageable pageable) {
-        List<OrderDtoOut> results = new ArrayList<>();
+    public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
+
         try {
-            Page<Order> list = orderRepos.findAll(pageable);
-            orderRepos.findAll(pageable);
-            for (Order item : list) {
-                OrderDtoOut dtoOut = mapper.map(item, OrderDtoOut.class);
-                OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(item.getOrderId());
-                dtoOut.setStatusName(orderActivity.getActivityName());
-                List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(item.getOrderId());
-                float total = 0;
-                for (OrderLine orderLine : orderLineList) {
-                    total += orderLine.getPrice() * orderLine.getQuantity();
-                }
-                dtoOut.setTotal(total);
-                results.add(dtoOut);
+            Page<Order> list = orderRepos.findAllByNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
+            if (list.getContent().isEmpty()) {
+                throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
+            } else {
+                // map data vao AdminOrderDtoOut.OrderDtoOut
+                List<AdminOrderDtoOut.OrderDtoOut> orderDtoOuts = mapCustomData(list.getContent());
+                AdminOrderDtoOut result = AdminOrderDtoOut.builder()
+                        .orderDtoOutList(orderDtoOuts)
+                        .totalPage(list.getTotalPages())
+                        .totalOrder((int) list.getTotalElements())
+                        .build();
+
+                return Optional.of(result);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return results;
     }
 
     @Override
-    public Optional<OrderDetailDtoOut> getById(Long id) {
+    public Optional<AdminOrderDetailDtoOut> getById(Long id) {
         try {
             Optional<Order> optional = orderRepos.findById(id);
-            List<OrderDetailDtoOut.ProductDtoOut> productDtoOutList = new ArrayList<>();
+            List<AdminOrderDetailDtoOut.ProductDtoOut> productDtoOutList = new ArrayList<>();
             if (optional.isPresent()) {
-                OrderDetailDtoOut result = mapper.map(optional.get(), OrderDetailDtoOut.class);
+                AdminOrderDetailDtoOut result = mapper.map(optional.get(), AdminOrderDetailDtoOut.class);
                 List<OrderLine> orderLineList = (List<OrderLine>) optional.get().getOrderLineCollection();
                 for (OrderLine item : orderLineList) {
-                    OrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(
-                            productJpaRepos.findById(item.getProductId()), OrderDetailDtoOut.ProductDtoOut.class);
-                    productDtoOut.builder()
-                            .price(item.getPrice())
-                            .quantity(item.getQuantity())
-                            .variantId(item.getVariantId())
-                            //TODO: truy van customize trong bang customize roi gan vao
-//                            .customizeId(item.getCustomize())
-                            .thumbnailUrl(item.getTextureImg())
-                            .build();
+                    //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
+                    AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(
+                            productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
+                    productDtoOut.setPrice(item.getPrice());
+                    productDtoOut.setQuantity(item.getQuantity());
+                    productDtoOut.setVariantId(item.getVariantId());
+                    productDtoOut.setThumbnailUrl(item.getTextureImg());
+                    //TODO: truy van customize trong bang customize roi gan vao
+//                    productDtoOut.setCustomizeId(item.getCustomizeId());
                     productDtoOutList.add(productDtoOut);
 
                 }
@@ -98,12 +102,54 @@ public class OrderServiceImpl implements OrderService {
     public Boolean remove(Long id) {
         try {
             orderRepos.deleteById(id);
-        } catch (
-                Exception e) {
-            // TODO Auto-generated catch block
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+    }
+
+    /**
+     * map data tu order vao dto da custom
+     *
+     * @param list
+     * @return
+     */
+    public List<AdminOrderDtoOut.OrderDtoOut> mapCustomData(List<Order> list) {
+        List<AdminOrderDtoOut.OrderDtoOut> result = new ArrayList<>();
+        for (Order item : list) {
+            AdminOrderDtoOut.OrderDtoOut dtoOut = mapper.map(item, AdminOrderDtoOut.OrderDtoOut.class);
+            OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(item.getOrderId());
+            if (orderActivity != null) {
+                dtoOut.setStatusName(orderActivity.getActivityName());
+            }
+            List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(item.getOrderId());
+            float total = 0;
+            for (OrderLine orderLine : orderLineList) {
+                total += orderLine.getPrice() * orderLine.getQuantity();
+            }
+            dtoOut.setTotal(total);
+            result.add(dtoOut);
+        }
+        return result;
+    }
+
+    @Override
+    public Optional<AdminOrderDtoOut> getOrderByUserId(Long userId, Pageable pageable) {
+        try {
+            // lay OrderOfUser
+            Page<Order> list = orderRepos.findAllByUserUserId(userId, pageable);
+            // map data vào dto
+            AdminOrderDtoOut result = AdminOrderDtoOut.builder()
+                    .totalOrder((int) list.getTotalElements())
+                    .totalPage(list.getTotalPages())
+                    .orderDtoOutList(mapCustomData(list.getContent()))
+                    .build();
+            //trả về kết quả
+            return Optional.of(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 }

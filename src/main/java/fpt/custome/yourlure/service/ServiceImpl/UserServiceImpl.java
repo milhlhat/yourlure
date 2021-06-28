@@ -1,9 +1,9 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Provider;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
@@ -15,10 +15,13 @@ import fpt.custome.yourlure.entity.address.Ward;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
+import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +40,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepos userRepos;
+
+    @Autowired
+    private OrderRepos orderRepos;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -93,34 +102,62 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void delete(String phone) {
-        User findUser = userRepos.findByPhone(phone);
-        findUser.setEnabled(false);
-        userRepos.save(findUser);
-//            userRepos.deleteByPhone(phone);
-    }
-
-    public User search(String phone) {
-        User user = userRepos.findByPhone(phone);
-        if (user == null) {
-            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
+    public Boolean block(Long id) {
+        try {
+            Optional<User> findUser = userRepos.findById(id);
+            findUser.get().setEnabled(false);
+            userRepos.save(findUser.get());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return user;
+
     }
 
     @Override
-    public List<AdminUserDtoOut> adminFindAll(Pageable pageable) {
-        List<AdminUserDtoOut> results = new ArrayList<>();
+    public Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable) {
+        List<AdminUserDtoOut.UserDtoOut> listResult = new ArrayList<>();
         try {
-            List<User> list = userRepos.findAll(pageable).getContent();
-            for (User item : list) {
-                AdminUserDtoOut dtoOut = mapper.map(item, AdminUserDtoOut.class);
-                results.add(dtoOut);
+            Page<User> list = null;
+            switch (type.trim()) {
+                case "name": {
+                    list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
+                    break;
+                }
+                case "phone": {
+                    list = userRepos.findByPhoneContainsIgnoreCase(keyword, pageable);
+                    break;
+                }
+                case "email": {
+                    list = userRepos.findByUserEmailContainsIgnoreCase(keyword, pageable);
+                    break;
+                }
+                default: {
+                    list = userRepos.findAll(pageable);
+                    break;
+                }
+            }
+            if (list.getContent().isEmpty()) {
+                throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
+            } else {
+                for (User item : list.getContent()) {
+                    AdminUserDtoOut.UserDtoOut dtoOut = mapper.map(item, AdminUserDtoOut.UserDtoOut.class);
+                    // tat ca order cua khach hàng
+                    dtoOut.setNumberOfOrder(orderRepos.findAllByUserUserId(item.getUserId()).size());
+                    listResult.add(dtoOut);
+                }
+                AdminUserDtoOut results = AdminUserDtoOut.builder()
+                        .userDtoOutList(listResult)
+                        .totalUser((int) list.getTotalElements())
+                        .totalPage(list.getTotalPages())
+                        .build();
+                return Optional.of(results);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return results;
     }
 
     public User whoami(HttpServletRequest req) {
@@ -133,17 +170,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Optional<UserResponseDTO> getUser(Long id) {
+    public Optional<AdminUserDetailDtoOut> getUser(Long id) {
         try {
-            Optional<User> user = userRepos.findById(id);
-            if (user.isPresent()) {
-                UserResponseDTO result = mapper.map(user.get(), UserResponseDTO.class);
-                return Optional.of(result);
-            }
+            Optional<User> userOptional = userRepos.findById(id);
+            User user = userOptional.get();
+            AdminUserDetailDtoOut result = mapper.map(user, AdminUserDetailDtoOut.class);
+            return Optional.of(result);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     @Override
@@ -156,37 +192,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserAddressDtoOut> adminGetAddressUser(Long id) {
+        Optional<User> user = userRepos.findById(id);
+        List<UserAddress> list = (List<UserAddress>) user.get().getUserAddressCollection();
+        // map collection user address to dto
+        List<UserAddressDtoOut> result = getAddressInUser(list);
+        return result;
+    }
+
+    @Override
     public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
         List<UserAddressDtoOut> result = new ArrayList<>();
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
-
-        for (UserAddress userAddress : list) {
-            UserAddressDtoOut dtoOut = new UserAddressDtoOut();
-            dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
-            dtoOut.setUserDistrictName(userAddress.getWard().getUserDistrict().getUserDistrictName());
-            dtoOut.setUserProvinceName(userAddress.getWard().getUserDistrict().getUserProvince().getUserProvinceName());
-            dtoOut.setUserCountryName(userAddress.getWard().getUserDistrict().getUserProvince().getUserCountry()
-                    .getUserCountryName());
-            dtoOut.setDescription(userAddress.getDescription());
-            result.add(dtoOut);
-        }
+        // map collection user address to dto
+        result = getAddressInUser(list);
         return result;
     }
 
     @Override
     public Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
-
         try {
             User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
             userUpdate.update(mapper.map(userDtoInp, User.class));
             userRepos.save(userUpdate);
-
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
 
@@ -197,20 +231,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Province> findAllProvince() {
+        List<Province> result = userProvinceRepos.findAll(Sort.by(Sort.Direction.ASC, "userProvinceName"));
+        return result;
+    }
+
+    @Override
     public Optional<Province> findProvinceById(Long id) {
         Optional<Province> result = userProvinceRepos.findById(id);
         return result;
     }
 
     @Override
-    public Optional<District> findDistrictById(Long id) {
-        Optional<District> result = userDistrictRepos.findById(id);
+    public List<District> findDistrictById(Long id) {
+        List<District> result = userDistrictRepos.findDistrictByUserProvinceUserProvinceID(id);
         return result;
     }
 
     @Override
-    public Optional<Ward> findWardById(Long id) {
-        Optional<Ward> result = userWardRepos.findById(id);
+    public List<Ward> findWardById(Long id) {
+        List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id);
+        return result;
+    }
+
+    public List<UserAddressDtoOut> getAddressInUser(List<UserAddress> list) {
+        List<UserAddressDtoOut> result = new ArrayList<>();
+        for (UserAddress userAddress : list) {
+            UserAddressDtoOut dtoOut = new UserAddressDtoOut();
+            dtoOut.setUserWardName(userAddress.getWard().getUserWardName());
+            dtoOut.setUserWardId(userAddress.getWard().getUserWardID());
+            dtoOut.setUserDistrictName(userAddress.getWard().getUserDistrict().getUserDistrictName());
+            dtoOut.setUserDistrictId(userAddress.getWard().getUserDistrict().getUserDistrictID());
+            dtoOut.setUserProvinceName(userAddress.getWard().getUserDistrict().getUserProvince().getUserProvinceName());
+            dtoOut.setUserProvinceId(userAddress.getWard().getUserDistrict().getUserProvince().getUserProvinceID());
+            dtoOut.setDescription(userAddress.getDescription());
+            result.add(dtoOut);
+        }
         return result;
     }
 

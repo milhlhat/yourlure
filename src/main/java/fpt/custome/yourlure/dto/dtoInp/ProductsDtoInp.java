@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class ProductsDtoInp {
 
-    private Long productId;
     private String productName;
     private Float defaultPrice;
     private String description;

@@ -26,7 +26,7 @@ public class Category {
     private String categoryName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE)
     // MapopedBy trỏ tới tên biến category ở trong product.
     //1 category có nhiều product
     private Collection<Product> productCollection;

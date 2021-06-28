@@ -28,7 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -44,6 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/**/**").permitAll()
+                .antMatchers("/admin/**/**").permitAll()
+                .antMatchers("/user/find-by-province-id").permitAll()
+                .antMatchers("/user/find-by-district-id").permitAll()
+                .antMatchers("/user/find-by-ward-id").permitAll()
+                .antMatchers("/user/get-all-country").permitAll()
+                .antMatchers("/user/get-all-province").permitAll()
+                .antMatchers("/user/get-address-user").permitAll()
 
 
 //                .antMatchers("/api/product/model-download").permitAll()
