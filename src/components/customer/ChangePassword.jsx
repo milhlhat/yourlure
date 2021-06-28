@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { FastField, Form, Formik } from "formik";
 import InputField from "components/custom-field/YLInput";
 import YLButton from "components/custom-field/YLButton";
 import * as Yup from "yup";
-function ChangePassword(props) {
+import MuiAlert from "@material-ui/lab/Alert";
+import "assets/scss/scss-pages/login.scss";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
+function ChangePassword(props) {
+  const [open, setOpen] = useState({ isOpen: false, content: "" });
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen({ ...open, isOpen: false });
+  };
   const initialValues = {
     oldPassword: "",
     password: "",
@@ -30,10 +42,10 @@ function ChangePassword(props) {
 
   const handleSubmit = (value) => {
     console.log(value);
+    setOpen({ ...open, isOpen: true });
   };
   return (
-    <div>
-      <h1>Đổi mật khẩu</h1>
+    <div className="bg-box d-flex flex-column align-items-center">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -45,13 +57,13 @@ function ChangePassword(props) {
           const { values, errors, touched } = formikProps;
           // console.log({ values, errors, touched });
           return (
-            <Form>
+            <Form className="w-50 my-4">
               <FastField
                 name="oldPassword"
                 type="password"
                 component={InputField}
-                label="Mật khẩu cũ"
-                placeholder="Nhập Nhập mật khẩu cũ"
+                label="Mật khẩu hiện tại"
+                placeholder="Nhập mật khẩu hiện tại"
               ></FastField>
               <FastField
                 name="password"
@@ -78,8 +90,21 @@ function ChangePassword(props) {
           );
         }}
       </Formik>
+      <Snackbar
+        open={open.isOpen}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          {open.content}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 export default ChangePassword;

@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import { ErrorMessage } from "formik";
 import "assets/scss/scss-components/custom-field/InputField.scss";
-import { ref } from "yup";
-
 
 InputField.propTypes = {
   field: PropTypes.object.isRequired,
@@ -45,18 +43,18 @@ function InputField(props) {
           placeholder={placeholder}
           invalid={showError}
         />
-        <div className={`display-eye ${type == "password"  && value!='' && !showError? "" : "d-none"}`}>
+        <div className={`display-eye ${type == "password" ? "" : "d-none"}`}>
           <div
             className={`${isPassword == "text" ? "d-none" : ""}`}
             onClick={handleChangeType}
           >
-            <i class="fa fa-eye" aria-hidden="true"></i>
+          <i class="fad fa-eye text-success"></i>
           </div>
           <div
             className={`${isPassword == "text" ? "" : "d-none"}`}
             onClick={handleChangeType}
           >
-            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+          <i class="fad fa-eye-slash text-success"></i>
           </div>
         </div>
       </div>
