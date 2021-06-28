@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 import { filterConfig } from "constant/filter-setting";
 import DEFINELINK from "routes/define-link";
-
+import logo from "assets/images/logo/logo-social.png";
 function Header(props) {
   const productFilter = useSelector((state) => state.productFilter.filter);
   const dispatch = useDispatch();
@@ -101,77 +101,94 @@ function Header(props) {
   return (
     <div className="bg-white bg-shadow">
       <div className="container">
-        <Navbar light expand="md" className="p-2 flex-end">
-          <NavbarBrand className="me-auto" href="/">
-            LOGO
+        <Navbar light expand="md" className="p-2 nav-bar-light ">
+          <NavbarBrand className="me-auto">
+            <Link to="/">
+              <img src={logo} alt="your lure logo" className="logo" />
+            </Link>
           </NavbarBrand>
           <div ref={wrapperRef}>
             <NavbarToggler onClick={toggle} />
           </div>
           <Collapse isOpen={isOpen} navbar>
-            <Nav className="me-auto" navbar>
-              <div
-                className={"" + path.indexOf("product") > -1 ? "active" : ""}
-              >
-                <Link className="nav-link item-hover" to="/product">
-                  Sản phẩm
-                </Link>
-              </div>
-              <div>
-                <Link
-                  className="nav-link item-hover"
-                  to="/product/customize/14"
+            <Nav
+              className="me-auto"
+              navbar
+              className="d-flex justify-content-between"
+            >
+              <div className="group-link">
+                <div
+                  className={`group-link-item ${
+                    path.indexOf(DEFINELINK.product) > -1 ? "active" : ""
+                  }`}
                 >
-                  Tùy biến
-                </Link>
+                  <Link className="nav-link item-hover" to="/product">
+                    Sản phẩm
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    className="nav-link item-hover"
+                    to="/product/customize/14"
+                  >
+                    Tùy biến
+                  </Link>
+                </div> 
+                <div
+                  className={`group-link-item ${
+                    path.indexOf(DEFINELINK.campaign) > -1 ? "active" : ""
+                  }`}
+                >
+                  <Link className="nav-link item-hover" to="/campaign">
+                    Sự kiện
+                  </Link>
+                </div>
+                <div
+                 className={`group-link-item ${
+                  path.indexOf(DEFINELINK.about) > -1 ? "active" : ""
+                }`}
+                >
+                  <Link className="nav-link item-hover" to="/about">
+                    About
+                  </Link>
+                </div>
               </div>
-              <div
-                className={"" + path.indexOf("campaign") > -1 ? "active" : ""}
-              >
-                <Link className="nav-link item-hover" to="/campaign">
-                  Sự kiện
-                </Link>
-              </div>
-              <div className={"" + path.indexOf("about") > -1 ? "active" : ""}>
-                <Link className="nav-link item-hover" to="/about">
-                  About
-                </Link>
-              </div>
-
-              <div className="pt-1" ref={wrapperRef}>
-                <NavItem className="d-flex ms-auto search-form px-3 ">
-                  <input
-                    type="search"
-                    className="search "
-                    placeholder="Tìm kiếm..."
-                    name="keyword"
-                    onKeyDown={(e) => onChangeTextSearch(e)}
-                  />
-                  <i
-                    className="fad fa-search text-success"
-                    onClick={() => handleSubmitSearch()}
-                  ></i>
+              <div className="group-icon">
+                <div className="pt-1" ref={wrapperRef}>
+                  <NavItem className="d-flex ms-auto search-form px-3 ">
+                    <input
+                      type="search"
+                      className="search "
+                      placeholder="Tìm kiếm..."
+                      name="keyword"
+                      onKeyDown={(e) => onChangeTextSearch(e)}
+                    />
+                    <i
+                      className="fad fa-search text-success"
+                      onClick={() => handleSubmitSearch()}
+                    ></i>
+                  </NavItem>
+                </div>
+                <NavItem className="header-cart ms-2 ">
+                  <Link className="nav-link" to={DEFINELINK.cart}>
+                    <i
+                      className={`fad fa-shopping-cart ${
+                        path.indexOf("/cart") > -1 ? "active" : ""
+                      }`}
+                    ></i>
+                  </Link>
+                </NavItem>
+                <NavItem className="header-user ms-2 me-2 ">
+                  <Link className={"nav-link"} to={DEFINELINK.customer}>
+                    <i
+                      className={
+                        "fa fa-user " +
+                        (path.indexOf(DEFINELINK.customer) > -1 ? "active" : "")
+                      }
+                    ></i>
+                  </Link>
                 </NavItem>
               </div>
-              <NavItem className="header-cart ms-2 ">
-                <Link className="nav-link" to={DEFINELINK.cart}>
-                  <i
-                    className={`fad fa-shopping-cart ${
-                      path.indexOf("/cart") > -1 ? "active" : ""
-                    }`}
-                  ></i>
-                </Link>
-              </NavItem>
-              <NavItem className="header-user ms-2 me-2 ">
-                <Link className={"nav-link"} to={DEFINELINK.customer}>
-                  <i
-                    className={
-                      "fa fa-user " +
-                      (path.indexOf(DEFINELINK.customer) > -1 ? "active" : "")
-                    }
-                  ></i>
-                </Link>
-              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>

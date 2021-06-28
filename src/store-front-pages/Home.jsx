@@ -74,14 +74,14 @@ function Home() {
             </h3>
             <h3>Lorem ipsum dolo</h3>
             <div className="button-discover">
-              <Can I="read" a="all" passThrough>
-                {(allowed) => (
+              <Can I="read" a="all" >
+                {/* {(allowed) => ( */}
                   <YLButton
                     value="Discover me"
-                    disabled={!allowed}
+                    // disabled={!allowed}
                     variant="primary"
                   ></YLButton>
-                )}
+                {/* )} */}
               </Can>
             </div>
           </div>

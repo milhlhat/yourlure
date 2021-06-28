@@ -82,7 +82,7 @@ function AddNewAddress() {
               </td>
             </tr>
             <tr>
-              <td className="text-end title-table d-flex flex-end">
+              <td className=" d-flex justify-content-end">
                 <YLButton
                   variant="warning"
                   to={DEFINELINK.customer + DEFINELINK.address}

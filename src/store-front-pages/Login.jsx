@@ -87,7 +87,12 @@ function Login(props) {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-
+  // const history = useHistory();
+  // useEffect(() => {
+  //   if (success) {
+  //     history.push("/");
+  //   }
+  // }, [success]);
   return (
     <div className="login">
       <div className="login-big-image">

@@ -7,7 +7,7 @@ $grid-breakpoints: (
   xl: 1200px,
   xxl: 1400px,
 );
-.flex-end {
+.nav-bar-light {
   justify-content: flex-end !important;
   & .search-form {
     background: white;
@@ -50,12 +50,7 @@ $grid-breakpoints: (
       cursor: default;
     }
   }
-  & .active {
-    & a {
-      color: $primary !important;
-      cursor: default;
-    }
-  }
+
   & .item-hover {
     &:hover {
       font-weight: bold;
@@ -74,5 +69,44 @@ $grid-breakpoints: (
   }
   & .nav-link {
     font-weight: bold;
+  }
+}
+.logo {
+  margin-right: 20px;
+  width: 100px;
+  height: 30px;
+  object-fit: none;
+}
+.active {
+  & a {
+    color: $primary !important;
+    cursor: default;
+  }
+}
+@media screen and (min-width: $tablet-width+1) {
+  .group-link {
+    display: flex;
+    flex-direction: row;
+    grid-column-gap: 20px;
+    justify-content: center;
+  }
+  .group-icon {
+    display: flex;
+    justify-content: center;
+    grid-column-gap: 20px;
+  }
+}
+@media screen and (max-width: $tablet-width) {
+  .group-link {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    & div {
+      width: 50%;
+    }
+  }
+
+  .group-icon {
+    display: flex;
   }
 }

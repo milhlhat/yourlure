@@ -14,6 +14,10 @@ const UserApi = {
     const url = `/user/me`;
     return AxiosClient.get(url);
   },
+  getRoles: () => {
+    const url = `/user/roles`;
+    return AxiosClient.get(url);
+  },
   getAllProvince: () => {
     const url = `/user/get-all-province`;
     return AxiosClient.get(url);

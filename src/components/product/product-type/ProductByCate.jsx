@@ -1,62 +1,67 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import CardProduct from 'components/card/CardProduct';
-import 'assets/scss/scss-components/product/product-by-cate.scss';
-import YLButton from 'components/custom-field/YLButton';
-import Loading from 'components/Loading';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchFilter, saveFilter } from 'utils/product';
-import { useHistory } from 'react-router-dom';
-import ErrorLoad from 'components/ErrorLoad';
+import CardProduct from "components/card/CardProduct";
+import "assets/scss/scss-components/product/product-by-cate.scss";
+import YLButton from "components/custom-field/YLButton";
+import Loading from "components/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFilter, saveFilter } from "utils/product";
+import { useHistory } from "react-router-dom";
+import ErrorLoad from "components/ErrorLoad";
 ProductByCate.propTypes = {};
 
 function ProductByCate(props) {
-	const cates = props.bestCate;
-	const productFilter = useSelector((state) => state.productFilter.filter);
-	const history = useHistory();
-	const dispatch = useDispatch();
-	if (cates.error) {
-		return <ErrorLoad />;
-	}
-	if (cates.loading) {
-		return <Loading />;
-	}
-	function viewMoreCategory(id) {
-		let listCategorySelect = JSON.parse(JSON.stringify(productFilter.listCateId));
-		listCategorySelect.push(id);
-		listCategorySelect = listCategorySelect.filter(function (item, pos) {
-			return listCategorySelect.indexOf(item) == pos;
-		});
+  const cates = props.bestCate;
+  const productFilter = useSelector((state) => state.productFilter.filter);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  if (cates.error) {
+    return <ErrorLoad />;
+  }
+  if (cates.loading) {
+    return <Loading />;
+  }
+  function viewMoreCategory(id) {
+    let listCategorySelect = JSON.parse(
+      JSON.stringify(productFilter.listCateId)
+    );
+    listCategorySelect.push(id);
+    listCategorySelect = listCategorySelect.filter(function (item, pos) {
+      return listCategorySelect.indexOf(item) == pos;
+    });
 
-		history.push('/product/search');
-		saveFilter(dispatch, { ...productFilter, listCateId: listCategorySelect });
-		fetchFilter(dispatch, { ...productFilter, listCateId: listCategorySelect });
-	}
-	return (
-		<div className="product-by-cate">
-			{cates &&
-				cates.data.map((cate, index) => (
-					<div key={index} className=" bg-white mb-5 p-2 bg-shadow">
-						<div className="d-flex justify-content-between align-items-center flex-wrap px-2">
-							<span className=" title">{cate.categoryName}</span>
+    history.push("/product/search");
+    saveFilter(dispatch, { ...productFilter, listCateId: listCategorySelect });
+    fetchFilter(dispatch, { ...productFilter, listCateId: listCategorySelect });
+  }
+  return (
+    <div className="product-by-cate">
+      {cates &&
+        cates.data.map((cate, index) => (
+          <div key={index} className=" bg-white mb-5 p-2 bg-shadow">
+            <div className="d-flex justify-content-between align-items-center flex-wrap px-2">
+              <span className=" title">{cate.categoryName}</span>
 
-							<div>
-								<YLButton variant="link" onClick={() => viewMoreCategory(cate.categoryID)}>
-									Xem thêm <i class="fa fa-angle-double-right"></i>
-								</YLButton>
-							</div>
-						</div>
-						<div className="flex-card-row">
-							<div className="product-card-row mx-xl-5">
-								{cate.productCollection.slice(0, 4).map((product, indexx) => (
-									<CardProduct product={product} key={indexx} />
-								))}
-							</div>
-						</div>
-					</div>
-				))}
-		</div>
-	);
+              <div>
+                <YLButton
+                  variant="link"
+                  onClick={() => viewMoreCategory(cate.categoryID)}
+                >
+                  Xem thêm &#160;<i class="fad fa-angle-double-right"></i>
+                </YLButton>
+              </div>
+            </div>
+            <div className="flex-card-row">
+              <div className="product-card-row mx-xl-5">
+                {cate.productCollection.slice(0, 4).map((product, indexx) => (
+                  <CardProduct product={product} key={indexx} />
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+    </div>
+  );
 }
 
 export default ProductByCate;

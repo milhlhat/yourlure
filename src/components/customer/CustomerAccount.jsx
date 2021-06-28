@@ -3,7 +3,8 @@ import YLButton from "components/custom-field/YLButton";
 import DEFINELINK from "routes/define-link";
 import { Redirect, useHistory } from "react-router-dom";
 function CustomerAccount(props) {
-  const { account } = props;
+  const account  = props;
+console.log(account);
   const history = useHistory();
   const handleLogout = () => {
     localStorage.removeItem("yl-accessToken");
