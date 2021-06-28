@@ -2,13 +2,13 @@ package fpt.custome.yourlure.entity.customizemodel;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fpt.custome.yourlure.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Data
@@ -25,13 +25,16 @@ public class Material {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "customizeId", nullable = false)
-    private CustomizeModel customizeModel;
+    @JoinColumn(name = "modelId", nullable = false)
+    private Model3d model3d;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "productId", nullable = false)
-    private Product product;
+
+
+
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến users ở trong Customize .
+    //1 User có nhiều Customize
+    private Collection<MaterialValue> materialValues;
 
     private String name;
     private Boolean canAddImg;

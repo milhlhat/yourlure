@@ -1,13 +1,36 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.customizemodel.Material;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CustomModelDto {
 
     private Long userId;
-    private List<Material> materials;
-    private MultipartFile imgThumbnail;
+    private String name;
+    private Long model3dId;
+    private List<MaterialValueDto> materialValueDtoList;
+    private Thumbnail thumbnail;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Thumbnail{
+        private String name;
+        private byte[] content;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MaterialValueDto {
+        private Long materialId;
+        private Long customizeTypeId;
+        private String value;
+    }
 }

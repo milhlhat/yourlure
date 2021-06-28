@@ -67,6 +67,12 @@ public class User {
     private Provider provider;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến users ở trong UserAddress .
+    //1 users có nhiều UserAddress
+    private Collection<CustomizeModel> customizeModels;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "assigner", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến user ở trong status.
     //1 user có nhiều status

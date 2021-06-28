@@ -27,8 +27,13 @@ public class MaterialValue {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "customType", nullable = false)
-    private Material customType;
+    @JoinColumn(name = "customizeId", nullable = false)
+    private CustomizeModel customizeModel;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "customTypeId", nullable = false)
+    private CustomType customType;
 
     private String value;
 
