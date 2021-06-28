@@ -8,6 +8,7 @@ import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.repositories.CategoryRepos;
 import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.service.CategoryService;
+import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ProductJpaRepos productJPARepos;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private ModelMapper mapper;
@@ -90,9 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
         try {
             if (idInput != null && categoryInput != null) {
                 Category categoryToUpdate = categoryRepos.findById(idInput).get();
-                categoryToUpdate.builder()
-                        .categoryName(categoryInput.getCategoryName())
-                        .build();
+                categoryToUpdate.setCategoryName(categoryInput.getCategoryName());
                 categoryRepos.save(categoryToUpdate);
             } else {
                 return false;
@@ -116,6 +118,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean removeCategory(Long idInput) {
         try {
+//            Optional<Category> categoryRemove = categoryRepos.findById(idInput);
+//            if (categoryRemove.isPresent()) {
+//                List<Product> productList = (List<Product>) categoryRemove.get().getProductCollection();
+//                for (Product product : productList) {
+//                    productService.remove(product.getProductId());
+//                }
+//            }
             categoryRepos.deleteById(idInput);
         } catch (
                 Exception e) {

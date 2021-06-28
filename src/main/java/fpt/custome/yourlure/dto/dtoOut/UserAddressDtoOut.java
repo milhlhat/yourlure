@@ -13,9 +13,11 @@ public class UserAddressDtoOut {
 
     private Long userAddressID;
     private String userWardName;
+    private Long userWardId;
     private String userDistrictName;
+    private Long userDistrictId;
     private String userProvinceName;
-    private String userCountryName;
+    private Long userProvinceId;
     private String description;
 
 }

@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.FishDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminFishDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.FishDtoOut;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface FishService {
     List<FishDtoOut> getAll();
 
     //admin front --------------------------------------
-    List<FishDtoOut> adminGetAll(Pageable pageable);
+    Optional<AdminFishDtoOut> adminGetAll(String keyword, Pageable pageable);
 
     Optional<FishDtoOut> getById(Long id);
 

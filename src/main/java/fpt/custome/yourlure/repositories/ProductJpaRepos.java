@@ -32,4 +32,5 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
 
+
 }

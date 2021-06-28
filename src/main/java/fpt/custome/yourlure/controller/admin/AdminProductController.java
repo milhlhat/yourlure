@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@RequestMapping("/api/admin/product")
+@RequestMapping("/admin/product")
 public interface AdminProductController {
 
     @PostMapping("/all")
@@ -25,9 +25,9 @@ public interface AdminProductController {
 
     @GetMapping("/{id}")
     ResponseEntity<Optional<AdminProductDetailDtoOut>> getProductById(@PathVariable("id") Long id);
-
-    @PostMapping("/find-by-name")
-    ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(@RequestBody Filter filter);
+//
+//    @PostMapping("/find-by-name")
+//    ResponseEntity<Optional<AdminProductDtoOut>> getProductByName(@RequestBody Filter filter);
 
     @PostMapping("/{id}")
     ResponseEntity<Boolean> editProduct(@PathVariable("id") Long id, @RequestBody @Validated ProductsDtoInp productsDtoInp);

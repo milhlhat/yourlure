@@ -1,9 +1,9 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
@@ -36,23 +36,23 @@ public interface UserService {
     //common service -------------------------------------------
     List<Country> findAllCountry();
 
+    List<Province> findAllProvince();
+
     Optional<Province> findProvinceById(Long id);
 
-    Optional<District> findDistrictById(Long id);
+    List<District> findDistrictById(Long id);
 
-    Optional<Ward> findWardById(Long id);
+    List<Ward> findWardById(Long id);
 
     //admin front -------------------------------------------
 
-    void delete(String phone);
+    Boolean block(Long id);
 
-    User search(String phone);
+    Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable);
 
-    List<AdminUserDtoOut> adminFindAll(Pageable pageable);
-
-    Optional<UserResponseDTO> getUser(Long id);
+    Optional<AdminUserDetailDtoOut> getUser(Long id);
 
     List<Role> getRoles(HttpServletRequest rq);
 
-
+    List<UserAddressDtoOut> adminGetAddressUser(Long id);
 }

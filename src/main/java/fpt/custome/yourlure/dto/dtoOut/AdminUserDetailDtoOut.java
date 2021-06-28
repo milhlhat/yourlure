@@ -5,20 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDtoOut {
+public class AdminUserDetailDtoOut {
 
-    private Long orderID;
-    private Date orderDate;
-    private String address;
+    private Long userId;
+    private String username;
     private String phone;
-    private String name;
-    private String statusName;
-    private Float total;
+    private Boolean gender;
+    private String userEmail;
+    private String note;
+    private Integer maxCustomizable;
 
 }

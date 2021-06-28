@@ -83,5 +83,5 @@ public class DiscountVoucher {
     @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
     //1 discountVoucher có nhiều DiscountVoucherCustomer
-    private Collection<DiscountVoucherCustomer> discountVoucherCustomers;
+    private Collection<DiscountVoucherCustomer>     discountVoucherCustomers;
 }

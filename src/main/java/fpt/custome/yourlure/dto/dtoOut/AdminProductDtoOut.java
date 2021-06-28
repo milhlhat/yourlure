@@ -27,6 +27,8 @@ public class AdminProductDtoOut {
     public static class ProductOutput {
         private Long productId;
         private String productName;
+        private Float defaultPrice;
+        private Integer numberOfVariantProduct;
         private Boolean visibleInStorefront;
         private Category category;
         private Collection<Image> imageCollection;

@@ -5,31 +5,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminUserDtoOut {
+public class AdminOrderDtoOut {
 
-    private Integer totalUser;
+    private Integer totalOrder;
     private Integer totalPage;
-    private List<UserDtoOut> userDtoOutList;
+    private List<OrderDtoOut> orderDtoOutList;
 
     @Data
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UserDtoOut {
-        private Long userId;
-        private String username;
+    public static class OrderDtoOut {
+        private Long orderID;
+        private Date orderDate;
         private String phone;
-        private Boolean gender;
-        private String userEmail;
-        private Boolean enabled;
-        private Integer numberOfOrder;
+        private String name;
+        private String statusName;
+        private Float total;
     }
-
 
 }

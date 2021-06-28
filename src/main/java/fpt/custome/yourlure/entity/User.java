@@ -60,7 +60,7 @@ public class User {
     @Column(name = "note")
     private String note;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     List<Role> roles;
 
     @Enumerated(EnumType.STRING)
@@ -84,7 +84,7 @@ public class User {
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;
 
-    public void update(User userUpdate){
+    public void update(User userUpdate) {
         setUsername(userUpdate.getUsername());
         setUsername(userUpdate.getUsername());
         setPhone(userUpdate.getPhone());
