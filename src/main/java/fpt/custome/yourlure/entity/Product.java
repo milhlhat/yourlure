@@ -2,7 +2,6 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
-import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -114,11 +113,6 @@ public class Product {
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "modelId")
-    private Model3d model3d;
 
     @ManyToMany(mappedBy = "products")
     private Collection<Fish> fishList = new ArrayList<>();

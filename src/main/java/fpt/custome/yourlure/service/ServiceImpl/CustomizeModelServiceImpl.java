@@ -44,6 +44,11 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
 
     @Override
+    public Model3d createModel3d() {
+        return null;
+    }
+
+    @Override
     public CustomizeModel createCustomizeModel(HttpServletRequest rq, CustomModelDto customModelDto) throws IOException {
 
         // store thumbnail img
