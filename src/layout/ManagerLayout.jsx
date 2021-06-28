@@ -7,7 +7,7 @@ import ManagerHeader from 'manager-page/component/header/ManagerHeader';
 function ManagerLayout(props) {
   return (
     <div className="manager-main">
-      <div className="manager-slidebar">
+      <div className="manager-slidebar bg-white">
         <Sidebar></Sidebar>
       </div>
       <div className="manager-main-container">

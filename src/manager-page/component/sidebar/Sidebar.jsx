@@ -124,7 +124,7 @@ function Sidebar(props) {
                 </Link>
               </li>
               <li>
-                <button className="d-none close-button">
+                <button className="d-none close-button btn btn-outline-dark">
                   <i class="fas fa-times"></i>
                 </button>
               </li>
@@ -134,7 +134,7 @@ function Sidebar(props) {
       </div>
 
       <span onClick={openNav}>
-        <button>
+        <button className="btn btn-outline-dark">
           <i className="fal fa-bars"></i>
         </button>
       </span>

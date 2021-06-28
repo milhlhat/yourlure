@@ -236,7 +236,7 @@ function ManagerProductEdit(props) {
                         Giá
                       </label>
                       <input
-                        defaultValue={product?.list?.productName}
+                        defaultValue={product?.list?.defaultPrice}
                         type="number"
                         className="form-control"
                         id="price"
