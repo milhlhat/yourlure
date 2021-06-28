@@ -1,0 +1,26 @@
+@import "assets/scss/base/_variable.scss";
+.manager-product-detail {
+  & table {
+    width: 100%;
+    & tr {
+      border-bottom: 1px solid;
+    }
+    & th,
+    & caption {
+      font-weight: bold;
+      color: $primary;
+    }
+    & .detail-description {
+      border: 1px solid;
+    }
+  }
+  & .product-detail-image {
+    & img {
+      margin: 5px;
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      border: 1px solid;
+    }
+  }
+}

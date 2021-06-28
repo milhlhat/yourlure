@@ -34,24 +34,6 @@ function Sort(props) {
       sortBy: "productName",
       value: "SORT_NME_PRODUCT_DESC",
     },
-    {
-      display: "Sản phẩm cũ nhất",
-      isAsc: true,
-      sortBy: "date_create",
-      value: "SORT_OLDEST_DATE",
-    },
-    {
-      display: "Giá giảm dần",
-      isAsc: false,
-      sortBy: "default_price",
-      value: "SORT_LARGEST_PRICE",
-    },
-    {
-      display: "Giá tăng dần",
-      isAsc: true,
-      sortBy: "default_price",
-      value: "SORT_SMALLEST_PRICE",
-    },
   ];
   const dispatch = useDispatch();
   function getSortSelectedByList(list, value) {

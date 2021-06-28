@@ -16,7 +16,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
-import ManagerSort from 'manager-page/component/sort/ManagerSort';
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 
 ManagerProduct.propTypes = {};
 
@@ -31,7 +31,7 @@ function ManagerProduct(props) {
   const [activePage, setActivePage] = useState(1);
 
   const history = useHistory();
-  const location = useLocation()
+  const location = useLocation();
 
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -46,6 +46,7 @@ function ManagerProduct(props) {
     path: location,
     label: "Sản phẩm",
   };
+  const handleClickDetail = () => {};
   useEffect(() => {
     fetchFilter(dispatch, productFilter);
   }, [productFilter]);
@@ -63,14 +64,14 @@ function ManagerProduct(props) {
               variant="warning"
               onClick={() => history.push("/manager/product/addnew")}
               value="Thêm"
-              to={{pathname:"/manager/product/addnew",canBack:setBack}}
+              to={{ pathname: "/manager/product/addnew", canBack: setBack }}
             />
           </div>
         </div>
         <div className="manager-product-show mt-3 bg-white bg-shadow">
           <span>tất cả sản phẩm</span>
           <hr />
-          <ManagerSort/>
+          <ManagerSort />
           {products.productOutputList &&
             products.productOutputList.length <= 0 && <p>Không có sản phẩm </p>}
           <table>
@@ -86,16 +87,42 @@ function ManagerProduct(props) {
               {products.productOutputList &&
                 products.productOutputList.map((item, i) => (
                   <tr key={i}>
-                    <td>{(activePage-1)*filterConfig.LIMIT_DATA_PER_PAGE+i+1}</td>
-                    <td>{item.productName}</td>
-                    <td>{item.category.categoryName}</td>
                     <td>
-                    <input type="checkbox" checked={item.visibleInStorefront} disabled/>
+                      {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
+                        i +
+                        1}
                     </td>
-                    <td>{item.defaultPrice}</td>
+                    <td
+                      className="pointer"
+                      onClick={() =>
+                        history.push(
+                          "/manager/product/detail/" + item.productId
+                        )
+                      }
+                    >
+                      {item.productName}
+                    </td>
+                    <td>{item.category.categoryName}</td>
+                    <td className="text-center">
+                      <input
+                        type="checkbox"
+                        checked={item.visibleInStorefront}
+                        disabled
+                      />
+                    </td>
                     <td>
-                      <img src={Editor} alt="" />
-                      <img src={Trash} alt="" />
+                      {!item
+                        ? "N/A"
+                        : Number(item.defaultPrice).toLocaleString(undefined, {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                          })}
+                    </td>
+                    <td>
+                      <img src={Editor} />
+                    </td>
+                    <td>
+                      <img src={Trash} />
                     </td>
                   </tr>
                 ))}

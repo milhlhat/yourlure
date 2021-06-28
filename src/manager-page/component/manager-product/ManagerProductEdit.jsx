@@ -12,14 +12,36 @@ import * as yup from "yup";
 import "./scss/add-new-product.scss";
 import ManagerCategoryAPI from "api/manager-category-api";
 import ManagerFishAPI from "api/manager-fish-api";
+import ManagerProductAPI from "api/manager-product-api";
 
-ManagerProductAddNew.propTypes = {};
+ManagerProductEdit.propTypes = {};
 
-function ManagerProductAddNew(props) {
+function ManagerProductEdit(props) {
   const canBack = props.location.canBack;
   const history = useHistory();
   const dispatch = useDispatch();
   const productId = props.match.params.id;
+  const [product, setProduct] = useState({
+    list: null,
+    loading: true,
+    success: false,
+  });
+  const fetchProduct = async () => {
+    try {
+      const response = await ManagerProductAPI.getProductByID(productId);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setProduct({
+          list: response,
+          loading: false,
+          success: true,
+        });
+      }
+    } catch (error) {
+      console.log("fail to fetch customer list");
+    }
+  };
 
   const [selectedImages, setSelectedImage] = useState([]);
   const [selectedImagesName, setSelectedImageName] = useState([]);
@@ -67,15 +89,8 @@ function ManagerProductAddNew(props) {
     }
   };
   const imageHandleChange = (e) => {
-    // console.log(e.target.files);
     let file = Array.from(e.target.files);
-    let nameFile = e.target.value;
     if (file) {
-      // let bb = isExist(selectedImagesName, file);
-      // console.log(bb);
-      console.log(file);
-      // console.log(selectedImagesName);
-
       for (let i = 0; i < file.length; i++) {
         setSelectedImageName((preName) => preName.concat(file[i]?.name));
       }
@@ -87,7 +102,6 @@ function ManagerProductAddNew(props) {
       }
 
       const fileArray = file.map((file) => URL.createObjectURL(file));
-      // console.log(fileArray);
       setSelectedImage((preImages) => preImages.concat(fileArray));
       file.map((file) => URL.revokeObjectURL(file));
     }
@@ -110,7 +124,6 @@ function ManagerProductAddNew(props) {
   });
   const onSubmit = (data) => {
     console.log(data);
-    console.log("done");
   };
 
   const Select = React.forwardRef(({ onChange, onBlur, name, label }, ref) => (
@@ -135,7 +148,7 @@ function ManagerProductAddNew(props) {
     ({ onChange, onBlur, name, label }, ref) => (
       <div class="form-check">
         {fishList?.list?.fishDtoOuts?.map((fish, i) => (
-          <div key={'fish'+i}>
+          <div key={"fish" + i}>
             <input
               class="form-check-input pointer"
               type="checkbox"
@@ -165,7 +178,11 @@ function ManagerProductAddNew(props) {
   useEffect(() => {
     fetchCategory();
     fetchFish();
+    fetchProduct();
   }, []);
+  useEffect(() => {
+    fetchProduct();
+  }, [productId]);
   return (
     <div>
       <h3>Tạo sản phẩm mới</h3>
@@ -184,7 +201,9 @@ function ManagerProductAddNew(props) {
                       <label for="productname" className="form-label">
                         Tên sản phẩm <span className="error-message">(*)</span>
                       </label>
+                      {console.log(product?.list)}
                       <input
+                        defaultValue={product?.list?.productName}
                         type="text"
                         className={`form-control ${
                           errors.productname ? "outline-red" : ""
@@ -217,7 +236,8 @@ function ManagerProductAddNew(props) {
                         Giá
                       </label>
                       <input
-                        type="text"
+                        defaultValue={product?.list?.productName}
+                        type="number"
                         className="form-control"
                         id="price"
                         placeholder="Giá"
@@ -428,4 +448,4 @@ function ManagerProductAddNew(props) {
   );
 }
 
-export default ManagerProductAddNew;
+export default ManagerProductEdit;

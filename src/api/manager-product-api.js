@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 const ManagerProductAPI = {
 	getProductByID: (id) => {
-		const url = `api/admin/product/${id}`;
+		const url = `/admin/product/${id}`;
 		return AxiosClient.get(url);
 	},
 	getProductByFilter: (param) => {

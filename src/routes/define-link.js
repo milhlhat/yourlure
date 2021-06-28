@@ -35,5 +35,7 @@ const DEFINELINK = {
   //manager product router
   managementProduct: "/product",
   managerProductAddNew: "/addnew",
+  managerProductDetail: "/detail/:id",
+  managerProductEdit: "/edit/:id",
 };
 export default DEFINELINK;
