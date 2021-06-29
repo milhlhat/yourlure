@@ -55,3 +55,17 @@ body {
   display: flex;
   align-items: stretch;
 }
+.bg-box {
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.table-spacing {
+  border-spacing: 5px 20px;
+  border-collapse: unset;
+}
+
+.text-bold {
+  font-weight: 500;
+}

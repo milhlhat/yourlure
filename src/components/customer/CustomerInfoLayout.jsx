@@ -43,7 +43,7 @@ function ManagementAccount({ children }) {
       <div className="row w-100">
         <div className="tab-switch bg-white col-3">
           <div className="account-name pt-2 ps-2">
-            <i class="fad fa-user"></i>
+            <i className="fad fa-user"></i>
             <span className="ms-2">
               {account.list != null ? account.list.userName : ""}
             </span>
@@ -57,7 +57,7 @@ function ManagementAccount({ children }) {
                 location.indexOf(ACCOUNT_PATH) > -1 ? "active" : ""
               }`}
             >
-              <i class="fad fa-user  "></i>
+              <i className="fad fa-user  "></i>
               Tài khoản
             </Link>
 
@@ -65,7 +65,7 @@ function ManagementAccount({ children }) {
               to={ORDER_PATH}
               className={`${location.indexOf(ORDER_PATH) > -1 ? "active" : ""}`}
             >
-              <i class="fad fa-receipt   "></i>
+              <i className="fad fa-receipt   "></i>
               Đơn hàng
             </Link>
 
@@ -75,7 +75,7 @@ function ManagementAccount({ children }) {
                 location.indexOf(ADDRESS_PATH) > -1 ? "active" : ""
               }`}
             >
-              <i class="fad fa-address-card  "></i>
+              <i className="fad fa-address-card  "></i>
               Địa chỉ
             </Link>
             <Link
@@ -84,12 +84,12 @@ function ManagementAccount({ children }) {
                 location.indexOf(CHANGEPASSWORD_PATH) > -1 ? "active" : ""
               }`}
             >
-              <i class="fad fa-shield"></i>
+              <i className="fad fa-shield"></i>
               Đổi mật khẩu
             </Link>
           </div>
         </div>
-        <div className="tab-show  col-9">{children({ account })}</div>
+        <div className="tab-show  col-9">{children({ ...account })}</div>
       </div>
     </div>
   );

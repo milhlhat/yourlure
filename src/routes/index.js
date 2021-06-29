@@ -8,7 +8,7 @@ import DEFINELINK from "routes/define-link";
 import { AbilityContext } from "ability/can";
 import defineAbilityFor from "ability/ability";
 import UserApi from "api/user-api";
- 
+
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
@@ -26,7 +26,9 @@ function AppRouter() {
   return (
     <AbilityContext.Provider value={ability}>
       <Suspense fallback={<Loading />}>
-        <BrowserRouter  >
+        <BrowserRouter
+      
+        >
           <Switch>
             <Route path={DEFINELINK.manager} component={ManagementRouter} />
             <Route path={DEFINELINK.store} component={StoreRoute} />

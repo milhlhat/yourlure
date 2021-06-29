@@ -1,24 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
-
+import { Prompt } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
+
 function AddNewAddress() {
- 
   const methods = useForm();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isSubmitted },
   } = methods;
   const onSubmit = (data) => {
     console.log(data);
   };
-
+  console.log(isDirty, isSubmitted);
+  useEffect(() => {
+    return () => {
+      console.log('diiii',isDirty, isSubmitted);
+      if (isDirty && !isSubmitted) return (window.onbeforeunload = () => true);
+    };
+  });
   return (
     <div className="bg-box">
+      <Prompt
+        when={isDirty && !isSubmitted}
+        message="Changes you made may not be saved."
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="add-address-table">
           <tbody>

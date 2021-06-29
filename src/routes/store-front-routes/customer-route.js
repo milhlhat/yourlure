@@ -37,34 +37,33 @@ function CutomerInfoRoute() {
           <Route
             exact
             path={path + DEFINELINK.account}
-            render={() => <CustomerAccount account={account} />}
+            render={() => <CustomerAccount {...account} />}
           />
           <Route
-            
             path={path + DEFINELINK.accountEdit}
-            render={() => <EditCustomerAccount account={account} />}
+            render={() => <EditCustomerAccount {...account} />}
           />
           <Route
             path={path + DEFINELINK.order}
-            render={() => <CutomerOrder account={account} />}
+            render={() => <CutomerOrder {...account} />}
           />
           <Route
             exact
             path={path + DEFINELINK.address}
-            render={() => <CustomerAddress account={account} />}
+            render={() => <CustomerAddress {...account} />}
           />
           <Route
             exact
             path={path + DEFINELINK.addressEdit}
-            render={() => <ChangeAddress account={account} />}
+            render={() => <ChangeAddress {...account} />}
           />
           <Route
             path={path + DEFINELINK.addressAdd}
-            component={AddNewAddress}
+            render={() => <AddNewAddress {...account} />}
           />
           <Route
             path={path + DEFINELINK.changePassword}
-            component={ChangePassword}
+            render={() => <ChangePassword {...account} />}
           />
           <Route component={NotFound} />
         </Switch>

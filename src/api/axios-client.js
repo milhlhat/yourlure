@@ -16,7 +16,6 @@ const AxiosClient = axios.create({
 // Add a request interceptor
 AxiosClient.interceptors.request.use(async (config) => {
   // Do something before request is sent
-  console.log(config);
   if (!config.url.startsWith("api") || !config.url.startsWith("/api")) {
     config.headers.Authorization = await getToken();
   }

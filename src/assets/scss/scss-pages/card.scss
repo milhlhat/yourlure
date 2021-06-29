@@ -1,8 +1,8 @@
 .cart-product {
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
- 
-  gap: 40px;
+  justify-content: center;
+  column-gap: 40px;
   & .cart-right {
     & .cart-detail {
       display: flex;

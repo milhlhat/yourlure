@@ -1,7 +1,6 @@
 import UserApi from "api/user-api";
 import React, { useEffect, useState } from "react";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
- 
 
 function YLSelectAddress(props) {
   let {
@@ -23,9 +22,9 @@ function YLSelectAddress(props) {
   const [wardDefault, setWdDefault] = useState("Chọn Phường/Xã");
 
   //react-hook-form
-  let preProvId = getValues("province");
-  let preDisId = getValues("district");
-  let preWardId = getValues("ward");
+  let preProvId = null;
+  let preDisId = null;
+  let preWardId = null;
 
   useEffect(() => {
     const fetchAllProvive = async () => {
@@ -37,6 +36,9 @@ function YLSelectAddress(props) {
       }
     };
     fetchAllProvive();
+    preProvId = getValues("province");
+    preDisId = getValues("district");
+    preWardId = getValues("ward");
   }, []);
 
   useEffect(() => {
@@ -53,21 +55,25 @@ function YLSelectAddress(props) {
   }, [preProvId, preDisId, preWardId]);
 
   const fetchDistrictByProvinceId = async (id) => {
-    try {
-      const response = await UserApi.getDistrictByProvinceId(id);
+    if (Number.isInteger(parseInt(id))) {
+      try {
+        const response = await UserApi.getDistrictByProvinceId(id);
 
-      setDistrictByProv(response);
-    } catch (e) {
-      console.error(e.response);
+        setDistrictByProv(response);
+      } catch (e) {
+        console.error(e.response);
+      }
     }
   };
   const fetchWardByDistrictId = async (id) => {
-    try {
-      const response = await UserApi.getWardByDistrictId(id);
-
-      setWardByDistrict(response);
-    } catch (e) {
-      console.error(e.response);
+    if (Number.isInteger(parseInt(id))) {
+      try {
+        const response = await UserApi.getWardByDistrictId(id);
+        setWardByDistrict(response);
+        setDisDefault(id);
+      } catch (e) {
+        console.error(e.response);
+      }
     }
   };
 
@@ -90,15 +96,17 @@ function YLSelectAddress(props) {
   }
   function handleChangeDistrict(e) {
     const disId = e.target.value;
+
     setWardByDistrict([]);
-    setDisDefault(disId);
+
     setValue("ward", "Chọn Phường/Xã");
+
     if (Number.isInteger(parseInt(disId))) {
       fetchWardByDistrictId(disId);
-
       setDistrictSelected(true);
     } else {
       setDistrictSelected(false);
+      setDisDefault(disId);
     }
   }
 

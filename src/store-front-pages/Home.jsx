@@ -7,6 +7,7 @@ import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
 import banner from "assets/images/urban-fishing-in-boston-social.jpg";
 import { Can } from "ability/can";
+import DEFINELINK from "routes/define-link";
 
 function Home() {
   const [productListBestSeller, setProductListBestSeller] = useState({
@@ -74,15 +75,16 @@ function Home() {
             </h3>
             <h3>Lorem ipsum dolo</h3>
             <div className="button-discover">
-              <Can I="read" a="all" >
-                {/* {(allowed) => ( */}
-                  <YLButton
-                    value="Discover me"
-                    // disabled={!allowed}
-                    variant="primary"
-                  ></YLButton>
-                {/* )} */}
-              </Can>
+              {/* <Can I="read" a="all" > */}
+              {/* {(allowed) => ( */}
+              <YLButton
+                value="Discover me"
+                // disabled={!allowed}
+                to={DEFINELINK.product}
+                variant="primary"
+              ></YLButton>
+              {/* )} */}
+              {/* </Can> */}
             </div>
           </div>
         </div>

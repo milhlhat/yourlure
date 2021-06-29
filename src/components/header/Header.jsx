@@ -102,11 +102,11 @@ function Header(props) {
     <div className="bg-white bg-shadow">
       <div className="container">
         <Navbar light expand="md" className="p-2 nav-bar-light ">
-          <NavbarBrand className="me-auto">
+          <div className="me-auto">
             <Link to="/">
               <img src={logo} alt="your lure logo" className="logo" />
             </Link>
-          </NavbarBrand>
+          </div>
           <div ref={wrapperRef}>
             <NavbarToggler onClick={toggle} />
           </div>

@@ -4,14 +4,14 @@ const userUtils = {
   getToken: async () => {
     try {
       let loginAt = localStorage.getItem(userConfig.LOCAL_STORE_LOGIN_AT);
-
-      const subTime = subtractDates(loginAt);
-      if (
-        !loginAt ||
-        (subTime > userConfig.REQUEST_REFRESH_TIME &&
-          subTime < userConfig.STAY_LOGIN_TIME)
-      ) {
-        await refreshToken();
+      if (loginAt) {
+        const subTime = subtractDates(loginAt);
+        if (
+          subTime > userConfig.REQUEST_REFRESH_TIME &&
+          subTime < userConfig.STAY_LOGIN_TIME
+        ) {
+          await refreshToken();
+        }
       }
       let accessToken = localStorage.getItem(
         userConfig.LOCAL_STORE_ACCESS_TOKEN
@@ -49,7 +49,7 @@ const userUtils = {
   },
   subtractDates: (loginAt) => {
     return (
-      Math.abs(new Date() - new Date(loginAt.replace(/-/g, "/"))) / 1000 / 60
+      Math.abs(new Date() - new Date(loginAt?.replace(/-/g, "/"))) / 1000 / 60
     );
   },
   saveLocalStorage: (name, value) => {
