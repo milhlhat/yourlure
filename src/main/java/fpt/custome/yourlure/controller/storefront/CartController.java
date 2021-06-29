@@ -16,7 +16,7 @@ public interface CartController {
     /**
      * lấy giỏ hàng của user
      *
-     * @param id user
+     * @param req user
      * @return
      */
     @GetMapping("/{id}")
@@ -25,8 +25,9 @@ public interface CartController {
     /**
      * Thêm sản phẩm vào giỏ hàng
      *
-     * @param cartId        user
+     * @param req
      * @param cartItemInput
+     * @return
      */
     @PostMapping("/add-product")
     ResponseEntity<Boolean> addProduct(@RequestParam("req") HttpServletRequest req,
@@ -39,7 +40,7 @@ public interface CartController {
      * @param productId
      */
     @DeleteMapping("remove/{cartId}")
-    ResponseEntity<Boolean> removeProduct(@RequestParam("userId") Long userId,
+    ResponseEntity<Boolean> removeProduct(@RequestParam("req") HttpServletRequest req,
                                           @PathVariable("cartId") Long cartId,
                                           Long productId);
 
@@ -51,7 +52,7 @@ public interface CartController {
      * @param quantity
      */
     @PostMapping("save-quantity/{cartId}")
-    ResponseEntity<Boolean> setProductQuantity(@RequestParam("userId") Long userId,
+    ResponseEntity<Boolean> setProductQuantity(@RequestParam("req") HttpServletRequest req,
                                                @PathVariable("cartId") Long cartId,
                                                @RequestParam Long productId,
                                                @RequestParam int quantity);

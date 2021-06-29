@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.UserController;
+import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
@@ -21,10 +22,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +39,12 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<Boolean> updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
         Boolean check = userService.updateUser(req, userDtoInp);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Boolean> addAddress(HttpServletRequest req, UserAddressInput userAddressInput) {
+        Boolean check = userService.saveAddress(req, userAddressInput);
         return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
@@ -87,7 +91,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public List<Role> getRoles(HttpServletRequest req) {
+    public Set<Role> getRoles(HttpServletRequest req) {
         return userService.getRoles(req);
     }
 

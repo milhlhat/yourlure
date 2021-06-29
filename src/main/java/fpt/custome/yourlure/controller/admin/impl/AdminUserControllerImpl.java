@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.admin.impl;
 
 import fpt.custome.yourlure.controller.admin.AdminUserController;
 import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.service.UserService;
@@ -24,7 +25,7 @@ public class AdminUserControllerImpl implements AdminUserController {
     @Override
     public ResponseEntity<Optional<AdminUserDtoOut>> getAll(AdminFilterDtoInput filter) {
         Optional<AdminUserDtoOut> result = userService.adminFindAll(filter.getKeyword(),
-                filter.getTypeName(), PageRequest.of(filter.getPage(),
+                filter.getTypeSearch(), PageRequest.of(filter.getPage(),
                         filter.getLimit(),
                         filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -39,6 +40,15 @@ public class AdminUserControllerImpl implements AdminUserController {
     @Override
     public ResponseEntity<Boolean> block(Long id) {
         Boolean result = userService.block(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(AdminFilterDtoInput filter) {
+        Optional<AdminStaffDtoOut> result = userService.adminStaffAll(filter.getKeyword(),
+                filter.getTypeSearch(), PageRequest.of(filter.getPage(),
+                        filter.getLimit(),
+                        filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

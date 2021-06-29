@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 public class UserAddressInput {
 
     private Long userAddressID;
+    private String userName;
+    private String phone;
+    private String userEmail;
     private String description;
     private Long wardId;
 

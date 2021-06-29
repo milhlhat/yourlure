@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.controller.storefront;
 
+import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 
 @RequestMapping(path = "/user")
@@ -26,6 +28,10 @@ public interface UserController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Boolean> updateUser(HttpServletRequest req, @RequestBody UserDtoInp userDtoInp);
+
+    @PostMapping("/add-address")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    ResponseEntity<Boolean> addAddress(HttpServletRequest req, @RequestBody UserAddressInput userAddressInput);
 
     @GetMapping("/get-all-country")
     ResponseEntity<List<Country>> getAllCountry();
@@ -51,17 +57,17 @@ public interface UserController {
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(@PathVariable Long id);
 
     @GetMapping(value = "/roles")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF') or hasRole('ROLE_CUSTOMER')")
     @ApiOperation(value = "${UserController.roles}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    List<Role> getRoles(HttpServletRequest req);
+    Set<Role> getRoles(HttpServletRequest req);
 
 
     @GetMapping(value = "/me")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF') or hasRole('ROLE_CUSTOMER')")
     @ApiOperation(value = "${UserController.me}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //

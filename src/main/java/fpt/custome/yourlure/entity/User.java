@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -49,6 +49,27 @@ public class User {
     @Column(name = "userEmail", unique = true, nullable = false)
     private String userEmail;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", gender=" + gender +
+                ", userEmail='" + userEmail + '\'' +
+                ", enabled=" + enabled +
+                ", maxCustomizable=" + maxCustomizable +
+                ", note='" + note + '\'' +
+                ", roles=" + roles +
+                ", provider=" + provider +
+                ", customizeModels=" + customizeModels +
+                ", orderActivities=" + orderActivities +
+                ", customizeCollection=" + customizeCollection +
+                ", userAddressCollection=" + userAddressCollection +
+                '}';
+    }
+
     @Column(name = "enabled")
     private Boolean enabled;
 
@@ -60,8 +81,9 @@ public class User {
     @Column(name = "note")
     private String note;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    List<Role> roles;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    Set<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -85,13 +107,12 @@ public class User {
     private Collection<CustomizeModel> customizeCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;
 
     public void update(User userUpdate) {
-        setUsername(userUpdate.getUsername());
         setUsername(userUpdate.getUsername());
         setPhone(userUpdate.getPhone());
         setEnabled(userUpdate.getEnabled());
@@ -100,7 +121,6 @@ public class User {
         setMaxCustomizable(userUpdate.getMaxCustomizable());
         setGender(userUpdate.getGender());
         setRoles(userUpdate.getRoles());
-        setUserAddressCollection(userUpdate.getUserAddressCollection());
         setUserAddressCollection(userUpdate.getUserAddressCollection());
         setPassword(userUpdate.getPassword());
     }

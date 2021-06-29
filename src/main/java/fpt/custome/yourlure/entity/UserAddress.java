@@ -2,7 +2,6 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
-import fpt.custome.yourlure.entity.address.Ward;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +22,10 @@ public class UserAddress {
     @Column(name = "userAddressId")
     private Long userAddressId;
 
+    private String userName;
+    private String phone;
+    private String userEmail;
+
     @Nullable
     @Column(name = "description")
     private String description;
@@ -32,9 +35,10 @@ public class UserAddress {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "userWardId", nullable = false)
-    private Ward ward;
+    //    @ManyToOne
+//    @JoinColumn(name = "userWardId", nullable = false)
+//    private Ward ward;
+    private Long userWardId;
 
 }
 

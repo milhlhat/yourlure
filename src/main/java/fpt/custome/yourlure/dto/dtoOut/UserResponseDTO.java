@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class UserResponseDTO {
@@ -29,8 +29,9 @@ public class UserResponseDTO {
     @ApiModelProperty(position = 7)
     private Provider provider;
 
-    @ApiModelProperty(position = 7)
-    List<Role> roles;
+
+    @ApiModelProperty(position = 8)
+    Set<Role> roles;
 
 
 }
