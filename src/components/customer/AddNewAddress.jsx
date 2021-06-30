@@ -2,24 +2,38 @@ import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
-import { Prompt } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
+import UserApi from "api/user-api";
 
 function AddNewAddress() {
   const methods = useForm();
+  const history = useHistory();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isDirty, isSubmitted },
   } = methods;
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      const response = await UserApi.addAddress(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        alert("Thêm địa chỉ thành công");
+        history.push("/customer/address");
+      }
+    } catch (error) {
+      alert("Thêm địa chỉ thất bại");
+      console.log("fail to fetch add address");
+    }
   };
-  console.log(isDirty, isSubmitted);
   useEffect(() => {
     return () => {
-      console.log('diiii',isDirty, isSubmitted);
+      // console.log("dirty and submitted", isDirty, isSubmitted);
       if (isDirty && !isSubmitted) return (window.onbeforeunload = () => true);
     };
   });
@@ -37,7 +51,7 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
-                  {...register("name", {
+                  {...register("userName", {
                     required: "Trường bắt buộc",
                   })}
                 ></input>
@@ -52,14 +66,26 @@ function AddNewAddress() {
                 <input
                   className="form-control"
                   {...register("phone", {
-                    required: true,
-                    pattern: /^([+|\d]){1}[0-9]{8,11}$/g,
+                    required: "Vui lòng nhập số điện thoại",
+                    pattern: {
+                      value: /((\+84|84|0)[35789][0-9]{8})\b/,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
+                    minLength: {
+                      value: 10,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
+                    maxLength: {
+                      value: 12,
+                      message: "Vui lòng nhập đúng số điện thoại",
+                    },
                   })}
-                  type="number"
+                  type="text"
                 ></input>
                 {errors.phone && (
                   <span className="text-danger">
-                    (*)Số điện thoại 9-11 chữ số
+                    {console.log(errors)}
+                    {errors.phone.message}
                   </span>
                 )}
               </td>

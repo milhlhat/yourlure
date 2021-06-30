@@ -26,6 +26,26 @@ function YLSelectAddress(props) {
   let preDisId = null;
   let preWardId = null;
 
+  //edit initial value
+  
+  let address = props.address;
+  const initialData = () => {
+    setProvDefault(address?.userProvinceId);
+    setDisDefault(address?.userDistrictId);
+    setWdDefault(address?.userWardId);
+    fetchDistrictByProvinceId(address?.userProvinceId);
+    setProvSelected(true);
+    setDistrictSelected(false);
+    fetchWardByDistrictId(address?.userDistrictId);
+    setDistrictSelected(true);
+    setValue('province', address?.userProvinceId); 
+    setValue('district', address?.userDistrictId); 
+    setValue('userWardId', address?.userWardId); 
+  };
+  useEffect(() => {
+    if(address) initialData();
+  }, []);
+
   useEffect(() => {
     const fetchAllProvive = async () => {
       try {
@@ -38,7 +58,7 @@ function YLSelectAddress(props) {
     fetchAllProvive();
     preProvId = getValues("province");
     preDisId = getValues("district");
-    preWardId = getValues("ward");
+    preWardId = getValues("userWardId");
   }, []);
 
   useEffect(() => {
@@ -83,7 +103,7 @@ function YLSelectAddress(props) {
     setWardByDistrict([]);
 
     setValue("district", "Chọn Quận/Huyện");
-    setValue("ward", "Chọn Phường/Xã");
+    setValue("userWardId", "Chọn Phường/Xã");
     setProvDefault(provId);
     if (Number.isInteger(parseInt(provId))) {
       fetchDistrictByProvinceId(provId);
@@ -99,7 +119,7 @@ function YLSelectAddress(props) {
 
     setWardByDistrict([]);
 
-    setValue("ward", "Chọn Phường/Xã");
+    setValue("userWardId", "Chọn Phường/Xã");
 
     if (Number.isInteger(parseInt(disId))) {
       fetchWardByDistrictId(disId);
@@ -132,10 +152,9 @@ function YLSelectAddress(props) {
           >
             <option>Chọn Tỉnh/TP</option>
             {allprovince?.map((item, i) => (
-              <option
-                key={`province-${i}`}
-                value={item.userProvinceID}
-              >{`${item.type} ${item.userProvinceName}`}</option>
+              <option key={`province-${i}`} value={item.userProvinceID}>
+                {item.userProvinceName}
+              </option>
             ))}
           </select>
           {errors.province && (
@@ -162,10 +181,9 @@ function YLSelectAddress(props) {
           >
             <option>Chọn Quận/Huyện</option>
             {districtByProv?.map((item, i) => (
-              <option
-                key={`district-${i}`}
-                value={item.userDistrictID}
-              >{`${item.type} ${item.userDistrictName}`}</option>
+              <option key={`district-${i}`} value={item.userDistrictID}>
+                {item.userDistrictName}
+              </option>
             ))}
           </select>
           {errors.district && (
@@ -179,7 +197,7 @@ function YLSelectAddress(props) {
           <select
             className="form-select"
             aria-label="ward select "
-            {...register("ward", {
+            {...register("userWardId", {
               validate: (value) => {
                 const isnum = Number(value);
                 return isnum === Number(value);
@@ -191,13 +209,12 @@ function YLSelectAddress(props) {
           >
             <option>Chọn Phường/Xã</option>
             {wardByDistrict?.map((item, i) => (
-              <option
-                key={`ward-${i}`}
-                value={item.userWardID}
-              >{`${item.type} ${item.userWardName}`}</option>
+              <option key={`ward-${i}`} value={item.userWardID}>
+                {item.userWardName}
+              </option>
             ))}
           </select>
-          {errors.ward && (
+          {errors.userWardId && (
             <span className="text-danger">(*) Chọn Chọn Phường/Xã</span>
           )}
         </td>

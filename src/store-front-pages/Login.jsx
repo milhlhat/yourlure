@@ -73,8 +73,16 @@ function Login(props) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    phone: Yup.string().required("This field is required."),
-    password: Yup.string().required("This field is required."),
+    phone: Yup.string()
+      .required("Vui lòng nhập số điện thoại.")
+      .matches(
+        /((\+84|84|0)[35789][0-9]{8})\b/,
+        "Vui lòng nhập đúng số điện thoại"
+      ),
+    password: Yup.string()
+      .required("Vui lòng nhập mật khẩu")
+      .min(6, "Mật khẩu phải có it nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
   });
 
   const handleClose = (event, reason) => {

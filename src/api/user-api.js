@@ -32,6 +32,26 @@ const UserApi = {
     const url = `/user/find-by-ward-id?${paramString}`;
     return AxiosClient.get(url);
   },
+  update:(user)=>{
+    const url = "/user/update";
+    return AxiosClient.post(url, user);
+  },
+  getAddress:()=>{
+    const url = "/user/get-address-user";
+    return AxiosClient.post(url);
+  },
+  setAddressDefault:(userAddressId)=>{
+    const url = `/user/default-address?userAddressId=${userAddressId}`;
+    return AxiosClient.get(url);
+  },
+  addAddress:(address)=>{
+    const url = `/user/add-address`;
+    return AxiosClient.post(url,address);
+  },
+  updateAddress:(address,id)=>{
+    const url = `/user/update-address?userAddressId=${id}`;
+    return AxiosClient.post(url,address);
+  },
 };
 
 export default UserApi;

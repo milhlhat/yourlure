@@ -2,17 +2,47 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
 import DEFINELINK from "routes/define-link";
+import UserApi from "api/user-api";
+import { useHistory, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 function EditCustomerAccount(props) {
-  const { account } = props;
+  
+  const location = useLocation();
+  const { account } = location.state;
   const defaultValues = {};
   const methods = useForm({ defaultValues: defaultValues });
+  const history = useHistory();
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = methods;
-  const onSubmit = (data) => {};
+  const onSubmit = async (data) => {
+    console.log(data);
+		try {
+			const response = await UserApi.update(data);
+			if (response.error) {
+				throw new Error(response.error);
+			} else {
+        alert('update thành công');
+        history.push("/customer/account");
+			}
+		} catch (error) {
+      alert('update thất bại')
+			console.log('fail to fetch customer list');
+		}
+  };
+  const initialData = ()=>{
+    console.log(account?.data?.gender);
+    setValue('username', account?.data?.username); 
+    setValue('gender', account?.data?.gender); 
+    setValue('userEmail', account?.data?.userEmail); 
+  }
+  useEffect(()=>{
+    initialData();
+  },[])
   return (
     <div className="bg-box">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -23,7 +53,7 @@ function EditCustomerAccount(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("name", {
+                  {...register("username", {
                     required: "Trường bắt buộc",
                   })}
                 ></input>
@@ -42,7 +72,6 @@ function EditCustomerAccount(props) {
                       return value === "true" || value === "false";
                     },
                   })}
-                  defaultValue={true}
                 >
                   <option value="true">Nam</option>
                   <option value="false">Nữ</option>
@@ -61,7 +90,7 @@ function EditCustomerAccount(props) {
                 {errors.phone && (
                   <span className="text-danger">(*){errors.phone.message}</span>
                 )} */}
-                0123456789
+                {account?.data?.phone}
               </td>
             </tr>
             <tr>
@@ -69,9 +98,7 @@ function EditCustomerAccount(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("email", {
-                    required: "Trường bắt buộc",
-                  })}
+                  {...register("userEmail", {})}
                   type="email"
                 ></input>
                 {errors.email && (

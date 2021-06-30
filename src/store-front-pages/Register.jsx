@@ -59,19 +59,20 @@ function RegisterBase(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
-      .matches(/\d+/, "Số điện thoại phải là số.")
-      .min(10, "Số điện thoại phải có 10 số")
-      .max(11, "Số điện thoại không được quá 11 số")
-      .required("Không được để trống"),
+      .required("Vui lòng nhập số điện thoại.")
+      .matches(
+        /((\+84|84|0)[35789][0-9]{8})\b/,
+        "Vui lòng nhập đúng số điện thoại"
+      ),
     password: Yup.string()
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .required("Vui lòng nhập mật khẩu")
+      .min(6, "Mật khẩu phải có it nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
     rePassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .required("Vui lòng nhập mật khẩu"),
   });
   return (
     <div className="register-form">
@@ -151,7 +152,10 @@ function RegisterOTP(props) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    otp: Yup.string().required("Không được để trống."),
+    otp: Yup.string()
+      .required("Vui lòng nhập mã OTP")
+      .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
+      .max(6, "Vui lòng nhập đúng mã OTP"),
   });
   return (
     <div className="register-form">

@@ -49,10 +49,11 @@ function PhoneForm(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
-      .matches(/\d+/, "Số điện thoại phải là số.")
-      .min(10, "Số điện thoại phải có 10 số")
-      .max(11, "Số điện thoại không được quá 11 số")
-      .required("Không được để trống"),
+      .required("Vui lòng nhập số điện thoại.")
+      .matches(
+        /((\+84|84|0)[35789][0-9]{8})\b/,
+        "Vui lòng nhập đúng số điện thoại"
+      ),
   });
   return (
     <div className="phone-form">
@@ -114,7 +115,10 @@ function OTPForm(props) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    otp: Yup.string().required("This field is required."),
+    otp: Yup.string()
+      .required("Vui lòng nhập mã OTP")
+      .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
+      .max(6, "Vui lòng nhập đúng mã OTP"),
   });
   return (
     <div className="forgot-form">
@@ -139,7 +143,7 @@ function OTPForm(props) {
                     name="otp"
                     component={InputField}
                     label="Nhập mã OTP"
-                    placeholder="Nhập số điện thoại"
+                    placeholder="Nhập mã OTP"
                   ></FastField>
                   <YLButton variant="primary" value="Gửi lại mã OTP"></YLButton>
                 </div>

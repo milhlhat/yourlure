@@ -65,6 +65,7 @@ function ProductDetail(props) {
     fetchProduct();
     fetchProductSame();
     fetchFilter(dispatch, { ...filter, listCateId: [1] });
+    
   }, [productId]);
   return (
     <div className="container">
@@ -91,31 +92,31 @@ function ProductDetail(props) {
       </div>
       <div className="owl-policy my-md-4 my-3 bg-white bg-shadow row mx-2 p-md-4 p-2">
         <div className="col-md-3 col-6 item">
-          <i class="fa fa-truck"></i>
+          <i className="fa fa-truck"></i>
           <p>Vận chuyển toàn quốc</p>
           <span>
             Chúng tôi giao hàng bằng hình thức COD. Thanh toán khi nhận hàng.
           </span>
         </div>
         {/* <div className="col-md-3 col-6 item">
-          <i class="fa fa-question-circle-o"></i>
+          <i className="fa fa-question-circle-o"></i>
           <p>Hỗ trợ 24/7</p>
           <span>Liên hệ hỗ trợ 24h/ngày.</span>
         </div> */}
         <div className="col-md-3 col-6 item">
-          <i class="fa fa-download"></i>
+          <i className="fa fa-download"></i>
           <p>Xử lý đơn hàng</p>
           <span>
             Đợn hàng thường được xác nhận trong 2h, và giao hàng trong 3-6 ngày.
           </span>
         </div>
         <div className="col-md-3 col-6 item">
-          <i class="fa fa-refresh"></i>
+        <i className="fas fa-sync-alt"></i>
           <p>Quy định đổi trả</p>
           <span>Thủ tục đổi trả đơn giản và rễ ràng.</span>
         </div>
         <div className="col-md-3 col-6 item">
-          <i class="fa fa-shield"></i>
+          <i className="fa fa-shield"></i>
           <p>Bảo mật</p>
           <span>Mọi thông tin khách hàng đều được bảo mật.</span>
         </div>

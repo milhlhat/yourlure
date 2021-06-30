@@ -93,11 +93,14 @@ function ManagerProductAddNew(props) {
     }
   };
   const renderPhotos = (sourse) => {
+    if(sourse?.length<1) return <span>Chưa có hình ảnh</span>
     return sourse?.map((src, i) => {
       return <img width={50} src={src} key={i} />;
     });
   };
 
+  const [changeWeight, setChangeWeight] = useState(false);
+  const [changeModel, setChangeModel] = useState(false);
   const schema = yup.object().shape({
     productname: yup.string().required("Tên sản phẩm không được để trống"),
   });
@@ -110,9 +113,15 @@ function ManagerProductAddNew(props) {
   });
   const onSubmit = (data) => {
     console.log(data);
-    console.log("done");
   };
 
+  const handleChangeCustomWeight = (e) => {
+    console.log(e.target.checked);
+    setChangeWeight(e.target.checked);
+  };
+  const handleChangeCustomModel = (e) => {
+    setChangeModel(e.target.checked);
+  };
   const Select = React.forwardRef(({ onChange, onBlur, name, label }, ref) => (
     <>
       <label>{label}</label>
@@ -135,8 +144,9 @@ function ManagerProductAddNew(props) {
     ({ onChange, onBlur, name, label }, ref) => (
       <div class="form-check">
         {fishList?.list?.fishDtoOuts?.map((fish, i) => (
-          <div key={'fish'+i}>
+          <div key={"fish" + i}>
             <input
+              name="fish"
               class="form-check-input pointer"
               type="checkbox"
               value=""
@@ -168,6 +178,7 @@ function ManagerProductAddNew(props) {
   }, []);
   return (
     <div>
+
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" product-add-new-form row">
@@ -193,9 +204,9 @@ function ManagerProductAddNew(props) {
                         placeholder="Tên sản phẩm"
                         {...register("productname")}
                       />
-                      <p className="error-message">
+                      <span className="error-message">
                         {errors.productname?.message}
-                      </p>
+                      </span>
                     </td>
                     <td>
                       <label for="weight-default" className="form-label">
@@ -208,7 +219,7 @@ function ManagerProductAddNew(props) {
                         placeholder="Độ nặng mặc định (g)"
                         {...register("weightDefault")}
                       />
-                      <p>{errors.weightDefault?.message}</p>
+                      <span>{errors.weightDefault?.message}</span>
                     </td>
                   </tr>
                   <tr>
@@ -223,20 +234,20 @@ function ManagerProductAddNew(props) {
                         placeholder="Giá"
                         {...register("price")}
                       />
-                      <p>{errors.price?.message}</p>
+                      <span>{errors.price?.message}</span>
                     </td>
                     <td>
-                      <label for="weight-min" className="form-label">
-                        Độ nặng tối thiểu (g)
+                      <label for="length" className="form-label">
+                        chiều dài (cm)
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="weight-min"
-                        placeholder="Độ nặng tối thiểu (g)"
-                        {...register("weightMin")}
+                        id="length"
+                        placeholder="chiều dài (cm)"
+                        {...register("length")}
                       />
-                      <p>{errors.weightMin?.message}</p>
+                      <span>{errors.length?.message}</span>
                     </td>
                   </tr>
                   <tr>
@@ -251,20 +262,20 @@ function ManagerProductAddNew(props) {
                         placeholder="Số lượng móc"
                         {...register("hook")}
                       />
-                      <p>{errors.hook?.message}</p>
+                      <span>{errors.hook?.message}</span>
                     </td>
                     <td>
-                      <label for="weight-max" className="form-label">
-                        Độ nặng tối đa (g)
+                      <label for="deepDiving" className="form-label">
+                        Lặn sâu
                       </label>
                       <input
                         type="text"
                         className="form-control"
-                        id="weight-max"
-                        placeholder="Độ nặng tối đa (g)"
-                        {...register("weightmax")}
+                        id="deepDiving"
+                        placeholder="Lặn sâu"
+                        {...register("deepDiving")}
                       />
-                      <p>{errors.weightmax?.message}</p>
+                      <span>{errors.deepDiving?.message}</span>
                     </td>
                   </tr>
                   <tr>
@@ -279,23 +290,8 @@ function ManagerProductAddNew(props) {
                         placeholder="Chất liệu"
                         {...register("material")}
                       />
-                      <p>{errors.material?.message}</p>
+                      <span>{errors.material?.message}</span>
                     </td>
-                    <td>
-                      <label for="length" className="form-label">
-                        chiều dài (cm)
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="length"
-                        placeholder="chiều dài (cm)"
-                        {...register("length")}
-                      />
-                      <p>{errors.length?.message}</p>
-                    </td>
-                  </tr>
-                  <tr>
                     <td>
                       <label for="brand" className="form-label">
                         Nhãn hiệu
@@ -307,20 +303,7 @@ function ManagerProductAddNew(props) {
                         placeholder="Nhãn hiệu"
                         {...register("brand")}
                       />
-                      <p>{errors.brand?.message}</p>
-                    </td>
-                    <td>
-                      <label for="deepDiving" className="form-label">
-                        Lặn sâu
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="deepDiving"
-                        placeholder="Lặn sâu"
-                        {...register("deepDiving")}
-                      />
-                      <p>{errors.deepDiving?.message}</p>
+                      <span>{errors.brand?.message}</span>
                     </td>
                   </tr>
                   <tr>
@@ -330,24 +313,80 @@ function ManagerProductAddNew(props) {
                         type="checkbox"
                         id="customize"
                         {...register("customize")}
+                        onChange={handleChangeCustomModel}
+                        defaultChecked={false}
                       />
                       <label class="form-check-label pointer" for="customize">
                         Customize
                       </label>
-                      <p>{errors.customize?.message}</p>
+                      <span>{errors.customize?.message}</span>
                     </td>
                     <td>
-                      <label for="model" className="form-label">
-                        Link model 3D
-                      </label>
                       <input
-                        type="text"
-                        className="form-control"
-                        id="model"
-                        placeholder="Link model 3D"
-                        {...register("model")}
+                        class="form-check-input pointer"
+                        type="checkbox"
+                        id="customize-weight"
+                        {...register("customizeWeight")}
+                        onChange={handleChangeCustomWeight}
+                        defaultChecked={false}
                       />
-                      <p>{errors.model?.message}</p>
+                      <label for="customize-weight" className="form-label">
+                        Customizable độ nặng
+                      </label>
+                      <span>{errors.customizeWeight?.message}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {changeModel && (
+                        <div>
+                          <label for="model" className="form-label">
+                            Link model 3D
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="model"
+                            placeholder="Link model 3D"
+                            {...register("model")}
+                          />
+                          <span>{errors.model?.message}</span>
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      {changeWeight && (
+                        <div className="d-flex">
+                          <div className="col-6">
+                            <label for="weight-max" className="form-label">
+                              Max (g)
+                            </label>
+                            <input
+                              type="number"
+                              className="form-control input-customize-weight"
+                              id="weight-max"
+                              placeholder="Max"
+                              {...register("weightMax")}
+                            />
+
+                            <span>{errors.weightMax?.message}</span>
+                          </div>
+                          <div className="col-6">
+                            <label for="weight-min" className="form-label">
+                              Min
+                            </label>
+                            <input
+                              type="number"
+                              className="form-control  input-customize-weight"
+                              id="weight-min"
+                              placeholder="Min (g)"
+                              {...register("weightMin")}
+                            />
+
+                            <span>{errors.weightMin?.message}</span>
+                          </div>
+                        </div>
+                      )}
                     </td>
                   </tr>
 
@@ -363,7 +402,7 @@ function ManagerProductAddNew(props) {
                         placeholder="Mô tả"
                         {...register("description")}
                       ></textarea>
-                      <p>{errors.description?.message}</p>
+                      <span>{errors.description?.message}</span>
                     </td>
                   </tr>
                   <tr>
@@ -378,7 +417,7 @@ function ManagerProductAddNew(props) {
                         placeholder="Mô tả chi tiết "
                         {...register("descriptionMore")}
                       ></textarea>
-                      <p>{errors.descriptionMore?.message}</p>
+                      <span>{errors.descriptionMore?.message}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -417,6 +456,21 @@ function ManagerProductAddNew(props) {
             </div>
             <hr />
             <div className="px-3 ">{renderPhotos(selectedImages)}</div>
+          </div>
+          <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
+            <div className="px-3 pt-3 product-images-add">
+              <h5>Variant</h5>
+              <input
+                hidden
+                multiple
+                id="variant"
+                onChange={imageHandleChange}
+              />
+              <label htmlFor="variant" className="pointer">
+                Tạo biến thể
+              </label>
+            </div>
+            <hr />
           </div>
           <div className="col-12 bg-white bg-shadow submit-button-form">
             <YLButton variant="danger" type="submit" value="Hủy" />

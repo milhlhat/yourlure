@@ -89,7 +89,7 @@ function ManagementAccount({ children }) {
             </Link>
           </div>
         </div>
-        <div className="tab-show  col-9">{children({ ...account })}</div>
+        <div className="tab-show  col-9">{children()}</div>
       </div>
     </div>
   );

@@ -1,16 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import YLButton from "components/custom-field/YLButton";
 import DEFINELINK from "routes/define-link";
 import { Redirect, useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import UserApi from "api/user-api";
 function CustomerAccount(props) {
-  const account  = props;
-console.log(account);
   const history = useHistory();
   const handleLogout = () => {
     localStorage.removeItem("yl-accessToken");
     localStorage.removeItem("yl-loginAt");
     history.push(DEFINELINK.home);
   };
+  const [account, setAccount] = useState({
+    data: null,
+    isLoading: false,
+    isSuccess: false,
+  });
+  useEffect(() => {
+    const fetchCustomAccount = async () => {
+      setAccount((prevState) => {
+        return { ...prevState, isLoading: true };
+      });
+      try {
+        const response = await UserApi.getMe();
+        setAccount({ data: response, isLoading: false, isSuccess: true });
+      } catch (error) {
+        setAccount({ data: null, isLoading: false, isSuccess: false });
+        console.log("fail to fetch information");
+      }
+    };
+    fetchCustomAccount();
+    return fetchCustomAccount();
+  }, []);
   return (
     <div className="bg-box">
       {account && (
@@ -18,21 +39,25 @@ console.log(account);
           <tbody>
             <tr>
               <td className="text-end">Họ và Tên:</td>
-              <td>{account.username}</td>
+              <td>{account?.data?.username}</td>
             </tr>
             <tr>
               <td className="text-end">Giới tính:</td>
               <td>
-                {account.gender == null ? "N/A" : account.gender ? "Nam" : "Nữ"}
+                {account?.data?.gender == null
+                  ? "N/A"
+                  : account.data.gender
+                  ? "Nam"
+                  : "Nữ"}
               </td>
             </tr>
             <tr>
               <td className="text-end">Số điện thoại:</td>
-              <td>{account.phone}</td>
+              <td>{account?.data?.phone}</td>
             </tr>
             <tr>
               <td className="text-end">Email:</td>
-              <td>{account.userEmail}</td>
+              <td>{account?.data?.userEmail}</td>
             </tr>
             <tr>
               <td className="d-flex justify-content-end">
@@ -41,7 +66,10 @@ console.log(account);
                   width="70px"
                   height="30px"
                   className="float-end"
-                  to={DEFINELINK.customer + DEFINELINK.accountEdit}
+                  to={{
+                    pathname: DEFINELINK.customer + DEFINELINK.accountEdit,
+                    state: {account:account},
+                  }}
                 >
                   Sửa
                 </YLButton>
