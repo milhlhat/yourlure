@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class AdminFilterDtoInput {
 
     private String keyword;
-    private String typeName;
+    private String typeSearch;
     private int page;
     private int limit;
     private String sortBy;

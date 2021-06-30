@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
+import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.entity.Image;
 import fpt.custome.yourlure.entity.Variant;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class AdminProductDetailDtoOut {
     private Boolean visibleInStorefront;
     private Date dateCreate;
     private String imgUrlModel;
-    private Float categoryId;
+    private Category category;
     private Collection<Image> imageCollection;
     private Collection<Variant> variantCollection;
 

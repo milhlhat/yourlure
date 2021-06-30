@@ -3,18 +3,24 @@ package fpt.custome.yourlure.service.ServiceImpl;
 import fpt.custome.yourlure.dto.dtoInp.VariantDtoInput;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.entity.Variant;
+import fpt.custome.yourlure.repositories.OrderLineRepos;
 import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.repositories.VariantRepos;
 import fpt.custome.yourlure.service.VariantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class VariantServiceImpl implements VariantService {
 
     @Autowired
     private VariantRepos variantRepos;
+
+    @Autowired
+    private OrderLineRepos orderLineRepos;
 
     @Autowired
     private ProductJpaRepos productJPARepos;
@@ -25,8 +31,7 @@ public class VariantServiceImpl implements VariantService {
     @Override
     public Boolean save(VariantDtoInput variantDtoInput) {
         try {
-            Optional<Product> productOptional = productJPARepos.findById(variantDtoInput.getProductId());
-            Product product = productOptional.get();
+            Product product = productJPARepos.getById(variantDtoInput.getProductId());
             Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
             variantInput.setProduct(product);
             variantRepos.save(variantInput);
@@ -52,4 +57,20 @@ public class VariantServiceImpl implements VariantService {
         }
         return true;
     }
+
+    @Override
+    public Boolean remove(Long id) {
+        try {
+            //check variant is exist in order_line
+            if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
+                variantRepos.deleteById(id);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
+

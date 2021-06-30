@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 public class UserAddressDtoOut {
 
     private Long userAddressID;
+    private String userName;
+    private String phone;
+    private Boolean isDefault;
+    private String userEmail;
     private String userWardName;
     private Long userWardId;
     private String userDistrictName;

@@ -2,13 +2,11 @@ package fpt.custome.yourlure.entity.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.Nullable;
-import fpt.custome.yourlure.entity.UserAddress;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Data
@@ -35,9 +33,9 @@ public class Ward {
     @JoinColumn(name = "districtID", nullable = false)
     private District userDistrict;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "ward", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến userWard ở trong UserAddress.
-    //1 userWard có nhiều UserAddress
-    private Collection<UserAddress> userAddressCollection;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "ward", cascade = CascadeType.ALL)
+//    // MapopedBy trỏ tới tên biến userWard ở trong UserAddress.
+//    //1 userWard có nhiều UserAddress
+//    private Collection<UserAddress> userAddressCollection;
 }

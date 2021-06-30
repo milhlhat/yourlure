@@ -1,6 +1,8 @@
 package fpt.custome.yourlure.service;
 
+import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserService {
 
@@ -31,7 +34,11 @@ public interface UserService {
 
     Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp);
 
-//    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput);
+    Boolean saveAddress(HttpServletRequest req, UserAddressInput userAddressInput);
+
+    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput, Long userAddressId);
+
+    Boolean setDefaultAddress(HttpServletRequest req, Long userAddressId);
 
     //common service -------------------------------------------
     List<Country> findAllCountry();
@@ -50,9 +57,11 @@ public interface UserService {
 
     Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable);
 
+    Optional<AdminStaffDtoOut> adminStaffAll(String keyword, String type, Pageable pageable);
+
     Optional<AdminUserDetailDtoOut> getUser(Long id);
 
-    List<Role> getRoles(HttpServletRequest rq);
+    Set<Role> getRoles(HttpServletRequest rq);
 
     List<UserAddressDtoOut> adminGetAddressUser(Long id);
 }

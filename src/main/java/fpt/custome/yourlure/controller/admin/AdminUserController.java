@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.admin;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +31,7 @@ public interface AdminUserController {
     @GetMapping(value = "/block/{id}")
     ResponseEntity<Boolean> block(@PathVariable Long id);
 
+    @PostMapping(value = "/all-staff")
+    ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody AdminFilterDtoInput filter);
 
 }

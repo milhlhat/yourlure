@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AdminProductDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminProductDtoOut;
 import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,9 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     public ResponseEntity<Optional<AdminProductDtoOut>> findAll(Filter filter) {
@@ -67,15 +71,8 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
-    public ResponseEntity<Object> uploadFile(List<MultipartFile> file) throws IOException {
-
-//        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-//        boolean isCreated = convertFile.createNewFile();
-//        if(isCreated){
-//            try(FileOutputStream fout = new FileOutputStream(convertFile)){
-//                fout.write(file.getBytes());
-//            }
-//        }
-        return new ResponseEntity<>("file created", HttpStatus.OK);
+    public ResponseEntity<List<String>> uploadFile(MultipartFile[] files) throws IOException {
+        List<String> result = fileService.saveImages(files);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -37,7 +37,7 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Boolean> removeProduct(Long userId,
+    public ResponseEntity<Boolean> removeProduct(HttpServletRequest req,
                                                  Long cartId,
                                                  Long productId) {
         Boolean result = cartService.removeProduct(cartId, productId);
@@ -45,7 +45,7 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Boolean> setProductQuantity(Long userId,
+    public ResponseEntity<Boolean> setProductQuantity(HttpServletRequest req,
                                                       Long cartId,
                                                       Long productId,
                                                       int quantity) {

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -29,6 +31,21 @@ public class FileService {
             e.printStackTrace();
         }
         return Paths.get(uploadDir, fileName).toString();
+    }
+
+    public List<String> saveImages(MultipartFile[] files) {
+        List<String> result = new ArrayList<>();
+        for (MultipartFile file : files) {
+            Path filePath = Paths.get(parentPath + uploadDir, file.getOriginalFilename());
+            String fileName = file.getOriginalFilename();
+            try {
+                Files.write(filePath, file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            result.add(Paths.get(uploadDir, fileName).toString());
+        }
+        return result;
     }
 
     public String saveFileByte(String fileName, byte[] content) throws IOException {
