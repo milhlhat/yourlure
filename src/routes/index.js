@@ -26,9 +26,7 @@ function AppRouter() {
   return (
     <AbilityContext.Provider value={ability}>
       <Suspense fallback={<Loading />}>
-        <BrowserRouter
-      
-        >
+        <BrowserRouter>
           <Switch>
             <Route path={DEFINELINK.manager} component={ManagementRouter} />
             <Route path={DEFINELINK.store} component={StoreRoute} />

@@ -1,4 +1,9 @@
 @import "_variable.scss";
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 body {
   background-color: #f5f5f5;
 }
