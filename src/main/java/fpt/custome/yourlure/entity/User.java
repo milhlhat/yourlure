@@ -60,7 +60,7 @@ public class User {
     @Column(name = "note")
     private String note;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     List<Role> roles;
 
     @Enumerated(EnumType.STRING)

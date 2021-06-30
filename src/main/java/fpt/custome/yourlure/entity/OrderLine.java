@@ -33,6 +33,10 @@ public class OrderLine {
     @Column(name = "weight")
     private Integer weight;
 
+    @Nullable
+    @Column(name = "imgThumbnail")
+    private String imgThumbnail;
+
     @NotNull
     @Column(name = "productId")
     private Long productId;
@@ -42,32 +46,8 @@ public class OrderLine {
     private Long variantId;
 
     @Nullable
-    @Column(name = "headColor")
-    private String headColor;
-
-    @Nullable
-    @Column(name = "bodyColor")
-    private String bodyColor;
-
-    @Nullable
-    @Column(name = "eyeColor")
-    private String eyeColor;
-
-    @Nullable
-    @Column(name = "tailColor")
-    private String tailColor;
-
-    @Nullable
-    @Column(name = "backColor")
-    private String backColor;
-
-    @Nullable
-    @Column(name = "hookColor")
-    private String hookColor;
-
-    @Nullable
-    @Column(name = "textureImg")
-    private String textureImg;
+    @Column(name = "customModelId")
+    private Long customModelId;
 
     @Nullable
     @JsonIgnore

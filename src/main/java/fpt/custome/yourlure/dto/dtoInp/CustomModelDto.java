@@ -11,10 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomModelDto {
 
-    private Long userId;
     private String name;
     private Long model3dId;
-    private List<MaterialValueDto> materialValueDtoList;
+    private List<MaterialDto> materials;
     private Thumbnail thumbnail;
 
     @Data
@@ -28,9 +27,10 @@ public class CustomModelDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MaterialValueDto {
+    public static class MaterialDto {
         private Long materialId;
-        private Long customizeTypeId;
-        private String value;
+        private String text;
+        private String color;
+        private String img;
     }
 }

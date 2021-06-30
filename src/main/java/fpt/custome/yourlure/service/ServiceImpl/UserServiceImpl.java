@@ -15,7 +15,6 @@ import fpt.custome.yourlure.entity.address.Ward;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
-import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +44,6 @@ public class UserServiceImpl implements UserService {
     private OrderRepos orderRepos;
 
     @Autowired
-    private OrderService orderService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -55,9 +51,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserAddressRepos userAddressRepos;
 
     @Autowired
     private UserCountryRepos userCountryRepos;

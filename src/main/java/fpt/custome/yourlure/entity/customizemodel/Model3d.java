@@ -33,7 +33,7 @@ public class Model3d {
     @OneToMany(mappedBy = "model3d", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
-    private Collection<Material> materials;
+    private Collection<DefaultMaterial> defaultMaterials;
 
     @JsonIgnore
     @OneToMany(mappedBy = "model3d", cascade = CascadeType.ALL)

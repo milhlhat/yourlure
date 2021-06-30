@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
 
+import fpt.custome.yourlure.entity.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDtoInput {
 
+    private String receiverName;
     private String address;
     private String phone;
     private String note;
-    private String totalPrice;
     private Date orderDate;
     private Long paymentId;
 
     public String discountCode;
-    public List<Long> cartItemIds;
+    public List<CartItem> cartItems;
 }

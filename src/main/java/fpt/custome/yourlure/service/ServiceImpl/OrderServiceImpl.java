@@ -1,11 +1,13 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
+import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Order;
 import fpt.custome.yourlure.entity.OrderActivity;
 import fpt.custome.yourlure.entity.OrderLine;
 import fpt.custome.yourlure.repositories.*;
+import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import org.modelmapper.ModelMapper;
@@ -15,12 +17,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private CartItemRepos cartItemRepos;
 
     @Autowired
     private OrderRepos orderRepos;
@@ -42,6 +52,36 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Override
+    public Boolean processOrder(HttpServletRequest rq, OrderDtoInput orderDtoInput) {
+        try{
+            String tokenResolve = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq));
+//            User user = userRepos.findByPhone();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            // process for Guest
+            System.out.println();
+        }
+
+        // save order information
+        Order order = Order.builder()
+                .address(orderDtoInput.getAddress())
+                .orderDate(new Date())
+                .receiverName(orderDtoInput.getReceiverName())
+
+                .build();
+
+
+//        List<CartItem> cartItems = new ArrayList<>();
+//        for (Long cartItemId : orderDtoInput.getCartItems()) {
+//            CartItem item = cartItemRepos.getById(cartItemId);
+//            OrderLine orderLine = mapper.map(item, OrderLine.class);
+//            // save order line behind here
+//        }
+        return false;
+    }
+
 
     @Override
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
@@ -83,7 +123,9 @@ public class OrderServiceImpl implements OrderService {
                     productDtoOut.setPrice(item.getPrice());
                     productDtoOut.setQuantity(item.getQuantity());
                     productDtoOut.setVariantId(item.getVariantId());
-                    productDtoOut.setThumbnailUrl(item.getTextureImg());
+
+                    // todo: vua sua lai db cua order. xong phai sua nay cho nay
+//                    productDtoOut.setThumbnailUrl(item.getTextureImg());
                     //TODO: truy van customize trong bang customize roi gan vao
 //                    productDtoOut.setCustomizeId(item.getCustomizeId());
                     productDtoOutList.add(productDtoOut);
