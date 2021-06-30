@@ -6,4 +6,7 @@ public interface VariantService {
     Boolean save(VariantDtoInput variantDtoInput);
 
     Boolean update(VariantDtoInput variantDtoInput, Long variantId);
+
+    Boolean remove(Long id);
+
 }

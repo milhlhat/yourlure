@@ -36,7 +36,9 @@ public interface UserService {
 
     Boolean saveAddress(HttpServletRequest req, UserAddressInput userAddressInput);
 
-//    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput);
+    Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput, Long userAddressId);
+
+    Boolean setDefaultAddress(HttpServletRequest req, Long userAddressId);
 
     //common service -------------------------------------------
     List<Country> findAllCountry();

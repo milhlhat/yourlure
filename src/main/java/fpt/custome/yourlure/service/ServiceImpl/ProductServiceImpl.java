@@ -31,7 +31,13 @@ public class ProductServiceImpl implements ProductService {
     private VariantRepos variantRepos;
 
     @Autowired
+    private OrderLineRepos orderLineRepos;
+
+    @Autowired
     private FishRepos fishRepos;
+
+    @Autowired
+    private ImageRepos imageRepos;
 
     @Autowired
     private ModelMapper mapper;
@@ -143,15 +149,40 @@ public class ProductServiceImpl implements ProductService {
 //        return result;
 //    }
 
+    @Transactional
     @Override
     public Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id) {
         try {
             if (id != null && productsDtoInp != null) {
                 if (productJPARepos.findById(id).isPresent()) {
-                    Optional<Product> productOptional = productJPARepos.findById(id);
-                    Product productToUpdate = productOptional.get();
+                    Product productToUpdate = productJPARepos.getById(id);
                     productToUpdate.update(productsDtoInp);
-                    productJPARepos.save(productToUpdate);
+                    productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
+                    //update properties product
+                    //update image
+                    imageRepos.deleteByProductProductId(id);
+                    for (String link : productsDtoInp.getImgList()) {
+                        Image image = Image.builder()
+                                .product(Product.builder().productId(id).build())
+                                .linkImage(link)
+                                .build();
+                        productToUpdate.getImageCollection().add(image);
+                    }
+                    Product product = productJPARepos.save(productToUpdate);
+                    //update fish
+
+                    //clear product in fish_product
+                    for (Fish fish : fishRepos.findAll()) {
+                        fish.removeProduct(product);
+                        fishRepos.save(fish);
+                    }
+
+                    //add to fish_product (update)
+                    for (Long fishId : productsDtoInp.getListFishId()) {
+                        Fish fishInput = fishRepos.getById(fishId);
+                        fishInput.addProduct(product);
+                        fishRepos.save(fishInput);
+                    }
                 } else {
                     return false;
                 }
@@ -173,17 +204,26 @@ public class ProductServiceImpl implements ProductService {
                 product = mapper.map(productsDtoInp, Product.class);
                 Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
                 product.setCategory(categoryInput.get());
-                Product imgProduct = productJPARepos.save(product);
+                Product productToSaveImage = productJPARepos.save(product);
 
-                //todo: chua add image
+                //add list image product
+                List<String> imageLink = productsDtoInp.getImgList();
+                for (String link : imageLink) {
+                    Image image = Image.builder()
+                            .product(productToSaveImage)
+                            .linkImage(link)
+                            .build();
+                    imageRepos.save(image);
+                }
 
                 //save fish_product
-                Optional<Fish> fishOptional = fishRepos.findById(productsDtoInp.getFishId());
-                Fish fishInput = fishOptional.get();
-                fishInput.addProduct(product);
-                //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
+                for (Long fishId : productsDtoInp.getListFishId()) {
+                    Fish fishInput = fishRepos.getById(fishId);
+                    fishInput.addProduct(product);
+                    //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
 //                fishInput.getProducts().add(product);
-                fishRepos.save(fishInput);
+                    fishRepos.save(fishInput);
+                }
             } else {
                 return false;
             }
@@ -225,19 +265,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Boolean remove(Long id) {
         try {
-            Optional<Product> productOptional = productJPARepos.findById(id);
-            List<Fish> productList = (List<Fish>) productOptional.get().getFishList();
-            for (ListIterator<Fish> iter = productList.listIterator(); iter.hasNext(); ) {
-                iter.remove();
+            if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
+                Optional<Product> productOptional = productJPARepos.findById(id);
+                List<Fish> productList = (List<Fish>) productOptional.get().getFishList();
+                for (ListIterator<Fish> iter = productList.listIterator(); iter.hasNext(); ) {
+                    iter.remove();
+                }
+                productRepos.remove(productOptional.get());
+                return true;
             }
-            productRepos.remove(productOptional.get());
-            return true;
+            return false;
         } catch (
                 Exception e) {
             e.printStackTrace();
             return false;
         }
-
     }
 
 

@@ -26,12 +26,20 @@ import java.util.Set;
 public interface UserController {
 
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Boolean> updateUser(HttpServletRequest req, @RequestBody UserDtoInp userDtoInp);
 
     @PostMapping("/add-address")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Boolean> addAddress(HttpServletRequest req, @RequestBody UserAddressInput userAddressInput);
+
+    @PostMapping("/update-address")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Boolean> updateAddress(HttpServletRequest req, @RequestBody UserAddressInput userAddressInput, Long userAddressId);
+
+    @GetMapping("/default-address")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Boolean> setDefaultAddress(HttpServletRequest req, @RequestParam Long userAddressId);
 
     @GetMapping("/get-all-country")
     ResponseEntity<List<Country>> getAllCountry();

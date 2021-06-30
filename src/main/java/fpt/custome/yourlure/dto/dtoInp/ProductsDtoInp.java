@@ -1,13 +1,12 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,7 +30,7 @@ public class ProductsDtoInp {
     private Date dateCreate;
     private String imgUrlModel;
     private Long categoryId;
-    private Long fishId;
-    private Collection<Image> imageCollection;
+    private List<Long> listFishId;
+    private List<String> imgList;
 
 }

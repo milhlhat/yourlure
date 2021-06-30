@@ -49,6 +49,18 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<Boolean> updateAddress(HttpServletRequest req, UserAddressInput userAddressInput, Long userAddressId) {
+        Boolean check = userService.updateAddress(req, userAddressInput, userAddressId);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Boolean> setDefaultAddress(HttpServletRequest req, Long userAddressId) {
+        Boolean check = userService.setDefaultAddress(req, userAddressId);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<Country>> getAllCountry() {
         List<Country> result = userService.findAllCountry();
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -25,6 +25,7 @@ public class UserAddress {
     private String userName;
     private String phone;
     private String userEmail;
+    private Boolean isDefault;
 
     @Nullable
     @Column(name = "description")

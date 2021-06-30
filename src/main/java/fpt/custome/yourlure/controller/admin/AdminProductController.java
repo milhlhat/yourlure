@@ -36,6 +36,6 @@ public interface AdminProductController {
     ResponseEntity<Boolean> deleteProduct(@PathVariable("id") Long id);
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<Object> uploadFile(@RequestParam("file") @Validated List<MultipartFile> file) throws IOException;
+    ResponseEntity<List<String>> uploadFile(@RequestParam("file") @Validated MultipartFile[] file) throws IOException;
 
 }

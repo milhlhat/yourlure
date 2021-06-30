@@ -1,12 +1,9 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.UserAddress;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -14,11 +11,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserDtoInp {
 
-    private String userName;
-    @Size(min = 10, max = 10, message = "phone number just contains 10 characters")
-    private String phone;
+    private String username;
     private Boolean gender;
     private String userEmail;
-    private UserAddress userAddress;
 
 }

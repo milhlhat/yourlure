@@ -132,6 +132,10 @@ public class UserServiceImpl implements UserService {
                     list = userRepos.findByUserEmailContainsIgnoreCase(keyword, pageable);
                     break;
                 }
+                case "orderId": {
+                    list = userRepos.findByOrderId(Long.parseLong(keyword), pageable);
+                    break;
+                }
                 default: {
                     list = userRepos.findAll(pageable);
                     break;
@@ -258,7 +262,9 @@ public class UserServiceImpl implements UserService {
     public Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp) {
         try {
             User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-            userUpdate.update(mapper.map(userDtoInp, User.class));
+            userUpdate.setUsername(userDtoInp.getUsername());
+            userUpdate.setUserEmail(userDtoInp.getUserEmail());
+            userUpdate.setGender(userDtoInp.getGender());
             userRepos.save(userUpdate);
             return true;
         } catch (Exception e) {
@@ -273,7 +279,42 @@ public class UserServiceImpl implements UserService {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
             UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
             userAddress.setUser(user);
+            if (user.getUserAddressCollection().isEmpty()) {
+                userAddress.setIsDefault(true);
+            }
             userAddressRepos.save(userAddress);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput, Long userAddressId) {
+        try {
+            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
+            userAddress.setUser(user);
+            userAddress.setUserAddressId(userAddressId);
+            userAddressRepos.save(userAddress);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean setDefaultAddress(HttpServletRequest req, Long userAddressId) {
+        try {
+            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            for (UserAddress userAddress : user.getUserAddressCollection()) {
+                if (userAddress.getUserAddressId().equals(userAddressId))
+                    userAddress.setIsDefault(true);
+                else userAddress.setIsDefault(false);
+            }
+            userRepos.save(user);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -316,7 +357,7 @@ public class UserServiceImpl implements UserService {
         List<UserAddressDtoOut> result = new ArrayList<>();
         for (UserAddress userAddress : list) {
             Ward ward = userWardRepos.getById(userAddress.getUserWardId());
-            UserAddressDtoOut dtoOut = new UserAddressDtoOut();
+            UserAddressDtoOut dtoOut = mapper.map(userAddress, UserAddressDtoOut.class);
             dtoOut.setUserWardName(ward.getUserWardName());
             dtoOut.setUserWardId(ward.getUserWardID());
             dtoOut.setUserDistrictName(ward.getUserDistrict().getUserDistrictName());
