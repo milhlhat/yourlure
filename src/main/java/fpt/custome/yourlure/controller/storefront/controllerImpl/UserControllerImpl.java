@@ -65,6 +65,12 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<Boolean> removeUserAddress(Long userAddressId) {
+        Boolean delete = userService.removeUserAddress(userAddressId);
+        return new ResponseEntity<>(delete, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<Country>> getAllCountry() {
         List<Country> result = userService.findAllCountry();
         return new ResponseEntity<>(result, HttpStatus.OK);

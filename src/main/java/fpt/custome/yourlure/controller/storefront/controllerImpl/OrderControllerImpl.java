@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 import fpt.custome.yourlure.controller.storefront.OrderController;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +26,9 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<Object> guestProcessOrder(OrderGuestDtoInput order) {
-        try{
+        try {
             return new ResponseEntity<>(orderService.guestProcessOrder(order), HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -34,5 +36,13 @@ public class OrderControllerImpl implements OrderController {
     @Override
     public ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, OrderUserDtoInput order) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<Optional<StoreUserOrderDtoOut>> getListUserOrder(HttpServletRequest req,
+                                                                           Integer page,
+                                                                           Integer limit) {
+        Optional<StoreUserOrderDtoOut> result = orderService.getListUserOrder(req,page,limit);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

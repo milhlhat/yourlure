@@ -29,12 +29,12 @@ public interface AdminOrderController {
 //    List<Order> search(@RequestBody Filter filter);
 
     /**
-     * lấy  order gần nhất của user
+     * chi tiet 1 order cua user
      *
      * @param userId
      * @return
      */
-    @GetMapping("/get-user-order/{userId}")
+    @GetMapping("/get-user-order-detail/{userId}")
     ResponseEntity<Optional<AdminOrderDetailDtoOut>> getUserOrder(@PathVariable("userId") Long userId);
 
     /**
@@ -43,16 +43,16 @@ public interface AdminOrderController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
+    @GetMapping("/order-detail/{id}")
     ResponseEntity<Optional<AdminOrderDetailDtoOut>> getOrderById(@PathVariable("id") Long id);
 
     /**
-     * xem chi tiết order
+     * danh sach order cua user
      *
      * @param filter
      * @return
      */
-    @PostMapping("/{userId}")
+    @PostMapping("/user-order-detail/{userId}")
     ResponseEntity<Optional<AdminOrderDtoOut>> getOrderByUserId(@RequestBody Filter filter);
 
     /**

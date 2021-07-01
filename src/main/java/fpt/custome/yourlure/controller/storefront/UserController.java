@@ -42,6 +42,10 @@ public interface UserController {
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Boolean> setDefaultAddress(HttpServletRequest req, @RequestParam Long userAddressId);
 
+    @DeleteMapping("/delete-address")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Boolean> removeUserAddress(@RequestParam Long userAddressId);
+
     @GetMapping("/get-all-country")
     ResponseEntity<List<Country>> getAllCountry();
 
@@ -94,7 +98,7 @@ public interface UserController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
-    String signup(@ApiParam("Signup User") @Valid @RequestBody  UserDataDTO user);
+    String signup(@ApiParam("Signup User") @Valid @RequestBody UserDataDTO user);
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")

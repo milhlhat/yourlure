@@ -23,7 +23,7 @@ public class UserDataDTO {
   private String phone;
 
   @ApiModelProperty(position = 1)
-  @Size(min = 8, message = "Minimum password length: 8 characters")
+  @Size(min = 6, message = "Minimum password length: 6 characters")
   @NotBlank(message = "password can not contains black character!")
   @NotNull
   private String password;

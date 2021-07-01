@@ -40,6 +40,8 @@ public interface UserService {
 
     Boolean setDefaultAddress(HttpServletRequest req, Long userAddressId);
 
+    Boolean removeUserAddress( Long userAddressId);
+
     //common service -------------------------------------------
     List<Country> findAllCountry();
 

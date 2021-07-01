@@ -1,9 +1,10 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

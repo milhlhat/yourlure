@@ -95,6 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
             if (idInput != null && categoryInput != null) {
                 Category categoryToUpdate = categoryRepos.findById(idInput).get();
                 categoryToUpdate.setCategoryName(categoryInput.getCategoryName());
+                categoryInput.builder().build();
                 categoryRepos.save(categoryToUpdate);
             } else {
                 return false;

@@ -4,7 +4,6 @@ import fpt.custome.yourlure.controller.storefront.CategoryController;
 import fpt.custome.yourlure.dto.dtoInp.CategoryDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CategoryDtoOutWithCategory;
-import fpt.custome.yourlure.entity.Category;
 import fpt.custome.yourlure.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +84,7 @@ public class CategoryControllerImpl implements CategoryController {
      * update category to data
      *
      * @param categoryInput category update
-     * @param idInput       id want to edit
+     * @param id       id want to edit
      * @return if update successful return true else false
      */
     @Override

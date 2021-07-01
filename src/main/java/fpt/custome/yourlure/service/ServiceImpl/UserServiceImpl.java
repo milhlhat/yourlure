@@ -325,6 +325,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public Boolean removeUserAddress(Long userAddressId) {
+        try {
+            userAddressRepos.deleteById(userAddressId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     @Override
     public List<Country> findAllCountry() {

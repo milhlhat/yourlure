@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
@@ -12,7 +13,9 @@ import fpt.custome.yourlure.service.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepos orderRepos;
+
+    @Autowired
+    private UserRepos userRepos;
 
     @Autowired
     private OrderLineRepos orderLineRepos;
@@ -56,19 +62,19 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper mapper;
 
     @Override
-    public Boolean guestProcessOrder( OrderGuestDtoInput orderGuestDtoInput) throws Exception {
+    public Boolean guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
 
         // save order information
         DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
-        if(voucher.getStart_date().compareTo(new Date()) < 0){
+        if (voucher.getStart_date().compareTo(new Date()) < 0) {
             // the voucher is not start
             throw new Exception("voucher is not start!");
         }
-        if(voucher.getEnd_date().compareTo(new Date()) > 0){
+        if (voucher.getEnd_date().compareTo(new Date()) > 0) {
             // expire voucher
             throw new Exception("voucher is expired!");
         }
-        if(voucher.getUsed() >= voucher.getUsageLimit()){
+        if (voucher.getUsed() >= voucher.getUsageLimit()) {
             throw new Exception("voucher is over used!");
         }
 
@@ -81,23 +87,23 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : orderGuestDtoInput.getCartItems()) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
             // calculate product price include custom model
-            if(item.getCustomModelId() != null){
+            if (item.getCustomModelId() != null) {
                 // get default price of product
                 Product product = productJpaRepos.getById(item.getProductId());
 
                 // calculate price of model
 
                 // summary
-            }else{
+            } else {
                 // set price by variant
                 Variant variant = variantRepos.getById(item.getVariantId());
-                if(variant.getQuantity() > 0){
+                if (variant.getQuantity() > 0) {
                     orderLine.setPrice(variant.getNewPrice());
                     orderLine.setImgThumbnail(variant.getImageUrl());
-                    variant.setQuantity(variant.getQuantity()-1);
+                    variant.setQuantity(variant.getQuantity() - 1);
                     variant = variantRepos.save(variant);
 
-                }else{
+                } else {
                     throw new Exception("Variant out of stock!");
                 }
 
@@ -120,12 +126,40 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    @Override
+    public Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
+                                                           Integer limit) {
+        try {
+            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+
+            List<StoreUserOrderDtoOut.OrderDtoOut> orderDtoOuts = new ArrayList<>();
+            Pageable pageable = PageRequest.of(page,
+                    limit,
+                    Sort.by("orderDate").descending());
+            Page<Order> orders = orderRepos.findAllByUserUserId(user.getUserId(), pageable);
+            for (Order item : orders) {
+                Optional<AdminOrderDetailDtoOut> adminOrderDetailDtoOut = getById(item.getOrderId());
+                StoreUserOrderDtoOut.OrderDtoOut dto = mapper.map(adminOrderDetailDtoOut.get(), StoreUserOrderDtoOut.OrderDtoOut.class);
+                orderDtoOuts.add(dto);
+            }
+            StoreUserOrderDtoOut result = StoreUserOrderDtoOut.builder()
+                    .totalItem((int) orders.getTotalElements())
+                    .totalPage(orders.getTotalPages())
+                    .orderDtoOuts(orderDtoOuts)
+                    .build();
+            return Optional.of(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
 
     @Override
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
 
         try {
-            Page<Order> list = orderRepos.findAllByReceiverNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
+            Page<Order> list = orderRepos.findAllByPhoneContainsIgnoreCase(keyword, pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
@@ -223,6 +257,7 @@ public class OrderServiceImpl implements OrderService {
             AdminOrderDtoOut result = AdminOrderDtoOut.builder()
                     .totalOrder((int) list.getTotalElements())
                     .totalPage(list.getTotalPages())
+                    // map data vào dto
                     .orderDtoOutList(mapCustomData(list.getContent()))
                     .build();
             //trả về kết quả

@@ -1,8 +1,10 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
 import fpt.custome.yourlure.entity.Category;
+import fpt.custome.yourlure.entity.Image;
 import lombok.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -31,6 +33,7 @@ public class AdminOrderDetailDtoOut {
         private Long variantId;
         private Integer quantity;
         private Float price;
+        private Collection<Image> imageCollection;
         private String thumbnailUrl;
         private Long customizeId;
     }
