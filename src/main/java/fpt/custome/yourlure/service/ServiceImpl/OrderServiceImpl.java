@@ -90,10 +90,10 @@ public class OrderServiceImpl implements OrderService {
         return 0;
     }
 
-    protected Payment verifyPayment(Long paymentId){
-        try{
+    protected Payment verifyPayment(Long paymentId) {
+        try {
             return paymentRepos.getById(paymentId);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return paymentRepos.getByPayment("OCD");
         }
@@ -221,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
 
         try {
-            Page<Order> list = orderRepos.findAllByReceiverNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
+            Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword, pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
