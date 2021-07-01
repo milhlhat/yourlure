@@ -48,13 +48,13 @@ function InputField(props) {
             className={`${isPassword == "text" ? "d-none" : ""}`}
             onClick={handleChangeType}
           >
-          <i class="fad fa-eye text-success"></i>
+          <i className="fad fa-eye text-success"></i>
           </div>
           <div
             className={`${isPassword == "text" ? "" : "d-none"}`}
             onClick={handleChangeType}
           >
-          <i class="fad fa-eye-slash text-success"></i>
+          <i className="fad fa-eye-slash text-success"></i>
           </div>
         </div>
       </div>

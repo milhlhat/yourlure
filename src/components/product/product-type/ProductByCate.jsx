@@ -47,7 +47,7 @@ function ProductByCate(props) {
                   variant="link"
                   onClick={() => viewMoreCategory(cate.categoryID)}
                 >
-                  Xem thêm &#160;<i class="fad fa-angle-double-right"></i>
+                  Xem thêm &#160;<i className="fad fa-angle-double-right"></i>
                 </YLButton>
               </div>
             </div>

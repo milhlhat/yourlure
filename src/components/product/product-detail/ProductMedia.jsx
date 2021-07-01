@@ -20,7 +20,7 @@ function ProductImage(props) {
 					onClick={goToCustomize}
 					hidden={!isCustome}
 				>
-					<i class="fa fa-pencil"></i>
+					<i className="fa fa-pencil"></i>
 				</button>
 				<img
 					src={product ? product.imageCollection[selectImg].linkImage : ''}

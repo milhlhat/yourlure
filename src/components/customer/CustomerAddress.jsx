@@ -57,7 +57,7 @@ function CustomerAddress(props) {
           variant="primary"
           to={DEFINELINK.customer + DEFINELINK.addressAdd}
         >
-          <i class="fa fa-plus"></i>Thêm địa chỉ
+          <i className="fa fa-plus"></i>Thêm địa chỉ
         </YLButton>
       </div>
       <div className="list-my-address">

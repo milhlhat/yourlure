@@ -4,6 +4,8 @@ import DEFINELINK from "routes/define-link";
 import { Redirect, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import UserApi from "api/user-api";
+import Login from "store-front-pages/Login";
+import Loading from "components/Loading";
 function CustomerAccount(props) {
   const history = useHistory();
   const handleLogout = () => {
@@ -32,6 +34,13 @@ function CustomerAccount(props) {
     fetchCustomAccount();
     return fetchCustomAccount();
   }, []);
+  // if(!account.data&&!account.isLoading&&!account.isSuccess){
+  //   return <Loading/>
+  // }
+  if(account.isLoading){
+    return <Loading/>
+  }
+  else
   return (
     <div className="bg-box">
       {account && (

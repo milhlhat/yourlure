@@ -125,7 +125,7 @@ function Sidebar(props) {
               </li>
               <li>
                 <button className="d-none close-button btn btn-outline-dark">
-                  <i class="fas fa-times"></i>
+                  <i className="fas fa-times"></i>
                 </button>
               </li>
             </ul>
