@@ -34,7 +34,7 @@ public class User {
     @NotNull
     @NotBlank(message = "password can not contains black character!")
     @Column(name = "password")
-    @Size(min = 8, message = "Minimum password length: 8 characters")
+    @Size(min = 6, message = "Minimum password length: 6 characters")
     private String password;
 
     @NotNull

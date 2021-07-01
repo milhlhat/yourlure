@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface OrderService {
 
     // store font -----------------------
-    Boolean guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
-    Boolean userProcessOrder(HttpServletRequest rq, OrderUserDtoInput userDtoInput) throws Exception;
+    Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
+    Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
 
     //admin ------------------------------
     Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable);

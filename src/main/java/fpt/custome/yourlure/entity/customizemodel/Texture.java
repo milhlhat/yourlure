@@ -17,6 +17,7 @@ import javax.persistence.*;
 public class Texture {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "textureId")
     private Long textureId;

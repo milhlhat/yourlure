@@ -58,7 +58,7 @@ public class Order {
     // todo: discount by % lúc nhận request là discount code. tính toán để có discount số tiền.
     private Integer discount;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến order ở trong orderline.
     //1 order có nhiều orderline
