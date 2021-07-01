@@ -1,7 +1,7 @@
 package fpt.custome.yourlure.controller.storefront;
 
 import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,10 +61,10 @@ public interface CartController {
      * user thực hiện order
      *
      * @param cartId        user
-     * @param orderDtoInput
+     * @param orderGuestDtoInput
      * @return
      */
     @PostMapping("order/{cartId}")
-    ResponseEntity<Optional<OrderDtoInput>> createOrder(@PathVariable("cartId") Long cartId,
-                                                        @RequestBody OrderDtoInput orderDtoInput);
+    ResponseEntity<Optional<OrderGuestDtoInput>> createOrder(@PathVariable("cartId") Long cartId,
+                                                             @RequestBody OrderGuestDtoInput orderGuestDtoInput);
 }

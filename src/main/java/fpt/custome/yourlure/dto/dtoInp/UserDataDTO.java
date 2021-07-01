@@ -1,27 +1,31 @@
 package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.Role;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Valid
 public class UserDataDTO {
-  
+
   @ApiModelProperty(position = 0)
-  private String username;
-  @ApiModelProperty(position = 1)
   @Size(min = 10, max = 10, message = "phone number just contains 10 characters")
+  @NotBlank(message = "phone can not contains black character!")
+  @NotNull
   private String phone;
-  @ApiModelProperty(position = 2)
-  private String userEmail;
-  @ApiModelProperty(position = 3)
+
+  @ApiModelProperty(position = 1)
+  @Size(min = 8, message = "Minimum password length: 8 characters")
+  @NotBlank(message = "password can not contains black character!")
+  @NotNull
   private String password;
-  @ApiModelProperty(position = 4)
-  List<Role> roles;
-
-
 
 }

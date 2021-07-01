@@ -17,6 +17,7 @@ import javax.persistence.*;
 @Table(name = "tbl_CartItem")
 public class CartItem {
 
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cartItemId")
@@ -31,20 +32,12 @@ public class CartItem {
     private Long variantId;
 
     @Nullable
-    @Column(name = "price")
-    private Float price;
-
-    @Nullable
     @Column(name = "quantity")
     private Integer quantity;
 
     @Nullable
     @Column(name = "weight")
     private Float weight;
-
-    @Nullable
-    @Column(name = "imgThumbnail")
-    private String imgThumbnail;
 
     @Nullable
     @Column(name = "customModelId")

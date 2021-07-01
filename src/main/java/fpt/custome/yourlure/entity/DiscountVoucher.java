@@ -75,12 +75,6 @@ public class DiscountVoucher {
 
     @JsonIgnore
     @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến discountVoucher ở trong Order.
-    //1 discountVoucher có nhiều Order
-    private Collection<Order> orderCollection;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
     //1 discountVoucher có nhiều DiscountVoucherCustomer
     private Collection<DiscountVoucherCustomer>     discountVoucherCustomers;
