@@ -67,7 +67,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
                     DiscountVoucher discountVoucher = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
                     discountVoucher.setDiscountVoucherId(id);
                     discountVoucher.setDiscountVoucherCustomers(update.getDiscountVoucherCustomers());
-                    discountVoucher.setOrderCollection(update.getOrderCollection());
+//                    discountVoucher.setOrderCollection(update.getOrderCollection());
                     discountVoucherRepos.save(discountVoucher);
                 }
 

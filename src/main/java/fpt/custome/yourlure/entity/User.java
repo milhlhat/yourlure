@@ -9,9 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,16 +29,16 @@ public class User {
     private Long userId;
 
     @Nullable
-    @Size(min = 4, max = 255, message = "Minimum username length: 4 characters")
-    @Column(name = "userName", unique = true, nullable = false)
     private String username;
 
-    @Nullable
+    @NotNull
+    @NotBlank(message = "password can not contains black character!")
     @Column(name = "password")
     @Size(min = 8, message = "Minimum password length: 8 characters")
     private String password;
 
-    @Nullable
+    @NotNull
+    @NotBlank(message = "phone can not contains black character!")
     @Column(name = "phone")
     @Size(min = 10, max = 10, message = "phone number just contains 10 characters")
     private String phone;
@@ -46,7 +48,7 @@ public class User {
     private Boolean gender;
 
     @Nullable
-    @Column(name = "userEmail", unique = true, nullable = false)
+    @Column(name = "userEmail", unique = true)
     private String userEmail;
 
     @Override
@@ -70,6 +72,7 @@ public class User {
                 '}';
     }
 
+    @NotNull
     @Column(name = "enabled")
     private Boolean enabled;
 
@@ -82,7 +85,7 @@ public class User {
     private String note;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    Set<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;

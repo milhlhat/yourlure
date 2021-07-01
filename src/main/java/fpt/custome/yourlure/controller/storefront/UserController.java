@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -93,7 +94,7 @@ public interface UserController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
-    String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user);
+    String signup(@ApiParam("Signup User") @Valid @RequestBody  UserDataDTO user);
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")

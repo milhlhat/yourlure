@@ -1,11 +1,10 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
-import fpt.custome.yourlure.entity.Order;
-import fpt.custome.yourlure.entity.OrderActivity;
-import fpt.custome.yourlure.entity.OrderLine;
+import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
@@ -45,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
     private ProductJpaRepos productJpaRepos;
 
     @Autowired
+    private VariantRepos variantRepos;
+
+    @Autowired
     private DiscountVoucherRepos discountVoucherRepos;
 
     @Autowired
@@ -54,32 +56,68 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper mapper;
 
     @Override
-    public Boolean processOrder(HttpServletRequest rq, OrderDtoInput orderDtoInput) {
-        try{
-            String tokenResolve = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq));
-//            User user = userRepos.findByPhone();
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            // process for Guest
-            System.out.println();
-        }
+    public Boolean guestProcessOrder( OrderGuestDtoInput orderGuestDtoInput) throws Exception {
 
         // save order information
-        Order order = Order.builder()
-                .address(orderDtoInput.getAddress())
-                .orderDate(new Date())
-                .receiverName(orderDtoInput.getReceiverName())
+        DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
+        if(voucher.getStart_date().compareTo(new Date()) < 0){
+            // the voucher is not start
+            throw new Exception("voucher is not start!");
+        }
+        if(voucher.getEnd_date().compareTo(new Date()) > 0){
+            // expire voucher
+            throw new Exception("voucher is expired!");
+        }
+        if(voucher.getUsed() >= voucher.getUsageLimit()){
+            throw new Exception("voucher is over used!");
+        }
 
-                .build();
+        Order order = mapper.map(orderGuestDtoInput, Order.class);
+        order.setOrderDate(new Date());
+        order.setDiscount(voucher.getDiscountValue());
+//        order = orderRepos.save(order);
 
+        List<OrderLine> orderLines = new ArrayList<>();
+        for (CartItem item : orderGuestDtoInput.getCartItems()) {
+            OrderLine orderLine = mapper.map(item, OrderLine.class);
+            // calculate product price include custom model
+            if(item.getCustomModelId() != null){
+                // get default price of product
+                Product product = productJpaRepos.getById(item.getProductId());
 
-//        List<CartItem> cartItems = new ArrayList<>();
-//        for (Long cartItemId : orderDtoInput.getCartItems()) {
-//            CartItem item = cartItemRepos.getById(cartItemId);
-//            OrderLine orderLine = mapper.map(item, OrderLine.class);
-//            // save order line behind here
-//        }
-        return false;
+                // calculate price of model
+
+                // summary
+            }else{
+                // set price by variant
+                Variant variant = variantRepos.getById(item.getVariantId());
+                if(variant.getQuantity() > 0){
+                    orderLine.setPrice(variant.getNewPrice());
+                    orderLine.setImgThumbnail(variant.getImageUrl());
+                    variant.setQuantity(variant.getQuantity()-1);
+                    variant = variantRepos.save(variant);
+
+                }else{
+                    throw new Exception("Variant out of stock!");
+                }
+
+            }
+
+            orderLine.setOrder(order);
+
+            // save order line below here
+//            orderLineRepos.save(orderLine);
+            orderLines.add(orderLine);
+        }
+        order.setOrderLineCollection(orderLines);
+        order = orderRepos.save(order);
+
+        return true;
+    }
+
+    @Override
+    public Boolean userProcessOrder(HttpServletRequest rq, OrderUserDtoInput userDtoInput) throws Exception {
+        return null;
     }
 
 
@@ -87,7 +125,7 @@ public class OrderServiceImpl implements OrderService {
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
 
         try {
-            Page<Order> list = orderRepos.findAllByNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
+            Page<Order> list = orderRepos.findAllByReceiverNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {

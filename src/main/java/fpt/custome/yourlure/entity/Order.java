@@ -55,8 +55,8 @@ public class Order {
     @JoinColumn(name = "userId")
     private User user;
 
-    // todo: sua discountID thanh discount code. de khi xoa discountId van ko anh houng toi order
-    private String discountVoucher;
+    // todo: discount by % lúc nhận request là discount code. tính toán để có discount số tiền.
+    private Integer discount;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

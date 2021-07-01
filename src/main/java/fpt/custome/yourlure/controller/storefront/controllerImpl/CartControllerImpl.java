@@ -2,7 +2,7 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CartController;
 import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import fpt.custome.yourlure.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +54,8 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Optional<OrderDtoInput>> createOrder(Long cartId,
-                                                               OrderDtoInput orderDtoInput) {
+    public ResponseEntity<Optional<OrderGuestDtoInput>> createOrder(Long cartId,
+                                                                    OrderGuestDtoInput orderGuestDtoInput) {
         return null;
     }
 }

@@ -43,6 +43,9 @@ public class UserServiceImpl implements UserService {
     private OrderRepos orderRepos;
 
     @Autowired
+    private UserAddressRepos userAddressRepos;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -87,6 +90,7 @@ public class UserServiceImpl implements UserService {
             user.setProvider(Provider.LOCAL);
             user.setEnabled(true);
             user.setMaxCustomizable(5);
+            user.setRoles(Collections.singleton(Role.ROLE_CUSTOMER));
             userRepos.save(user);
             return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
         } else {

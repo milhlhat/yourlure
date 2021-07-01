@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
-import fpt.custome.yourlure.dto.dtoInp.OrderDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Order;
@@ -14,7 +15,8 @@ import java.util.Optional;
 public interface OrderService {
 
     // store font -----------------------
-    Boolean processOrder(HttpServletRequest rq, OrderDtoInput orderDtoInput);
+    Boolean guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
+    Boolean userProcessOrder(HttpServletRequest rq, OrderUserDtoInput userDtoInput) throws Exception;
 
     //admin ------------------------------
     Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable);
