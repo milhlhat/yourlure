@@ -16,7 +16,9 @@ import javax.persistence.*;
 @Table(name = "tbl_OrderLine")
 public class OrderLine {
 
+
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderLineId")
     private Long orderLineId;
@@ -38,14 +40,17 @@ public class OrderLine {
     private String imgThumbnail;
 
     @NotNull
+    @JsonIgnore
     @Column(name = "productId")
     private Long productId;
 
     @Nullable
+    @JsonIgnore
     @Column(name = "variantId")
     private Long variantId;
 
     @Nullable
+    @JsonIgnore
     @Column(name = "customModelId")
     private Long customModelId;
 

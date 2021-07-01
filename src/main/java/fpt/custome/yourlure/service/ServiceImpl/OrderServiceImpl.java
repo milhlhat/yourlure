@@ -6,6 +6,9 @@ import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.entity.*;
+import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
+import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
+import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
@@ -20,10 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -56,42 +57,92 @@ public class OrderServiceImpl implements OrderService {
     private DiscountVoucherRepos discountVoucherRepos;
 
     @Autowired
+    private PaymentRepos paymentRepos;
+
+    @Autowired
+    private CustomPriceRepos customPriceRepos;
+
+    @Autowired
+    private CustomizeModelRepos customizeModelRepos;
+
+    @Autowired
     private DiscountVoucherCustomerRepos discountVoucherCustomerRepos;
 
     @Autowired
     private ModelMapper mapper;
 
+    protected Integer verifyDiscountCode(String discountCode) throws Exception {
+        DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
+        if (voucher != null) {
+            if (voucher.getStart_date().compareTo(new Date()) < 0) {
+                // the voucher is not start
+                throw new Exception("voucher is not start!");
+            }
+            if (voucher.getEnd_date().compareTo(new Date()) > 0) {
+                // expire voucher
+                throw new Exception("voucher is expired!");
+            }
+            if (voucher.getUsed() >= voucher.getUsageLimit()) {
+                throw new Exception("voucher is over used!");
+            }
+            return voucher.getDiscountValue();
+        }
+        return 0;
+    }
+
+    protected Payment verifyPayment(Long paymentId){
+        try{
+            return paymentRepos.getById(paymentId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return paymentRepos.getByPayment("OCD");
+        }
+
+    }
+
     @Override
-    public Boolean guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
-
-        // save order information
-        DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
-        if (voucher.getStart_date().compareTo(new Date()) < 0) {
-            // the voucher is not start
-            throw new Exception("voucher is not start!");
-        }
-        if (voucher.getEnd_date().compareTo(new Date()) > 0) {
-            // expire voucher
-            throw new Exception("voucher is expired!");
-        }
-        if (voucher.getUsed() >= voucher.getUsageLimit()) {
-            throw new Exception("voucher is over used!");
-        }
-
+    public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
         Order order = mapper.map(orderGuestDtoInput, Order.class);
         order.setOrderDate(new Date());
-        order.setDiscount(voucher.getDiscountValue());
-//        order = orderRepos.save(order);
+
+        // check payment
+        order.setPayment(verifyPayment(orderGuestDtoInput.getPaymentId()));
+
+
+        // save order information
+
+        order.setDiscount(verifyDiscountCode(orderGuestDtoInput.getDiscountCode()));
+
 
         List<OrderLine> orderLines = new ArrayList<>();
         for (CartItem item : orderGuestDtoInput.getCartItems()) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
-            // calculate product price include custom model
-            if (item.getCustomModelId() != null) {
+            // TODO: calculate product price include custom model
+            // get customize price
+            List<CustomPrice> customPrices = customPriceRepos.findAll();
+            Map<String, Float> prices = customPrices.stream()
+                    .collect(Collectors.toMap(CustomPrice::getName, CustomPrice::getPrice));
+            Product product = productJpaRepos.getById(item.getProductId());
+            if (item.getCustomModelId() != null && product.getCustomizable()) {
                 // get default price of product
-                Product product = productJpaRepos.getById(item.getProductId());
+                Float defaultPrice = product.getDefaultPrice();
 
-                // calculate price of model
+                // TODO: calculate price of model
+                Float customAmount = (float) 0;
+                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
+                for (CustomMaterial material : customizeModel.getCustomMaterials()) {
+                    if (material.getColor() != null && !material.getColor().trim().equals("")) { // todo: you can validate for it
+                        customAmount += prices.get("COLOR");
+                    }
+                    if (material.getText() != null && !material.getText().trim().equals("")) {
+                        customAmount += prices.get("TEXT");
+                    }
+                    if (material.getImg() != null && !material.getImg().trim().equals("")) {
+                        customAmount += prices.get("IMG");
+                    }
+                }
+                Float totalPrice = defaultPrice + customAmount;
+                orderLine.setPrice(totalPrice);
 
                 // summary
             } else {
@@ -111,18 +162,29 @@ public class OrderServiceImpl implements OrderService {
 
             orderLine.setOrder(order);
 
-            // save order line below here
-//            orderLineRepos.save(orderLine);
+            // save order below here
             orderLines.add(orderLine);
         }
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
 
-        return true;
+        return order;
     }
 
     @Override
-    public Boolean userProcessOrder(HttpServletRequest rq, OrderUserDtoInput userDtoInput) throws Exception {
+    public Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception {
+        User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
+        Order order = Order.builder()
+                .address(orderUserDtoInput.getAddress())
+                .user(user)
+                .orderDate(new Date())
+                .phone(user.getPhone())
+                .discount(verifyDiscountCode(orderUserDtoInput.getDiscountCode()))
+                .payment(verifyPayment(orderUserDtoInput.getPaymentId()))
+                .receiverName(user.getUsername())
+                .note(orderUserDtoInput.getNote())
+                .build();
+
         return null;
     }
 
@@ -159,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
 
         try {
-            Page<Order> list = orderRepos.findAllByPhoneContainsIgnoreCase(keyword, pageable);
+            Page<Order> list = orderRepos.findAllByReceiverNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {

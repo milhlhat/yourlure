@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -25,11 +26,11 @@ public class Product {
     @Column(name = "productId")
     private Long productId;
 
-    @Nullable
+    @NotNull
     @Column(name = "productName")
     private String productName;
 
-    @Nullable
+    @NotNull
     @Column(name = "defaultPrice")
     private Float defaultPrice;
 
@@ -73,8 +74,8 @@ public class Product {
     @Column(name = "deepDiving")
     private String deepDiving;
 
-    @Nullable
-    @Column(name = "customizable")
+    @NotNull
+    @Column(name = "customizable", columnDefinition = "bool default false" )
     private Boolean customizable;
 
     @Nullable

@@ -4,7 +4,6 @@ import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.entity.Order;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +15,8 @@ import java.util.Optional;
 public interface OrderService {
 
     // store font -----------------------
-    Boolean guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
-
-    Boolean userProcessOrder(HttpServletRequest rq, OrderUserDtoInput userDtoInput) throws Exception;
+    Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
+    Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
 
     Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
                                                     Integer limit);

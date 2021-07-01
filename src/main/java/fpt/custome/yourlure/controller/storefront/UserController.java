@@ -96,9 +96,8 @@ public interface UserController {
     @ApiOperation(value = "${UserController.signup}")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
-            @ApiResponse(code = 403, message = "Access denied"), //
-            @ApiResponse(code = 422, message = "Username is already in use")})
-    String signup(@ApiParam("Signup User") @Valid @RequestBody UserDataDTO user);
+            @ApiResponse(code = 422, message = "phone or email is already in use")})
+    String signup(@ApiParam("Signup User") @Valid @RequestBody  UserDataDTO user);
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")

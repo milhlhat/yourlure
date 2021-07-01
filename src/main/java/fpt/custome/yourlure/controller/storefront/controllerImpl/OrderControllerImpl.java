@@ -35,7 +35,11 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     public ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, OrderUserDtoInput order) {
-        return null;
+        try{
+            return new ResponseEntity<>(orderService.userProcessOrder(rq, order), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
