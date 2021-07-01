@@ -43,12 +43,12 @@ public class CartItem {
     private Float weight;
 
     @Nullable
-    @Column(name = "imgUrl")
-    private String imgUrl;
+    @Column(name = "imgThumbnail")
+    private String imgThumbnail;
 
     @Nullable
-    @Column(name = "customizeId")
-    private Long customizeId;
+    @Column(name = "customModelId")
+    private Long customModelId;
 
     @JsonIgnore
     @ManyToOne

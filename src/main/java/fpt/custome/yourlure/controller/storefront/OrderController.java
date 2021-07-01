@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public interface OrderController {
 
     @PostMapping("/process-order")
-    Boolean processOrder(HttpServletRequest rq, @RequestBody OrderDtoInput cartItem);
+    Boolean processOrder(HttpServletRequest rq, @RequestBody OrderDtoInput order);
 
 
 }

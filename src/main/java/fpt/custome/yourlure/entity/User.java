@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -81,9 +81,8 @@ public class User {
     @Column(name = "note")
     private String note;
 
-
     @ElementCollection(fetch = FetchType.EAGER)
-    Set<Role> roles;
+    List<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -107,7 +106,7 @@ public class User {
     private Collection<CustomizeModel> customizeCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<UserAddress> userAddressCollection;

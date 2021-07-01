@@ -41,7 +41,7 @@ public class CustomizeModel {
     @OneToMany(mappedBy = "customizeModel", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
-    private Collection<MaterialValue> materialValues;
+    private Collection<CustomMaterial> customMaterials;
 
 
 }
