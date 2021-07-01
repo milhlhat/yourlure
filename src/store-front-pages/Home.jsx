@@ -21,39 +21,36 @@ function Home() {
     failFetch: false,
   });
 
-  const fetchProductNewest = async () => {
-    try {
-      const response = await ProductAPI.getNewList();
-      setProductListNewest({
-        list: response,
-        isFetched: true,
-        failFetch: false,
-      });
-    } catch (error) {
-      console.log("fail to fetch list");
-    }
-  };
-  const fetchProductBestSeller = async () => {
-    try {
-      const response = await ProductAPI.getBestSeller();
-      setProductListBestSeller({
-        list: response,
-        isFetched: true,
-        failFetch: false,
-      });
-    } catch (error) {
-      setProductListBestSeller({
-        failFetch: true,
-      });
-      console.log("fail to fetch customer list");
-    }
-  };
-
   useEffect(() => {
+    const fetchProductNewest = async () => {
+      try {
+        const response = await ProductAPI.getNewList();
+        setProductListNewest({
+          list: response,
+          isFetched: true,
+          failFetch: false,
+        });
+      } catch (error) {
+        console.log("fail to fetch list");
+      }
+    };
+    const fetchProductBestSeller = async () => {
+      try {
+        const response = await ProductAPI.getBestSeller();
+        setProductListBestSeller({
+          list: response,
+          isFetched: true,
+          failFetch: false,
+        });
+      } catch (error) {
+        setProductListBestSeller({
+          failFetch: true,
+        });
+        console.log("fail to fetch customer list");
+      }
+    };
     fetchProductNewest();
     fetchProductBestSeller();
-    return fetchProductBestSeller(), fetchProductNewest();
-    // eslint-disable-next-line
   }, []);
   if (productListBestSeller.failFetch || productListNewest.failFetch) {
     return <ErrorLoad />;

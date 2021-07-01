@@ -1,137 +1,172 @@
-@import '../base/variable';
+@import "../base/variable";
 
 @media screen and (min-width: $mobile-width) {
-	.main-customize {
-		position: absolute;
-		top: 70px;
-		left: 20px;
-		right: 20px;
-	}
+  .main-customize {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    right: 20px;
+  }
 }
 
 .customize {
-	display: flex;
-	justify-content: center;
-	position: relative;
-	margin: 0;
-	padding: 0;
-	outline: none;
-	width: 100%;
-	height: 85vh;
-	overflow: hidden;
-	& canvas {
-		height: 100%;
-	}
-	& h1 {
-		position: absolute;
-		top: 43px;
-		left: 140px;
-		padding: 0;
-		margin: 40px;
-		font-size: 5em;
-		line-height: 0.7em;
-		letter-spacing: -6px;
-		color: #272730;
-	}
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  width: 100%;
+  height: 85vh;
+  overflow: hidden;
+  & canvas {
+    height: 100%;
+  }
+  & h1 {
+    position: absolute;
+    top: 43px;
+    left: 140px;
+    padding: 0;
+    margin: 40px;
+    font-size: 5em;
+    line-height: 0.7em;
+    letter-spacing: -6px;
+    color: #272730;
+  }
 }
 
 .picker {
-	position: absolute !important;
-	top: 50px;
-	right: 5px;
-	color: $text-color;
-	& .list-group-active {
-		color: #ffffff;
-		background-color: $hover-color;
-	}
-	& a {
-		min-width: 120px;
-	}
+  position: absolute !important;
+  top: 50px;
+  right: 5px;
+  color: $text-color;
+  & .list-group-active {
+    color: #ffffff;
+    background-color: $hover-color;
+  }
+  & a {
+    min-width: 120px;
+  }
 }
 .export {
-	position: absolute !important;
-	top: 5px;
-	right: 5px;
-	z-index: 2;
+  position: absolute !important;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
 }
 .tab-custom {
-	display: flex;
-	height: 100%;
-	& .tab-menu {
-		display: flex;
-		flex-direction: column;
-		background-color: #95a790;
+  display: flex;
+  height: 100%;
+  & .tab-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #95a790;
 
-		padding-top: 30px;
+    padding-top: 30px;
 
-		& .texture-action {
-			min-width: 50px;
-			min-height: 50px;
-			text-align: center;
-			color: white;
-			line-height: 45px;
-			cursor: pointer;
-		}
-		& .selected {
-			background-color: white;
-			color: $text-color;
-			cursor: pointer;
-			color: #ffffff77;
-		}
-	}
-	& .tab-detail {
-		background-color: white;
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 0 5px 5px 5px;
-		overflow: auto;
-		transition: all 1s linear;
-		&-close {
-			width: 100%;
-			text-align: right;
-			color: $close-btn-color;
-			font-size: x-large !important;
-		}
-		& .switch {
-			color: $text-color;
-			font-size: large;
-			font-weight: bold;
-			text-transform: uppercase;
-			padding: 5px 0 5px 0;
-		}
-		& .img-option {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
+    & .texture-action {
+      min-width: 50px;
+      min-height: 50px;
+      text-align: center;
+      color: white;
+      line-height: 45px;
+      cursor: pointer;
+    }
+    & .selected {
+      background-color: white;
+      color: $text-color;
+      cursor: pointer;
+      color: #ffffff77;
+    }
+  }
+  & .tab-detail {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 5px 5px 5px;
+    overflow: auto;
+    transition: all 1s linear;
+    & .detail {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    &-close {
+      width: 100%;
+      text-align: right;
+      color: $close-btn-color;
+      font-size: x-large !important;
+    }
+    & .switch {
+      color: $text-color;
+      font-size: large;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 5px 0 5px 0;
+    }
+    & .img-option {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 100%;
+      & .img-active {
+        border: 3px solid #95a790;
+        border-radius: 5px;
+      }
+      & img {
+        margin-right: 5px;
+        margin-top: 5px;
+        cursor: pointer;
+        max-width: 50px !important;
+        max-height: 50px !important;
+        border-radius: 5px;
+        border: 3px solid #fff;
+        object-fit: cover;
+      }
+    }
+    & .color-option {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: inherit;
+      & a {
+        position: relative;
+        display: block;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 50%;
+        border: 0.2rem solid #fff;
+        margin: 0 0.1rem 0.3rem;
+        transition: box-shadow 0.35s ease;
+      }
+      &-picker {
+        width: inherit;
+        padding: 0 10px 0 10px;
+      }
+    }
+  }
+}
 
-			& img {
-				margin-right: 5px;
-				margin-top: 5px;
-				cursor: pointer;
-				max-width: 50px !important;
-				max-height: 50px !important;
-			}
-		}
-		& .color-option {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			& a {
-				position: relative;
-				display: block;
-				width: 2.4rem;
-				height: 2.4rem;
-				border-radius: 50%;
-				border: 0.2rem solid #fff;
-				margin: 0 0.1rem 0.3rem;
-				transition: box-shadow 0.35s ease;
-			}
-			&-picker {
-				width: 100%;
-				padding: 0 10px 0 10px;
-			}
-		}
-	}
+.tab-custom {
+  & .tab-menu {
+    & .selected {
+      color: $primary;
+    }
+  }
+  & .switch-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $mobile-width) {
+  .customize {
+    & .picker {
+      display: none;
+    }
+  }
+  .switch-button {
+    display: block !important;
+  }
 }

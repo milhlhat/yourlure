@@ -1,81 +1,177 @@
-import YLButton from 'components/custom-field/YLButton';
-import React, { useState } from 'react';
-import doraemon from 'assets/images/lure_logo.jpeg'
-
+import YLButton from "components/custom-field/YLButton";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMaterialByMId } from "utils/product";
+import { setCustomizeInfo } from "redux/customize-action/customize-info";
 function AddTextToModelTab(props) {
-    const { onAddText } = props;
-    const [text, setText] = useState('');
+  const [isWarning, setIsWarning] = useState(false);
+  const [text, setText] = useState("");
 
-    const canvasRef = React.useRef(null)
-    let img = new Image();
-    img.src = doraemon;
-    img.crossOrigin = "anonymous"
-    React.useEffect(() => {
-        const canvas = canvasRef.current
-        const ctx = canvas.getContext('2d')
-        draw(ctx)
-    }, [text])
-    function scalePreserveAspectRatio(imgW, imgH, maxW, maxH) {
-        return (Math.min((maxW / imgW), (maxH / imgH)));
-    }
-    function draw(ctx) {
-        const canvas = canvasRef.current
+  const [currentMaterial, setCurrentMaterial] = useState([]);
+  const dispatch = useDispatch(setCustomizeInfo);
+  const customizeInfo = useSelector((state) => state.customizeInfo);
+  const mId = useSelector((state) => state.customizeId);
 
-        let w = img.width;
-        let h = img.height;
+  const canvasRef = React.useRef(null);
+  const imgRef = React.useRef(new Image());
 
-        // resize img to fit in the canvas 
-        // You can alternately request img to fit into any specified width/height
-        let sizer = scalePreserveAspectRatio(w, h, canvas.width, canvas.height);
-        console.log("sizer:", sizer);
+  let img = imgRef.current;
+  img.crossOrigin = "anonymous";
 
-        // resize canvas height to fit with the image
-        canvas.height = h * sizer;
-        ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
+  useEffect(() => {
+    setCurrentMaterial(getMaterialByMId(mId, customizeInfo));
+  }, [customizeInfo, mId]);
 
+  function handleChangeInputAddText(e) {
+    const value = e.target.value;
+    setText(value);
+  }
 
-        let textSize = 100;
-        let fontFamily = "'Dancing Script'";
+  function scalePreserveAspectRatio(imgW, imgH, maxW, maxH) {
+    return Math.min(maxW / imgW, maxH / imgH);
+  }
+  function draw(ctx, textInput) {
+    //
+    const canvas = canvasRef.current;
 
-        // write text to canvas
-        ctx.fillStyle = "#bc2929";
-        // ctx.font = "50px 'Kirang Haerang'";
-        ctx.font = textSize + "px " + fontFamily;
-        console.log("font:", ctx.font);
+    let w = img.width;
+    let h = img.height;
 
-        let textString = text,
-            textWidth = ctx.measureText(textString).width;
+    // resize img to fit in the canvas
+    // You can alternately request img to fit into any specified width/height
+    let sizer = scalePreserveAspectRatio(w, h, canvas.width, canvas.height);
 
-        console.log("text width size:", textSize);
-        ctx.fillText(textString, (canvas.width / 2) - (textWidth / 2), img.height / 2 + textSize/2);
-    }
+    // resize canvas height to fit with the image
+    canvas.height = h * sizer;
+    ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
 
-    function captureImg() {
+    let textSize = 100;
+    let fontFamily = "'Dancing Script'";
 
-        const myImage = canvasRef.current.toDataURL("image/png");
-        console.log("my image:", myImage);
-        onAddText(myImage);
+    // write text to canvas
+    ctx.fillStyle = "#FFF";
+    // ctx.font = "50px 'Kirang Haerang'";
+    ctx.font = textSize + "px " + fontFamily;
+    console.log("font:", ctx.font);
 
-    }
+    let textString = textInput ? textInput : currentMaterial.text;
 
-    function CanvasText() {
-        return (<canvas
-            className="d-none"
-            ref={canvasRef}
-            width={img.width}
-            height={img.height}
-        // onClick={handleCanvasClick}
-        />);
+    let textWidth = ctx.measureText(textString).width;
 
-    }
-
-    return (
-        <div>
-            <input type='text' className="w-100" defaultValue={text} onChange={(e) => setText(e.target.value)} />
-            <YLButton variant="primary" type="button" name="canvasText" onClick={captureImg}>Capture</YLButton>
-            <CanvasText />
-        </div>
+    console.log("text width size:", textSize);
+    ctx.fillText(
+      textString,
+      canvas.width / 2 - textWidth / 2,
+      img.height / 2 + textSize / 2
     );
+  }
+
+  async function handleChangeImg(img, imgId, textInput) {
+    img = img ? img : currentMaterial.img;
+    await setUrlImage(img);
+    const canvas = canvasRef.current;
+    const ctx = await canvas.getContext("2d");
+    draw(ctx, textInput);
+    const myImage = await canvasRef.current.toDataURL("image/png");
+
+    let list = JSON.parse(JSON.stringify(customizeInfo));
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].materialId === mId) {
+        list[i].img = myImage;
+        if (imgId) {
+          list[i].imgId = imgId;
+        }
+        if (textInput) {
+          list[i].text = text;
+        }
+      }
+    }
+
+    let action = setCustomizeInfo(list);
+    dispatch(action);
+  }
+  async function applyText() {
+    if (currentMaterial.imgId) {
+      handleChangeImg(null, null, text);
+    } else {
+      setIsWarning(true);
+    }
+  }
+  function setUrlImage(url) {
+    return new Promise(function (resolve, reject) {
+      img.onload = function () {
+        resolve(url);
+      };
+      img.onerror = function () {
+        reject(url);
+      };
+      img.src = url;
+    });
+  }
+  function CanvasText() {
+    return (
+      <canvas className="d-none" ref={canvasRef} width={500} height={500} />
+    );
+  }
+
+  return (
+    <div className="d-flex flex-column align-items-center w-100">
+      {currentMaterial?.canAddImg ? (
+        <>
+          <div className="img-option">
+            {currentMaterial.textures?.map((item) => (
+              // <>
+              <img
+                className={`${
+                  item.textureId === currentMaterial.imgId ? "img-active" : ""
+                }`}
+                src={item.textureUrl}
+                key={item.textureId}
+                width={50}
+                height={50}
+                onClick={() =>
+                  handleChangeImg(item.textureUrl, item.textureId, text)
+                }
+              />
+              // </>
+            ))}
+          </div>
+          <div className="d-flex flex-column mt-3 align-items-center">
+            {/* <YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} /> */}
+
+            {/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
+          </div>
+          {currentMaterial?.canAddText && (
+            <div className="w-100">
+              <hr className="hr my-3" />
+              <input
+                type="text"
+                className="form-control w-100"
+                defaultValue={currentMaterial.text}
+                onChange={(e) => handleChangeInputAddText(e)}
+              />
+              <YLButton
+                variant="primary"
+                type="button"
+                name="canvasText"
+                onClick={() => {
+                  applyText();
+                }}
+              >
+                Thêm chữ
+              </YLButton>
+              {isWarning && !currentMaterial.imgId && (
+                <p className="text-danger">Vui lòng chọn 1 texture</p>
+              )}
+              <CanvasText />
+            </div>
+          )}
+        </>
+      ) : (
+        <span>Bộ phận không hỗ trợ sử dụng hình ảnh</span>
+      )}
+    </div>
+  );
 }
 
 export default AddTextToModelTab;

@@ -20,9 +20,9 @@ import {
   getMaterialsName,
   getColorMaterialByName,
 } from "utils/product";
-import { setListName } from "redux/customize-action/customize-info";
+import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { setMaterialId } from "redux/customize-action/customize-id";
-// import { setMaterialInit } from 'redux/customize-action/customize-init-data';
+
 import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
 import ProductAPI from "api/product-api";
@@ -32,16 +32,20 @@ import { useHistory } from "react-router-dom";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_3D_MODEL;
+
 function RenderModel(props) {
   const ref = useRef();
 
   const dispatch = props.dispatch;
   const model3d = props.model3d;
-  let customizeInfo = props.customizeInfo;
+
   const isCapture = props.isCapture;
-  // let customizeInit = props.customizeInit;
+  let customizeInfo = props.customizeInfo;
   //Load 3d model
-  const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`, true);
+  const { nodes, materials } = useGLTF(
+    `${BE_SERVER}${BE_FOLDER}${model3d}`,
+    true
+  );
   // const { nodes, materials } = useGLTF(m3d, true);
 
   let listNodes = getNodesInfoBy(nodes, "Mesh");
@@ -50,15 +54,17 @@ function RenderModel(props) {
     "MeshStandardMaterial",
     "MeshBasicMaterial"
   );
-  let listMaterialsName = getMaterialsName(
-    materials,
-    "MeshStandardMaterial",
-    "MeshBasicMaterial"
-  );
-  useEffect(() => {
-    const action = setListName(listMaterialsName);
-    dispatch(action);
-  }, []);
+
+  // thay bang database
+  // let listMaterialsName = getMaterialsName(
+  //   materials,
+  //   "MeshStandardMaterial",
+  //   "MeshBasicMaterial"
+  // );
+  // useEffect(() => {
+  //   const action = setCustomizeInfo(listMaterialsName);
+  //   dispatch(action);
+  // }, []);
 
   let listTextures = [];
   let texture0 = useTexture(
@@ -159,7 +165,7 @@ function RenderModel(props) {
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: true });
 
       const camera = new THREE.PerspectiveCamera(
-        55,
+        70,
         window.innerWidth / window.innerHeight,
         1,
         1000
@@ -313,14 +319,15 @@ function ListActionMaterials(props) {
     <div className="list-group picker">
       {customizeInfo.length > 0 &&
         customizeInfo.map((item, i) => (
+          
           <a
-            onClick={() => handleChangeMId(item.id)}
+            onClick={() => handleChangeMId(item.materialId)}
             key={i}
             className={`list-group-item list-group-item-action pointer ${
-              mId === item.id ? "list-group-active" : ""
+              mId === item.materialId ? "list-group-active" : ""
             }`}
           >
-            {item.name}
+            {item.vnName}
           </a>
         ))}
     </div>
@@ -345,7 +352,7 @@ function ExportCustomInformations(props) {
 export default function Customize(props) {
   const customizeInfo = useSelector((state) => state.customizeInfo);
   const mId = useSelector((state) => state.customizeId);
-  // const customizeInit = useSelector((state) => state.customizeInit);
+
   const dispatch = useDispatch();
   const productId = props.match.params.id;
   const [product, setProduct] = useState({
@@ -353,36 +360,36 @@ export default function Customize(props) {
     isLoading: true,
     failFetch: false,
   });
-  const fetchProduct = async () => {
+
+  const fetchMaterialInfo = async () => {
     try {
-      const response = await ProductAPI.getProductByID(productId);
-      if (response.error) {
-        setProduct({ ...product, failFetch: true, isLoading: false });
-        throw new Error(response.error);
-      } else {
-        setProduct({
-          data: response,
-          isLoading: false,
-          failFetch: false,
-        });
-      }
+      const response = ProductAPI.getMaterialsInfoByProdId(productId);
+      setProduct({
+        data: response,
+        isLoading: false,
+        failFetch: false,
+      });
+      const action = setCustomizeInfo(response.defaultMaterials);
+      dispatch(action);
     } catch (error) {
       console.log("fail to fetch data");
     }
   };
-  useEffect(() => {
-    fetchProduct();
+  useEffect(async () => {
+    await fetchMaterialInfo();
+    // await fetchProduct();
+
     document.getElementById("footer").style.display = "none";
-  }, []);
+  }, [productId]);
   if (product.isLoading) {
     return <Loading />;
-  } else if (product.failFetch || !product.data.imgUrlModel) {
-    return <ErrorLoad></ErrorLoad>;
+    // } else if (product.failFetch || !product.data.imgUrlModel) {
+    //   return <ErrorLoad></ErrorLoad>;
   } else
     return (
       <div className="row main-customize">
         <div className=" col-md-3">
-          <TabSelectCustomize />
+          <TabSelectCustomize product={product} />
         </div>
         <div className=" col-md-9">
           <CanvasModel
@@ -390,7 +397,7 @@ export default function Customize(props) {
             // customizeInit={customizeInit}
             mId={mId}
             customizeInfo={customizeInfo}
-            model3d={product.data.imgUrlModel}
+            model3d={product.data.url}
           />
         </div>
       </div>
