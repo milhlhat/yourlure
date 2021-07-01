@@ -291,9 +291,15 @@ public class UserServiceImpl implements UserService {
     public Boolean updateAddress(HttpServletRequest req, UserAddressInput userAddressInput, Long userAddressId) {
         try {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-            UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
-            userAddress.setUser(user);
-            userAddress.setUserAddressId(userAddressId);
+            UserAddress userAddress = UserAddress.builder()
+                    .userName(userAddressInput.getUserName())
+                    .phone(userAddressInput.getPhone())
+                    .userEmail(userAddressInput.getUserEmail())
+                    .description(userAddressInput.getDescription())
+                    .userWardId(userAddressInput.getUserWardId())
+                    .user(user)
+                    .userAddressId(userAddressId)
+                    .build();
             userAddressRepos.save(userAddress);
             return true;
         } catch (Exception e) {
