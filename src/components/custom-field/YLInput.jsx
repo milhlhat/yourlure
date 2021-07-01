@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import { ErrorMessage } from "formik";
@@ -28,7 +28,7 @@ function InputField(props) {
   const { errors, touched } = form;
   const showError = errors[name] && touched[name];
   function handleChangeType() {
-    setIsPassWord(isPassword == "text" ? "password" : "text");
+    setIsPassWord(isPassword === "text" ? "password" : "text");
   }
 
   return (
@@ -43,15 +43,15 @@ function InputField(props) {
           placeholder={placeholder}
           invalid={showError}
         />
-        <div className={`display-eye ${type == "password" ? "" : "d-none"}`}>
+        <div className={`display-eye ${type === "password" ? "" : "d-none"}`}>
           <div
-            className={`${isPassword == "text" ? "d-none" : ""}`}
+            className={`${isPassword === "text" ? "d-none" : ""}`}
             onClick={handleChangeType}
           >
           <i className="fad fa-eye text-success"></i>
           </div>
           <div
-            className={`${isPassword == "text" ? "" : "d-none"}`}
+            className={`${isPassword === "text" ? "" : "d-none"}`}
             onClick={handleChangeType}
           >
           <i className="fad fa-eye-slash text-success"></i>
