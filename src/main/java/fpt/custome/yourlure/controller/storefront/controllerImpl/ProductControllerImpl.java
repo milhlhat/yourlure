@@ -5,13 +5,10 @@ import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
-import fpt.custome.yourlure.repositories.ProductRepos;
 import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +28,6 @@ public class ProductControllerImpl implements ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private ProductRepos productRepos;
 
 //    @Override
 //    public ResponseEntity<ProductOutPageable> getAll(Filter filter) {
