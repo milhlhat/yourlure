@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -33,7 +33,7 @@ public class User {
 
     @Nullable
     @Column(name = "password")
-    @Size(min = 8, message = "Minimum password length: 8 characters")
+    @Size(min = 6, message = "Minimum password length: 6 characters")
     private String password;
 
     @Nullable
@@ -82,7 +82,7 @@ public class User {
     private String note;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Role> roles;
+    Set<Role> roles;
 
     @Enumerated(EnumType.STRING)
     private Provider provider;

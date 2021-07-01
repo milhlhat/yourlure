@@ -11,7 +11,9 @@ public interface OrderRepos extends JpaRepository<Order, Long> {
 
     List<Order> findAllByUserUserId(Long id);
 
-    Page<Order> findAllByNameOrPhoneContainsIgnoreCase(String keyword, String phone, Pageable pageable);
+    Page<Order> findAllByReceiverNameContainsIgnoreCase(String keyword, Pageable pageable);
+
+    Page<Order> findAllByPhoneContainsIgnoreCase(String keyword, Pageable pageable);
 
     Page<Order> findAllByUserUserId(Long id, Pageable pageable);
 }

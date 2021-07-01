@@ -43,6 +43,9 @@ public class UserServiceImpl implements UserService {
     private OrderRepos orderRepos;
 
     @Autowired
+    private UserAddressRepos userAddressRepos;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired

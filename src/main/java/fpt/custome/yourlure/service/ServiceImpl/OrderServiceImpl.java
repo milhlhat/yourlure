@@ -55,10 +55,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Boolean processOrder(HttpServletRequest rq, OrderDtoInput orderDtoInput) {
-        try{
+        try {
             String tokenResolve = jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq));
 //            User user = userRepos.findByPhone();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             // process for Guest
             System.out.println();
@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
     public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
 
         try {
-            Page<Order> list = orderRepos.findAllByNameOrPhoneContainsIgnoreCase(keyword, "", pageable);
+            Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword, pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {

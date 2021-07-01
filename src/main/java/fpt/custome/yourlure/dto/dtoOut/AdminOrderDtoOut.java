@@ -26,7 +26,7 @@ public class AdminOrderDtoOut {
         private Long orderID;
         private Date orderDate;
         private String phone;
-        private String name;
+        private String receiverName;
         private String statusName;
         private Float total;
     }
