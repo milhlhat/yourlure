@@ -52,6 +52,14 @@ const UserApi = {
     const url = `/user/update-address?userAddressId=${id}`;
     return AxiosClient.post(url,address);
   },
+  signup:(user)=>{
+    const url = `/user/signup`;
+    return AxiosClient.post(url,user);
+  },
+  deleteAddress:(id)=>{
+    const url = `/user/delete-address?userAddressId=${id}`;
+    return AxiosClient.delete(url);
+  },
 };
 
 export default UserApi;

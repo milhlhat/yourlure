@@ -7,6 +7,8 @@ import YLButton from "components/custom-field/YLButton";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
 import { useState } from "react";
+import UserApi from "api/user-api";
+import userConfig from "constant/user-config";
 
 Register.propTypes = {};
 
@@ -44,8 +46,28 @@ function Register(props) {
 function RegisterBase(props) {
   const { changeTab } = props;
   const history = useHistory();
-  const register = (value) => {
-    changeTab(1, value);
+  const register = async (data) => {
+    delete data.rePassword;
+    console.log(data);
+    try {
+      const response = await UserApi.signup(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
+        localStorage.setItem(
+        userConfig.LOCAL_STORE_LOGIN_AT,
+        new Date().toLocaleString()
+      );
+        alert("Đăng ký thành công");
+        history.push("/");
+      }
+    } catch (error) {
+      alert("Đăng ký thất bại");
+      console.log("fail to fetch sign up customer");
+    }
+    //next step is get OTP message
+    // changeTab(1, data);
   };
   //constructor value for formik field
   const initialValues = {
@@ -115,6 +137,7 @@ function RegisterBase(props) {
                     type="submit"
                     variant="primary"
                     value="Đăng ký"
+                    width="100%"
                   ></YLButton>
                 </div>
               </Form>

@@ -10,7 +10,6 @@ import YLSelectAddress from "components/custom-field/YLSelectAddress";
 function ChangeAddress(props) {
   const location = useLocation();
   const { address } = location.state;
-  console.log(address);
   const history = useHistory();
   const defaultValues = { name: "" };
 
@@ -22,14 +21,13 @@ function ChangeAddress(props) {
     formState: { errors },
   } = methods;
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const response = await UserApi.updateAddress(data, address.userAddressID);
       if (response.error) {
         throw new Error(response.error);
       } else {
         alert("update thành công");
-        history.push("/customer/account");
+        history.push("/customer/address");
       }
     } catch (error) {
       alert("update thất bại");
@@ -39,7 +37,6 @@ function ChangeAddress(props) {
   const initialData = () => {
     setValue("userName", address?.userName);
     setValue("phone", address?.phone);
-    setValue("userEmail", address?.userEmail);
     setValue("description", address?.description);
   };
   useEffect(() => {
@@ -101,16 +98,6 @@ function ChangeAddress(props) {
                     (*){errors.adddescriptionress.message}
                   </span>
                 )}
-              </td>
-            </tr>
-            <tr>
-              <td className="text-end title-table">Email</td>
-              <td>
-                <input
-                  type="email"
-                  className="form-control"
-                  {...register("email")}
-                ></input>
               </td>
             </tr>
             <tr>

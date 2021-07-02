@@ -65,7 +65,7 @@ export default function ComfirmPopup(props) {
               color: "green",
             }}
           >
-            {negativeText ? negativeText : "Cancel"}
+            {negativeText ? negativeText : "Hủy"}
           </Button>
           <Button
             onClick={handleConfirm}
@@ -73,7 +73,7 @@ export default function ComfirmPopup(props) {
               color: "green",
             }}
           >
-            {positiveText ? positiveText : "OK"}
+            {positiveText ? positiveText : "Đồng ý"}
           </Button>
         </DialogActions>
       </Dialog>

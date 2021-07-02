@@ -1,7 +1,11 @@
 @import "../../base/variable";
 .order {
   .order-row {
-    padding: 5px 30px;
+    padding-left:  30px;
+    & .order-product-list{
+      height: 400px;
+      overflow: scroll;
+    }
     .order-info {
       display: flex;
       justify-content: space-between;

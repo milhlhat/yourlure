@@ -4,13 +4,17 @@ import UserApi from "api/user-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/ErrorLoad";
 import DEFINELINK from "routes/define-link";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import Login from "store-front-pages/Login";
+import UserUtils from "utils/user.js";
+
 function ManagementAccount({ children }) {
   const [account, setAccount] = useState({
     data: null,
     isLoading: false,
     isSuccess: false,
   });
+  const history = useHistory();
   const location = useLocation().pathname;
   const ACCOUNT_PATH = DEFINELINK.customer + DEFINELINK.account;
   const ORDER_PATH = DEFINELINK.customer + DEFINELINK.order;
@@ -25,6 +29,7 @@ function ManagementAccount({ children }) {
         const response = await UserApi.getMe();
         setAccount({ data: response, isLoading: false, isSuccess: true });
       } catch (error) {
+        history.push('/login')
         setAccount({ data: null, isLoading: false, isSuccess: false });
         console.log("fail to fetch information");
       }
@@ -38,10 +43,14 @@ function ManagementAccount({ children }) {
   // } else if (!account.isSuccess) {
   //   return <ErrorLoad />;
   // } else
+  // if(token){
+  //   history.push('/login');
+  // }
+  // else
   return (
     <div className="management-account container">
-      <div className="row w-100">
-        <div className="tab-switch bg-white col-3">
+      <div className="row w-100" >
+        <div className="tab-switch bg-white col-3 bg-shadow">
           <div className="account-name pt-2 ps-2">
             <i className="fad fa-user"></i>
             <span className="ms-2">

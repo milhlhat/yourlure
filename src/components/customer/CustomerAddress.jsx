@@ -4,6 +4,7 @@ import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/manage-address.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import DEFINELINK from "routes/define-link";
+import { events } from "@react-three/fiber";
 function CustomerAddress(props) {
   function formatAddress(address) {
     let des = address.description;
@@ -19,6 +20,20 @@ function CustomerAddress(props) {
     isSuccess: true,
   });
 
+  const onConfirm = async (id) => {
+    try {
+      const response = await UserApi.deleteAddress(id);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        alert("Xóa chỉ mặc định thành công");
+      }
+    } catch (error) {
+      alert("Xóa chỉ mặc định thất bại");
+      console.log("fail to fetch delete address");
+    }
+    window.location.reload();
+  };
   const handleSetDefaultAddress = async (id) => {
     try {
       const response = await UserApi.setAddressDefault(id);
@@ -31,7 +46,7 @@ function CustomerAddress(props) {
       alert("Đặt địa chỉ mặc định thất bại");
       console.log("fail to fetch customer list");
     }
-    window.location.reload();
+    fetchCustomAddress();
   };
 
   const fetchCustomAddress = async () => {
@@ -61,6 +76,9 @@ function CustomerAddress(props) {
         </YLButton>
       </div>
       <div className="list-my-address">
+        {address?.data?.length <= 0 && (
+          <h5 className="mt-4">Không có địa chỉ nào</h5>
+        )}
         {address?.data?.map((address, i) => (
           <div className="address-row " key={"address-row" + i}>
             <div className="col-sm-12 col-md-8 ">
@@ -70,7 +88,9 @@ function CustomerAddress(props) {
                     <td className="address-title">Họ và Tên</td>
                     <td className="address-value">
                       {address?.userName}{" "}
-                      {address?.isDefault && <span className="default-address"> mặc định</span>}
+                      {address?.isDefault && (
+                        <span className="default-address"> mặc định</span>
+                      )}
                     </td>
                   </tr>
                   <tr>
@@ -91,9 +111,12 @@ function CustomerAddress(props) {
                   width="70px"
                   height="25px"
                   to={{
-                    pathname:DEFINELINK.customer +"/address/edit/" +address.userAddressID,
+                    pathname:
+                      DEFINELINK.customer +
+                      "/address/edit/" +
+                      address.userAddressID,
                     state: {
-                      address:address
+                      address: address,
                     },
                   }}
                 >
@@ -106,19 +129,24 @@ function CustomerAddress(props) {
                   btnText="Xóa"
                   title="Xóa"
                   content="Bạn chắc chắn muốn xóa địa chỉ?"
+                  onConfirm={() => onConfirm(address.userAddressID)}
+                  // onConfirm={onConfirm}
                 />
               </div>
               <div
-                onClick={() => handleSetDefaultAddress(address.userAddressID)}
+                // onClick={() => handleSetDefaultAddress(address.userAddressID)}
               >
-                <YLButton
-                  variant="light"
-                  disabled={address.isDefault}
-                  height="25px"
-                  width="145px"
-                >
-                  Đặt làm mặc định
-                </YLButton>
+                <form onSubmit={()=>handleSetDefaultAddress(address.userAddressID)}>
+                  <YLButton
+                    type="submit"
+                    variant="light"
+                    disabled={address.isDefault}
+                    height="25px"
+                    width="145px"
+                  >
+                    Đặt làm mặc định
+                  </YLButton>
+                </form>
               </div>
             </div>
           </div>

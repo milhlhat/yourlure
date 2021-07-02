@@ -96,13 +96,13 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
-                  {...register("address", {
+                  {...register("description", {
                     required: "Trường bắt buộc",
                   })}
                 ></input>
-                {errors.address && (
+                {errors.description && (
                   <span className="text-danger">
-                    (*){errors.address.message}
+                    (*){errors.description.message}
                   </span>
                 )}
               </td>

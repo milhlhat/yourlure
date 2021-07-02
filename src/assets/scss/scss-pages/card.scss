@@ -1,7 +1,8 @@
+@import "assets/scss/base/_variable.scss";
 .cart-product {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   column-gap: 40px;
   & .cart-right {
     & .cart-detail {
@@ -20,6 +21,16 @@
       & .btn-cart-continous {
         margin-left: auto;
       }
+    }
+  }
+  & .payment-methods {
+    width: 100%;
+    & .bottom-line {
+      width: 100px;
+      border-bottom: 2px solid $primary;
+    }
+    & .payment-method-content{
+      // width: 60%;
     }
   }
 }

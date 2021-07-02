@@ -22,6 +22,7 @@ function ManagerProductAddNew(props) {
   const productId = props.match.params.id;
 
   const [selectedImages, setSelectedImage] = useState([]);
+  const [fileImages, setFileImage] = useState([]);
   const [selectedImagesName, setSelectedImageName] = useState([]);
   const [categoryList, setCategoryList] = useState({
     list: [],
@@ -71,6 +72,7 @@ function ManagerProductAddNew(props) {
     let file = Array.from(e.target.files);
     let nameFile = e.target.value;
     if (file) {
+      setFileImage(prevState => (prevState.concat(file)))
       // let bb = isExist(selectedImagesName, file);
       // console.log(bb);
       console.log(file);
@@ -112,7 +114,10 @@ function ManagerProductAddNew(props) {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
-    console.log(data);
+    let fin={...data,imgList:fileImages}
+    console.log(fin);
+    
+    //selectedImages
   };
 
   const handleChangeCustomWeight = (e) => {
@@ -444,6 +449,7 @@ function ManagerProductAddNew(props) {
             <div className="px-3 pt-3 product-images-add">
               <h5>Hình ảnh</h5>
               <input
+              {...register("imgList")}
                 hidden
                 type="file"
                 multiple

@@ -80,7 +80,7 @@ function ManagerProduct(props) {
                 <th>#</th>
                 <th>Tên sản phẩm</th>
                 <th>Danh mục</th>
-                <th>Đã đăng tải</th>
+                <th>Trạng thái</th>
                 <th>Giá</th>
                 <th></th>
               </tr>
@@ -104,11 +104,7 @@ function ManagerProduct(props) {
                     </td>
                     <td>{item.category.categoryName}</td>
                     <td className="text-center">
-                      <input
-                        type="checkbox"
-                        checked={item.visibleInStorefront}
-                        disabled
-                      />
+                      {item.visibleInStorefront==null?'-':item.visibleInStorefront?'Đăng tải':'Ngừng kinh doanh'}
                     </td>
                     <td>
                       {!item

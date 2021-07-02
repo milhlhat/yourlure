@@ -1,0 +1,16 @@
+@import 'assets/scss/base/_variable.scss';
+.manager-user-show {
+  padding: 20px;
+  & table {
+    width: 100%;
+  }
+  & td,
+  & th {
+    padding: 5px;
+  }
+  & th,
+  & caption {
+    font-weight: bold;
+    color: $primary;
+  }
+}
