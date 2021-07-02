@@ -37,5 +37,9 @@ const DEFINELINK = {
   managerProductAddNew: "/addnew",
   managerProductDetail: "/detail/:id",
   managerProductEdit: "/edit/:id",
+
+  //manager category route
+  managementCategory: "/category",
+  managerCategoryAddNew: "/addnew",
 };
 export default DEFINELINK;

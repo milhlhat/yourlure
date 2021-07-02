@@ -6,6 +6,7 @@ import DEFINELINK from 'routes/define-link';
 
 const ManagerUser = React.lazy(() => import('./manager-user-route.js'));
 const ManagerProduct = React.lazy(() => import('./manager-product-route.js'));
+const ManagerCategory = React.lazy(() => import('./manager-category-route.js'));
 
 function ManagementRouter(props) {
     const match = useRouteMatch();
@@ -15,6 +16,7 @@ function ManagementRouter(props) {
             <Switch>
             <Route path={path + DEFINELINK.managementUser} component={ManagerUser} />
             <Route path={path + DEFINELINK.managementProduct} component={ManagerProduct} />
+            <Route path={path + DEFINELINK.managementCategory} component={ManagerCategory} />
             </Switch>
         </ManagerLayout>
     );

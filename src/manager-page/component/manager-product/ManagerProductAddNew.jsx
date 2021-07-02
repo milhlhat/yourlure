@@ -72,7 +72,7 @@ function ManagerProductAddNew(props) {
     let file = Array.from(e.target.files);
     let nameFile = e.target.value;
     if (file) {
-      setFileImage(prevState => (prevState.concat(file)))
+      setFileImage((prevState) => prevState.concat(file));
       // let bb = isExist(selectedImagesName, file);
       // console.log(bb);
       console.log(file);
@@ -94,10 +94,28 @@ function ManagerProductAddNew(props) {
       file.map((file) => URL.revokeObjectURL(file));
     }
   };
+  const handleDeleteImage = (e) => {
+    console.log(e.target.src);
+    console.log(selectedImages);
+    setSelectedImage((preImages) =>
+      preImages.filter((value) => value != e.target.src)
+    );
+    // let blob = await fetch(url).then(r => r.blob());
+  };
   const renderPhotos = (sourse) => {
-    if(sourse?.length<1) return <span>Chưa có hình ảnh</span>
+    if (sourse?.length < 1) return <span>Chưa có hình ảnh</span>;
     return sourse?.map((src, i) => {
-      return <img width={50} src={src} key={i} />;
+      return (
+        <div className="img-item">
+          <img
+            src={src}
+            key={"img-list-" + i}
+            className="pointer"
+            onClick={handleDeleteImage}
+          />
+          <button className="btn btn-light">Xóa</button>
+        </div>
+      );
     });
   };
 
@@ -114,9 +132,9 @@ function ManagerProductAddNew(props) {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
-    let fin={...data,imgList:fileImages}
+    let fin = { ...data, imgList: fileImages };
     console.log(fin);
-    
+
     //selectedImages
   };
 
@@ -151,11 +169,12 @@ function ManagerProductAddNew(props) {
         {fishList?.list?.fishDtoOuts?.map((fish, i) => (
           <div key={"fish" + i}>
             <input
-              name="fish"
+              name="fishList"
               class="form-check-input pointer"
               type="checkbox"
-              value=""
+              value={fish.fishID}
               id={fish.fishID}
+              {...register("fishList")}
             />
             <label class="form-check-label pointer" for={fish.fishID}>
               {fish.fishName}
@@ -183,7 +202,6 @@ function ManagerProductAddNew(props) {
   }, []);
   return (
     <div>
-
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" product-add-new-form row">
@@ -442,14 +460,14 @@ function ManagerProductAddNew(props) {
             </div>
             <hr />
             <div className="px-3">
-              <CheckBox {...register("fish")} />
+              <CheckBox {...register("fishList")} />
             </div>
           </div>
           <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
             <div className="px-3 pt-3 product-images-add">
               <h5>Hình ảnh</h5>
               <input
-              {...register("imgList")}
+                {...register("imgList")}
                 hidden
                 type="file"
                 multiple
@@ -461,9 +479,11 @@ function ManagerProductAddNew(props) {
               </label>
             </div>
             <hr />
-            <div className="px-3 ">{renderPhotos(selectedImages)}</div>
+            <div className="px-3 manager-product-imgList">
+              {renderPhotos(selectedImages)}
+            </div>
           </div>
-          <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
+          {/* <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
             <div className="px-3 pt-3 product-images-add">
               <h5>Variant</h5>
               <input
@@ -477,7 +497,7 @@ function ManagerProductAddNew(props) {
               </label>
             </div>
             <hr />
-          </div>
+          </div> */}
           <div className="col-12 bg-white bg-shadow submit-button-form">
             <YLButton variant="danger" type="submit" value="Hủy" />
             <YLButton variant="primary" type="submit" value="Xong" />
