@@ -12,13 +12,7 @@ function CartProduct(props) {
     isLoading: false,
     isSuccess: false,
   });
-  const [totalCost, setTotalCost] = useState(0);
-  const handleChangeChecked = (id, checked) => {};
 
-  function handleDelete(id) {}
-
-  function handleChangeQuantity(id, quantity) {}
-  function updateQuantity() {}
   useEffect(() => {}, []);
   return (
     <div className="container">
@@ -49,7 +43,9 @@ function CartProduct(props) {
                 </tr>
                 <tr>
                   <td colSpan="2">
-                    <YLButon variant="primary" width="100%">Tiếp tục</YLButon>
+                    <YLButon variant="primary" width="100%">
+                      Tiếp tục
+                    </YLButon>
                   </td>
                 </tr>
                 <tr>
@@ -63,7 +59,7 @@ function CartProduct(props) {
         </div>
         <div className="d-flex payment-methods">
           <div className=" cart-left col-lg-8 col-md-7 col-sm-12 bg-box bg-shadow  p-3 mt-5">
-            <h4>phương thức thanh toán</h4>
+            <h4>Phương thức thanh toán</h4>
             <div className="mb-4 bottom-line"></div>
             <div className="payment-method-content col-md-8 col-11">
               <h6>COD-Thanh toán khi nhận hàng</h6>

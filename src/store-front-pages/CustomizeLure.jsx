@@ -9,7 +9,7 @@ import {
   Loader,
 } from "@react-three/drei";
 import * as THREE from "three";
-import m3d from "assets/3d-models/moi_thia_dw06.glb";
+
 import whiteImg from "assets/images/white-img.jpg";
 import "assets/scss/scss-pages/customize-lure.scss";
 import TabSelectCustomize from "components/tab-select-customize/TabSelectCustomize";
@@ -24,8 +24,8 @@ import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { setMaterialId } from "redux/customize-action/customize-id";
 
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
-import ProductAPI from "api/product-api";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import ProductAPI, { submitCustomizeByModelId } from "api/product-api";
 import YLButton from "components/custom-field/YLButton";
 import { setIsCapture } from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
@@ -184,16 +184,16 @@ function RenderModel(props) {
       rerender.render(scene, camera);
       let imgCapture = rerender.domElement.toDataURL();
 
-    // let submitParams = {
-    //   defaultMaterials : customizeInfo, 
-    //   name : "your-custom",
-    //   model3dId: 0,
-    //   thumbnail: {
-    //     content: string,
-    //     name: string
-    //   }
-
-    // }
+      let submitParams = {
+        materials: customizeInfo,
+        name: "your-custom",
+        model3dId: 15,
+        thumbnail: {
+          content: imgCapture,
+          name: "capture.jpg",
+        },
+      };
+      submitCustomizeByModelId(submitParams);
       // w.document.body.appendChild(img);
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: false });
       const action = setIsCapture({ isCapture: false, img: imgCapture });
@@ -367,16 +367,16 @@ export default function Customize(props) {
   const [product, setProduct] = useState({
     data: "",
     isLoading: true,
-    failFetch: false,
+    isSuccess: false,
   });
 
   const fetchMaterialInfo = async () => {
     try {
-      const response = ProductAPI.getMaterialsInfoByProdId(productId);
+      const response = await ProductAPI.getMaterialsInfoByProdId(productId);
       setProduct({
         data: response,
         isLoading: false,
-        failFetch: false,
+        isSuccess: true,
       });
       const action = setCustomizeInfo(response.defaultMaterials);
       dispatch(action);
@@ -392,8 +392,8 @@ export default function Customize(props) {
   }, [productId]);
   if (product.isLoading) {
     return <Loading />;
-    // } else if (product.failFetch || !product.data.imgUrlModel) {
-    //   return <ErrorLoad></ErrorLoad>;
+  } else if (!product.isSuccess) {
+    return <ErrorLoad></ErrorLoad>;
   } else
     return (
       <div className="row main-customize">

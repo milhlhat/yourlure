@@ -7,7 +7,7 @@ import Loading from "components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilter, saveFilter } from "utils/product";
 import { useHistory } from "react-router-dom";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 ProductByCate.propTypes = {};
 
 function ProductByCate(props) {

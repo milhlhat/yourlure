@@ -7,7 +7,7 @@ import {
   setFilter,
 } from "redux/product-action/manager/fetch-manager-filter";
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 import Pagination from "react-js-pagination";
 import { filterConfig } from "constant/filter-setting";
 import YLButton from "components/custom-field/YLButton";

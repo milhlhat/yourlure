@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "assets/scss/scss-components/customer/management-account.scss";
 import UserApi from "api/user-api";
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 import DEFINELINK from "routes/define-link";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Login from "store-front-pages/Login";

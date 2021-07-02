@@ -5,7 +5,7 @@ import "assets/scss/scss-components/customer/manage-order.scss";
 import OrderAPI from "api/order-api";
 import { filterConfig } from "constant/filter-setting";
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 
 import Pagination from "react-js-pagination";
 function CutomerOrder(props) {

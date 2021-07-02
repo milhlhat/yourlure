@@ -28,8 +28,9 @@ const ProductAPI = {
     return AxiosClient.post(url, param);
   },
   getMaterialsInfoByProdId: (id) => {
-    // const url = 'api/product/product-filter';
-    return dumyCustomize.initMaterials();
+    const url = 'model3d/get-model-by-product-id/31';
+    return AxiosClient.get(url);
+    // return dumyCustomize.initMaterials();
   },
   submitCustomizeByModelId: (params) => {
     const url = "/model3d/create-custom";

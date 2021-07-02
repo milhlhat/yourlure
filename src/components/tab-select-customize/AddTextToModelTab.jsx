@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 function AddTextToModelTab(props) {
+  const BE_SERVER = process.env.REACT_APP_API_URL;
+  const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
+
   const [isWarning, setIsWarning] = useState(false);
   const [text, setText] = useState("");
 
@@ -56,7 +59,7 @@ function AddTextToModelTab(props) {
     console.log("font:", ctx.font);
 
     let textString = textInput ? textInput : currentMaterial.text;
-    console.log(textString);
+     
     let textWidth = ctx.measureText(textString).width;
 
     console.log("text width size:", textSize);
@@ -81,6 +84,7 @@ function AddTextToModelTab(props) {
         list[i].img = myImage;
         if (imgId) {
           list[i].imgId = imgId;
+          console.log('img', imgId);
         }
         if (textInput) {
           list[i].text = textInput;
@@ -106,7 +110,7 @@ function AddTextToModelTab(props) {
       img.onerror = function () {
         reject(url);
       };
-      img.src = process.env.REACT_APP_URL_FILE_DOWNLOAD + url;
+      img.src = url;
     });
   }
   function CanvasText() {
@@ -133,12 +137,16 @@ function AddTextToModelTab(props) {
                 className={`${
                   item.textureId === currentMaterial.imgId ? "img-active" : ""
                 }`}
-                src={item.textureUrl}
-                key={item.textureId}
+                src={BE_SERVER + BE_FOLDER + item.textureUrl}
+                key={"texture" + mId + item.textureId}
                 width={50}
                 height={50}
                 onClick={() =>
-                  handleChangeImg(item.textureUrl, item.textureId, null)
+                  handleChangeImg(
+                    BE_SERVER + BE_FOLDER + item.textureUrl,
+                    item.textureId,
+                    null
+                  )
                 }
               />
               // </>

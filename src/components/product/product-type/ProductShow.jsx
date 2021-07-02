@@ -6,7 +6,7 @@ import "assets/scss/scss-components/product/product-type.scss";
 import { filterConfig } from "constant/filter-setting";
 import { findByFilter } from "redux/product-action/fetch-filter";
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 function ProductShow(props) {
   const products = props.products;
   const productFilter = useSelector((state) => state.productFilter.filter);

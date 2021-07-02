@@ -4,7 +4,7 @@ import YLButton from "components/custom-field/YLButton";
 import Carosel from "components/card/Carosel";
 import ProductAPI from "api/product-api";
 import Loading from "components/Loading";
-import ErrorLoad from "components/ErrorLoad";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 import banner from "assets/images/urban-fishing-in-boston-social.jpg";
 import { Can } from "ability/can";
 import DEFINELINK from "routes/define-link";
@@ -53,7 +53,7 @@ function Home() {
     fetchProductBestSeller();
   }, []);
   if (productListBestSeller.failFetch || productListNewest.failFetch) {
-    return <ErrorLoad />;
+    return <ErrorLoad hasLayout/>;
   } else if (!productListBestSeller.isFetched || !productListNewest.isFetched) {
     return <Loading />;
   } else

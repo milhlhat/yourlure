@@ -125,9 +125,15 @@ function Campaign(props) {
     window.scrollTo(0, 0);
     fetchCampaignList();
     fetchCampaign(id);
-    setIsEnd(campaign?campaign.startDate-new Date()>0?false:true:true);
-    if(!isEnd){
-      timeCountDown(campaign? new Date(campaign.startDate):new Date("2021-06-26T07:51:26.000+00:00"));
+    setIsEnd(
+      campaign ? (campaign.startDate - new Date() > 0 ? false : true) : true
+    );
+    if (!isEnd) {
+      timeCountDown(
+        campaign
+          ? new Date(campaign.startDate)
+          : new Date("2021-06-26T07:51:26.000+00:00")
+      );
     }
     console.log(campaignList);
   }, [id]);
@@ -136,11 +142,7 @@ function Campaign(props) {
       <div className="banner">
         <img
           className="img-banner"
-          src={
-            campaign &&
-            campaign.imageCollection &&
-            campaign.imageCollection[0].linkImage
-          }
+          src={campaign?.imageCollection[0]?.linkImage}
           alt=""
         />
         <div className={`countdown ${isEnd ? "d-none" : ""}`}>
@@ -237,10 +239,10 @@ function Campaign(props) {
                 <img
                   src={
                     list && list.imageCollection
-                      ? list.imageCollection[0].linkImage
+                      ? list.imageCollection[0]?.linkImage
                       : ""
                   }
-                  alt="Lỗi ảnh"
+                  alt="Hình ảnh về sự kiện"
                 />
               </div>
               <div className="dateEnd">

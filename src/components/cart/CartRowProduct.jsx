@@ -42,8 +42,8 @@ function CartRowProduct(props) {
             <td>50.000</td>
             <td>
             <ConfirmPopup
-                  variant="danger"
-                  width="70px"
+                  variant="light"
+                  width="30px"
                   height="25px"
                   btnText={<i className="fal fa-times"></i>}
                   title="Xóa sản phẩm"
