@@ -5,6 +5,7 @@ import fpt.custome.yourlure.entity.Image;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -29,6 +30,7 @@ public class StoreUserOrderDtoOut {
         private String phone;
         private String name;
         private String note;
+        private Date orderDate;
         private String activityName;
         List<ProductDtoOut> productDtoOuts;
 
