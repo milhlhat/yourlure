@@ -4,10 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.CustomModelDto;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.entity.User;
-import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
-import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
-import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
-import fpt.custome.yourlure.entity.customizemodel.Model3d;
+import fpt.custome.yourlure.entity.customizemodel.*;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.service.CustomizeModelService;
@@ -36,6 +33,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     private Model3dRepos model3dRepos;
 
     @Autowired
+    private DefaultMaterialRepos defaultMaterialRepos;
+
+    @Autowired
+    private TextureRepos textureRepos;
+
+    @Autowired
     private CustomMaterialRepos customMaterialRepos;
 
     @Autowired
@@ -53,10 +56,28 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
     @Override
     public Model3d createModel3d(Model3dDtoInput m3dIn) {
-        Model3d m3d = mapper.map(m3dIn, Model3d.class);
-        Product product = productJpaRepos.getById(m3dIn.getProductId());
-        m3d.setProduct(product);
-        return model3dRepos.save(m3d);
+        Product product = productJpaRepos.findById(m3dIn.getProductId()).orElse(null);
+        Model3d m3d = Model3d.builder()
+                .product(product)
+                .name(m3dIn.getName())
+                .url(m3dIn.getUrl())
+                .defaultMaterials(new ArrayList<>())
+                .build();
+        m3d = model3dRepos.save(m3d);
+
+        for (DefaultMaterial defaultMaterial : m3dIn.getDefaultMaterials()) {
+            defaultMaterial.setModel3d(m3d);
+            defaultMaterial = defaultMaterialRepos.save(defaultMaterial);
+
+            for (Texture texture : defaultMaterial.getTextures()) {
+                texture.setMaterial(defaultMaterial);
+                texture = textureRepos.save(texture);
+
+            }
+            m3d.getDefaultMaterials().add(defaultMaterial);
+
+        }
+        return m3d;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package fpt.custome.yourlure.repositories;
 
+import fpt.custome.yourlure.entity.customizemodel.DefaultMaterial;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
+import fpt.custome.yourlure.entity.customizemodel.Texture;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
