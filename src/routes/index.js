@@ -6,22 +6,25 @@ import Loading from "components/Loading";
 import DEFINELINK from "routes/define-link";
 
 import { AbilityContext } from "ability/can";
-import defineAbilityFor from "ability/ability";
-import UserApi from "api/user-api";
+import { buildAbilityFor } from "ability/ability";
+ 
+import { fetchRoles } from "utils/user";
 
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 function AppRouter() {
-  const [ability, setAbility] = useState(defineAbilityFor([]));
+  const [ability, setAbility] = useState(buildAbilityFor([]));
   useEffect(() => {
-    const fetchRoles = async () => {
+    const setRoles = async () => {
       try {
-        const response = await UserApi.getRoles();
-        setAbility(defineAbilityFor(response));
-      } catch (error) {}
+        const response = await fetchRoles();
+        setAbility(buildAbilityFor(response));
+      } catch (error) {
+        throw error;
+      }
     };
-    fetchRoles();
+    setRoles();
   }, []);
   return (
     <AbilityContext.Provider value={ability}>

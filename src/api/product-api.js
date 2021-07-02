@@ -31,6 +31,10 @@ const ProductAPI = {
     // const url = 'api/product/product-filter';
     return dumyCustomize.initMaterials();
   },
+  submitCustomizeByModelId: (params) => {
+    const url = "/model3d/create-custom";
+    return AxiosClient.post(url, params);
+  },
 };
 export const {
   getBestSeller,
@@ -38,5 +42,6 @@ export const {
   getAllCategory,
   getAllFish,
   getProductByFilter,
+  submitCustomizeByModelId,
 } = ProductAPI;
 export default ProductAPI;

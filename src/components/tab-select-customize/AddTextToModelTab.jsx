@@ -18,8 +18,9 @@ function AddTextToModelTab(props) {
   let img = imgRef.current;
   img.crossOrigin = "anonymous";
 
-  useEffect(() => {
+  useEffect(async () => {
     setCurrentMaterial(getMaterialByMId(mId, customizeInfo));
+    // await setUrlImage(customizeInfo.img);
   }, [customizeInfo, mId]);
 
   function handleChangeInputAddText(e) {
@@ -49,13 +50,13 @@ function AddTextToModelTab(props) {
     let fontFamily = "'Dancing Script'";
 
     // write text to canvas
-    ctx.fillStyle = "#FFF";
+    ctx.fillStyle = "#0000FF";
     // ctx.font = "50px 'Kirang Haerang'";
     ctx.font = textSize + "px " + fontFamily;
     console.log("font:", ctx.font);
 
     let textString = textInput ? textInput : currentMaterial.text;
-
+    console.log(textString);
     let textWidth = ctx.measureText(textString).width;
 
     console.log("text width size:", textSize);
@@ -82,7 +83,7 @@ function AddTextToModelTab(props) {
           list[i].imgId = imgId;
         }
         if (textInput) {
-          list[i].text = text;
+          list[i].text = textInput;
         }
       }
     }
@@ -90,7 +91,7 @@ function AddTextToModelTab(props) {
     let action = setCustomizeInfo(list);
     dispatch(action);
   }
-  async function applyText() {
+  function applyText() {
     if (currentMaterial.imgId) {
       handleChangeImg(null, null, text);
     } else {
@@ -105,12 +106,19 @@ function AddTextToModelTab(props) {
       img.onerror = function () {
         reject(url);
       };
-      img.src = url;
+      img.src = process.env.REACT_APP_URL_FILE_DOWNLOAD + url;
     });
   }
   function CanvasText() {
     return (
-      <canvas className="d-none" ref={canvasRef} width={500} height={500} />
+      <canvas
+        className="d-none"
+        ref={canvasRef}
+        // width={img.width ? img.width : 500}
+        // height={img.height ? img.height : 500}
+        width={500}
+        height={500}
+      />
     );
   }
 
@@ -130,7 +138,7 @@ function AddTextToModelTab(props) {
                 width={50}
                 height={50}
                 onClick={() =>
-                  handleChangeImg(item.textureUrl, item.textureId, text)
+                  handleChangeImg(item.textureUrl, item.textureId, null)
                 }
               />
               // </>

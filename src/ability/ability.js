@@ -2,20 +2,24 @@ import { Ability, AbilityBuilder } from "@casl/ability";
 import { ROLE_ADMIN, ROLE_STAFF, ROLE_CUSTOMER } from "constant/user-config";
 
 export default function defineAbilityFor(roles) {
-  const { can, cannot, build } = new AbilityBuilder(Ability);
+  const { can, rules } = new AbilityBuilder(Ability);
   if (roles.length > 0) {
     if (roles.includes(ROLE_ADMIN)) {
-      can("manage", "all"); // read-write access to everything
+      can("manage", "user");
     }
     if (roles.includes(ROLE_STAFF)) {
-      can("edit", "all"); // read-write access to everything
+      can("edit", "product");
     }
     if (roles.includes(ROLE_CUSTOMER)) {
-      can("read", "all"); // read-write access to everything
+      can("wiew", "info");
+      can("buy", "product");
     }
+  } else {
+    can("buy", "product");
   }
 
-  can("buy", "product");
-
-  return build();
+  return rules;
+}
+export function buildAbilityFor(roles) {
+  return new Ability(defineAbilityFor(roles));
 }

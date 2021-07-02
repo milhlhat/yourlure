@@ -31,7 +31,7 @@ import { setIsCapture } from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
-const BE_FOLDER = process.env.REACT_APP_URL_3D_MODEL;
+const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
 function RenderModel(props) {
   const ref = useRef();
@@ -159,7 +159,7 @@ function RenderModel(props) {
     ref.current.rotation.x = Math.cos(t / 4) / 8;
     ref.current.rotation.y = Math.sin(t / 4) / 8;
     ref.current.position.y = (1 + Math.sin(t / 1.5)) / 10;
-    if (isCapture) {
+    if (isCapture.isCapture) {
       let scene = ref.current;
       let rerender = state.gl;
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: true });
@@ -174,19 +174,29 @@ function RenderModel(props) {
 
       scene = scene.parent;
 
-      console.log(scene);
-      let w = window.open("", "");
-      w.document.title = "Screenshot";
+      // console.log(scene);
+      // let w = window.open("", "");
+      // w.document.title = "Screenshot";
 
-      let img = new Image();
+      // let img = new Image();
 
       // Without 'preserveDrawingBuffer' set to true, we must render now
       rerender.render(scene, camera);
-      img.src = rerender.domElement.toDataURL();
+      let imgCapture = rerender.domElement.toDataURL();
 
-      w.document.body.appendChild(img);
+    // let submitParams = {
+    //   defaultMaterials : customizeInfo, 
+    //   name : "your-custom",
+    //   model3dId: 0,
+    //   thumbnail: {
+    //     content: string,
+    //     name: string
+    //   }
+
+    // }
+      // w.document.body.appendChild(img);
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: false });
-      const action = setIsCapture(false);
+      const action = setIsCapture({ isCapture: false, img: imgCapture });
       dispatch(action);
     }
   });
@@ -319,7 +329,6 @@ function ListActionMaterials(props) {
     <div className="list-group picker">
       {customizeInfo.length > 0 &&
         customizeInfo.map((item, i) => (
-          
           <a
             onClick={() => handleChangeMId(item.materialId)}
             key={i}
@@ -337,7 +346,7 @@ function ListActionMaterials(props) {
 function ExportCustomInformations(props) {
   const dispatch = props.dispatch;
   const onCapture = () => {
-    const action = setIsCapture(true);
+    const action = setIsCapture({ isCapture: true });
     dispatch(action);
   };
   return (

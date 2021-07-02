@@ -1,3 +1,4 @@
+import UserApi from "api/user-api";
 import userConfig from "constant/user-config";
 // import { createBrowserHistory } from "history";
 const userUtils = {
@@ -61,6 +62,19 @@ const userUtils = {
   removeLocalStorage: (name) => {
     return localStorage.removeItem(name);
   },
+  fetchRoles: async () => {
+    try {
+      const response = await UserApi.getRoles();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
-export const { getToken, refreshToken, subtractDates, saveLocalStorage } =
-  userUtils;
+export const {
+  getToken,
+  refreshToken,
+  subtractDates,
+  saveLocalStorage,
+  fetchRoles,
+} = userUtils;

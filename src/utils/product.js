@@ -1,3 +1,4 @@
+import ProductAPI, { submitCustomizeByModelId } from "api/product-api";
 import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 
 let productUtils = {
@@ -87,6 +88,13 @@ let customizeUtils = {
       }
     }
     return null;
+  },
+  submitCustomize: async (params) => {
+    try {
+      submitCustomizeByModelId(params);
+    } catch (e) {
+      console.log(e);
+    }
   },
 };
 export const { getListImgByMId, getMaterialByMId } = customizeUtils;

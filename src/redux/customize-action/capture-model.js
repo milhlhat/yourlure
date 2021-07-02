@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const capture = createSlice({
   name: "capture-model",
-  initialState: false,
+  initialState: { isCapture: false, img: "" },
   reducers: {
     setIsCapture: (state, action) => {
-      return action.payload;
+      
+      return { ...state, ...action.payload };
     },
   },
 });

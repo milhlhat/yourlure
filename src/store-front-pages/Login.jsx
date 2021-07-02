@@ -11,10 +11,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import UserApi from "api/user-api";
 import userConfig from "constant/user-config";
-
-function Login(props) {
+import { AbilityContext } from "ability/can";
+import defineAbilityFor from "ability/ability";
+import { useContext } from "react";
+import { fetchRoles } from "utils/user";
+function Login() {
   const history = useHistory();
-  //redux
+  //context
+  const ability = useContext(AbilityContext);
 
   const INVALID_PHONE = 400;
   const INVALID_PASSWORD = 422;
@@ -25,7 +29,7 @@ function Login(props) {
     success: false,
   });
 
-  async function getLogin(values) {
+  const getLogin = async (values) => {
     let content = "";
 
     setUserLogin({ ...userLogin, loading: true, success: false });
@@ -41,6 +45,8 @@ function Login(props) {
         userConfig.LOCAL_STORE_LOGIN_AT,
         new Date().toLocaleString()
       );
+      await updateRoles();
+      history.push("/");
     } catch (error) {
       if (error.response) {
         // Request made and server responded
@@ -59,13 +65,21 @@ function Login(props) {
       } else {
         // Something happened in setting up the request that triggered an Error
         console.log("Error", error.message);
-        content = "error.message";
+        content = error.message;
       }
       setOpen({ isOpen: true, content: content });
       setUserLogin({ ...userLogin, loading: false, success: false });
     }
-  }
+  };
 
+  const updateRoles = async () => {
+    try {
+      const response = await fetchRoles();
+      ability.update(defineAbilityFor(response));
+    } catch (error) {
+      throw error;
+    }
+  };
   //constructor value for formik field
   const initialValues = {
     phone: "",
