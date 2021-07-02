@@ -19,7 +19,7 @@ public class FileService {
     public static String uploadDir = "/target/classes/uploads";
 
     static {
-        new File(uploadDir).mkdir();
+        new File(parentPath + uploadDir).mkdir();
     }
 
     public String saveImage(MultipartFile file) {
