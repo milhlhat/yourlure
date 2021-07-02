@@ -6,13 +6,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface CartItemRepos extends JpaRepository<CartItem, Long> {
+
+    List<CartItem> findAllByCartItemIdIn(List<Long> ids);
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM tbl_cart_item WHERE cart_id = ?1 ",
             nativeQuery = true)
+
     void deleteCartItemsByCart_CartId(Long cartId);
 
     @Transactional

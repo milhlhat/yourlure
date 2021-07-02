@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDto;
+import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface CustomizeModelService {
 
-    Model3d createModel3d(Model3d m3d);
+    Model3d createModel3d(Model3dDtoInput m3d);
 
     Model3d getModelByProductId(Long productId);
 

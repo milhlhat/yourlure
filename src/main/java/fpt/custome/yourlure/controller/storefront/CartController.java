@@ -1,6 +1,6 @@
 package fpt.custome.yourlure.controller.storefront;
 
-import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
+import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +26,12 @@ public interface CartController {
      * Thêm sản phẩm vào giỏ hàng
      *
      * @param req
-     * @param cartItemInput
+     * @param addToCartDto
      * @return
      */
     @PostMapping("/add-product")
     ResponseEntity<Boolean> addProduct(@RequestParam("req") HttpServletRequest req,
-                                       @RequestBody CartItemInput cartItemInput);
+                                       @RequestBody AddToCartDto addToCartDto);
 
     /**
      * xoá SP khỏi giỏ hàng

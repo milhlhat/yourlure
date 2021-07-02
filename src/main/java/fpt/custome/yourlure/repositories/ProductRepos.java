@@ -8,6 +8,8 @@ import javax.persistence.Query;
 
 public interface ProductRepos extends Repository<Product, Long> {
 
+//    Product getByProductId(Long id);
+
     Query getProductFilter(Filter filter);
 
     void remove(Product product);

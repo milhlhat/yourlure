@@ -1,7 +1,7 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CartController;
-import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
+import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import fpt.custome.yourlure.service.CartService;
@@ -31,8 +31,8 @@ public class CartControllerImpl implements CartController {
 
     @Override
     public ResponseEntity<Boolean> addProduct(HttpServletRequest req,
-                                              CartItemInput cartItemInput) {
-        Boolean result = cartService.addProduct(req, cartItemInput);
+                                              AddToCartDto addToCartDto) {
+        Boolean result = cartService.addProduct(req, addToCartDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

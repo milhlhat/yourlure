@@ -1,6 +1,8 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDto;
+import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
+import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
@@ -36,6 +38,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Autowired
     private CustomMaterialRepos customMaterialRepos;
 
+    @Autowired
+    private ProductJpaRepos productJpaRepos;
 
     @Autowired
     private UserRepos userRepos;
@@ -48,7 +52,10 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
 
     @Override
-    public Model3d createModel3d(Model3d m3d) {
+    public Model3d createModel3d(Model3dDtoInput m3dIn) {
+        Model3d m3d = mapper.map(m3dIn, Model3d.class);
+        Product product = productJpaRepos.getById(m3dIn.getProductId());
+        m3d.setProduct(product);
         return model3dRepos.save(m3d);
     }
 

@@ -2,6 +2,7 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.Model3dController;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDto;
+import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import fpt.custome.yourlure.repositories.Model3dRepos;
@@ -29,8 +30,8 @@ public class Model3dControllerImpl implements Model3dController {
     private ModelMapper mapper;
 
     @Override
-    public ResponseEntity<Model3d> createModel(Model3d model3d) {
-        return new ResponseEntity<>(model3dRepos.save(model3d), HttpStatus.OK);
+    public ResponseEntity<Model3d> createModel(Model3dDtoInput model3d) {
+        return new ResponseEntity<>(customizeModelService.createModel3d(model3d), HttpStatus.OK);
     }
 
     @Override

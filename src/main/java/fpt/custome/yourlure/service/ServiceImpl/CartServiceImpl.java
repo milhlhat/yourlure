@@ -1,6 +1,6 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
-import fpt.custome.yourlure.dto.dtoInp.CartItemInput;
+import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import fpt.custome.yourlure.entity.Cart;
 import fpt.custome.yourlure.entity.CartItem;
@@ -53,18 +53,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Boolean addProduct(HttpServletRequest req, CartItemInput cartItemInput) {
+    public Boolean addProduct(HttpServletRequest req, AddToCartDto addToCartDto) {
         try {
             User user = userService.whoami(req);
-            Optional<Cart> cartOptional = cartRepos.findCartByUserUserId(user.getUserId());
-            Cart cart = cartOptional.get();
-            if (cart == null) {
-                Cart cartInput = Cart.builder()
-                        .user(user)
-                        .build();
-                cart = cartRepos.save(cartInput);
-            }
-//            // add vao bang customize voi userid
+            Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
+
+            //            // add vao bang customize voi userid
 //            if (cartItemInput.getCustomizeDtoInput() != null) {
 //                CustomizeDtoInput customizeDtoInput = cartItemInput.getCustomizeDtoInput();
 //                CustomizeModel customizeInput = mapper.map(customizeDtoInput, CustomizeModel.class);
@@ -74,8 +68,8 @@ public class CartServiceImpl implements CartService {
 //                customizeRepos.save(customizeInput);
 //            }
             // add vao bang cart item voi carid
-            cartItemInput.setCartId(cart.getCartId());
-            CartItem cartItem = mapper.map(cartItemInput, CartItem.class);
+//            addToCartDto.setCartId(cart.getCartId());
+            CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
             cartItem.setCart(cart);
             cartItemRepos.save(cartItem);
         } catch (Exception e) {

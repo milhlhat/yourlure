@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
             return paymentRepos.getById(paymentId);
         } catch (Exception e) {
             e.printStackTrace();
-            return paymentRepos.getByPayment("OCD");
+            return paymentRepos.getByPayment("COD");
         }
 
     }
@@ -184,6 +184,13 @@ public class OrderServiceImpl implements OrderService {
                 .receiverName(user.getUsername())
                 .note(orderUserDtoInput.getNote())
                 .build();
+
+        // create order line
+        List<CartItem> cartItems = cartItemRepos.findAllByCartItemIdIn(orderUserDtoInput.getCartItemIds());
+
+
+
+
 
         return null;
     }

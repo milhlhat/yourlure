@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -134,9 +133,9 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public String login(Map<String, String> user) {
-        String phone = user.get("phone");
-        String password = user.get("password");
+    public String login(UserDataDTO user) {
+        String phone = user.getPhone();
+        String password = user.getPassword();
         return userService.signin(phone, password);
     }
 
