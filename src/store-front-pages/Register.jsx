@@ -1,19 +1,21 @@
-import React from "react";
-import PropTypes from "prop-types";
-import "assets/scss/scss-pages/register.scss";
-import { FastField, Form, Formik } from "formik";
-import InputField from "components/custom-field/YLInput";
-import YLButton from "components/custom-field/YLButton";
-import * as Yup from "yup";
-import { useHistory } from "react-router";
-import { useState } from "react";
+import { AbilityContext, Can } from "ability/can";
 import UserApi from "api/user-api";
+import "assets/scss/scss-pages/register.scss";
+import YLButton from "components/custom-field/YLButton";
+import InputField from "components/custom-field/YLInput";
 import userConfig from "constant/user-config";
-
-Register.propTypes = {};
-
+import { FastField, Form, Formik } from "formik";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router";
+import { updateRoles } from "utils/user";
+import * as Yup from "yup";
+import { Redirect } from "react-router-dom";
+import DEFINELINK from "routes/define-link";
+const EXISTED_PHONE_STATUS = 422;
 function Register(props) {
   const [info, setInfo] = useState();
+  const ability = useContext(AbilityContext);
+
   const history = useHistory();
   const changeTab = (tab, value) => {
     setInfo(value);
@@ -22,7 +24,7 @@ function Register(props) {
   const component = [
     {
       name: "register-form",
-      component: <RegisterBase changeTab={changeTab} />,
+      component: <RegisterBase changeTab={changeTab} ability={ability} />,
     },
     {
       name: "register-otp",
@@ -31,20 +33,27 @@ function Register(props) {
   ];
   const [onTab, setOnTab] = useState(0);
   return (
-    <div className="register">
-      <div className="register-big-image">
-        <img
-          src="https://i.pinimg.com/564x/d5/22/3f/d5223f9a7ffd85e69e8176030c745892.jpg"
-          alt=""
-        />
-      </div>
-      {component[onTab].component}
-    </div>
+    <Can do="login" on="website" passThrough>
+      {(allowed) =>
+        allowed ? (
+          <Redirect exact from={DEFINELINK.register} to={DEFINELINK.home} />
+        ) : (
+          <div className="register">
+            <div className="register-big-image">
+              <img
+                src="https://i.pinimg.com/564x/d5/22/3f/d5223f9a7ffd85e69e8176030c745892.jpg"
+                alt=""
+              />
+            </div>
+            {component[onTab].component}
+          </div>
+        )
+      }
+    </Can>
   );
 }
 
-function RegisterBase(props) {
-  const { changeTab } = props;
+function RegisterBase({ ability }) {
   const history = useHistory();
   const register = async (data) => {
     delete data.rePassword;
@@ -56,18 +65,18 @@ function RegisterBase(props) {
       } else {
         localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
         localStorage.setItem(
-        userConfig.LOCAL_STORE_LOGIN_AT,
-        new Date().toLocaleString()
-      );
+          userConfig.LOCAL_STORE_LOGIN_AT,
+          new Date().toLocaleString()
+        );
+        updateRoles(ability);
         alert("Đăng ký thành công");
         history.push("/");
       }
     } catch (error) {
-      alert("Đăng ký thất bại");
-      console.log("fail to fetch sign up customer");
+      if (error.response.status === EXISTED_PHONE_STATUS) {
+        alert("Tài khoản đã tồn tại");
+      } else alert("Đăng ký thất bại");
     }
-    //next step is get OTP message
-    // changeTab(1, data);
   };
   //constructor value for formik field
   const initialValues = {
@@ -147,14 +156,13 @@ function RegisterBase(props) {
       </div>
       <YLButton
         variant="link"
-        onClick={() => history.push("/login")}
-        to="/user/register"
+        to={DEFINELINK.login}
         value="Đã có tài khoản, đăng nhập ngay!"
       />
       <div className="item-botton">
         <YLButton
           variant="link"
-          onClick={() => history.push("/")}
+          to={DEFINELINK.home}
           value="Mua hàng không cần đăng nhập"
         />
       </div>

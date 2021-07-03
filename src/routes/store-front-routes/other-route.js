@@ -20,11 +20,16 @@ export default function OtherRoute() {
       path: path + DEFINELINK.about,
       component: About,
       exact: false,
-      can: { do: "login", on: "website" },
+      // can: { do: "login", on: "website"},
     },
     { path: path + DEFINELINK.campaign, component: Campaign },
     { path: path + DEFINELINK.login, component: Login, exact: false },
-    { path: path + DEFINELINK.register, component: Register, exact: false },
+    {
+      path: DEFINELINK.register,
+      component: Register,
+      exact: false,
+      // can: { do: "login", on: "website", not: true },
+    },
     {
       path: path + DEFINELINK.forgotPassword,
       component: FogotPassWord,

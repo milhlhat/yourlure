@@ -31,7 +31,7 @@ function CutomerInfoRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;
   return (
-    <Can I="view" a="my-infomation" passThrough>
+    <Can do="manage" on="my-info" passThrough>
       {(allowed) =>
         allowed ? (
           <CustomerInfoLayout>

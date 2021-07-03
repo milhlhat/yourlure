@@ -14,10 +14,12 @@ export default function defineAbilityFor(roles) {
     }
     if (roles.includes(ROLE_CUSTOMER)) {
       can("login", "website");
-      can("wiew", "my-infomation");
+      can("manage", "my-info");
       can("buy", "product");
     }
   } else {
+    can("not-login", "website");
+
     can("buy", "product");
   }
 

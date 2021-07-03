@@ -51,12 +51,20 @@ function CutomerOrder(props) {
     return (
       <div className="order">
         <div className="order-row">
-        {orderList?.data?.orderDtoOuts?.length<=0&&<span>Bạn chưa có đơn hàng nào..</span>}
+          {orderList?.data?.orderDtoOuts?.length <= 0 && (
+            <div className="bg-box">
+              <span>Bạn chưa có đơn hàng nào.</span>
+            </div>
+          )}
           {orderList?.data?.orderDtoOuts?.map((order, i) => (
             <div key={"order-" + i} className="mb-5 bg-box bg-shadow">
               <div className="order-info">
                 <span>Ngày đặt hàng 12/06/2021</span>
-                <span className="text-success">{order?.activityName==null?'Trạng thái':order?.activityName}</span>
+                <span className="text-success">
+                  {order?.activityName == null
+                    ? "Trạng thái"
+                    : order?.activityName}
+                </span>
               </div>
               <div className="order-product-list">
                 {order?.productDtoOuts?.map((product, i) => (

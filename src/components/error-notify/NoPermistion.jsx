@@ -20,17 +20,20 @@ function NoPermistion(props) {
       <h3 className="text-center">Từ chối truy cập</h3>
       <p className="text-center">Bạn không có quyền truy cập trang này.</p>
       <div className="d-flex gap-1 flex-wrap justify-content-center">
-        <YLButton
-        YLButton variant="light" to={DEFINELINK.home}>
+        <YLButton YLButton variant="light" to={DEFINELINK.home}>
           TRANG CHỦ
         </YLButton>
 
         {!isLoggedIn && (
-          <
-// @ts-ignore
-          YLButton variant="primary" to={DEFINELINK.login}>
-            ĐĂNG NHẬP
-          </YLButton>
+          <>
+            {" "}
+            <YLButton variant="outline-primary" to={DEFINELINK.register}>
+              ĐĂNG KÝ
+            </YLButton>
+            <YLButton variant="primary" to={DEFINELINK.login}>
+              ĐĂNG NHẬP
+            </YLButton>
+          </>
         )}
       </div>
     </div>

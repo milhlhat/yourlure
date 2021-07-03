@@ -1,6 +1,7 @@
 import UserApi from "api/user-api";
 import userConfig from "constant/user-config";
-// import { createBrowserHistory } from "history";
+import defineAbilityFor from "ability/ability";
+
 const userUtils = {
   getToken: async () => {
     try {
@@ -78,3 +79,18 @@ export const {
   saveLocalStorage,
   fetchRoles,
 } = userUtils;
+
+export async function updateRoles(ability) {
+  try {
+    const response = await UserApi.getRoles();
+    ability.update(defineAbilityFor(response));
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function logout(ability) {
+  ability.update(defineAbilityFor([]));
+  localStorage.removeItem(userConfig.LOCAL_STORE_ACCESS_TOKEN);
+  localStorage.removeItem(userConfig.LOCAL_STORE_LOGIN_AT);
+}

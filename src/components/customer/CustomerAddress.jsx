@@ -77,7 +77,9 @@ function CustomerAddress(props) {
       </div>
       <div className="list-my-address">
         {address?.data?.length <= 0 && (
-          <h5 className="mt-4">Không có địa chỉ nào</h5>
+          <div className="bg-box mt-3">
+            <p className="mx-2">Không có địa chỉ nào</p>
+          </div>
         )}
         {address?.data?.map((address, i) => (
           <div className="address-row " key={"address-row" + i}>
@@ -87,9 +89,9 @@ function CustomerAddress(props) {
                   <tr>
                     <td className="address-title">Họ và Tên</td>
                     <td className="address-value">
-                      {address?.userName}{" "}
+                      {address?.userName}
                       {address?.isDefault && (
-                        <span className="default-address"> mặc định</span>
+                        <span className="default-address"> Mặc định</span>
                       )}
                     </td>
                   </tr>
@@ -134,9 +136,13 @@ function CustomerAddress(props) {
                 />
               </div>
               <div
-                // onClick={() => handleSetDefaultAddress(address.userAddressID)}
+              // onClick={() => handleSetDefaultAddress(address.userAddressID)}
               >
-                <form onSubmit={()=>handleSetDefaultAddress(address.userAddressID)}>
+                <form
+                  onSubmit={() =>
+                    handleSetDefaultAddress(address.userAddressID)
+                  }
+                >
                   <YLButton
                     type="submit"
                     variant="light"

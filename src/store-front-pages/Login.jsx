@@ -15,6 +15,7 @@ import { AbilityContext } from "ability/can";
 import defineAbilityFor from "ability/ability";
 import { useContext } from "react";
 import { fetchRoles } from "utils/user";
+import DEFINELINK from "routes/define-link";
 function Login() {
   const history = useHistory();
   //context
@@ -180,7 +181,8 @@ function Login() {
                   <div className="mt-2 ">
                     <YLButton
                       variant="warning"
-                      onClick={() => history.push("/register")}
+                      // onClick={() => history.push("/register")}
+                      to={DEFINELINK.register}
                       value="Đăng ký"
                       width="100%"
                       disabled={userLogin.loading}
