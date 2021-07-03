@@ -55,7 +55,7 @@ function Home() {
   if (productListBestSeller.failFetch || productListNewest.failFetch) {
     return <ErrorLoad hasLayout/>;
   } else if (!productListBestSeller.isFetched || !productListNewest.isFetched) {
-    return <Loading />;
+    return <Loading hasLayout />;
   } else
     return (
       <div className="container home-page">

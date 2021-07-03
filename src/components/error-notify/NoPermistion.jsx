@@ -2,8 +2,12 @@ import React from "react";
 import DEFINELINK from "routes/define-link";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/error-notify/error-notify.scss";
+import { useContext } from "react";
+import { AbilityContext } from "ability/can";
 function NoPermistion(props) {
   const { hasLayout } = props;
+  const ability = useContext(AbilityContext);
+  const isLoggedIn = ability.can("login", "website");
   return (
     <div
       className={`d-flex align-items-center flex-column my-1 container text-notify-error bg-notify-error ${
@@ -13,11 +17,22 @@ function NoPermistion(props) {
       <h1>
         <i className="far fa-frown"></i>
       </h1>
-      <h3>Từ chối truy cập</h3>
-      <p>Bạn không có quyền truy cập trang này.</p>
-      <YLButton variant="primary" to={DEFINELINK.home}>
-        TRANG CHỦ
-      </YLButton>
+      <h3 className="text-center">Từ chối truy cập</h3>
+      <p className="text-center">Bạn không có quyền truy cập trang này.</p>
+      <div className="d-flex gap-1 flex-wrap justify-content-center">
+        <YLButton
+        YLButton variant="light" to={DEFINELINK.home}>
+          TRANG CHỦ
+        </YLButton>
+
+        {!isLoggedIn && (
+          <
+// @ts-ignore
+          YLButton variant="primary" to={DEFINELINK.login}>
+            ĐĂNG NHẬP
+          </YLButton>
+        )}
+      </div>
     </div>
   );
 }

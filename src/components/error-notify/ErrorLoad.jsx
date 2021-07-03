@@ -1,14 +1,15 @@
 import React from "react";
 import "assets/scss/scss-components/error-notify/error-notify.scss";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import YLButton from "components/custom-field/YLButton";
+import DEFINELINK from "routes/define-link";
 function ErrorLoad(props) {
   const { hasLayout } = props;
-  const location = useLocation();
+
   const history = useHistory();
-  console.log(location);
+
   function reload() {
-    history.replace(location.pathname);
+    history.replace(history.location.pathname);
   }
   return (
     <div
@@ -20,6 +21,7 @@ function ErrorLoad(props) {
         <i className="fad fa-network-wired"></i>
       </h1>
       <h4>Hệ thống bận!</h4>
+
       <YLButton variant="primary" onClick={reload}>
         Tải lại trang
       </YLButton>
