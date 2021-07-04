@@ -1,0 +1,25 @@
+@import "../../../../assets/scss/base/variable.scss";
+.fish-head-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.manager-fish-show {
+    padding: 20px;
+    & table {
+        width: 100%;
+    }
+}
+.page-item.active .page-link {
+    background-color: $primary;
+    border-color: $primary;
+    color: white !important;
+}
+.page-link {
+    color: $primary;
+}
+.form-select:focus {
+    border-color: none;
+    outline: 0;
+    box-shadow: 0;
+}
