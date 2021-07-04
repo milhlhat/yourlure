@@ -23,10 +23,10 @@ public class FileService {
     public static final String TEXTURE_DIR = "textures";
 
     static {
-        new File(CUSTOMS_DIR).mkdir();
-        new File(MODELS_DIR).mkdir();
-        new File(IMAGES_DIR).mkdir();
-        new File(TEXTURE_DIR).mkdir();
+        new File(parentPath + CUSTOMS_DIR).mkdir();
+        new File(parentPath + MODELS_DIR).mkdir();
+        new File(parentPath + IMAGES_DIR).mkdir();
+        new File(parentPath + TEXTURE_DIR).mkdir();
     }
 
     public String saveImage(MultipartFile file) {
