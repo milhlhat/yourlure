@@ -5,11 +5,11 @@ export default function defineAbilityFor(roles) {
   const { can, rules } = new AbilityBuilder(Ability);
   if (roles.length > 0) {
     can("login", "website");
-    if (roles.includes(ROLE_ADMIN)) {
-      can("", "user");
-    }
-    if (roles.includes(ROLE_STAFF)) {
-      can("edit", "product");
+    if (roles.includes(ROLE_ADMIN) || roles.includes(ROLE_STAFF)) {
+      can("read-write", "admin-staff");
+      if (roles.includes(ROLE_ADMIN)) {
+        can("read-write", "admin");
+      }
     }
     if (roles.includes(ROLE_CUSTOMER)) {
       can("manage", "my-info");
