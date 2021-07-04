@@ -2,7 +2,6 @@ import { AbilityContext } from "ability/can";
 import UserApi from "api/user-api";
 import "assets/scss/scss-manager/manager-header.scss";
 import React, { useContext, useEffect, useState } from "react";
-import "react-dropdown/style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
