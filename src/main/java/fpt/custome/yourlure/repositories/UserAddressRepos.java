@@ -8,4 +8,6 @@ import java.util.List;
 public interface UserAddressRepos extends JpaRepository<UserAddress, Long> {
 
     List<UserAddress> findAllByUser_UserId(Long id);
+
+    List<UserAddress> findAllByUser_UserIdOrderByUserAddressId(Long id);
 }

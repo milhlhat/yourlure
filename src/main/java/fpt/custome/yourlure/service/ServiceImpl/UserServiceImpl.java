@@ -247,11 +247,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
-        List<UserAddressDtoOut> result = new ArrayList<>();
+        List<UserAddressDtoOut> result ;
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
         // map collection user address to dto
-        result = getAddressInUser(list);
+        List<UserAddress> userAddressList = userAddressRepos.findAllByUser_UserIdOrderByUserAddressId(user.getUserId());
+
+        result = getAddressInUser(userAddressList);
         return result;
     }
 
