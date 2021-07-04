@@ -35,7 +35,7 @@ public interface ProductController {
 
     //TODO: getmapping customize
 
-    @GetMapping("/model-download")
+    @GetMapping("/download")
     ResponseEntity<Resource> download(String path);
 
 }

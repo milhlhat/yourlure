@@ -17,17 +17,17 @@ import javax.persistence.*;
 public class Texture {
 
     @Id
-    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "textureId")
     private Long textureId;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "materialId")
+    @JoinColumn(name = "defaultMaterialId")
     private DefaultMaterial material;
 
     private String textureUrl;
+    private Boolean isDefault;
 
 
 }

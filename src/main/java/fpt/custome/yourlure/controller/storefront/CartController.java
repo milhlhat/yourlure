@@ -30,7 +30,7 @@ public interface CartController {
      * @return
      */
     @PostMapping("/add-product")
-    ResponseEntity<Boolean> addProduct(@RequestParam("req") HttpServletRequest req,
+    ResponseEntity<Object> addProduct(@RequestParam("req") HttpServletRequest req,
                                        @RequestBody AddToCartDto addToCartDto);
 
     /**

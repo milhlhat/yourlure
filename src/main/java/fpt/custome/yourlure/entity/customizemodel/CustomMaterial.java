@@ -19,21 +19,25 @@ public class CustomMaterial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "materialId")
+    @Column(name = "customMaterialId")
     private Long materialId;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "defaultMaterialId")
+    private DefaultMaterial defaultMaterial;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customizeId")
     private CustomizeModel customizeModel;
 
-    private String defaultName;
-    private String vnName;
-
     private String text;
+    private String textFont;
+    private String textColor;
+    private Integer textSize;
     private String color;
-    private String img;
+    private String imgUrl;
 
 
 }

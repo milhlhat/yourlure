@@ -53,25 +53,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Boolean addProduct(HttpServletRequest req, AddToCartDto addToCartDto) {
+    public Cart addProduct(HttpServletRequest req, AddToCartDto addToCartDto) {
         try {
             User user = userService.whoami(req);
             Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
 
-            //            // add vao bang customize voi userid
-//            if (cartItemInput.getCustomizeDtoInput() != null) {
-//                CustomizeDtoInput customizeDtoInput = cartItemInput.getCustomizeDtoInput();
-//                CustomizeModel customizeInput = mapper.map(customizeDtoInput, CustomizeModel.class);
-//                customizeInput.setUser(user);
-//                Optional<Product> productInput = productJpaRepos.findById(cartItemInput.getProductId());
-//                customizeInput.setProduct(productInput.get());
-//                customizeRepos.save(customizeInput);
-//            }
-            // add vao bang cart item voi carid
-//            addToCartDto.setCartId(cart.getCartId());
             CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
             cartItem.setCart(cart);
-            cartItemRepos.save(cartItem);
+            cart.getCartItemCollection().add(cartItem);
+            cart = cartRepos.save(cart);
+            return cart;
+
         } catch (Exception e) {
             e.printStackTrace();
         }

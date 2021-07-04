@@ -4,6 +4,7 @@ import fpt.custome.yourlure.controller.storefront.CartController;
 import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
+import fpt.custome.yourlure.entity.Cart;
 import fpt.custome.yourlure.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,9 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Boolean> addProduct(HttpServletRequest req,
+    public ResponseEntity<Object> addProduct(HttpServletRequest req,
                                               AddToCartDto addToCartDto) {
-        Boolean result = cartService.addProduct(req, addToCartDto);
+        Cart result = cartService.addProduct(req, addToCartDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -2,6 +2,7 @@ package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
+import fpt.custome.yourlure.entity.Cart;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public interface CartService {
      * @param req
      * @param addToCartDto
      */
-    Boolean addProduct(HttpServletRequest req, AddToCartDto addToCartDto);
+    Cart addProduct(HttpServletRequest req, AddToCartDto addToCartDto);
 
     /**
      * xoá SP khỏi giỏ hàng

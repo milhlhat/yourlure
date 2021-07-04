@@ -9,11 +9,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomModelDto {
+public class CustomModelDtoInput {
 
+    private Long customizeId;
     private String name;
     private Long model3dId;
-    private List<MaterialDto> materials;
+    private List<MaterialDtoInput> materials;
     private Thumbnail thumbnail;
 
     @Data
@@ -21,15 +22,19 @@ public class CustomModelDto {
     @NoArgsConstructor
     public static class Thumbnail{
         private String name;
-        private byte[] content;
+        private String content;
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MaterialDto {
+    public static class MaterialDtoInput {
         private Long materialId;
+        private Long defaultMaterialId;
         private String text;
+        private String textFont;
+        private String textColor;
+        private Integer textSize;
         private String color;
         private String img;
     }

@@ -37,7 +37,6 @@ public class CustomizeModel {
     @JoinColumn(name = "modelId", nullable = false)
     private Model3d model3d;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "customizeModel", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize

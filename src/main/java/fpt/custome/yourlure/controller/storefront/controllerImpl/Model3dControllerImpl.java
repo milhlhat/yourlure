@@ -1,9 +1,9 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.Model3dController;
-import fpt.custome.yourlure.dto.dtoInp.CustomModelDto;
+import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
-import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
+import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import fpt.custome.yourlure.repositories.Model3dRepos;
 import fpt.custome.yourlure.service.CustomizeModelService;
@@ -31,13 +31,27 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<Model3d> createModel(Model3dDtoInput model3d) {
-        return new ResponseEntity<>(customizeModelService.createModel3d(model3d), HttpStatus.OK);
+        try{
+            return new ResponseEntity<>(customizeModelService.createModel3d(model3d), HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public ResponseEntity<CustomizeModel> createCustomModel(HttpServletRequest rq, CustomModelDto customModelDto) {
+    public ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, Long customId) {
+        CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
+        if(customizeModel==null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(customizeModel, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CustomModelDtoOut> createCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
         try{
-            CustomizeModel customizeModel = customizeModelService.createCustomizeModel(rq, customModelDto);
+            CustomModelDtoOut customizeModel = customizeModelService.createCustomizeModel(rq, customModelDtoInput);
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,8 +60,13 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<CustomizeModel> updateCustomModel(HttpServletRequest rq, CustomModelDto customModelDto) {
-        return null;
+    public ResponseEntity<CustomModelDtoOut> updateCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
+        try{
+            return new ResponseEntity<>(customizeModelService.updateCustomizeModel(rq, customModelDtoInput), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
