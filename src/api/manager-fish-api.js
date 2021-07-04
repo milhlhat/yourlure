@@ -3,22 +3,9 @@ import AxiosClient from './axios-client';
 
 const ManagerFishAPI = {
 
-  getAll: () => {
-    const filter = {
-      isAsc: true,
-      keyword: "",
-      limit: filterConfig.LIMIT_DATA_PER_PAGE,
-      listCateId: [
-
-      ],
-      listFishId: [
-
-      ],
-      page: filterConfig.PAGE_NUMBER_DEFAULT,
-      sortBy: "fishId"
-    }
+  getAll: (param) => {
     const url = '/admin/fish/searchAll';
-    return AxiosClient.post(url, filter);
+    return AxiosClient.post(url, param);
   },
   delete: (param) => {
     const url = `/admin/fish/delete/${param}`;
