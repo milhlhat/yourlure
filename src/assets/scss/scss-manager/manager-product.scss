@@ -1,0 +1,41 @@
+@import "assets/scss/base/_variable.scss";
+.product-head-row {
+  display: flex;
+  justify-content: space-between;
+}
+.manager-product-show {
+  padding: 20px;
+  border-radius: 15px;
+  & span {
+    border-bottom: 4px solid #0356f6;
+    padding: 15px 0;
+  }
+  & table {
+    width: 100%;
+    & tr {
+      border-bottom: 1px solid $border-line;
+    }
+  }
+
+  & th,
+  & caption {
+    font-weight: 500;
+    color: $primary;
+  }
+  & .page-item.active .page-link{
+    background-color: $primary;
+    border-color: $primary;
+  }
+  & .page-link{
+    color: $primary;
+  }
+}
+@media screen and(max-width:500px) {
+  .manager-product-show {
+    padding: 20px 0;
+    width: 100%;
+  }
+  .manager-container {
+    margin: 0 !important;
+  }
+}

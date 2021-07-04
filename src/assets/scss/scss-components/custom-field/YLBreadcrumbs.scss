@@ -1,0 +1,19 @@
+@import '../../base/variable';
+.yl-breadcrumb {
+}
+
+.MuiBreadcrumbs-li {
+	 
+	.link {
+		text-decoration: none;
+		color: $text-color;
+	}
+	.link:hover {
+		text-decoration: underline;
+		color: $link-color;
+	}
+	.current {
+		text-decoration: none !important;
+		color: $dark !important;
+	}
+}

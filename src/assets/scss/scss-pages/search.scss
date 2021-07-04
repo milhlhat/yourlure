@@ -1,0 +1,52 @@
+@import "../base/variable";
+.product-show {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.product-choose-filter {
+	background-color: #fff;
+
+	& .button-submit {
+		height: 30px;
+	}
+}
+.search-type {
+	h1 {
+		text-align: center;
+	}
+}
+
+.product-show {
+	display: flex;
+	flex-direction: column;
+	& .product-list {
+		display: flex;
+		flex-wrap: wrap;
+		grid-column-gap: 5px;
+	}
+}
+
+.select-sort {
+	max-width: 200px;
+}
+
+.pagination {
+	& .disabled {
+		border-radius: 5px;
+	}
+}
+
+.page-item.active .page-link {
+	background-color: $primary;
+	border-color: $primary;
+	color: white !important;
+}
+.page-link {
+	color: $primary;
+}
+.form-select:focus {
+	border-color: none;
+	outline: 0;
+	box-shadow: 0;
+}

@@ -1,0 +1,14 @@
+.manager-header {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2%;
+  & .back-button {
+    // font-size: 30px;
+    cursor: pointer;
+  }
+  & .dropdown-menu{
+    min-width: auto !important;
+  }
+}

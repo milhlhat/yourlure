@@ -1,0 +1,17 @@
+.product-details-quantity{
+    border: 1px solid rgb(201, 201, 201);
+    width: fit-content;
+    & input::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+    }
+    & .input-quickview{
+      outline: none;
+      border: none;
+      text-align: center;
+      width: 50px;
+    }
+    & .quantity-input{
+      border: none;
+      background-color: #fff;
+    }
+  }

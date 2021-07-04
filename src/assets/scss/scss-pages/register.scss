@@ -1,0 +1,31 @@
+@import "../base/variable";
+.register {
+  display: flex;
+  & .register-big-image {
+    & img {
+      width: 60vh;
+    }
+  }
+  & .register-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    & .otp-form {
+      display: flex;
+      align-items: flex-end;
+    }
+    & button{
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  .register-big-image {
+    width: 0;
+  }
+  .register-form {
+    width: 100vh;
+  }
+}

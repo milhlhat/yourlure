@@ -1,0 +1,14 @@
+.input-custome {
+  display: flex;
+  justify-items: center;
+  & .display-eye {
+    margin-top: 8px;
+    margin-left: -22px;
+  }
+}
+.invalid-feedback {
+  display: block !important;
+}
+.form-control {
+  background-image: none !important;
+}
