@@ -27,7 +27,7 @@ function YLSelectAddress(props) {
   let preWardId = null;
 
   //edit initial value
-  
+
   let address = props.address;
   const initialData = () => {
     setProvDefault(address?.userProvinceId);
@@ -38,12 +38,12 @@ function YLSelectAddress(props) {
     setDistrictSelected(false);
     fetchWardByDistrictId(address?.userDistrictId);
     setDistrictSelected(true);
-    setValue('province', address?.userProvinceId); 
-    setValue('district', address?.userDistrictId); 
-    setValue('userWardId', address?.userWardId); 
+    setValue("province", address?.userProvinceId);
+    setValue("district", address?.userDistrictId);
+    setValue("userWardId", address?.userWardId);
   };
   useEffect(() => {
-    if(address) initialData();
+    if (address) initialData();
   }, []);
 
   useEffect(() => {
@@ -135,90 +135,90 @@ function YLSelectAddress(props) {
   }
   return (
     <>
-      <tr>
-        <td className="text-end title-table">Tỉnh/TP(*)</td>
-        <td>
-          <select
-            className="form-select"
-            aria-label="province select "
-            {...register("province", {
-              validate: (value) => {
-                const isnum = Number(value);
-                return isnum === Number(value);
-              },
-            })}
-            onChange={handleChangeProv}
-            value={provDefault}
-          >
-            <option>Chọn Tỉnh/TP</option>
-            {allprovince?.map((item, i) => (
-              <option key={`province-${i}`} value={item.userProvinceID}>
-                {item.userProvinceName}
-              </option>
-            ))}
-          </select>
-          {errors.province && (
-            <span className="text-danger">(*) Chọn Tỉnh/TP</span>
-          )}
-        </td>
-      </tr>
+      {/* <tr>
+        <td className="text-end title-table">Tỉnh/TP(*)</td> */}
+      <div>
+        <select
+          className="form-select"
+          aria-label="province select "
+          {...register("province", {
+            validate: (value) => {
+              const isnum = Number(value);
+              return isnum === Number(value);
+            },
+          })}
+          onChange={handleChangeProv}
+          value={provDefault}
+        >
+          <option>Chọn Tỉnh/TP</option>
+          {allprovince?.map((item, i) => (
+            <option key={`province-${i}`} value={item.userProvinceID}>
+              {item.userProvinceName}
+            </option>
+          ))}
+        </select>
+        {errors.province && (
+          <span className="text-danger">(*) Chọn Tỉnh/TP</span>
+        )}
+      </div>
+      {/* </tr> */}
 
-      <tr>
-        <td className="text-end title-table">Quận/Huyện(*)</td>
-        <td>
-          <select
-            className="form-select"
-            aria-label="district select "
-            {...register("district", {
-              validate: (value) => {
-                const isnum = Number(value);
-                return isnum === Number(value);
-              },
-            })}
-            onChange={handleChangeDistrict}
-            value={disDefault}
-            disabled={!provSelected}
-          >
-            <option>Chọn Quận/Huyện</option>
-            {districtByProv?.map((item, i) => (
-              <option key={`district-${i}`} value={item.userDistrictID}>
-                {item.userDistrictName}
-              </option>
-            ))}
-          </select>
-          {errors.district && (
-            <span className="text-danger">(*) Chọn Quận/Huyện</span>
-          )}
-        </td>
-      </tr>
-      <tr>
-        <td className="text-end title-table">Phường/Xã(*)</td>
-        <td>
-          <select
-            className="form-select"
-            aria-label="ward select "
-            {...register("userWardId", {
-              validate: (value) => {
-                const isnum = Number(value);
-                return isnum === Number(value);
-              },
-            })}
-            onChange={handleChangeWard}
-            value={wardDefault}
-            disabled={!districtSelected || !provSelected}
-          >
-            <option>Chọn Phường/Xã</option>
-            {wardByDistrict?.map((item, i) => (
-              <option key={`ward-${i}`} value={item.userWardID}>
-                {item.userWardName}
-              </option>
-            ))}
-          </select>
-          {errors.userWardId && (
-            <span className="text-danger">(*) Chọn Chọn Phường/Xã</span>
-          )}
-        </td>
-      </tr>
+      {/* <tr>
+        <td className="text-end title-table">Quận/Huyện(*)</td> */}
+      <div className="my-3">
+        <select
+          className="form-select"
+          aria-label="district select "
+          {...register("district", {
+            validate: (value) => {
+              const isnum = Number(value);
+              return isnum === Number(value);
+            },
+          })}
+          onChange={handleChangeDistrict}
+          value={disDefault}
+          disabled={!provSelected}
+        >
+          <option>Chọn Quận/Huyện</option>
+          {districtByProv?.map((item, i) => (
+            <option key={`district-${i}`} value={item.userDistrictID}>
+              {item.userDistrictName}
+            </option>
+          ))}
+        </select>
+        {errors.district && (
+          <span className="text-danger">(*) Chọn Quận/Huyện</span>
+        )}
+      </div>
+      {/* </tr> */}
+      {/* <tr>
+        <td className="text-end title-table">Phường/Xã(*)</td> */}
+      <div>
+        <select
+          className="form-select"
+          aria-label="ward select "
+          {...register("userWardId", {
+            validate: (value) => {
+              const isnum = Number(value);
+              return isnum === Number(value);
+            },
+          })}
+          onChange={handleChangeWard}
+          value={wardDefault}
+          disabled={!districtSelected || !provSelected}
+        >
+          <option>Chọn Phường/Xã</option>
+          {wardByDistrict?.map((item, i) => (
+            <option key={`ward-${i}`} value={item.userWardID}>
+              {item.userWardName}
+            </option>
+          ))}
+        </select>
+        {errors.userWardId && (
+          <span className="text-danger">(*) Chọn Chọn Phường/Xã</span>
+        )}
+      </div>
+      {/* </tr> */}
     </>
   );
 }

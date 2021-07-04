@@ -35,9 +35,7 @@ function CustomerAccount(props) {
     fetchCustomAccount();
     return fetchCustomAccount();
   }, []);
-  // if(!account.data&&!account.isLoading&&!account.isSuccess){
-  //   return <Loading/>
-  // }
+ 
   if (account.isLoading) {
     return <Loading />;
   } else

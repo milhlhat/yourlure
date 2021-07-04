@@ -1,6 +1,7 @@
 import UserApi from "api/user-api";
-import userConfig from "constant/user-config";
+import userConfig, { ROLE_ADMIN, ROLE_STAFF } from "constant/user-config";
 import defineAbilityFor from "ability/ability";
+import DEFINELINK from "routes/define-link";
 
 const userUtils = {
   getToken: async () => {
@@ -80,11 +81,18 @@ export const {
   fetchRoles,
 } = userUtils;
 
-export async function updateRoles(ability) {
+export async function updateRoles(ability, history) {
   try {
     const response = await UserApi.getRoles();
-    ability.update(defineAbilityFor(response));
+
+    if (response?.includes(ROLE_ADMIN) || response?.includes(ROLE_STAFF)) {
+      history.push(DEFINELINK.manager);
+    } else {
+      history.push(DEFINELINK.store);
+    }
+    await ability.update(defineAbilityFor(response));
   } catch (error) {
+    history.push(DEFINELINK.store);
     throw error;
   }
 }

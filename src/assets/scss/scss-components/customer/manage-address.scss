@@ -43,9 +43,12 @@
 .default-address-btn {
   max-width: 145px;
 }
-.default-address{
-  background-color: $primary;
+.default-address {
+  background-color: $hover-color;
   color: white;
-  padding: 5px;
   border-radius: 5px;
+  text-align: left;
+  vertical-align:center;
+  margin-left: 5px;
+  padding-right: 5px;
 }

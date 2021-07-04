@@ -1,5 +1,22 @@
-.payment{
-    & .address-to-deliver{
-        background-color: #F5F5F5;
-    }
+@import "../../scss/base/variable";
+
+.login-link {
+  color: $primary;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary;
+    text-decoration: underline;
+  }
+}
+
+
+@media screen and (min-width: $tablet-width) {
+  .deliver-address {
+    padding: 0 10% !important;
+  }
+  .total-order {
+    margin-left: 20px;
+  }
+
 }

@@ -81,7 +81,10 @@ function ChangeAddress(props) {
                 )}
               </td>
             </tr>
-            <YLSelectAddress {...methods} address={address} />
+            <td className="text-end title-table">Địa chỉ(*)</td>
+            <td>
+              <YLSelectAddress {...methods} address={address} />
+            </td>
 
             <tr>
               <td className="text-end title-table">Địa Chỉ(*)</td>

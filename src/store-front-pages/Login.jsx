@@ -14,7 +14,7 @@ import userConfig from "constant/user-config";
 import { AbilityContext } from "ability/can";
 import defineAbilityFor from "ability/ability";
 import { useContext } from "react";
-import { fetchRoles } from "utils/user";
+import { fetchRoles, updateRoles } from "utils/user";
 import DEFINELINK from "routes/define-link";
 function Login() {
   const history = useHistory();
@@ -46,8 +46,7 @@ function Login() {
         userConfig.LOCAL_STORE_LOGIN_AT,
         new Date().toLocaleString()
       );
-      await updateRoles();
-      history.push("/");
+      await updateRoles(ability, history);
     } catch (error) {
       if (error.response) {
         // Request made and server responded
@@ -73,14 +72,6 @@ function Login() {
     }
   };
 
-  const updateRoles = async () => {
-    try {
-      const response = await fetchRoles();
-      ability.update(defineAbilityFor(response));
-    } catch (error) {
-      throw error;
-    }
-  };
   //constructor value for formik field
   const initialValues = {
     phone: "",
@@ -110,12 +101,7 @@ function Login() {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
-  // const history = useHistory();
-  // useEffect(() => {
-  //   if (success) {
-  //     history.push("/");
-  //   }
-  // }, [success]);
+
   return (
     <div className="login">
       <div className="login-big-image">

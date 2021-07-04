@@ -68,9 +68,8 @@ function RegisterBase({ ability }) {
           userConfig.LOCAL_STORE_LOGIN_AT,
           new Date().toLocaleString()
         );
-        updateRoles(ability);
+        updateRoles(ability, history);
         alert("Đăng ký thành công");
-        history.push("/");
       }
     } catch (error) {
       if (error.response.status === EXISTED_PHONE_STATUS) {

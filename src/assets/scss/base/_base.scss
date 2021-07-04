@@ -38,6 +38,15 @@ body {
 .text-color {
   color: $text-color;
 }
+.primary-color {
+  color: $primary;
+}
+.underline {
+  text-decoration: underline;
+}
+.underline-none {
+  text-decoration: none;
+}
 .title {
   color: $title-color;
   font-weight: bold;

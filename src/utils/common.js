@@ -12,7 +12,7 @@ export function RenderRoutes({ routes }) {
     <React.Fragment>
       {routes.map((item, index) => (
         <Can
-          not={item.can?.not}
+          not={item.can?.not ? item.can?.not : false}
           do={item.can?.do ? item.can?.do : "buy"}
           on={item.can?.on ? item.can?.on : "product"}
           key={item.path + index}
