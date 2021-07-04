@@ -41,5 +41,9 @@ const DEFINELINK = {
   //manager category route
   managementCategory: "/category",
   managerCategoryAddNew: "/addnew",
+
+  //manager fish route
+  managementFish: "/fish",
+  managementFishAddNew: "/addnew",
 };
 export default DEFINELINK;

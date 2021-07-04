@@ -1,4 +1,4 @@
-@import '../base/variable';
+@import "../base/variable";
 .product-show {
 	display: flex;
 	flex-wrap: wrap;
@@ -38,8 +38,8 @@
 }
 
 .page-item.active .page-link {
-	background-color: $primary  ;
-	border-color: $primary  ;
+	background-color: $primary;
+	border-color: $primary;
 	color: white !important;
 }
 .page-link {

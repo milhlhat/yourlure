@@ -1,14 +1,14 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import { useRouteMatch } from "react-router-dom";
-import ManagerLayout from "layout/ManagerLayout";
-import DEFINELINK from "routes/define-link";
 import { Can } from "ability/can";
 import NoPermistion from "components/error-notify/NoPermistion";
+import ManagerLayout from "layout/ManagerLayout";
+import React from "react";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import DEFINELINK from "routes/define-link";
 
 const ManagerUser = React.lazy(() => import("./manager-user-route.js"));
 const ManagerProduct = React.lazy(() => import("./manager-product-route.js"));
 const ManagerCategory = React.lazy(() => import("./manager-category-route.js"));
+const ManagerFish = React.lazy(() => import("./manager-fish-router.js"));
 
 function ManagementRouter(props) {
   const match = useRouteMatch();
@@ -30,6 +30,9 @@ function ManagementRouter(props) {
               <Route
                 path={path + DEFINELINK.managementCategory}
                 component={ManagerCategory}
+              />
+              <Route path={path + DEFINELINK.managementFish}
+                component={ManagerFish}
               />
             </Switch>
           </ManagerLayout>
