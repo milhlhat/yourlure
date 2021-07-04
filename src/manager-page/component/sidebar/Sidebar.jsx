@@ -152,11 +152,7 @@ function Sidebar(props) {
               <li>
                 <Link
                 onClick={handleLogout}
-                  className={`nav-link ${
-                    path.indexOf("manager/voucher") > -1
-                      ? "active"
-                      : "link-dark"
-                  }`}
+                  className={`nav-link link-dark`}
                 >
                   <i className="fal fa-sign-out"></i>
                   <span className="text-side-bar"> Đăng xuất</span>

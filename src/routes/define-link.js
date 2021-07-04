@@ -41,9 +41,28 @@ const DEFINELINK = {
   //manager category route
   managementCategory: "/category",
   managerCategoryAddNew: "/addnew",
+  managerCategoryEdit: "/edit/:id",
 
   //manager fish route
   managementFish: "/fish",
   managementFishAddNew: "/addnew",
+  managementFishEdit: "/edit/:id",
+
+  //manager order route
+  managementOrder: "/order",
+  managementOrderDetail: "/detail/:id",
+  managementOrderEdit: "/edit/:id",
+
+  //manager staff route
+  managementStaff: "/staff",
+  managementStaffDetail: "/detail/:id",
+  managementStaffAddNew: "/addnew",
+  managementStaffEdit: "/edit/:id",
+
+  //manager voucher route
+  managementVoucher: "/voucher",
+  managementVoucherAddNew: "/addnew",
+  managementVoucherEdit: "/edit/:id",
+  managementVoucherDetail: "/detail/:id",
 };
 export default DEFINELINK;
