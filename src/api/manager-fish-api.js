@@ -3,22 +3,9 @@ import queryString from 'query-string';
 
 const ManagerFishAPI = {
     
-	getAll: () => {
-        const filter = {
-            isAsc: true,
-            keyword: "",
-            limit: 12,
-            listCateId: [
-              
-            ],
-            listFishId: [
-              
-            ],
-            page: 0,
-            sortBy: "fishId"
-          }
+	getAll: (param) => {
 		const url = '/admin/fish/searchAll';
-		return AxiosClient.post(url,filter);
+		return AxiosClient.post(url,param);
 	},
 };
 export const {getAll } = ManagerFishAPI;

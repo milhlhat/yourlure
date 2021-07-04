@@ -175,16 +175,6 @@ function ManagerProductEdit(props) {
   const handleChangeCustomModel = (e) => {
     setChangeModel(e.target.checked);
   };
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
 
   useEffect(() => {
     fetchCategory();
@@ -198,6 +188,16 @@ function ManagerProductEdit(props) {
   useEffect(() => {
     fetchProduct();
   }, [productId]);
+  useEffect(() => {
+    if (canBack) {
+      const action = setIsBack({
+        canBack: canBack.canBack,
+        path: canBack.path,
+        label: canBack.label,
+      });
+      dispatch(action);
+    }
+  }, [canBack]);
   return (
     <div>
       <h3>Tạo sản phẩm mới</h3>
@@ -339,7 +339,7 @@ function ManagerProductEdit(props) {
                     <td>
                       <input
                         class="form-check-input pointer"
-                        type="checkbox "
+                        type="checkbox"
                         id="customize"
                         {...register("customize")}
                         onChange={handleChangeCustomModel}

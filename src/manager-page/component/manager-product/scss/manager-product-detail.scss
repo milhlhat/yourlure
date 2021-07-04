@@ -3,15 +3,15 @@
   & table {
     width: 100%;
     & tr {
-      border-bottom: 1px solid;
+      border-bottom: 1px solid $border-line;
     }
     & th,
     & caption {
-      font-weight: bold;
+      font-weight: 500;
       color: $primary;
     }
     & .detail-description {
-      border: 1px solid;
+      border: 1px solid $border-line;
     }
   }
   & .product-detail-image {

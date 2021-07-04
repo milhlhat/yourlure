@@ -8,4 +8,7 @@
     // font-size: 30px;
     cursor: pointer;
   }
+  & .dropdown-menu{
+    min-width: auto !important;
+  }
 }

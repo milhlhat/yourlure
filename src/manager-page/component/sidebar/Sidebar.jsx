@@ -1,8 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link, useLocation } from "react-router-dom";
 import "assets/scss/scss-manager/manager-sidebar.scss";
-import Fish from "assets/icon/fish.svg";
+import React, { useContext } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { AbilityContext, Can } from "ability/can";
+import { logout } from "utils/user";
+import DEFINELINK from "routes/define-link";
 
 Sidebar.propTypes = {};
 
@@ -14,6 +15,12 @@ function closeNav() {
 }
 
 function Sidebar(props) {
+  const history = useHistory();
+  const ability = useContext(AbilityContext);
+  const handleLogout = () => {
+    logout(ability);
+    history.push(DEFINELINK.home);
+  };
   const location = useLocation();
   let path = location.pathname;
   return (
@@ -36,21 +43,30 @@ function Sidebar(props) {
                     path.indexOf("manager/home") > -1 ? "active" : "link-dark"
                   }`}
                 >
-                  <span className="text-side-bar">  Home</span>
-                
+                  <span className="text-side-bar"> Home</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/manager/user"
-                  className={`nav-link ${
-                    path.indexOf("manager/user") > -1 ? "active" : "link-dark"
-                  }`}
-                >
-                  <i className="fas fa-users-cog"></i>
-                  <span className="text-side-bar"> Tài khoản</span>
-                </Link>
-              </li>
+              <Can do="read-write" on="admin" passThrough>
+                {(allowed) =>
+                  allowed ? (
+                    <li>
+                      <Link
+                        to="/manager/user"
+                        className={`nav-link ${
+                          path.indexOf("manager/user") > -1
+                            ? "active"
+                            : "link-dark"
+                        }`}
+                      >
+                        <i className="fas fa-users-cog"></i>
+                        <span className="text-side-bar"> Tài khoản</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    ""
+                  )
+                }
+              </Can>
               <li>
                 <Link
                   to="/manager/product"
@@ -99,17 +115,27 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Đơn hàng</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/manager/staff"
-                  className={`nav-link ${
-                    path.indexOf("manager/staff") > -1 ? "active" : "link-dark"
-                  }`}
-                >
-                  <i className="fal fa-suitcase"></i>
-                  <span className="text-side-bar"> Nhân viên</span>
-                </Link>
-              </li>
+              <Can do="read-write" on="admin" passThrough>
+                {(allowed) =>
+                  allowed ? (
+                    <li>
+                      <Link
+                        to="/manager/staff"
+                        className={`nav-link ${
+                          path.indexOf("manager/staff") > -1
+                            ? "active"
+                            : "link-dark"
+                        }`}
+                      >
+                        <i className="fal fa-suitcase"></i>
+                        <span className="text-side-bar"> Nhân viên</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    ""
+                  )
+                }
+              </Can>
               <li>
                 <Link
                   to="/manager/voucher"
@@ -121,6 +147,19 @@ function Sidebar(props) {
                 >
                   <i className="fal fa-box-heart"></i>
                   <span className="text-side-bar"> Mã giảm giá</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                onClick={handleLogout}
+                  className={`nav-link ${
+                    path.indexOf("manager/voucher") > -1
+                      ? "active"
+                      : "link-dark"
+                  }`}
+                >
+                  <i className="fal fa-sign-out"></i>
+                  <span className="text-side-bar"> Đăng xuất</span>
                 </Link>
               </li>
               <li>

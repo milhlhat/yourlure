@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
-import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
-import YLButton from "components/custom-field/YLButton";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import "./scss/add-new-product.scss";
 import ManagerCategoryAPI from "api/manager-category-api";
 import ManagerFishAPI from "api/manager-fish-api";
+import ProductAPI from "api/product-api";
+import YLButton from "components/custom-field/YLButton";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { setIsBack } from "redux/back-action/back-action";
+import * as yup from "yup";
+import "./scss/add-new-product.scss";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -37,7 +35,7 @@ function ManagerProductAddNew(props) {
 
   const fetchFish = async () => {
     try {
-      const response = await ManagerFishAPI.getAll();
+      const response = await ProductAPI.getAllFish();
       if (response.error) {
         throw new Error(response.error);
       } else {
@@ -70,7 +68,6 @@ function ManagerProductAddNew(props) {
   const imageHandleChange = (e) => {
     // console.log(e.target.files);
     let file = Array.from(e.target.files);
-    let nameFile = e.target.value;
     if (file) {
       setFileImage((prevState) => prevState.concat(file));
       // let bb = isExist(selectedImagesName, file);
@@ -166,7 +163,7 @@ function ManagerProductAddNew(props) {
   const CheckBox = React.forwardRef(
     ({ onChange, onBlur, name, label }, ref) => (
       <div class="form-check">
-        {fishList?.list?.fishDtoOuts?.map((fish, i) => (
+        {fishList?.list?.map((fish, i) => (
           <div key={"fish" + i}>
             <input
               name="fishList"
@@ -195,7 +192,6 @@ function ManagerProductAddNew(props) {
       dispatch(action);
     }
   }, [canBack]);
-
   useEffect(() => {
     fetchCategory();
     fetchFish();
@@ -205,7 +201,7 @@ function ManagerProductAddNew(props) {
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" product-add-new-form row">
-          <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
+          <div className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2" id="product-info">
             <div className="px-3 pt-3">
               <h5>Thông tin sản phẩm</h5>
             </div>
@@ -447,7 +443,7 @@ function ManagerProductAddNew(props) {
               </table>
             </div>
           </div>
-          <div className="cate-fish bg-white bg-shadow col-12 col-md-3 mb-md-5 mb-2 pb-md-4 pb-2">
+          <div className="cate-fish bg-box bg-shadow col-12 col-md-3 mb-md-5 mb-2 pb-md-4 pb-2" id="cate-fish">
             <div className="px-3 pt-3">
               <h5>Danh mục</h5>
             </div>

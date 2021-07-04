@@ -12,9 +12,12 @@
   }
   & .product-info,
   & .cate-fish {
-    border-radius: 10px;
     height: fit-content;
   }
+  & .cate-fish{
+    overflow: auto;
+  }
+  
   & .submit-button-form {
     display: flex;
     justify-content: space-between;

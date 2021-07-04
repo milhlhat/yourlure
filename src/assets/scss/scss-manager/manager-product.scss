@@ -13,13 +13,20 @@
   & table {
     width: 100%;
     & tr {
-      border-bottom: 1px solid;
+      border-bottom: 1px solid $border-line;
     }
   }
 
   & th,
   & caption {
-    font-weight: bold;
+    font-weight: 500;
+    color: $primary;
+  }
+  & .page-item.active .page-link{
+    background-color: $primary;
+    border-color: $primary;
+  }
+  & .page-link{
     color: $primary;
   }
 }

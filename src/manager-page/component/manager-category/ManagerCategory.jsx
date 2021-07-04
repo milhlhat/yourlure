@@ -20,7 +20,7 @@ function ManagerCategory(props) {
   const setBack = {
     canBack: true,
     path: location,
-    label: "Sản phẩm",
+    label: "Danh mục",
   };
   const history = useHistory();
 
@@ -51,6 +51,15 @@ function ManagerCategory(props) {
       console.log("fail to fetch address");
     }
   };
+  const listNameCategory = () => {
+    let list = [];
+    if (categoryList.data) {
+      categoryList.data.map((value) => {
+        list.push(value.categoryName);
+      });
+    }
+    return list;
+  };
   useEffect(() => {
     fetchManagerCategory();
   }, []);
@@ -63,7 +72,11 @@ function ManagerCategory(props) {
             variant="warning"
             onClick={() => history.push("/manager/category/addnew")}
             value="Thêm"
-            to={{ pathname: "/manager/category/addnew", canBack: setBack }}
+            to={{
+              pathname: "/manager/category/addnew",
+              canBack: setBack,
+              listName: listNameCategory(),
+            }}
           />
         </div>
       </div>
@@ -84,19 +97,17 @@ function ManagerCategory(props) {
               <tr key={"cate-" + i}>
                 <td>{i + 1}</td>
                 <td>{item.categoryName}</td>
-                <td>
-                  <img src={Editor} />
-                </td>
-                <td>
+                <td className="d-flex float-end">
+                  <img src={Editor} className="pointer" onClick={()=>console.log(item.categoryID)}/>
                   <ConfirmPopup
-                  variant="link"
-                  width="70px"
-                  height="25px"
-                  btnText={<img src={Trash}/>}
-                  title="Xóa"
-                  content="Bạn chắc chắn muốn xóa Danh mục?"
-                  onConfirm={() => handleDelete(item.categoryID)}
-                />
+                    variant="link"
+                    width="70px"
+                    height="25px"
+                    btnText={<img src={Trash} />}
+                    title="Xóa"
+                    content="Bạn chắc chắn muốn xóa Danh mục?"
+                    onConfirm={() => handleDelete(item.categoryID)}
+                  />
                 </td>
               </tr>
             ))}

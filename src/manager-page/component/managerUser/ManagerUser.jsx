@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import YLButton from "components/custom-field/YLButton";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import {setIsBack} from 'redux/back-action/back-action';
 import ManagerUserApi from "api/manager-user-api";
-import Pagination from "react-js-pagination";
+import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
-import Editor from "assets/icon/editor.svg";
+import React, { useEffect, useState } from "react";
+import Pagination from "react-js-pagination";
+import { useDispatch } from "react-redux";
+import { setIsBack } from 'redux/back-action/back-action';
 import './scss/manager-user.scss';
 
 ManagerUser.propTypes = {};
 
 function ManagerUser(props) {
-  
+  const totalItem = 10;
   const [filterUser,setFilterUser]=useState({
     isAsc: true,
     keyword: "",
-    limit: 12,
+    limit: totalItem,
     page: 0,
     sortBy: "userId",
     typeSearch: ""
@@ -35,7 +32,6 @@ function ManagerUser(props) {
 
   const dispatch = useDispatch();
   useEffect(()=>{
-    console.log("object");
     const action = setIsBack({
       canBack: true,
       path: "/manager/product",
@@ -59,14 +55,15 @@ function ManagerUser(props) {
   };
   useEffect(() => {
     fetchManagerUser();
-  }, []);
+  }, [filterUser]);
+  if(userList.isLoading){
+    return <Loading />;
+  } else
   return (
     <>
       <div className="user-head-row">
         <h3>Khách hàng</h3>
         <div className="product-add-new">
-          {console.log(userList?.data)}
-
         </div>
       </div>
       <div className="manager-user-show mt-3 bg-white bg-shadow">
@@ -89,7 +86,7 @@ function ManagerUser(props) {
               {userList?.data?.userDtoOutList?.map((item, i) => (
                   <tr key={i}>
                     <td>
-                      {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
+                      {(activePage - 1) * totalItem +
                         i +
                         1}
                     </td>
@@ -114,14 +111,14 @@ function ManagerUser(props) {
                 ))}
             </tbody>
           </table>
-          <div className="m-auto p-4">
-            {userList.totalPage > 1 && (
+          <div className="m-auto p-4 d-flex justify-content-center">
+            {userList?.data?.totalPage >= 1 && (
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
                 activePage={activePage}
-                itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
-                totalItemsCount={userList.totalUser}
+                itemsCountPerPage={totalItem}
+                totalItemsCount={userList?.data?.totalUser}
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                 onChange={handlePageChange}
               />
