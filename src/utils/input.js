@@ -10,6 +10,7 @@ let Utils = {
 		if (list.length > 0)
 			for (let i = 0; i < list.length; i++) {
 				let item = list[i];
+				// eslint-disable-next-line
 				if (item.categoryID == e.target.name || item.fishID == e.target.name) {
 					list[i] = { ...list[i], checked: e.target.checked };
 				}

@@ -11,8 +11,11 @@
         object-fit: cover;
     }
     & .banner-content {
-      margin: -200px 50px;
+      margin: -250px 50px;
       color: #fff;
+      & h3{
+        width: 50%;
+      }
     }
     & .button-discover{
       height: 50px;
@@ -33,5 +36,15 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 5px;
+  }
+}
+@media screen and(max-width: $tablet-width) {
+   .banner-content {
+    margin: -250px 50px;
+    color: #fff;
+    & h3{
+      width: 100% !important;
+      font-size: 20px;
+    }
   }
 }

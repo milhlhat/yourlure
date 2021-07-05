@@ -23,7 +23,6 @@ function AddNewAddress() {
             if (response.error) {
                 throw new Error(response.error);
             } else {
-                alert("Thêm địa chỉ thành công");
                 history.push("/customer/address");
             }
         } catch (error) {

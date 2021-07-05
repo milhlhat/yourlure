@@ -73,3 +73,33 @@ const dumyCustomize = {
   },
 };
 export default dumyCustomize;
+
+// <!DOCTYPE html>
+// <html>
+// <body>
+
+// <h3>A demonstration of how to access a File Upload Button</h3>
+
+// <input type="file" id="myFile">
+
+// <p>Click the "Try it" button to disable the file upload button.</p>
+
+// <button onclick="Main()">Try it</button>
+
+// <script>
+// const toBase64 = file => new Promise((resolve, reject) => {
+//   const reader = new FileReader();
+//   reader.readAsDataURL(file);
+//   reader.onload = () => resolve(reader.result);
+//   reader.onerror = error => reject(error);
+// });
+
+// async function Main() {
+//  const file = document.querySelector('#myFile').files[0];
+//  console.log(await toBase64(file));
+// }
+
+// </script>
+
+// </body>
+// </html>

@@ -9,7 +9,8 @@ function ErrorLoad(props) {
   const history = useHistory();
 
   function reload() {
-    history.replace(history.location.pathname);
+    history.push("/reload");
+    history.goBack();
   }
   return (
     <div
