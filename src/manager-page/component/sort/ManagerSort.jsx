@@ -34,6 +34,18 @@ function Sort(props) {
       sortBy: "productName",
       value: "SORT_NME_PRODUCT_DESC",
     },
+    {
+      display: "Giá tăng dần",
+      isAsc: true,
+      sortBy: "defaultPrice",
+      value: "SORT_PRICE_PRODUCT_DESC",
+    },
+    {
+      display: "Giá giảm dần",
+      isAsc: false,
+      sortBy: "defaultPrice",
+      value: "SORT_PRICE_PRODUCT_ASC",
+    },
   ];
   const dispatch = useDispatch();
   function getSortSelectedByList(list, value) {

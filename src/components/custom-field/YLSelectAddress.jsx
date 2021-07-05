@@ -44,7 +44,7 @@ function YLSelectAddress(props) {
   };
   useEffect(() => {
     if (address) initialData();
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     const fetchAllProvive = async () => {
