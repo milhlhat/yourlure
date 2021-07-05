@@ -129,11 +129,11 @@ function Header(props) {
                 <div>
                   <Link
                     className="nav-link item-hover"
-                    to="/product/customize/14"
+                    to="/product/customize?productId=14&isEdit=false"
                   >
                     Tùy biến
                   </Link>
-                </div> 
+                </div>
                 <div
                   className={`group-link-item ${
                     path.indexOf(DEFINELINK.campaign) > -1 ? "active" : ""
@@ -144,9 +144,9 @@ function Header(props) {
                   </Link>
                 </div>
                 <div
-                 className={`group-link-item ${
-                  path.indexOf(DEFINELINK.about) > -1 ? "active" : ""
-                }`}
+                  className={`group-link-item ${
+                    path.indexOf(DEFINELINK.about) > -1 ? "active" : ""
+                  }`}
                 >
                   <Link className="nav-link item-hover" to="/about">
                     About

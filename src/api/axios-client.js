@@ -1,6 +1,7 @@
 import axios from "axios";
 import queryString from "query-string";
 import { getToken } from "utils/user";
+import DEFINELINK from "../routes/define-link";
 
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
@@ -39,6 +40,9 @@ AxiosClient.interceptors.response.use(
     // console.log(error.response.headers);
     // console.log(error.request);
     // console.log(error.config);
+    if (error.response?.status === 403 && error.config.url !== "/user/roles") {
+      window.location.href = DEFINELINK.home;
+    }
     throw error;
   }
 );

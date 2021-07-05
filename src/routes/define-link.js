@@ -23,7 +23,7 @@ const DEFINELINK = {
 
   product: "/product",
   productDetail: "/detail/:id", // /product/detail/:id
-  productCustomize: "/customize/:id", // /product/customize/:id
+  productCustomize: "/customize", // /product/customize/:id
   productSearch: "/search", // /product/search
 
   //path for manager page
