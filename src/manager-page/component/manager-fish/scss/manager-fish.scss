@@ -23,3 +23,26 @@
     outline: 0;
     box-shadow: 0;
 }
+
+.manager-user-show {
+  padding: 20px;
+  & table {
+    width: 100%;
+  }
+  & td,
+  & th {
+    padding: 5px;
+  }
+  & th,
+  & caption {
+    font-weight: bold;
+    color: $primary;
+  }
+  & .page-item.active .page-link{
+    background-color: $primary;
+    border-color: $primary;
+  }
+  & .page-link{
+    color: $primary;
+  }
+}

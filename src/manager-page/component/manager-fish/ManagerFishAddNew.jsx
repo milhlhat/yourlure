@@ -52,7 +52,10 @@ function ManagerFishAddNew() {
                         id="name"
                         placeholder="Nhập tên cá"
                     />
-                    <YLButton variant="primary" type="submit" value="Xong" />
+                    <div className="mt-3 d-flex justify-content-center">
+                        <YLButton variant="primary" type="submit" value="Xong" />
+                        <YLButton variant="link" to="/manager/category" value="Hủy" />
+                    </div>
                 </form>
             </div>
         </div>
