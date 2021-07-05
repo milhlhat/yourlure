@@ -1,8 +1,8 @@
 import ManagerFishAddNew from "manager-page/component/manager-fish/ManagerFishAddNew";
+import ManagerFishEdit from "manager-page/component/manager-fish/ManagerFishEdit";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
-import { RenderRoutes } from "utils/common";
 const ManagerFish = React.lazy(() => import("manager-page/component/manager-fish/ManagerFish"));
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 
@@ -13,7 +13,6 @@ export default function OtherRoute() {
         {
             path: path,
             component: ManagerFish,
-            exact: true,
             // can: { do: "login", on: "website"},
         },
         {
@@ -24,8 +23,15 @@ export default function OtherRoute() {
         },
     ];
     return (
+        // <Switch>
+        //     <RenderRoutes routes={routes} />
+        //     <Route component={NotFound} />
+        // </Switch>
+
         <Switch>
-            <RenderRoutes routes={routes} />
+            <Route exact path={path} component={ManagerFish} />
+            <Route exact path={path + DEFINELINK.managementFishAddNew} component={ManagerFishAddNew} />
+            <Route exact path={path + DEFINELINK.managementFishEdit} component={ManagerFishEdit} />
             <Route component={NotFound} />
         </Switch>
     );
