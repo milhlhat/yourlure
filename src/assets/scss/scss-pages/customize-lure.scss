@@ -1,4 +1,5 @@
 @import "../base/variable";
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300&family=Festive&family=Grenze+Gotisch:wght@300&family=Qwigley&family=Dancing+Script&family=Sriracha&display=swap');
 
 @media screen and (min-width: $mobile-width) {
   .main-customize {
@@ -19,9 +20,11 @@
   width: 100%;
   height: 85vh;
   overflow: hidden;
+
   & canvas {
     height: 100%;
   }
+
   & h1 {
     position: absolute;
     top: 43px;
@@ -40,23 +43,28 @@
   top: 50px;
   right: 5px;
   color: $text-color;
+
   & .list-group-active {
     color: #ffffff;
     background-color: $hover-color;
   }
+
   & a {
     min-width: 120px;
   }
 }
+
 .export {
   position: absolute !important;
   top: 5px;
   right: 5px;
   z-index: 2;
 }
+
 .tab-custom {
   display: flex;
   height: 100%;
+
   & .tab-menu {
     display: flex;
     flex-direction: column;
@@ -72,6 +80,7 @@
       line-height: 45px;
       cursor: pointer;
     }
+
     & .selected {
       background-color: white;
       color: $text-color;
@@ -79,6 +88,7 @@
       color: #ffffff77;
     }
   }
+
   & .tab-detail {
     background-color: white;
     width: 100%;
@@ -88,17 +98,20 @@
     padding: 0 5px 5px 5px;
     overflow: auto;
     transition: all 1s linear;
+
     & .detail {
       width: 100%;
       display: flex;
       justify-content: center;
     }
+
     &-close {
       width: 100%;
       text-align: right;
       color: $close-btn-color;
       font-size: x-large !important;
     }
+
     & .switch {
       color: $text-color;
       font-size: large;
@@ -106,15 +119,18 @@
       text-transform: uppercase;
       padding: 5px 0 5px 0;
     }
+
     & .img-option {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       width: 100%;
+
       & .img-active {
         border: 3px solid #95a790;
         border-radius: 5px;
       }
+
       & img {
         margin-right: 5px;
         margin-top: 5px;
@@ -126,11 +142,13 @@
         object-fit: cover;
       }
     }
+
     & .color-option {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       width: inherit;
+
       & a {
         position: relative;
         display: block;
@@ -141,9 +159,10 @@
         margin: 0 0.1rem 0.3rem;
         transition: box-shadow 0.35s ease;
       }
+
       &-picker {
         width: inherit;
-        padding: 0 10px 0 10px;
+        //padding: 0 10px 0 10px;
       }
     }
   }
@@ -155,11 +174,29 @@
       color: $primary;
     }
   }
+
   & .switch-button {
     display: none;
   }
 }
+.group-change-img-tab {
 
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.group-select-text-attribute {
+  width: inherit;
+  display: flex;
+  gap: 20px;
+
+}
+.select-font {
+  font-size: 20px;
+  height: 38px;
+  line-height: 15px;
+}
 @media screen and (max-width: $mobile-width) {
   .customize {
     & .picker {
@@ -168,5 +205,18 @@
   }
   .switch-button {
     display: block !important;
+  }
+
+}
+
+@media screen and(min-width: $tablet-width) {
+  .group-select-text-attribute{
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (min-width: $desktop-width) {
+  .group-change-img-tab{
+    width: 70%;
   }
 }

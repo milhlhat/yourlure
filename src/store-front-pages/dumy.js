@@ -33,38 +33,50 @@ const dumyCustomize = {
           img: "",
           color: "",
           text: "",
+          textColor: "",
+          textFont: "",
+          textSize: "",
+
           canAddText: true,
           canAddImg: true,
           canAddColor: true,
           textures: [
             {
               textureId: 1,
-              textureUrl: g1,
+              textureUrl: "images/10-min.jpg",
+              isDefault: true,
             },
             {
               textureId: 2,
-              textureUrl: g2,
+              textureUrl: "images/bo-6-spinner-SP06-4.jpg",
+              isDefault: true,
             },
           ],
         },
         {
-          materialId: 0,
+          materialId: 2,
           defaultName: "back", // cái này để map với model để translate
           vnName: "Lưng", // cái này để hiển thị
-          img: "/static/media/texture12.b3d8f39b.jpg",
+          img: "",
           color: "",
           text: "",
+          textColor: "",
+          textFont: "",
+          textSize: "",
+
           canAddText: true,
           canAddImg: true,
           canAddColor: true,
           textures: [
             {
               textureId: 5,
-              textureUrl: g4,
+              textureUrl: "images/CR28.jpg",
+              sDefault: true,
             },
             {
               textureId: 6,
-              textureUrl: g3,
+              textureUrl: "images/DK8.jpg",
+              sDefault: true,
             },
           ],
         },

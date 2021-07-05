@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
+import { HexColorPicker } from "react-colorful";
+
 function AddTextToModelTab(props) {
   const BE_SERVER = process.env.REACT_APP_API_URL;
   const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -14,6 +16,16 @@ function AddTextToModelTab(props) {
   const dispatch = useDispatch(setCustomizeInfo);
   const customizeInfo = useSelector((state) => state.customizeInfo);
   const mId = useSelector((state) => state.customizeId);
+
+  const fonts = [
+    "Big Shoulders Display",
+    "Festive",
+    "Grenze Gotisch",
+    "Qwigley",
+    "Dancing Script",
+    "Sriracha",
+  ];
+  const textSizes = [20, 40, 60, 80, 100, 120, 150, 200];
 
   const canvasRef = React.useRef(null);
   const imgRef = React.useRef(new Image());
@@ -34,6 +46,7 @@ function AddTextToModelTab(props) {
   function scalePreserveAspectRatio(imgW, imgH, maxW, maxH) {
     return Math.min(maxW / imgW, maxH / imgH);
   }
+
   function draw(ctx, textInput) {
     //
     const canvas = canvasRef.current;
@@ -49,17 +62,21 @@ function AddTextToModelTab(props) {
     canvas.height = h * sizer;
     ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
 
-    let textSize = 100;
-    let fontFamily = "'Dancing Script'";
-
+    let textSize = currentMaterial.textSize ? currentMaterial.textSize : 100;
+    let fontFamily = currentMaterial.textFont
+      ? currentMaterial.textFont
+      : "system-ui";
+    let textColor = currentMaterial.textColor
+      ? currentMaterial.textColor
+      : "#0000FF";
     // write text to canvas
-    ctx.fillStyle = "#0000FF";
-    // ctx.font = "50px 'Kirang Haerang'";
+    ctx.fillStyle = textColor;
+    //  "50px 'Kirang Haerang'";
     ctx.font = textSize + "px " + fontFamily;
     console.log("font:", ctx.font);
 
     let textString = textInput ? textInput : currentMaterial.text;
-     
+
     let textWidth = ctx.measureText(textString).width;
 
     console.log("text width size:", textSize);
@@ -84,7 +101,7 @@ function AddTextToModelTab(props) {
         list[i].img = myImage;
         if (imgId) {
           list[i].imgId = imgId;
-          console.log('img', imgId);
+          console.log("img", imgId);
         }
         if (textInput) {
           list[i].text = textInput;
@@ -95,6 +112,27 @@ function AddTextToModelTab(props) {
     let action = setCustomizeInfo(list);
     dispatch(action);
   }
+
+  function handleChangeTextAttribute(textColor, textFont, textSize) {
+    let list = JSON.parse(JSON.stringify(customizeInfo));
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].materialId === mId) {
+        if (textColor) {
+          list[i].textColor = textColor;
+        }
+        if (textFont) {
+          list[i].textFont = textFont;
+        }
+        if (textSize) {
+          list[i].textSize = textSize;
+        }
+      }
+    }
+
+    let action = setCustomizeInfo(list);
+    dispatch(action);
+  }
+
   function applyText() {
     if (currentMaterial.imgId) {
       handleChangeImg(null, null, text);
@@ -102,6 +140,7 @@ function AddTextToModelTab(props) {
       setIsWarning(true);
     }
   }
+
   function setUrlImage(url) {
     return new Promise(function (resolve, reject) {
       img.onload = function () {
@@ -113,6 +152,7 @@ function AddTextToModelTab(props) {
       img.src = url;
     });
   }
+
   function CanvasText() {
     return (
       <canvas
@@ -127,7 +167,7 @@ function AddTextToModelTab(props) {
   }
 
   return (
-    <div className="d-flex flex-column align-items-center w-100">
+    <div className="group-change-img-tab ">
       {currentMaterial?.canAddImg ? (
         <>
           <div className="img-option">
@@ -158,15 +198,58 @@ function AddTextToModelTab(props) {
             {/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
           </div>
           {currentMaterial?.canAddText && (
-            <div className="w-100">
+            <div className="w-100 d-flex align-items-center flex-column px-1 gap-3">
               <hr className="hr my-3" />
               <input
                 type="text"
+                placeholder={"Ký hiệu, tên riêng..."}
                 className="form-control w-100"
                 defaultValue={currentMaterial.text}
                 onChange={(e) => handleChangeInputAddText(e)}
               />
+              <div className={"group-select-text-attribute"}>
+                <select
+                  className={"form-select select-font"}
+                  style={{
+                    fontFamily: currentMaterial.textFont
+                      ? currentMaterial.textFont
+                      : fonts[0],
+                  }}
+                  onChange={(e) =>
+                    handleChangeTextAttribute(null, e.target.value, null)
+                  }
+                >
+                  {fonts.map((item, i) => (
+                    <option
+                      key={`font-${i}`}
+                      value={item}
+                      style={{ fontFamily: item }}
+                    >
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className={"form-select"}
+                  onChange={(e) =>
+                    handleChangeTextAttribute(null, null, e.target.value)
+                  }
+                >
+                  {textSizes.map((item, i) => (
+                    <option key={`text-size-${i}`} value={item}>
+                      {item + "px"}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <HexColorPicker
+                className="color-option-picker"
+                onChange={(color) =>
+                  handleChangeTextAttribute(color, null, null)
+                }
+              />
               <YLButton
+                width={"100px"}
                 variant="primary"
                 type="button"
                 name="canvasText"
@@ -174,7 +257,7 @@ function AddTextToModelTab(props) {
                   applyText();
                 }}
               >
-                Thêm chữ
+                Thêm
               </YLButton>
               {isWarning && !currentMaterial.imgId && (
                 <p className="text-danger">Vui lòng chọn 1 texture</p>

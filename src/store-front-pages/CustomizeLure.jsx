@@ -321,10 +321,12 @@ function CanvasModel(props) {
 
 function ListActionMaterials(props) {
   const { dispatch, customizeInfo, mId } = props;
+
   function handleChangeMId(mId) {
     const action = setMaterialId(mId);
     dispatch(action);
   }
+
   return (
     <div className="list-group picker">
       {customizeInfo.length > 0 &&
@@ -363,37 +365,56 @@ export default function Customize(props) {
   const mId = useSelector((state) => state.customizeId);
 
   const dispatch = useDispatch();
-  const productId = props.match.params.id;
+  const productId = new URLSearchParams(props.location.search).get("productId");
+  const isEdit = new URLSearchParams(props.location.search).get("isEdit");
+
+  console.log(productId, isEdit);
   const [product, setProduct] = useState({
     data: "",
     isLoading: true,
     isSuccess: false,
   });
 
-  const fetchMaterialInfo = async () => {
+  const fetchMaterialInfo = async (productId, isEdit) => {
     try {
-      const response = await ProductAPI.getMaterialsInfoByProdId(productId);
+      let response = {};
+      if (String(isEdit).toLowerCase() == "true") {
+        response = await ProductAPI.getMaterialsCustomizeId(productId);
+      } else {
+        response = await ProductAPI.getMaterialsInfoByProdId(productId);
+      }
+      if (response.materials) {
+        response.defaultMaterials = response.materials;
+        delete response.materials;
+      }
+
       setProduct({
         data: response,
         isLoading: false,
         isSuccess: true,
       });
+
       const action = setCustomizeInfo(response.defaultMaterials);
+
+      const selectMIdAction = setMaterialId(
+        response.defaultMaterials[0]?.materialId
+      );
       dispatch(action);
+      dispatch(selectMIdAction);
     } catch (error) {
       console.log("fail to fetch data");
     }
   };
   useEffect(async () => {
-    await fetchMaterialInfo();
+    await fetchMaterialInfo(productId, isEdit);
     // await fetchProduct();
 
     document.getElementById("footer").style.display = "none";
-  }, [productId]);
+  }, [productId, isEdit]);
   if (product.isLoading) {
-    return <Loading />;
+    return <Loading hasLayout />;
   } else if (!product.isSuccess) {
-    return <ErrorLoad></ErrorLoad>;
+    return <ErrorLoad hasLayout />;
   } else
     return (
       <div className="row main-customize">
@@ -401,13 +422,13 @@ export default function Customize(props) {
           <TabSelectCustomize product={product} />
         </div>
         <div className=" col-md-9">
-          <CanvasModel
-            dispatch={dispatch}
-            // customizeInit={customizeInit}
-            mId={mId}
-            customizeInfo={customizeInfo}
-            model3d={product.data.url}
-          />
+          {/*<CanvasModel*/}
+          {/*  dispatch={dispatch}*/}
+          {/*  // customizeInit={customizeInit}*/}
+          {/*  mId={mId}*/}
+          {/*  customizeInfo={customizeInfo}*/}
+          {/*  model3d={product.data.url}*/}
+          {/*/>*/}
         </div>
       </div>
     );
