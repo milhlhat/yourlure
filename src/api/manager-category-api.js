@@ -14,6 +14,14 @@ const ManagerCategoryAPI = {
 		const url = '/admin/category/add';
 		return AxiosClient.post(url,param);
 	},
+	searchByName: (param) => {
+		const url = '/admin/category/search';
+		return AxiosClient.post(url,param);
+	},
+	edit: (param) => {
+		const url = `/admin/category/${param.categoryId}`;
+		return AxiosClient.post(url,param);
+	},
 	delete: (param) => {
 		const url = `/admin/category/${param}`;
 		return AxiosClient.delete(url);

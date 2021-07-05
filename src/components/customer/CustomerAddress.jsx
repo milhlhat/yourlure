@@ -26,13 +26,13 @@ function CustomerAddress(props) {
       if (response.error) {
         throw new Error(response.error);
       } else {
-        alert("Xóa chỉ mặc định thành công");
+        alert("Xóa chỉ thành công");
       }
     } catch (error) {
-      alert("Xóa chỉ mặc định thất bại");
+      alert("Xóa chỉ thất bại");
       console.log("fail to fetch delete address");
     }
-    window.location.reload();
+    fetchCustomAddress();
   };
   const handleSetDefaultAddress = async (id) => {
     try {

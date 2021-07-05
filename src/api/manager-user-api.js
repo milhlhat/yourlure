@@ -6,6 +6,10 @@ const ManagerUserApi = {
 		const url = `/admin/user/all`;
 		return AxiosClient.post(url,param);
 	},
+	getStaffAll: (param) => {
+		const url = `/admin/user/all-staff`;
+		return AxiosClient.post(url,param);
+	},
 };
 export const {getAll } = ManagerUserApi;
 export default ManagerUserApi;
