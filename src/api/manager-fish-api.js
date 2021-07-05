@@ -1,4 +1,3 @@
-import { filterConfig } from 'constant/filter-setting';
 import AxiosClient from './axios-client';
 
 const ManagerFishAPI = {
@@ -6,6 +5,10 @@ const ManagerFishAPI = {
   getAll: (param) => {
     const url = '/admin/fish/searchAll';
     return AxiosClient.post(url, param);
+  },
+  getById: (id) => {
+    const url = `/admin/fish/getById?id=${id}`;
+    return AxiosClient.get(url);
   },
   delete: (param) => {
     const url = `/admin/fish/delete/${param}`;
@@ -15,10 +18,10 @@ const ManagerFishAPI = {
     const url = '/admin/fish/save';
     return AxiosClient.post(url, param);
   },
-  update: (id) => {
-    const url = `/admin/fish/u/${id}`;
-    return AxiosClient.post(url);
+  update: (fish, id) => {
+    const url = `/admin/fish/update?id=${id}`;
+    return AxiosClient.post(url, fish);
   },
 };
-export const { getAll } = ManagerFishAPI;
+export const { getAll, add, update } = ManagerFishAPI;
 export default ManagerFishAPI;

@@ -31,7 +31,7 @@ function ManagerFish(props) {
         listFishId: [
 
         ],
-        page: filterConfig.PAGE_NUMBER_DEFAULT,
+        page: 0,
         sortBy: "fishId"
     });
     const location = useLocation();
@@ -56,13 +56,22 @@ function ManagerFish(props) {
             } else {
                 alert("Xóa loại cá thành công");
             }
+            fetchManagerFish();
         } catch (error) {
             alert("Xóa loại cá thất bại");
             console.log("fail to fetch delete address");
         }
+
     };
 
-    const fetchManagerCategory = async () => {
+    const handleEditClicked = (id) => {
+        history.push({
+            pathname: "/manager/fish/edit/" + id,
+            canBack: setBack,
+        });
+    };
+
+    const fetchManagerFish = async () => {
         setFishList((prevState) => {
             return { ...prevState, isLoading: true };
         });
@@ -79,7 +88,7 @@ function ManagerFish(props) {
         }
     };
     useEffect(() => {
-        fetchManagerCategory();
+        fetchManagerFish();
     }, [filter]);
 
     if (fishList.isLoading) {
@@ -112,25 +121,25 @@ function ManagerFish(props) {
                                 <tr key={"fish-" + i}>
                                     <td>{i + 1}</td>
                                     <td>{item.fishName}</td>
-                                    <td>
-                                        <img src={Editor} />
-                                    </td>
-                                    <td>
+                                    <td className="d-flex float-end">
+                                        <img src={Editor}
+                                            className="pointer"
+                                            onClick={() => handleEditClicked(item.fishID)}
+                                        />
                                         <ConfirmPopup
                                             variant="link"
                                             width="70px"
                                             height="25px"
                                             btnText={<img src={Trash} />}
-                                            title="Xóa"
-                                            content="Bạn chắc chắn muốn xóa Danh mục?"
-                                        // onConfirm={() => handleDelete(item.fishId)}
+                                            content="Bạn chắc chắn muốn xóa?"
+                                            onConfirm={() => handleDelete(item.fishID)}
                                         />
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    <div className="m-auto p-4">
+                    <div className="m-auto p-4 m-auto p-4 d-flex justify-content-center">
                         {fishList?.data?.totalPage > 1 && (
                             <Pagination
                                 itemClass="page-item"
