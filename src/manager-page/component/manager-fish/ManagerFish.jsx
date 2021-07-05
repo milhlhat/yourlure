@@ -64,9 +64,9 @@ function ManagerFish(props) {
 
     };
 
-    const handleEditClicked = (data) => {
+    const handleEditClicked = (id) => {
         history.push({
-            pathname: "/manager/fish/edit/" + data,
+            pathname: "/manager/fish/edit/" + id,
             canBack: setBack,
         });
     };
@@ -123,7 +123,6 @@ function ManagerFish(props) {
                                     <td>{item.fishName}</td>
                                     <td className="d-flex float-end">
                                         <img src={Editor}
-                                            to={{ pathname: "/manager/fish/edit", canBack: setBack }}
                                             className="pointer"
                                             onClick={() => handleEditClicked(item.fishID)}
                                         />
