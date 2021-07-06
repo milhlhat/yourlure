@@ -1,15 +1,21 @@
 package fpt.custome.yourlure.service;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+//import java.util.*;
 
 @Service
 public class FileService {
@@ -39,7 +45,7 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Paths.get(path, fileName).toString();
+        return path + "/" + fileName;
     }
 
     public String saveImage(MultipartFile file) {
@@ -65,7 +71,7 @@ public class FileService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            result.add(Paths.get(path, fileName).toString());
+            result.add(path + "/" + fileName);
         }
         return result;
     }
@@ -77,7 +83,7 @@ public class FileService {
     }
 
     public String saveFileBase64(String fileName, String content, String path) throws IOException {
-        return saveFileByte(fileName, Base64.getDecoder().decode(content), path);
+        return saveFileByte(fileName, Base64.decodeBase64(content), path);
     }
 
     public Boolean deleteFile(String filePath) {
@@ -92,7 +98,7 @@ public class FileService {
     public String getFileBase64(String filePath) {
         try {
             byte[] fileContent = FileUtils.readFileToByteArray(new File(parentPath + filePath));
-            String encodedString = Base64.getEncoder().encodeToString(fileContent);
+            String encodedString = new String(Base64.encodeBase64(fileContent), StandardCharsets.US_ASCII);
             return encodedString;
         } catch (IOException e) {
             e.printStackTrace();

@@ -91,6 +91,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
                         .append(defaultMaterial.getDefaultName())
                         .append("_texture_")
                         .append(textureCount++)
+                        .append(".")
                         .append(textureDto.getFormat());
 
                 String url = fileService.saveFileBase64(textureFileName.toString(), textureDto.getContentBase64(), FileService.TEXTURE_DIR);
