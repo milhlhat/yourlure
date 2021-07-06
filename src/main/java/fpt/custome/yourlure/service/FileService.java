@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FileService {
@@ -29,12 +27,12 @@ public class FileService {
         new File(parentPath + TEXTURE_DIR).mkdir();
     }
 
-    public Boolean isFileExist(String filePath){
+    public Boolean isFileExist(String filePath) {
         File f = new File(filePath);
         return f.exists() && !f.isDirectory();
     }
 
-    public String saveMultipartFile(String fileName, MultipartFile file, String path){
+    public String saveMultipartFile(String fileName, MultipartFile file, String path) {
         Path filePath = Paths.get(parentPath, path, fileName);
         try {
             Files.write(filePath, file.getBytes());
@@ -45,8 +43,9 @@ public class FileService {
     }
 
     public String saveImage(MultipartFile file) {
-        Path filePath = Paths.get(parentPath + IMAGES_DIR, file.getOriginalFilename());
-        String fileName = file.getOriginalFilename();
+        String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+        Path filePath = Paths.get(parentPath + IMAGES_DIR, fileName);
+
         try {
             Files.write(filePath, file.getBytes());
         } catch (IOException e) {
@@ -58,14 +57,15 @@ public class FileService {
     public List<String> saveImages(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
-            Path filePath = Paths.get(parentPath, path, file.getOriginalFilename());
-            String fileName = file.getOriginalFilename();
+            String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            Path filePath = Paths.get(parentPath, path, fileName);
+
             try {
                 Files.write(filePath, file.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            result.add(Paths.get(CUSTOMS_DIR, fileName).toString());
+            result.add(Paths.get(path, fileName).toString());
         }
         return result;
     }
@@ -89,15 +89,15 @@ public class FileService {
         }
     }
 
-    public String getFileBase64(String filePath){
-       try{
-           byte[] fileContent = FileUtils.readFileToByteArray(new File(parentPath + filePath));
-           String encodedString = Base64.getEncoder().encodeToString(fileContent);
-           return encodedString;
-       } catch (IOException e) {
-           e.printStackTrace();
-           return "";
-       }
+    public String getFileBase64(String filePath) {
+        try {
+            byte[] fileContent = FileUtils.readFileToByteArray(new File(parentPath + filePath));
+            String encodedString = Base64.getEncoder().encodeToString(fileContent);
+            return encodedString;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }

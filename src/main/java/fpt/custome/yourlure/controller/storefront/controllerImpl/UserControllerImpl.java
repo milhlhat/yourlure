@@ -12,6 +12,7 @@ import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
 import fpt.custome.yourlure.entity.address.Ward;
+import fpt.custome.yourlure.service.OtpService;
 import fpt.custome.yourlure.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,6 +38,9 @@ public class UserControllerImpl implements UserController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private OtpService otpService;
 
 
     @Override
@@ -137,6 +141,25 @@ public class UserControllerImpl implements UserController {
         String phone = user.getPhone();
         String password = user.getPassword();
         return userService.signin(phone, password);
+    }
+
+    @Override
+    public ResponseEntity<Object> forgotPwd(String phone) {
+        if (userService.forgotPwd(phone)) {
+            // success
+            return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+        }
+        // failure message
+        return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
+
+    }
+
+    @Override
+    public ResponseEntity<Object> resetPwd(String phone, String newPwd, Integer otp) {
+        if (userService.resetPwd(phone, newPwd, otp)) {
+            return new ResponseEntity<>("reset password successfully.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("fail to reset password!", HttpStatus.BAD_REQUEST);
     }
 
 }
