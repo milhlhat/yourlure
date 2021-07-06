@@ -1,7 +1,7 @@
 import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMaterialByMId } from "utils/product";
+import { getImgTexturesByImgId, getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { HexColorPicker } from "react-colorful";
 
@@ -11,12 +11,20 @@ function AddTextToModelTab(props) {
 
   const [isWarning, setIsWarning] = useState(false);
   const [text, setText] = useState("");
+  const [textAttribute, setTextAttribute] = useState({
+    textFont: "",
+    textColor: "#0000FF",
+    textSize: 20,
+  });
 
   const [currentMaterial, setCurrentMaterial] = useState([]);
   const dispatch = useDispatch(setCustomizeInfo);
   const customizeInfo = useSelector((state) => state.customizeInfo);
   const mId = useSelector((state) => state.customizeId);
 
+  const canvasRef = React.useRef(null);
+  const imgRef = React.useRef(new Image());
+  // const textAttributeDebounceRef = React.useRef();
   const fonts = [
     "Big Shoulders Display",
     "Festive",
@@ -26,9 +34,6 @@ function AddTextToModelTab(props) {
     "Sriracha",
   ];
   const textSizes = [20, 40, 60, 80, 100, 120, 150, 200];
-
-  const canvasRef = React.useRef(null);
-  const imgRef = React.useRef(new Image());
 
   let img = imgRef.current;
   img.crossOrigin = "anonymous";
@@ -62,12 +67,10 @@ function AddTextToModelTab(props) {
     canvas.height = h * sizer;
     ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
 
-    let textSize = currentMaterial.textSize ? currentMaterial.textSize : 100;
-    let fontFamily = currentMaterial.textFont
-      ? currentMaterial.textFont
-      : "system-ui";
-    let textColor = currentMaterial.textColor
-      ? currentMaterial.textColor
+    let textSize = textAttribute.textSize ? textAttribute.textSize : 100;
+    let fontFamily = textAttribute.textFont ? textAttribute.textFont : fonts[0];
+    let textColor = textAttribute.textColor
+      ? textAttribute.textColor
       : "#0000FF";
     // write text to canvas
     ctx.fillStyle = textColor;
@@ -88,12 +91,18 @@ function AddTextToModelTab(props) {
   }
 
   async function handleChangeImg(img, imgId, textInput) {
-    img = img ? img : currentMaterial.img;
+    //DRAW CANVAS
+    img = img ? img : getImgTexturesByImgId(currentMaterial);
     await setUrlImage(img);
     const canvas = canvasRef.current;
     const ctx = await canvas.getContext("2d");
     draw(ctx, textInput);
     const myImage = await canvasRef.current.toDataURL("image/png");
+
+    //TEXT ATTRIBUTE
+    const textColor = textAttribute.textColor;
+    const textFont = textAttribute.textFont;
+    const textSize = textAttribute.textSize;
 
     let list = JSON.parse(JSON.stringify(customizeInfo));
     for (let i = 0; i < list.length; i++) {
@@ -106,26 +115,11 @@ function AddTextToModelTab(props) {
         if (textInput) {
           list[i].text = textInput;
         }
-      }
-    }
+        list[i].textColor = textColor;
 
-    let action = setCustomizeInfo(list);
-    dispatch(action);
-  }
+        list[i].textFont = textFont !== "" ? textFont : fonts[0];
 
-  function handleChangeTextAttribute(textColor, textFont, textSize) {
-    let list = JSON.parse(JSON.stringify(customizeInfo));
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].materialId === mId) {
-        if (textColor) {
-          list[i].textColor = textColor;
-        }
-        if (textFont) {
-          list[i].textFont = textFont;
-        }
-        if (textSize) {
-          list[i].textSize = textSize;
-        }
+        list[i].textSize = textSize;
       }
     }
 
@@ -200,28 +194,36 @@ function AddTextToModelTab(props) {
           {currentMaterial?.canAddText && (
             <div className="w-100 d-flex align-items-center flex-column px-1 gap-3">
               <hr className="hr my-3" />
-              <input
-                type="text"
-                placeholder={"Ký hiệu, tên riêng..."}
-                className="form-control w-100"
-                defaultValue={currentMaterial.text}
-                onChange={(e) => handleChangeInputAddText(e)}
-              />
+              <div className={"w-100"}>
+                <span className={"label"}>Ký hiệu, tên riêng</span>
+                <input
+                  type="text"
+                  placeholder={"Tối đa 30 ký tự"}
+                  className="form-control w-100"
+                  defaultValue={currentMaterial.text}
+                  onChange={(e) => handleChangeInputAddText(e)}
+                />
+              </div>
+
               <div className={"group-select-text-attribute"}>
                 <select
                   className={"form-select select-font"}
                   style={{
-                    fontFamily: currentMaterial.textFont
-                      ? currentMaterial.textFont
+                    fontFamily: textAttribute.textFont
+                      ? textAttribute.textFont
                       : fonts[0],
                   }}
                   onChange={(e) =>
-                    handleChangeTextAttribute(null, e.target.value, null)
+                    // handleChangeTextAttribute(null, e.target.value, null)
+                    setTextAttribute({
+                      ...textAttribute,
+                      textFont: e.target.value,
+                    })
                   }
                 >
                   {fonts.map((item, i) => (
                     <option
-                      key={`font-${i}`}
+                      key={`fontFamily-${i}`}
                       value={item}
                       style={{ fontFamily: item }}
                     >
@@ -231,9 +233,13 @@ function AddTextToModelTab(props) {
                 </select>
                 <select
                   className={"form-select"}
-                  onChange={(e) =>
-                    handleChangeTextAttribute(null, null, e.target.value)
-                  }
+                  onChange={(e) => {
+                    // handleChangeTextAttribute(null, null, e.target.value)
+                    setTextAttribute({
+                      ...textAttribute,
+                      textSize: e.target.value,
+                    });
+                  }}
                 >
                   {textSizes.map((item, i) => (
                     <option key={`text-size-${i}`} value={item}>
@@ -244,9 +250,13 @@ function AddTextToModelTab(props) {
               </div>
               <HexColorPicker
                 className="color-option-picker"
-                onChange={(color) =>
-                  handleChangeTextAttribute(color, null, null)
+                color={
+                  textAttribute.textColor ? textAttribute.textColor : "#000000"
                 }
+                onChange={(color) => {
+                  // handleChangeTextAttribute(color, null, null)
+                  setTextAttribute({ ...textAttribute, textColor: color });
+                }}
               />
               <YLButton
                 width={"100px"}

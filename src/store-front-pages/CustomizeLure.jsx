@@ -19,16 +19,19 @@ import {
   getNodesInfoBy,
   getMaterialsName,
   getColorMaterialByName,
+  setDefaultTexture,
+  submitCustomize,
 } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { setMaterialId } from "redux/customize-action/customize-id";
 
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
-import ProductAPI, { submitCustomizeByModelId } from "api/product-api";
+import ProductAPI from "api/product-api";
 import YLButton from "components/custom-field/YLButton";
 import { setIsCapture } from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -41,6 +44,7 @@ function RenderModel(props) {
 
   const isCapture = props.isCapture;
   let customizeInfo = props.customizeInfo;
+
   //Load 3d model
   const { nodes, materials } = useGLTF(
     `${BE_SERVER}${BE_FOLDER}${model3d}`,
@@ -67,6 +71,7 @@ function RenderModel(props) {
   // }, []);
 
   let listTextures = [];
+
   let texture0 = useTexture(
     customizeInfo.length > 0 && customizeInfo[0].img !== ""
       ? customizeInfo[0].img
@@ -174,26 +179,10 @@ function RenderModel(props) {
 
       scene = scene.parent;
 
-      // console.log(scene);
-      // let w = window.open("", "");
-      // w.document.title = "Screenshot";
-
-      // let img = new Image();
-
       // Without 'preserveDrawingBuffer' set to true, we must render now
       rerender.render(scene, camera);
       let imgCapture = rerender.domElement.toDataURL();
 
-      let submitParams = {
-        materials: customizeInfo,
-        name: "your-custom",
-        model3dId: 15,
-        thumbnail: {
-          content: imgCapture,
-          name: "capture.jpg",
-        },
-      };
-      submitCustomizeByModelId(submitParams);
       // w.document.body.appendChild(img);
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: false });
       const action = setIsCapture({ isCapture: false, img: imgCapture });
@@ -234,37 +223,8 @@ function RenderModel(props) {
     >
       {listMesh.length > 0 &&
         listMesh.map((item, i) => (
-          <mesh
-            key={i}
-            receiveShadow
-            castShadow
-            {...item}
-            // material-map={listTextures[i]}
-
-            // geometry={item.geometry}
-            // material={listMaterials[i]}
-
-            // material-color={
-            // 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
-            // }
-          />
+          <mesh key={i} receiveShadow castShadow {...item} />
         ))}
-      {/* {listNodes.length > 0 &&
-				listNodes.map((item, i) => (
-					<mesh
-						key={i}
-						receiveShadow
-						castShadow
-						geometry={item.geometry}
-						material={listMaterials[i]}
-						// material-map={customizeInfo[i] && customizeInfo[i].img != '' ? listTextures[i] : null}
-						// material-color={listMaterials[i] ? listMaterials[i].color: null}
-						// material-map={listTextures[i]}
-						// material-color={
-						// 	customizeInfo.length > 0 && customizeInfo[i] ? customizeInfo[i].color : ''
-						// }
-					/>
-				))} */}
     </group>
   );
 }
@@ -295,7 +255,7 @@ function CanvasModel(props) {
             model3d={props.model3d}
             isCapture={isCapture}
           />
-          <Environment preset="sunset" background={true} />
+          <Environment preset="sunset" background={false} />
           <ContactShadows
             rotation-x={Math.PI / 2}
             position={[0, -0.8, 0]}
@@ -347,14 +307,35 @@ function ListActionMaterials(props) {
 
 function ExportCustomInformations(props) {
   const dispatch = props.dispatch;
+  const isCapture = useSelector((state) => state.isCapture);
+  const customizeInfo = useSelector((state) => state.customizeInfo);
+
+  const [exportStatus, setExportStatus] = useState({
+    isLoading: false,
+    isSuccess: false,
+  });
   const onCapture = () => {
     const action = setIsCapture({ isCapture: true });
     dispatch(action);
+    let submitParams = {
+      model3dId: isCapture.model3dId,
+      customizeId: isCapture.customizeId,
+      name: "your-custom",
+      materials: customizeInfo,
+      thumbnail: {
+        content: isCapture.img,
+        name: "capture.jpg",
+      },
+    };
+    submitCustomize(submitParams, isCapture.isEdit, setExportStatus);
   };
   return (
     <div className="export">
-      <YLButton variant="primary" onClick={() => onCapture()}>
-        Xong
+      <YLButton variant="primary" onClick={() => onCapture()} type={"button"}>
+        Xong{" "}
+        {exportStatus.isLoading && (
+          <CircularProgress size={15} className="circle-progress" />
+        )}
       </YLButton>
     </div>
   );
@@ -394,11 +375,20 @@ export default function Customize(props) {
         isSuccess: true,
       });
 
-      const action = setCustomizeInfo(response.defaultMaterials);
+      const action = setCustomizeInfo(
+        setDefaultTexture(response.defaultMaterials)
+      );
 
       const selectMIdAction = setMaterialId(
         response.defaultMaterials[0]?.materialId
       );
+
+      const captureAction = setIsCapture({
+        model3dId: response.model3dId,
+        customizeId: response.customizeId,
+        isEdit: isEdit,
+      });
+      dispatch(captureAction);
       dispatch(action);
       dispatch(selectMIdAction);
     } catch (error) {
@@ -417,18 +407,17 @@ export default function Customize(props) {
     return <ErrorLoad hasLayout />;
   } else
     return (
-      <div className="row main-customize">
-        <div className=" col-md-3">
+      <div className="main-customize">
+        <div className="col-sm-12 col-md-3">
           <TabSelectCustomize product={product} />
         </div>
-        <div className=" col-md-9">
-          {/*<CanvasModel*/}
-          {/*  dispatch={dispatch}*/}
-          {/*  // customizeInit={customizeInit}*/}
-          {/*  mId={mId}*/}
-          {/*  customizeInfo={customizeInfo}*/}
-          {/*  model3d={product.data.url}*/}
-          {/*/>*/}
+        <div className="col-sm-12 col-md-9">
+          <CanvasModel
+            dispatch={dispatch}
+            mId={mId}
+            customizeInfo={customizeInfo}
+            model3d={product.data.url}
+          />
         </div>
       </div>
     );

@@ -34,11 +34,18 @@ const ProductAPI = {
   },
   getMaterialsCustomizeId: (id) => {
     const url = "model3d/find-custom-by-id/" + id;
-    return AxiosClient.get(url);
+    // return AxiosClient.get(url);
+    return dumyCustomize.initMaterials();
   },
-  submitCustomizeByModelId: (params) => {
+  createCustomizeByModelId: (params) => {
     const url = "/model3d/create-custom";
-    return AxiosClient.post(url, params);
+    console.log(params);
+    // return AxiosClient.post(url, params);
+  },
+  updateCustomizeByModelId: (params) => {
+    const url = "/model3d/update-custom";
+    console.log(params);
+    // return AxiosClient.post(url, params);
   },
 };
 export const {
@@ -48,6 +55,7 @@ export const {
   getAllFish,
   getProductByFilter,
   getMaterialsCustomizeId,
-  submitCustomizeByModelId,
+  createCustomizeByModelId,
+  updateCustomizeByModelId,
 } = ProductAPI;
 export default ProductAPI;

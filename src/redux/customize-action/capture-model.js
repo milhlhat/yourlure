@@ -5,27 +5,6 @@ const capture = createSlice({
   initialState: {
     isCapture: false,
     img: "",
-    isEdit: false,
-    exportData: {
-      customizeId: 0,
-      materials: [
-        {
-          color: "",
-          img: "",
-          materialId: 0,
-          text: "",
-          textColor: "",
-          textFont: "",
-          textSize: 0,
-        },
-      ],
-      model3dId: 0,
-      name: "",
-      thumbnail: {
-        content: "",
-        name: "",
-      },
-    },
   },
   reducers: {
     setIsCapture: (state, action) => {
