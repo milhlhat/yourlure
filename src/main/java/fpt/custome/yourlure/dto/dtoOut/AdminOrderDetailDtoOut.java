@@ -18,7 +18,7 @@ public class AdminOrderDetailDtoOut {
     private Long orderID;
     private String address;
     private String phone;
-    private String name;
+    private String receiverName;
     private String note;
     private Date orderDate;
     private String activityName;

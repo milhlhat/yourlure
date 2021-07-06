@@ -113,9 +113,9 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryInput != null)
             category = mapper.map(categoryInput, Category.class);
         else return false;
-        if (!categoryRepos.findByCategoryName(categoryInput.getCategoryName()).isPresent()){
+        if (!categoryRepos.findByCategoryName(categoryInput.getCategoryName()).isPresent()) {
             return false;
-        }else{
+        } else {
             return categoryRepos.save(category) == null ? false : true;
         }
     }
@@ -123,14 +123,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean removeCategory(Long idInput) {
         try {
-//            Optional<Category> categoryRemove = categoryRepos.findById(idInput);
-//            if (categoryRemove.isPresent()) {
-//                List<Product> productList = (List<Product>) categoryRemove.get().getProductCollection();
-//                for (Product product : productList) {
-//                    productService.remove(product.getProductId());
-//                }
-//            }
-            categoryRepos.deleteById(idInput);
+            Optional<Category> categoryRemove = categoryRepos.findById(idInput);
+            if (categoryRemove.isPresent()) {
+                if (!categoryRemove.get().getProductCollection().isEmpty())
+                    categoryRepos.deleteById(idInput);
+            }
+
         } catch (
                 Exception e) {
             // TODO Auto-generated catch block
