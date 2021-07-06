@@ -5,14 +5,23 @@
     justify-content: space-between;
 }
 .manager-category-show {
-    padding: 20px;
-    & table {
-        width: 100%;
-    }
-    & span {
-        border-bottom: 4px solid #0356f6;
-        padding: 15px 0;
-      }
+  padding: 20px;
+  & table {
+      width: 100%;
+  }
+  & span {
+    border-bottom: 4px solid $bottom-line;
+    padding: 15px 0;
+  }
+  & td,
+  & th {
+    padding: 5px;
+  }
+  & th,
+  & caption {
+    font-weight: 500;
+    color: $primary;
+  }
       
   & .page-item.active .page-link{
     background-color: $primary;

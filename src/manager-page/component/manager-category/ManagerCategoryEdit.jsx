@@ -12,7 +12,6 @@ import { useHistory } from "react-router-dom";
 function ManagerCategoryEdit(props) {
   const canBack = props.location.canBack;
   const cateId = props.match.params.id;
-  console.log(cateId);
   const history = useHistory();
   const dispatch = useDispatch();
   const schema = yup.object().shape({
@@ -51,7 +50,6 @@ function ManagerCategoryEdit(props) {
   });
   const onSubmit = async (data) => {
       let param = {...data,categoryId:cateId}
-    console.log(param);
     try {
       const response = await ManagerCategoryAPI.edit(param);
       if (response.error) {

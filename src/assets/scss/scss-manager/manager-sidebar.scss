@@ -1,6 +1,6 @@
-.sidebar {
+.side-bar {
   height: 100vh;
-  width: 20%;
+  width: 15%;
   position: fixed;
   & .fa,
   .fas,
@@ -46,7 +46,7 @@
   .manager-slidebar {
     z-index: 4;
     width: 100% !important;
-    & .sidebar {
+    & .side-bar {
       height: 100%;
       width: 100%;
       position: absolute;

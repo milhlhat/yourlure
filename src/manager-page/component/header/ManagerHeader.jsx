@@ -91,6 +91,16 @@ function ManagerHeader(props) {
                 Đăng xuất
               </span>
             </li>
+            <li>
+              <span className="dropdown-item pointer" onClick={()=>console.log("thông tin")}>
+                Thông tin
+              </span>
+            </li>
+            <li>
+              <span className="dropdown-item pointer" onClick={()=>console.log("đổi mật khẩu")}>
+                Đổi mật khẩu
+              </span>
+            </li>
           </ul>
         </div>
       </div>

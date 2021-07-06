@@ -54,7 +54,6 @@ function ManagerCategory(props) {
     fetchManagerCategory();
   };
 
-
   const onsubmit = async (data) => {
     let searchFilter = { ...filter, keyword: data.keyWord };
     setCategoryList((prevState) => {
@@ -155,11 +154,10 @@ function ManagerCategory(props) {
                       src={Editor}
                       className="pointer"
                       onClick={() =>
-                        history.push(
-                          {pathname:"/manager/category/edit/" + item.categoryID,
-                          canBack:setBack
-                        }
-                        )
+                        history.push({
+                          pathname: "/manager/category/edit/" + item.categoryID,
+                          canBack: setBack,
+                        })
                       }
                     />
                     <ConfirmPopup

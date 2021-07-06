@@ -4,13 +4,17 @@
   & table {
     width: 100%;
   }
+  & span {
+    border-bottom: 4px solid $bottom-line;
+    padding: 15px 0;
+  }
   & td,
   & th {
     padding: 5px;
   }
   & th,
   & caption {
-    font-weight: bold;
+    font-weight: 500;
     color: $primary;
   }
   & .page-item.active .page-link{

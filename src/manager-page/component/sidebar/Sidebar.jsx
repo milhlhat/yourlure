@@ -27,7 +27,7 @@ function Sidebar(props) {
     <>
       <div id="myNav" className="overlay">
         <span className="closebtn" onClick={closeNav}>
-          <div className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white">
+          <div className="side-bar d-flex flex-column flex-shrink-0 ps-3 bg-white">
             <a
               href="#"
               className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
@@ -179,7 +179,7 @@ function Sidebar(props) {
        */}
 
       {/* <div
-      className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white"
+      className="side-bar d-flex flex-column flex-shrink-0 p-3 bg-white"
     >
       <a
         href="#"
