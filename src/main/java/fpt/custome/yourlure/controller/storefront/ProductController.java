@@ -41,4 +41,5 @@ public interface ProductController {
     @GetMapping("/get-file-base64")
     ResponseEntity<Object> downloadBase64(String path);
 
+
 }

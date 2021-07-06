@@ -98,4 +98,5 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<Object> downloadBase64(String path) {
         return new ResponseEntity<>(fileService.getFileBase64(path), HttpStatus.OK);
     }
+
 }

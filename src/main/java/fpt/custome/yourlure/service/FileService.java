@@ -48,30 +48,21 @@ public class FileService {
         return path + "/" + fileName;
     }
 
-    public String saveImage(MultipartFile file) {
-        String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
-        Path filePath = Paths.get(parentPath + IMAGES_DIR, fileName);
-
+    public String saveImage(MultipartFile file, String path, String fileName) {
+        Path filePath = Paths.get(parentPath, path, fileName);
         try {
             Files.write(filePath, file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Paths.get(CUSTOMS_DIR, fileName).toString();
+        return path + "/" + fileName;
     }
 
     public List<String> saveImages(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
             String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
-            Path filePath = Paths.get(parentPath, path, fileName);
-
-            try {
-                Files.write(filePath, file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            result.add(path + "/" + fileName);
+            result.add(saveImage(file, path, fileName));
         }
         return result;
     }
@@ -83,7 +74,7 @@ public class FileService {
     }
 
     public String saveFileBase64(String fileName, String content, String path) throws IOException {
-        return saveFileByte(fileName, Base64.decodeBase64(content), path);
+        return saveFileByte(fileName, Base64.decodeBase64(content.split(",")[1]), path);
     }
 
     public Boolean deleteFile(String filePath) {
