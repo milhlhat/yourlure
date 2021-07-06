@@ -17,6 +17,7 @@ import fpt.custome.yourlure.entity.address.Ward;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
+import fpt.custome.yourlure.service.OtpService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private OtpService otpService;
+
     @Override
     public String signin(String phone, String password) {
         try {
@@ -96,6 +100,31 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new CustomException("Username or phone is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    @Override
+    public Boolean forgotPwd(String phone) {
+        if (phone == null) {
+            return false;
+        }
+        User user = userRepos.findByPhone(phone);
+        if(user != null){
+            return otpService.generateOtp(phone);
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean resetPwd(String phone, String newPwd, Integer otp) {
+
+        Boolean isValid = otpService.validateOTP(phone, otp);
+        if (isValid){
+            User user = userRepos.findByPhone(phone);
+            user.setPassword(passwordEncoder.encode(newPwd));
+            userRepos.save(user);
+        }
+
+        return isValid;
     }
 
     public Boolean block(Long id) {

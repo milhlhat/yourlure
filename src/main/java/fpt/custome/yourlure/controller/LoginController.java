@@ -31,8 +31,8 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/get-register")
-    public String getRegister(@RequestParam User user){
+    @PostMapping("/register")
+    public String register(@RequestParam User user){
         try{
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(user.getPassword());

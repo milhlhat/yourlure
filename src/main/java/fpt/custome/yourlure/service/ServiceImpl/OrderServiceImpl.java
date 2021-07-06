@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
 
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         List<OrderLine> orderLines = new ArrayList<>();
+
         for (CartItem item : items) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
             Product product = productJpaRepos.getById(item.getProductId());

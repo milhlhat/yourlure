@@ -29,6 +29,9 @@ public class OtpService {
      * @return boolean value (true|false)
      */
     public Boolean generateOtp(String key) {
+        if(key.startsWith("0")){
+            key = "+84" + key.substring(1);
+        }
         // generate otp
         Integer otpValue = otpGenerator.generateOTP(key);
         if (otpValue == -1) {
@@ -57,6 +60,9 @@ public class OtpService {
      * @return boolean value (true|false)
      */
     public Boolean validateOTP(String key, Integer otpNumber) {
+        if(key.startsWith("0")){
+            key = "+84" + key.substring(1);
+        }
         // get OTP from cache
         Integer cacheOTP = otpGenerator.getOPTByKey(key);
         if (cacheOTP.equals(otpNumber)) {
