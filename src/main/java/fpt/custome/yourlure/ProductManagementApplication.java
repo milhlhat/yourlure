@@ -20,7 +20,7 @@ public class ProductManagementApplication implements CommandLineRunner {
 
     @Override
     public void run(String... params) throws Exception {
-//        fileService.deleteFile("customs/string.png");
+//        fileService.getFileBase64("customs/string.png");
     }
 
 }

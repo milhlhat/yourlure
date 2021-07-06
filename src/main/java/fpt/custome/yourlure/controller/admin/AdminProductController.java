@@ -4,7 +4,6 @@ import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AdminProductDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminProductDtoOut;
 import fpt.custome.yourlure.entity.Filter;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,7 @@ public interface AdminProductController {
     @DeleteMapping("/{id}")
     ResponseEntity<Boolean> deleteProduct(@PathVariable("id") Long id);
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<String> uploadFile(@RequestParam("file") @Validated MultipartFile file) throws IOException;
+    @PostMapping(value = "/upload")
+    ResponseEntity<Object> uploadFile(@RequestParam("files") MultipartFile[] file) throws IOException;
 
 }

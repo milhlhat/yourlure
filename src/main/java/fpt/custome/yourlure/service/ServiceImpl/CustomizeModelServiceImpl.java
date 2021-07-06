@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,7 +65,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public Model3d createModel3d(Model3dDtoInput m3dIn) throws IOException {
         Product product = productJpaRepos.findById(m3dIn.getProductId()).orElse(null);
         // save model 3d file
-        String model3dUrl = fileService.saveFileBase64(m3dIn.getName(), m3dIn.getModel3dBase64(), FileService.MODELS_DIR);
+        String model3dUrl = m3dIn.getModel3dUrl();
+
+        if(fileService.isFileExist(model3dUrl)){
+            throw new FileNotFoundException("the 3d model wasn't uploaded yet!");
+        }
+
         Model3d m3d = Model3d.builder()
                 .product(product)
                 .name(m3dIn.getName())
@@ -105,7 +111,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             materials.add(defaultMaterial);
 
         }
-        m3d.setDefaultMaterials(materials);
+        m3d.setMaterials(materials);
         m3d = model3dRepos.save(m3d);
         return m3d;
     }
@@ -153,7 +159,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         for (CustomModelDtoInput.MaterialDtoInput materialDtoInput : customModelDtoInput.getMaterials()) {
             CustomMaterial mat = mapper.map(materialDtoInput, CustomMaterial.class);
             mat.setCustomizeModel(customizeModel);
-            mat.setDefaultMaterial(defaultMaterialRepos.getById(materialDtoInput.getDefaultMaterialId()));
+            mat.setDefaultMaterial(defaultMaterialRepos.getById(materialDtoInput.getMaterialId()));
 //            mat = customMaterialRepos.save(mat);
             materials.add(mat);
         }

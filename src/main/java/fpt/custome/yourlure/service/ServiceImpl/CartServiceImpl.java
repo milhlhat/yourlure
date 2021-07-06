@@ -1,10 +1,10 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
-import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import fpt.custome.yourlure.entity.Cart;
 import fpt.custome.yourlure.entity.CartItem;
 import fpt.custome.yourlure.entity.User;
+import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.CartService;
 import fpt.custome.yourlure.service.UserService;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -40,52 +41,64 @@ public class CartServiceImpl implements CartService {
     private ModelMapper mapper;
 
     @Override
-    public Optional<CartDtoOut> getCart(HttpServletRequest req) {
+    public Optional<Cart> getCart(HttpServletRequest req) {
 
         User user = userService.whoami(req);
-        Optional<Cart> cart = cartRepos.findCartByUserUserId(user.getUserId());
-        if (cart.isPresent()) {
-            CartDtoOut cartDtoOut = mapper.map(cart.get(), CartDtoOut.class);
-            return Optional.of(cartDtoOut);
-        }
-        return Optional.empty();
+        return cartRepos.findCartByUserUserId(user.getUserId());
 
     }
 
     @Override
-    public Cart addProduct(HttpServletRequest req, AddToCartDto addToCartDto) {
-        try {
-            User user = userService.whoami(req);
-            Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
+    public Cart addItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
+        User user = userService.whoami(req);
+        // check custom model is belong to current user or not
+        for (CustomizeModel customizeModel : user.getCustomizeModels()) {
+            if(customizeModel.getCustomizeId().equals(addToCartDto.getCustomModelId())){
+                Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
 
-            CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
-            cartItem.setCart(cart);
-            cart.getCartItemCollection().add(cartItem);
-            cart = cartRepos.save(cart);
+                CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
+                cartItem.setCart(cart);
+                cartItem = cartItemRepos.save(cartItem);
+
+                if(cart.getCartItemCollection() != null){
+                    cart.getCartItemCollection().add(cartItem);
+                }else{
+                    cart.setCartItemCollection(Collections.singletonList(cartItem));
+                }
+                return cart;
+            }
+        }
+        throw new Exception("this model doesn't belong to you");
+    }
+
+    @Override
+    public Cart removeItem(HttpServletRequest req, Long cartItemId) {
+        User user = userService.whoami(req);
+        Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
+        if(cart.getCartItemCollection() == null){
             return cart;
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-        return null;
+        cart.getCartItemCollection().removeIf(cartItem -> cartItem.getCartItemId().equals(cartItemId));
+        cart = cartRepos.save(cart);
+        return cart;
     }
 
     @Override
-    public Boolean removeProduct(Long cartId, Long cartItemId) {
-        cartItemRepos.deleteCartItemsByCart_CartId(cartId);
-        return true;
-    }
-
-    @Override
-    public Boolean setProductQuantity(Long cartId, Long cartItemId, int quantity) {
+    public Boolean setItemQuantity(HttpServletRequest rq, Long cartItemId, int quantity) {
         try {
-            cartItemRepos.updateQuantityCartItem(quantity, cartId, cartItemId);
+            User user = userService.whoami(rq);
+            Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
+            CartItem item = cart.getCartItemCollection().stream().filter(cartItem -> cartItem.getCartItemId().equals(cartItemId)).findFirst().orElse(null);
+            if(item != null){
+                item.setQuantity(quantity);
+                item = cartItemRepos.save(item);
+                return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return false;
     }
 
 }

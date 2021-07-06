@@ -29,8 +29,9 @@ public class CustomModelDtoInput {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MaterialDtoInput {
+
+        // materialId is both defaultMaterialId and customMaterialId. it's depend on the scenery
         private Long materialId;
-        private Long defaultMaterialId;
         private String text;
         private String textFont;
         private String textColor;

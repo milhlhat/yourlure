@@ -1,6 +1,5 @@
 package fpt.custome.yourlure.service;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -29,6 +29,21 @@ public class FileService {
         new File(parentPath + TEXTURE_DIR).mkdir();
     }
 
+    public Boolean isFileExist(String filePath){
+        File f = new File(filePath);
+        return f.exists() && !f.isDirectory();
+    }
+
+    public String saveMultipartFile(String fileName, MultipartFile file, String path){
+        Path filePath = Paths.get(parentPath, path, fileName);
+        try {
+            Files.write(filePath, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Paths.get(path, fileName).toString();
+    }
+
     public String saveImage(MultipartFile file) {
         Path filePath = Paths.get(parentPath + IMAGES_DIR, file.getOriginalFilename());
         String fileName = file.getOriginalFilename();
@@ -40,10 +55,10 @@ public class FileService {
         return Paths.get(CUSTOMS_DIR, fileName).toString();
     }
 
-    public List<String> saveImages(MultipartFile[] files) {
+    public List<String> saveImages(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
-            Path filePath = Paths.get(parentPath + IMAGES_DIR, file.getOriginalFilename());
+            Path filePath = Paths.get(parentPath, path, file.getOriginalFilename());
             String fileName = file.getOriginalFilename();
             try {
                 Files.write(filePath, file.getBytes());
@@ -62,7 +77,7 @@ public class FileService {
     }
 
     public String saveFileBase64(String fileName, String content, String path) throws IOException {
-        return saveFileByte(fileName, Base64.decodeBase64(content), path);
+        return saveFileByte(fileName, Base64.getDecoder().decode(content), path);
     }
 
     public Boolean deleteFile(String filePath) {
@@ -72,6 +87,17 @@ public class FileService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getFileBase64(String filePath){
+       try{
+           byte[] fileContent = FileUtils.readFileToByteArray(new File(parentPath + filePath));
+           String encodedString = Base64.getEncoder().encodeToString(fileContent);
+           return encodedString;
+       } catch (IOException e) {
+           e.printStackTrace();
+           return "";
+       }
     }
 
 }
