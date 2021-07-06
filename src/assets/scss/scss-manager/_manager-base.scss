@@ -13,6 +13,9 @@
     height: 100vh;
   }
 }
+.hover-background:hover{
+  background-color: $background-box-color;
+}
 
 @media screen and(max-width:500px) {
   .manager-main {

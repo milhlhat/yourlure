@@ -72,7 +72,7 @@ function ManagerOrder(props) {
         {orderList?.data?.orderDtoOutList?.length <= 0 && (
           <p>Không có sản phẩm </p>
         )}
-        <table>
+        <table className="table">
           <tbody>
             <tr>
               <th>#</th>
@@ -85,7 +85,7 @@ function ManagerOrder(props) {
             {orderList?.data?.orderDtoOutList?.map((item, i) => (
               <tr
                 key={"manager-order-" + i}
-                className="pointer"
+                className="pointer hover-background"
                 onClick={() =>
                   history.push({
                     pathname: "/manager/order/detail/" + item.orderID,

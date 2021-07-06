@@ -75,7 +75,7 @@ function ManagerStaff(props) {
     return (
         <>
       <div className="staff-head-row d-flex justify-content-between">
-        <h3>Khách hàng</h3>
+        <h3>Nhân viên</h3>
         <div className="staff-add-new">
             <YLButton
               variant="primary"
@@ -90,7 +90,7 @@ function ManagerStaff(props) {
           <hr />
           {/* <ManagerSort /> */}
           {staffList?.data?.userDtoOutList?.length <= 0 && <p>Không có sản phẩm </p>}
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <th>#</th>
@@ -103,7 +103,7 @@ function ManagerStaff(props) {
                 <th></th>
               </tr>
               {staffList?.data?.userDtoOutList?.map((item, i) => (
-                  <tr key={i}>
+                  <tr key={'staff-'+i} className="hover-background">
                     <td>
                       {(activePage - 1) * totalItem +
                         i +

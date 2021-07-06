@@ -72,7 +72,7 @@ function ManagerUser(props) {
           <hr />
           {/* <ManagerSort /> */}
           {userList?.data?.userDtoOutList?.length <= 0 && <p>Không có sản phẩm </p>}
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <th>#</th>
@@ -85,7 +85,7 @@ function ManagerUser(props) {
                 <th></th>
               </tr>
               {userList?.data?.userDtoOutList?.map((item, i) => (
-                  <tr key={i}>
+                  <tr key={'manager-user-'+i} className="hover-background">
                     <td>
                       {(activePage - 1) * totalItem +
                         i +

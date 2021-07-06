@@ -149,7 +149,7 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Mã giảm giá</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                 onClick={handleLogout}
                   className={`nav-link link-dark`}
@@ -157,7 +157,7 @@ function Sidebar(props) {
                   <i className="fal fa-sign-out"></i>
                   <span className="text-side-bar"> Đăng xuất</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <button className="d-none close-button btn btn-outline-dark">
                   <i className="fas fa-times"></i>
