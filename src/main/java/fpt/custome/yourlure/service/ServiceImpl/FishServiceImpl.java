@@ -85,9 +85,7 @@ public class FishServiceImpl implements FishService {
         try {
             if (id != null && fishDtoInput != null) {
                 Fish fishToUpdate = fishRepos.findById(id).get();
-                fishToUpdate.builder()
-                        .fishName(fishDtoInput.getFishName())
-                        .build();
+                fishToUpdate.setFishName(fishDtoInput.getFishName());
                 fishRepos.save(fishToUpdate);
             } else {
                 return false;

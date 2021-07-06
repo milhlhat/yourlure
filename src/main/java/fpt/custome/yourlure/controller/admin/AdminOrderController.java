@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.controller.admin;
 
+import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
@@ -14,11 +15,11 @@ public interface AdminOrderController {
     /**
      * tích hợp all and search
      *
-     * @param filter
+     * @param adminFilterDtoInput
      * @return
      */
     @PostMapping("/all-by-phone-or-name")
-    ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody Filter filter);
+    ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody AdminFilterDtoInput adminFilterDtoInput);
 
 //    /**
 //     * tìm kiếm order theo điện thoại

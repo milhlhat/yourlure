@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminDiscountVoucherDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDtoOut;
 import fpt.custome.yourlure.entity.DiscountVoucher;
 import fpt.custome.yourlure.repositories.DiscountVoucherRepos;
@@ -40,6 +41,23 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
                     .totalPage(list.getTotalPages())
                     .build();
             return Optional.of(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<AdminDiscountVoucherDetailDtoOut> getById(Long id) {
+        try {
+            if (id != null) {
+                Optional<DiscountVoucher> discountVoucher = discountVoucherRepos.findById(id);
+                if (discountVoucher.isPresent()){
+                    AdminDiscountVoucherDetailDtoOut result = mapper.map(discountVoucher, AdminDiscountVoucherDetailDtoOut.class);
+                    return Optional.of(result);
+                }
+            }
+            return Optional.empty();
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();

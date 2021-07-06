@@ -23,7 +23,7 @@ public interface OrderService {
                                                     Integer limit);
 
     //admin ------------------------------
-    Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable);
+    Optional<AdminOrderDtoOut> getAll(String keyword,String typeSearch, Pageable pageable);
 
     Optional<AdminOrderDetailDtoOut> getById(Long id);
 

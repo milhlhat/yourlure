@@ -225,7 +225,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Optional<AdminOrderDtoOut> getAll(String keyword, Pageable pageable) {
+    public Optional<AdminOrderDtoOut> getAll(String keyword,String typeSearch, Pageable pageable) {
 
         try {
             Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword, pageable);

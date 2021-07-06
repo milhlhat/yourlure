@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryRepos extends JpaRepository<Category, Long> {
 
@@ -31,5 +32,7 @@ public interface CategoryRepos extends JpaRepository<Category, Long> {
     List<Category> getBestSellerCategory();
 
     List<Category> findByCategoryNameContainsIgnoreCase(String keyword, Pageable pageable);
+
+    Optional<Category> findByCategoryName(String keyword);
 
 }

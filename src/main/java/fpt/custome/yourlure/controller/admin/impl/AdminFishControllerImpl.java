@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.admin.impl;
 import fpt.custome.yourlure.controller.admin.AdminFishController;
 import fpt.custome.yourlure.dto.dtoInp.FishDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminFishDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.FishDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.service.FishService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,12 @@ public class AdminFishControllerImpl implements AdminFishController {
                 , PageRequest.of(filter.getPage(),
                         filter.getLimit(),
                         filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<FishDtoOut>> getbyId(Long id) {
+        Optional<FishDtoOut> result = fishService.getById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

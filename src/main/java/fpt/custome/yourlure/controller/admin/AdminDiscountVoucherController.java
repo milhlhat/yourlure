@@ -2,6 +2,7 @@ package fpt.custome.yourlure.controller.admin;
 
 
 import fpt.custome.yourlure.dto.dtoInp.AdminDiscountVoucherDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public interface AdminDiscountVoucherController {
     @PostMapping("/add")
     ResponseEntity<Boolean> save(@RequestBody AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
-//    @GetMapping("/{id}")
-//    ResponseEntity<Optional<DiscountSale>> getProductById(@PathVariable("id") Long id);
+    @GetMapping("/{id}")
+    ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getProductById(@PathVariable("id") Long id);
 
 //    @GetMapping("/search-product")
 //    ResponseEntity<List<DiscountSale>> searchProduct(@RequestParam("productName") String id);

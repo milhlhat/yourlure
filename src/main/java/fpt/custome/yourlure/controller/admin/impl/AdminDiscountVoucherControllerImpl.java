@@ -2,6 +2,7 @@ package fpt.custome.yourlure.controller.admin.impl;
 
 import fpt.custome.yourlure.controller.admin.AdminDiscountVoucherController;
 import fpt.custome.yourlure.dto.dtoInp.AdminDiscountVoucherDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.service.DiscountVoucherService;
@@ -32,6 +33,12 @@ public class AdminDiscountVoucherControllerImpl implements AdminDiscountVoucherC
     @Override
     public ResponseEntity<Boolean> save(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
         Boolean result = discountVoucherService.saveVoucher(discountVoucherDtoInput);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getProductById(Long id) {
+        Optional<AdminDiscountVoucherDetailDtoOut> result = discountVoucherService.getById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

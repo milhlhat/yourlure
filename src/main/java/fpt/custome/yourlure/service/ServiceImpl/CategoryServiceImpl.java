@@ -113,7 +113,11 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryInput != null)
             category = mapper.map(categoryInput, Category.class);
         else return false;
-        return categoryRepos.save(category) == null ? false : true;
+        if (!categoryRepos.findByCategoryName(categoryInput.getCategoryName()).isPresent()){
+            return false;
+        }else{
+            return categoryRepos.save(category) == null ? false : true;
+        }
     }
 
     @Override

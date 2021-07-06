@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
     public Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable) {
         List<AdminUserDtoOut.UserDtoOut> listResult = new ArrayList<>();
         try {
-            Page<User> list = null;
+            Page<User> list ;
             switch (type.trim()) {
                 case "name": {
                     list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
@@ -142,15 +142,17 @@ public class UserServiceImpl implements UserService {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
                 for (User item : list.getContent()) {
-                    AdminUserDtoOut.UserDtoOut dtoOut = mapper.map(item, AdminUserDtoOut.UserDtoOut.class);
-                    // tat ca order cua khach hàng
-                    dtoOut.setNumberOfOrder(orderRepos.findAllByUserUserId(item.getUserId()).size());
-                    listResult.add(dtoOut);
+                    if (item.getRoles().contains(Role.ROLE_CUSTOMER)) {
+                        AdminUserDtoOut.UserDtoOut dtoOut = mapper.map(item, AdminUserDtoOut.UserDtoOut.class);
+                        // tat ca order cua khach hàng
+                        dtoOut.setNumberOfOrder(orderRepos.findAllByUserUserId(item.getUserId()).size());
+                        listResult.add(dtoOut);
+                    }
                 }
                 AdminUserDtoOut results = AdminUserDtoOut.builder()
                         .userDtoOutList(listResult)
-                        .totalUser((int) list.getTotalElements())
-                        .totalPage(list.getTotalPages())
+                        .totalUser(listResult.size())
+                        .totalPage((int) Math.ceil(listResult.size()/pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }
@@ -194,8 +196,8 @@ public class UserServiceImpl implements UserService {
                 }
                 AdminStaffDtoOut results = AdminStaffDtoOut.builder()
                         .userDtoOutList(listResult)
-                        .totalUser((int) list.getTotalElements())
-                        .totalPage(list.getTotalPages())
+                        .totalUser(listResult.size())
+                        .totalPage((int) Math.ceil(listResult.size()/pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }
@@ -247,7 +249,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
-        List<UserAddressDtoOut> result ;
+        List<UserAddressDtoOut> result;
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
         // map collection user address to dto

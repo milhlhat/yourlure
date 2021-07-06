@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.admin.impl;
 
 import fpt.custome.yourlure.controller.admin.AdminOrderController;
+import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
@@ -21,8 +22,8 @@ public class AdminOrderControllerImpl implements AdminOrderController {
     private OrderService orderService;
 
     @Override
-    public ResponseEntity<Optional<AdminOrderDtoOut>> findAll(Filter filter) {
-        Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), PageRequest.of(filter.getPage(),
+    public ResponseEntity<Optional<AdminOrderDtoOut>> findAll(AdminFilterDtoInput filter) {
+        Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), filter.getTypeSearch(),PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
