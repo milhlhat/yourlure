@@ -68,7 +68,7 @@ function ManagerUser(props) {
         </div>
       </div>
       <div className="manager-user-show mt-3 bg-white bg-shadow">
-          <span>tất cả Khách hàng</span>
+          <span>Tất cả Khách hàng</span>
           <hr />
           {/* <ManagerSort /> */}
           {userList?.data?.userDtoOutList?.length <= 0 && <p>Không có sản phẩm </p>}

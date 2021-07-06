@@ -5,6 +5,7 @@ import NotFound from "store-front-pages/Notfound";
 import ManagerCategory from "manager-page/component/manager-category/ManagerCategory";
 import ManagerCategoryAddNew from "manager-page/component/manager-category/ManagerCategoryAddNew";
 import ManagerCategoryEdit from "manager-page/component/manager-category/ManagerCategoryEdit";
+import ManagerCategoryDetail from "manager-page/component/manager-category/ManagerCategoryDetail";
 ManagerCategoryRoute.propTypes = {};
 
 function ManagerCategoryRoute() {
@@ -20,6 +21,10 @@ function ManagerCategoryRoute() {
       <Route
         path={path + DEFINELINK.managerCategoryEdit}
         component={ManagerCategoryEdit}
+      />
+      <Route
+        path={path + DEFINELINK.managerCategoryDetail}
+        component={ManagerCategoryDetail}
       />
       <Route component={NotFound} />
     </Switch>

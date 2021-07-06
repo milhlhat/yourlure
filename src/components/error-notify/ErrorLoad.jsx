@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import YLButton from "components/custom-field/YLButton";
 import DEFINELINK from "routes/define-link";
 function ErrorLoad(props) {
-  const { hasLayout } = props;
+  const { hasLayout,message } = props;
 
   const history = useHistory();
 
@@ -21,11 +21,11 @@ function ErrorLoad(props) {
       <h1>
         <i className="fad fa-network-wired"></i>
       </h1>
-      <h4>Hệ thống bận!</h4>
+      <h4>{message?message:'Hệ thống bận!'}</h4>
 
-      <YLButton variant="primary" onClick={reload}>
+      {!message &&<YLButton variant="primary" onClick={reload}>
         Tải lại trang
-      </YLButton>
+      </YLButton>}
     </div>
   );
 }

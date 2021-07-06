@@ -41,8 +41,7 @@ function ProductAction(props) {
           : Number(price).toLocaleString(undefined, {
               minimumFractionDigits: 0,
               maximumFractionDigits: 2,
-            })}
-        đ
+            })}{"\u20AB"}
       </div>
       <div className="tab p-3">
         <div className="buy-tab p-1">

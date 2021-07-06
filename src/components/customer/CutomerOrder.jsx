@@ -81,6 +81,13 @@ function CutomerOrder(props) {
                         {product?.productName}
                       </span>
                       <span className="number-order">X{product?.quantity}</span>
+                      <span>
+                        {Number(product?.price).toLocaleString(undefined, {
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        {"\u20AB"}
+                      </span>
                     </div>
                     <span className="ms-auto">
                       {Number(
@@ -88,8 +95,8 @@ function CutomerOrder(props) {
                       ).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 2,
-                      })}
-                      đ
+                      })}{" "}
+                      {"\u20AB"}
                     </span>
                   </div>
                 ))}
@@ -125,8 +132,8 @@ function CutomerOrder(props) {
                             ).toLocaleString(undefined, {
                               minimumFractionDigits: 0,
                               maximumFractionDigits: 2,
-                            })}
-                            đ
+                            })}{" "}
+                            {"\u20AB"}
                           </span>
                         </td>
                       </tr>

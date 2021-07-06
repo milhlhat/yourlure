@@ -27,5 +27,5 @@ const ManagerCategoryAPI = {
 		return AxiosClient.delete(url);
 	},
 };
-export const {getCategoryByID, getAll } = ManagerCategoryAPI;
+export const {getCategoryByID, getAll,searchByName } = ManagerCategoryAPI;
 export default ManagerCategoryAPI;

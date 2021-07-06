@@ -106,8 +106,7 @@ function ManagerOrder(props) {
                     : Number(item.total).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 2,
-                      })}{" "}
-                  đ
+                      })}{"\u20AB"}
                 </td>
               </tr>
             ))}

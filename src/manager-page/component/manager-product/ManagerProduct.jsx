@@ -71,7 +71,7 @@ function ManagerProduct(props) {
           </div>
         </div>
         <div className="manager-product-show mt-3 bg-white bg-shadow">
-          <span>tất cả sản phẩm</span>
+          <span>Tất cả sản phẩm</span>
           <hr />
           <ManagerSort />
           {products?.productOutputList?.length <= 0 && (
@@ -97,7 +97,7 @@ function ManagerProduct(props) {
                   <td
                     className="pointer"
                     onClick={() =>
-                      history.push("/manager/product/detail/" + item.productId)
+                      history.push({pathname:"/manager/product/detail/" + item.productId,canBack:setBack})
                     }
                   >
                     {item.productName}
@@ -116,7 +116,7 @@ function ManagerProduct(props) {
                       : Number(item.defaultPrice).toLocaleString(undefined, {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 2,
-                        })}
+                        })} {"\u20AB"}
                   </td>
                   <td>
                     <img

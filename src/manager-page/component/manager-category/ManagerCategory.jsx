@@ -8,8 +8,9 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-category.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import { useForm } from "react-hook-form";
-import { filterConfig } from "constant/filter-setting";
-import Pagination from "react-js-pagination";
+import ManagerSort from "./ManagerSort";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
 
 ManagerCategory.propTypes = {};
 
@@ -27,6 +28,32 @@ function ManagerCategory(props) {
   };
   const history = useHistory();
 
+  const options = [
+    {
+      display: "Cũ nhất",
+      isAsc: true,
+      sortBy: "categoryId",
+      value: "SORT_id_ASC",
+    },
+    {
+      display: "Mới nhất",
+      isAsc: false,
+      sortBy: "categoryId",
+      value: "SORT_id_DESC",
+    },
+    {
+      display: "Tên từ A-Z",
+      isAsc: true,
+      sortBy: "categoryName",
+      value: "SORT_NAME_DESC",
+    },
+    {
+      display: "Tên từ Z-A",
+      isAsc: false,
+      sortBy: "categoryName",
+      value: "SORT_NAME_DESC",
+    },
+  ];
   //filter category
   const [filter, setFilter] = useState({
     isAsc: true,
@@ -56,6 +83,7 @@ function ManagerCategory(props) {
 
   const onsubmit = async (data) => {
     let searchFilter = { ...filter, keyword: data.keyWord };
+    setFilter({ ...filter, keyword: data.keyWord });
     setCategoryList((prevState) => {
       return { ...prevState, isLoading: true };
     });
@@ -92,92 +120,120 @@ function ManagerCategory(props) {
   useEffect(() => {
     fetchManagerCategory();
   }, [filter]);
-  return (
-    <>
-      <div className="caterory-head-row">
-        <h3>Danh mục</h3>
-        <div className="product-add-new">
-          <YLButton
-            variant="primary"
-            onClick={() => history.push("/manager/category/addnew")}
-            value="Thêm"
-            to={{
-              pathname: "/manager/category/addnew",
-              canBack: setBack,
-              listName: listNameCategory(),
-            }}
-          />
-        </div>
-      </div>
-      <div className="manager-category-show mt-3 bg-white bg-shadow">
-        <span>tất cả danh mục</span>
-        <hr />
 
-        <div className="bg-white manager-sort p-2">
-          <form onSubmit={handleSubmit(onsubmit)}>
-            <div className="row">
-              <div className="col-2">
-                <YLButton
-                  type="submit"
-                  value="tìm kiếm"
-                  variant="primary"
-                ></YLButton>
-              </div>
-
-              <div className="col-10">
-                <input
-                  className="form-control"
-                  type="text"
-                  {...register("keyWord")}
-                  placeholder="Tìm kiếm"
-                />
-              </div>
-            </div>
-          </form>
+  if (categoryList.isLoading) {
+    return <Loading />;
+  } else if (!categoryList.isSuccess) {
+    return <ErrorLoad />;
+  } else
+    return (
+      <>
+        <div className="caterory-head-row">
+          <h3>Danh mục</h3>
+          <div className="product-add-new">
+            <YLButton
+              variant="primary"
+              onClick={() => history.push("/manager/category/addnew")}
+              value="Thêm"
+              to={{
+                pathname: "/manager/category/addnew",
+                canBack: setBack,
+                listName: listNameCategory(),
+              }}
+            />
+          </div>
         </div>
-        {categoryList?.data?.length <= 0 && <p>Không có sản phẩm </p>}
-        {categoryList?.data?.length > 0 && (
-          <table>
-            <tbody>
-              <tr>
-                <th>#</th>
-                <th>Tên danh mục</th>
-                <th></th>
-                <th></th>
-              </tr>
-              {categoryList?.data?.map((item, i) => (
-                <tr key={"cate-" + i} className="hover-background">
-                  <td>{i + 1}</td>
-                  <td>{item.categoryName}</td>
-                  <td className="d-flex float-end">
-                    <img
-                      src={Editor}
+        <div className="manager-category-show mt-3 bg-white bg-shadow">
+          <span>tất cả danh mục</span>
+          <hr />
+
+          <div className="bg-white manager-sort p-2">
+            <form onSubmit={handleSubmit(onsubmit)}>
+              <div className="row">
+                <div className="col-4">
+                  <div className="row">
+                    <div className="col-4">
+                      <YLButton
+                        type="submit"
+                        value="tìm kiếm"
+                        variant="primary"
+                      ></YLButton>
+                    </div>
+                    <div className="col-8">
+                      <ManagerSort
+                        filter={filter}
+                        setFilter={setFilter}
+                        options={options}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-8">
+                  <input
+                    className="form-control"
+                    type="text"
+                    {...register("keyWord")}
+                    placeholder="Tìm kiếm"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          {categoryList?.data?.length <= 0 && <p>Không có sản phẩm </p>}
+          {categoryList?.data?.length > 0 && (
+            <table>
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>Tên danh mục</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                {categoryList?.data?.map((item, i) => (
+                  <tr key={"cate-" + i} className="hover-background">
+                    <td>{i + 1}</td>
+                    <td
                       className="pointer"
                       onClick={() =>
                         history.push({
-                          pathname: "/manager/category/edit/" + item.categoryID,
-                          canBack: setBack,
+                          pathname:"/manager/category/detail/" + item.categoryID,
+                          canBack:setBack,
                         })
                       }
-                    />
-                    <ConfirmPopup
-                      variant="link"
-                      width="70px"
-                      height="25px"
-                      btnText={<img src={Trash} />}
-                      title="Xóa"
-                      content="Bạn chắc chắn muốn xóa Danh mục?"
-                      onConfirm={() => handleDelete(item.categoryID)}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-    </>
-  );
+                    >
+                      {item.categoryName}
+                    </td>
+                    <td className="d-flex float-end">
+                      <img
+                        src={Editor}
+                        className="pointer"
+                        onClick={() =>
+                          history.push({
+                            pathname:
+                              "/manager/category/edit/" + item.categoryID,
+                            canBack: setBack,
+                          })
+                        }
+                      />
+                      <ConfirmPopup
+                        variant="link"
+                        width="70px"
+                        height="25px"
+                        btnText={<img src={Trash} />}
+                        title="Xóa"
+                        content="Bạn chắc chắn muốn xóa Danh mục?"
+                        onConfirm={() => handleDelete(item.categoryID)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </>
+    );
 }
 
 export default ManagerCategory;

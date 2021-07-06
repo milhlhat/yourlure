@@ -35,8 +35,8 @@ function CardProduct(props) {
 								: Number(product.defaultPrice).toLocaleString(undefined, {
 										minimumFractionDigits: 0,
 										maximumFractionDigits: 2,
-								  })}
-							đ
+								  })}{" "}
+								  {"\u20AB"}
 						</span>
 					</div>
 				</div>

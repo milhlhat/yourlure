@@ -42,6 +42,7 @@ const DEFINELINK = {
   managementCategory: "/category",
   managerCategoryAddNew: "/addnew",
   managerCategoryEdit: "/edit/:id",
+  managerCategoryDetail: "/detail/:id",
 
   //manager fish route
   managementFish: "/fish",

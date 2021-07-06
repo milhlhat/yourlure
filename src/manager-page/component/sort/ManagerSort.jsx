@@ -82,8 +82,8 @@ function Sort(props) {
               <div className="col-4">
                 <YLButton
                   type="submit"
-                  value="tìm kiếm"
-                  varian="primary"
+                  value="Tìm kiếm"
+                  variant="primary"
                 ></YLButton>
               </div>
               <div className="col-8">

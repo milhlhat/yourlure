@@ -7,22 +7,20 @@ import { setIsBack } from "redux/back-action/back-action";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-product-detail.scss";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
 
 ManagerProductDetail.propTypes = {};
 
 function ManagerProductDetail(props) {
-  const canBack = {
-    canBack: true,
-    path: "/manager/product",
-    label: "Sản phẩm",
-  };
+  const canBack = props.location.canBack;
   const dispatch = useDispatch();
   const history = useHistory();
   const productId = props.match.params.id;
   const [productDetail, setProductDetail] = useState({
     list: null,
-    loading: true,
-    success: false,
+    loading: false,
+    success: true,
   });
   const fetchProduct = async () => {
     try {
@@ -37,6 +35,10 @@ function ManagerProductDetail(props) {
         });
       }
     } catch (error) {
+      setProductDetail({
+        ...productDetail,
+        success: false,
+      });
       console.log("fail to fetch customer list");
     }
   };
@@ -59,6 +61,11 @@ function ManagerProductDetail(props) {
   useEffect(() => {
     fetchProduct();
   }, [productId]);
+  if (productDetail.loading) {
+    return <Loading />;
+  } else if (!productDetail.success) {
+    return <ErrorLoad message={'Id sản phẩm không hợp lệ'}/>;
+  } else
   return (
     <div className="bg-white bg-shadow manager-product-detail p-3">
         {console.log(productDetail?.list)}

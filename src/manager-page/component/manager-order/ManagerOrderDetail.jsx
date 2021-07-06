@@ -6,13 +6,19 @@ import { setIsBack } from "redux/back-action/back-action";
 import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-order-detail.scss";
 
-
 function ManagerOrderDetail(props) {
   const canBack = props.location.canBack;
   const orderId = props.match.params.id;
   const dispatch = useDispatch();
   const history = useHistory();
   const [order, setOrder] = useState();
+
+  function totalPrice(list) {
+    let total = list.reduce((sum, product) => {
+      return sum + product.price * product.quantity;
+    }, 0);
+    return total;
+  }
 
   const fetchOrder = async () => {
     setOrder((prevState) => {
@@ -77,7 +83,7 @@ function ManagerOrderDetail(props) {
                             : "không"
                           : "-"}
                       </td>
-                      <td>{item.customizeId ? item.customizeId : "-"}</td>
+                      <td className="text-center">{item.customizeId ? item.customizeId : "-"}</td>
                       <td>{item.category?.categoryName}</td>
                       <td className="text-center">{item.quantity}</td>
                       <td className="text-center">-</td>
@@ -88,6 +94,7 @@ function ManagerOrderDetail(props) {
                               minimumFractionDigits: 0,
                               maximumFractionDigits: 2,
                             })}
+                        {"\u20AB"}
                       </td>
                       <td className="text-end">
                         {!item
@@ -99,6 +106,7 @@ function ManagerOrderDetail(props) {
                                 maximumFractionDigits: 2,
                               }
                             )}
+                        {"\u20AB"}
                       </td>
                     </tr>
                   ))}
@@ -110,37 +118,62 @@ function ManagerOrderDetail(props) {
         <div className="col-12 col-md-3 p-2">
           <div className="bg-box bg-shadow">
             <div className="order-head-row d-flex justify-content-between align-items-end">
-            <h6>Khách hàng</h6>
-            <div className="order-customer">
-              <YLButton
-                variant="link"
-                onClick={() => history.push("/manager/product/addnew")}
-                value="Xem hồ sơ"
-                to={"/manager/staff/addNew"}
-              />
+              <h6>Khách hàng</h6>
+              <div className="order-customer">
+                <YLButton
+                  variant="link"
+                  onClick={() => history.push("/manager/product/addnew")}
+                  value="Xem hồ sơ"
+                  to={"/manager/staff/addNew"}
+                />
+              </div>
+            </div>
+            <div className="manager-customer-show">
+              <hr />
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <b>Họ tên: </b>
+                      {order?.data?.receiverName
+                        ? order.data.receiverName
+                        : "-"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Số điện thoại: </b>
+                      {order?.data?.phone ? order.data.phone : "-"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Địa chỉ: </b>{" "}
+                      {order?.data?.address ? order.data.address : "-"}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>Chú ý: </b>
+                      {order?.data?.note ? order.data.note : "-"}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <div className="manager-customer-show">
-            <hr />
-            <table>
-              <tbody>
-                <tr>
-                  <td>{order?.data?.name?order.data.name:'-'}</td>
-                </tr>
-                <tr>
-                  <td>{order?.data?.phone?order.data.phone:'-'}</td>
-                </tr>
-                <tr>
-                  <td>{order?.data?.address?order.data.address:'-'}</td>
-                </tr>
-                <tr>
-                  <td>{order?.data?.note?'Chú ý: '+order.data.note:'-'}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="bg-box bg-shadow mt-5 py-3">
+            <b>Tổng tiền:</b>{" "}
+            {order?.data?.productDtoOuts &&
+              Number(totalPrice(order?.data?.productDtoOuts)).toLocaleString(
+                undefined,
+                {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                }
+              )}
+            {"\u20AB"}
           </div>
-          </div>
-          
         </div>
       </div>
     </div>
