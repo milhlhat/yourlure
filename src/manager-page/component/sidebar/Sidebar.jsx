@@ -27,7 +27,7 @@ function Sidebar(props) {
     <>
       <div id="myNav" className="overlay">
         <span className="closebtn" onClick={closeNav}>
-          <div className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white">
+          <div className="side-bar d-flex flex-column flex-shrink-0 ps-3 bg-white">
             <a
               href="#"
               className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
@@ -149,7 +149,7 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Mã giảm giá</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                 onClick={handleLogout}
                   className={`nav-link link-dark`}
@@ -157,7 +157,7 @@ function Sidebar(props) {
                   <i className="fal fa-sign-out"></i>
                   <span className="text-side-bar"> Đăng xuất</span>
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <button className="d-none close-button btn btn-outline-dark">
                   <i className="fas fa-times"></i>
@@ -179,7 +179,7 @@ function Sidebar(props) {
        */}
 
       {/* <div
-      className="sidebar d-flex flex-column flex-shrink-0 p-3 bg-white"
+      className="side-bar d-flex flex-column flex-shrink-0 p-3 bg-white"
     >
       <a
         href="#"

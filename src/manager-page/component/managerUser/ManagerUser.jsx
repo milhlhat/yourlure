@@ -6,6 +6,7 @@ import Pagination from "react-js-pagination";
 import { useDispatch } from "react-redux";
 import { setIsBack } from 'redux/back-action/back-action';
 import './scss/manager-user.scss';
+import { Tooltip } from '@material-ui/core';
 
 ManagerUser.propTypes = {};
 
@@ -71,7 +72,7 @@ function ManagerUser(props) {
           <hr />
           {/* <ManagerSort /> */}
           {userList?.data?.userDtoOutList?.length <= 0 && <p>Không có sản phẩm </p>}
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <th>#</th>
@@ -84,7 +85,7 @@ function ManagerUser(props) {
                 <th></th>
               </tr>
               {userList?.data?.userDtoOutList?.map((item, i) => (
-                  <tr key={i}>
+                  <tr key={'manager-user-'+i} className="hover-background">
                     <td>
                       {(activePage - 1) * totalItem +
                         i +
@@ -103,8 +104,15 @@ function ManagerUser(props) {
                       {item.numberOfOrder}
                     </td>
                     <td>
-                      {item.enabled&&<i className="far fa-user-slash"></i>}
-                      {!item.enabled&&<i className="far fa-user"></i>}
+                    
+                    {item.enabled&&<Tooltip title="Chặn"> 
+                      
+                      <i className="far fa-user-slash pointer" onClick={()=>console.log("đã chặn ",item.userId)}></i>
+                      </Tooltip>}
+                    {!item.enabled&&<Tooltip title="Bỏ chặn">
+                      
+                    <i className="far fa-user pointer"></i>
+                      </Tooltip>}
                     
                     </td>
                   </tr>

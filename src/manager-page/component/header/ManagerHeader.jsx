@@ -67,7 +67,7 @@ function ManagerHeader(props) {
   return (
     <div className="bg-white manager-header">
       <div
-        className={`back-button ${canBack ? "" : "d-none"}`}
+        className={`back-button ${canBack ? " ms-3 " : "d-none"}`}
         onClick={handleBackOnclick}
       >
         <i className="far fa-arrow-left"></i>
@@ -89,6 +89,16 @@ function ManagerHeader(props) {
             <li>
               <span className="dropdown-item pointer" onClick={handleLogOut}>
                 Đăng xuất
+              </span>
+            </li>
+            <li>
+              <span className="dropdown-item pointer" onClick={()=>console.log("thông tin")}>
+                Thông tin
+              </span>
+            </li>
+            <li>
+              <span className="dropdown-item pointer" onClick={()=>console.log("đổi mật khẩu")}>
+                Đổi mật khẩu
               </span>
             </li>
           </ul>

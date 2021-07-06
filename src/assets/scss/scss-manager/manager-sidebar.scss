@@ -1,4 +1,5 @@
-.sidebar {
+@import "assets/scss/base/_variable.scss";
+.side-bar {
   height: 100vh;
   width: 20%;
   position: fixed;
@@ -11,7 +12,15 @@
     width: 20px;
     // font-size: 20px;
   }
+  & ul{ 
+    width: fit-content;
+    & a:hover{
+      font-weight: 500;
+      color: $primary;
+    }
+  }
 }
+
 // .text-side-bar{
 //   display: block;
 // }
@@ -46,7 +55,7 @@
   .manager-slidebar {
     z-index: 4;
     width: 100% !important;
-    & .sidebar {
+    & .side-bar {
       height: 100%;
       width: 100%;
       position: absolute;

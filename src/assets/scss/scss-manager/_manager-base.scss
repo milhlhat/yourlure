@@ -3,14 +3,18 @@
 .manager-main {
   // font-size: 12px;
   .manager-container {
-    margin: 5%;
+    margin: 2% 5%;
   }
   .manager-main-container {
-    width: 80%;
+    width: 90%;
   }
   .manager-slidebar {
     width: 20%;
+    height: 100vh;
   }
+}
+.hover-background:hover{
+  background-color: $background-box-color;
 }
 
 @media screen and(max-width:500px) {

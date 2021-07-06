@@ -1,8 +1,12 @@
-@import 'assets/scss/base/_variable.scss';
+@import "assets/scss/base/_variable.scss";
 .manager-staff-show {
   padding: 20px;
   & table {
     width: 100%;
+  }
+  & span {
+    border-bottom: 4px solid $bottom-line;
+    padding: 15px 0;
   }
   & td,
   & th {
@@ -10,14 +14,14 @@
   }
   & th,
   & caption {
-    font-weight: bold;
+    font-weight: 500;
     color: $primary;
   }
-  & .page-item.active .page-link{
+  & .page-item.active .page-link {
     background-color: $primary;
     border-color: $primary;
   }
-  & .page-link{
+  & .page-link {
     color: $primary;
   }
 }

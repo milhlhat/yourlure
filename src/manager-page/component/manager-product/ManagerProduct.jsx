@@ -88,7 +88,7 @@ function ManagerProduct(props) {
                 <th></th>
               </tr>
               {products?.productOutputList?.map((item, i) => (
-                <tr key={i}>
+                <tr key={i} className="hover-background">
                   <td>
                     {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
                       i +

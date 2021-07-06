@@ -1,37 +1,37 @@
-@import '../base/variable';
+@import "../base/variable";
 .home-page {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   & .banner {
-      object-fit: contain;
-      height: 500px;
-    & .img-banner img{
-        height: 460px;
-        width: 100%;
-        object-fit: cover;
+    object-fit: contain;
+    height: 500px;
+    & .img-banner img {
+      height: 460px;
+      width: 100%;
+      object-fit: cover;
     }
     & .banner-content {
       margin: -250px 50px;
       color: #fff;
-      & h3{
+      text-align: justify;
+      & h3 {
         width: 50%;
       }
     }
-    & .button-discover{
+    & .button-discover {
       height: 50px;
       width: 150px;
     }
   }
-  & .bottom-line{
+  & .bottom-line {
     width: 100px;
     border-bottom: 2px solid $primary;
   }
   & .top-product-sale {
-    
   }
   & .top-product-new {
   }
-  & .top-product-show{
+  & .top-product-show {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -39,10 +39,10 @@
   }
 }
 @media screen and(max-width: $tablet-width) {
-   .banner-content {
+  .banner-content {
     margin: -250px 50px;
     color: #fff;
-    & h3{
+    & h3 {
       width: 100% !important;
       font-size: 20px;
     }
