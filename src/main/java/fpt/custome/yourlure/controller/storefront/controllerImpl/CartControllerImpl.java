@@ -2,8 +2,6 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CartController;
 import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
-import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 import fpt.custome.yourlure.entity.Cart;
 import fpt.custome.yourlure.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -25,38 +23,37 @@ public class CartControllerImpl implements CartController {
     private CartService cartService;
 
     @Override
-    public ResponseEntity<Optional<CartDtoOut>> getCart(HttpServletRequest req) {
-        Optional<CartDtoOut> result = cartService.getCart(req);
+    public ResponseEntity<Object> getCart(HttpServletRequest req) {
+        Optional<Cart> result = cartService.getCart(req);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Object> addProduct(HttpServletRequest req,
-                                              AddToCartDto addToCartDto) {
-        Cart result = cartService.addProduct(req, addToCartDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> addItem(HttpServletRequest req,
+                                          AddToCartDto addToCartDto) {
+        try{
+            Cart result = cartService.addItem(req, addToCartDto);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
-    public ResponseEntity<Boolean> removeProduct(HttpServletRequest req,
-                                                 Long cartId,
-                                                 Long productId) {
-        Boolean result = cartService.removeProduct(cartId, productId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> removeItem(HttpServletRequest req, Long cartItemId) {
+        Cart cart = cartService.removeItem(req, cartItemId);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> setProductQuantity(HttpServletRequest req,
-                                                      Long cartId,
-                                                      Long productId,
-                                                      int quantity) {
-        Boolean result = cartService.setProductQuantity(cartId, productId, quantity);
+    public ResponseEntity<Object> setItemQuantity(HttpServletRequest req,
+                                                   Long itemId,
+                                                   int quantity) {
+        Boolean result = cartService.setItemQuantity(req, itemId, quantity);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Optional<OrderGuestDtoInput>> createOrder(Long cartId,
-                                                                    OrderGuestDtoInput orderGuestDtoInput) {
-        return null;
-    }
+
 }

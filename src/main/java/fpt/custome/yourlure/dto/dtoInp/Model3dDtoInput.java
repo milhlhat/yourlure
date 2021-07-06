@@ -16,7 +16,7 @@ public class Model3dDtoInput {
 
     private Long productId;
     private String name;
-    private String model3dBase64;
+    private String model3dUrl;
     private Collection<DefaultMaterialDtoInput> defaultMaterials;
 
 

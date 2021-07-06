@@ -33,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    private CartRepos cartRepos;
+
+    @Autowired
     private CartItemRepos cartItemRepos;
 
     @Autowired
@@ -73,6 +76,9 @@ public class OrderServiceImpl implements OrderService {
 
     protected Integer verifyDiscountCode(String discountCode) throws Exception {
         DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
+        return verifyDiscountCode(voucher);
+    }
+    protected Integer verifyDiscountCode(DiscountVoucher voucher) throws Exception {
         if (voucher != null) {
             if (voucher.getStart_date().compareTo(new Date()) < 0) {
                 // the voucher is not start
@@ -100,51 +106,20 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Override
-    public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
-        Order order = mapper.map(orderGuestDtoInput, Order.class);
-        order.setOrderDate(new Date());
-
-        // check payment
-        order.setPayment(verifyPayment(orderGuestDtoInput.getPaymentId()));
-
-
-        // save order information
-
-        order.setDiscount(verifyDiscountCode(orderGuestDtoInput.getDiscountCode()));
-
-
+    protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         List<OrderLine> orderLines = new ArrayList<>();
-        for (CartItem item : orderGuestDtoInput.getCartItems()) {
+        for (CartItem item : items) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
-            // TODO: calculate product price include custom model
-            // get customize price
-            List<CustomPrice> customPrices = customPriceRepos.findAll();
-            Map<String, Float> prices = customPrices.stream()
-                    .collect(Collectors.toMap(CustomPrice::getName, CustomPrice::getPrice));
             Product product = productJpaRepos.getById(item.getProductId());
             if (item.getCustomModelId() != null && product.getCustomizable()) {
                 // get default price of product
                 Float defaultPrice = product.getDefaultPrice();
-
                 // TODO: calculate price of model
-                Float customAmount = (float) 0;
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
-                for (CustomMaterial material : customizeModel.getCustomMaterials()) {
-                    if (material.getColor() != null && !material.getColor().trim().equals("")) { // todo: you can validate for it
-                        customAmount += prices.get("COLOR");
-                    }
-                    if (material.getText() != null && !material.getText().trim().equals("")) {
-                        customAmount += prices.get("TEXT");
-                    }
-                    if (material.getImgUrl() != null && !material.getImgUrl().trim().equals("")) {
-                        customAmount += prices.get("IMG");
-                    }
-                }
+                Float customAmount = calculateCustomizePrice(customizeModel);
                 Float totalPrice = defaultPrice + customAmount;
                 orderLine.setPrice(totalPrice);
 
-                // summary
             } else {
                 // set price by variant
                 Variant variant = variantRepos.getById(item.getVariantId());
@@ -157,14 +132,40 @@ public class OrderServiceImpl implements OrderService {
                 } else {
                     throw new Exception("Variant out of stock!");
                 }
-
             }
 
             orderLine.setOrder(order);
 
             // save order below here
             orderLines.add(orderLine);
+
+            // delete cartItem after create orderline
+            cartItemRepos.delete(item);
         }
+        return orderLines;
+
+    }
+
+    @Override
+    public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
+        Order order = mapper.map(orderGuestDtoInput, Order.class);
+        order.setOrderDate(new Date());
+
+        // check payment
+        order.setPayment(verifyPayment(orderGuestDtoInput.getPaymentId()));
+
+
+        // save order information
+
+        List<OrderLine> orderLines = createOrderLines(order, orderGuestDtoInput.getCartItems());
+        List<CartItem> items = orderGuestDtoInput.getCartItems();
+
+        // check condition and apply discount
+        DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
+        if(calculateItemPrices(items) >= voucher.getMinSpentAmount()){
+            order.setDiscount(verifyDiscountCode(voucher));
+        }
+
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
 
@@ -185,14 +186,71 @@ public class OrderServiceImpl implements OrderService {
                 .note(orderUserDtoInput.getNote())
                 .build();
 
-        // create order line
-        List<CartItem> cartItems = cartItemRepos.findAllByCartItemIdIn(orderUserDtoInput.getCartItemIds());
+        // TODO: create order line
 
+        Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(null);
+        if(cart == null){
+            throw new Exception("can't process order because cart is empty!");
+        }
 
+        List<CartItem> items = cart.getCartItemCollection().stream()
+                .filter(cartItem -> orderUserDtoInput.getCartItemIds().contains(cartItem.getCartItemId()))
+                .collect(Collectors.toList());
 
+        List<OrderLine> orderLines = createOrderLines(order, items);
 
+        // check condition and apply discount
+        DiscountVoucher voucher = discountVoucherRepos.findByCode(orderUserDtoInput.getDiscountCode());
+        if(calculateItemPrices(items) >= voucher.getMinSpentAmount()){
+            order.setDiscount(verifyDiscountCode(voucher));
+        }
 
-        return null;
+        order.setOrderLineCollection(orderLines);
+        order = orderRepos.save(order);
+
+        return order;
+
+    }
+
+    public Float calculateCustomizePrice(CustomizeModel customizeModel){
+        // TODO: calculate product price include custom model
+        // get customize price
+        List<CustomPrice> customPrices = customPriceRepos.findAll();
+        Map<String, Float> prices = customPrices.stream()
+                .collect(Collectors.toMap(CustomPrice::getName, CustomPrice::getPrice));
+
+        // calculate custom model price
+        float customAmount = 0;
+        for (CustomMaterial material : customizeModel.getCustomMaterials()) {
+            if (material.getColor() != null && !material.getColor().trim().equals("")) { // todo: you can validate for it
+                customAmount += prices.get("COLOR");
+            }
+            if (material.getText() != null && !material.getText().trim().equals("")) {
+                customAmount += prices.get("TEXT");
+            }
+            if (material.getImgUrl() != null && !material.getImgUrl().trim().equals("")) {
+                customAmount += prices.get("IMG");
+            }
+        }
+        return customAmount;
+    }
+
+    public Float calculateItemPrices(List<CartItem> items){
+        float totalPrice = 0;
+        for (CartItem item : items) {
+            Product product = productJpaRepos.getById(item.getProductId());
+            if (item.getCustomModelId() != null && product.getCustomizable()) {
+                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
+                totalPrice += calculateCustomizePrice(customizeModel);
+            } else {
+                // set price by variant
+                Variant variant = variantRepos.getById(item.getVariantId());
+                if (variant.getQuantity() > 0) {
+                    totalPrice += variant.getNewPrice();
+                }
+            }
+        }
+        return totalPrice;
     }
 
     @Override

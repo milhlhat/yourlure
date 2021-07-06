@@ -21,7 +21,7 @@ public class DefaultMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "defaultMaterialId")
-    private Long defaultMaterialId;
+    private Long materialId;
 
     @JsonIgnore
     @ManyToOne

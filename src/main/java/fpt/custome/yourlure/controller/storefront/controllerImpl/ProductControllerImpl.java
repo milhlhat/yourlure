@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -28,6 +29,9 @@ public class ProductControllerImpl implements ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private FileService fileService;
 
 //    @Override
 //    public ResponseEntity<ProductOutPageable> getAll(Filter filter) {
@@ -88,5 +92,10 @@ public class ProductControllerImpl implements ProductController {
         }
 
 
+    }
+
+    @Override
+    public ResponseEntity<Object> downloadBase64(String path) {
+        return new ResponseEntity<>(fileService.getFileBase64(path), HttpStatus.OK);
     }
 }

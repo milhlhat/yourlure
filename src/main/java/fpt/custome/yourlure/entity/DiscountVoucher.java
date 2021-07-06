@@ -61,7 +61,7 @@ public class DiscountVoucher {
 
     @Nullable
     @Column(name = "minSpentAmount")
-    private Integer minSpentAmount;
+    private Float minSpentAmount;
 
     @Nullable
     @Column(name = "minCheckoutItemsQuantity")

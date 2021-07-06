@@ -26,13 +26,14 @@ public interface Model3dController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Model3d> createModel(@RequestBody Model3dDtoInput model3d);
 
-    @PostMapping(value = "/find-custom-by-id")
+
+    @GetMapping(value = "/find-custom-by-id/{customId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, Long customId);
+    ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
 
 
     @PostMapping(value = "/create-custom")

@@ -3,14 +3,12 @@ package fpt.custome.yourlure.service;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
-import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 public interface CustomizeModelService {
 

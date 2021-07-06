@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -70,8 +70,8 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
-    public ResponseEntity<String> uploadFile(MultipartFile files) throws IOException {
-        String result = fileService.saveImage(files);
+    public ResponseEntity<Object> uploadFile(MultipartFile[] files) {
+        List<String> result = fileService.saveImages(files, FileService.IMAGES_DIR);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
