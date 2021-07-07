@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 import "./scss/add-new-product.scss";
+import Generate3DMaterial from "./Generate3dMaterial";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -201,7 +202,10 @@ function ManagerProductAddNew(props) {
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" product-add-new-form row">
-          <div className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2" id="product-info">
+          <div
+            className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2"
+            id="product-info"
+          >
             <div className="px-3 pt-3">
               <h5>Thông tin sản phẩm</h5>
             </div>
@@ -443,7 +447,10 @@ function ManagerProductAddNew(props) {
               </table>
             </div>
           </div>
-          <div className="cate-fish bg-box bg-shadow col-12 col-md-3 mb-md-5 mb-2 pb-md-4 pb-2" id="cate-fish">
+          <div
+            className="cate-fish bg-box bg-shadow col-12 col-md-3 mb-md-5 mb-2 pb-md-4 pb-2"
+            id="cate-fish"
+          >
             <div className="px-3 pt-3">
               <h5>Danh mục</h5>
             </div>
@@ -500,6 +507,7 @@ function ManagerProductAddNew(props) {
           </div>
         </div>
       </form>
+      <Generate3DMaterial />
     </div>
   );
 }

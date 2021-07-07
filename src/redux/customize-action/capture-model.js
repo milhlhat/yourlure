@@ -7,12 +7,12 @@ const capture = createSlice({
     img: "",
   },
   reducers: {
-    setIsCapture: (state, action) => {
+    setCaptureModel: (state, action) => {
       return { ...state, ...action.payload };
     },
   },
 });
 
 const { reducer, actions } = capture;
-export const { setIsCapture } = actions;
+export const { setCaptureModel } = actions;
 export default reducer;

@@ -21,6 +21,7 @@ import {
   getColorMaterialByName,
   setDefaultTexture,
   submitCustomize,
+  validateTexture,
 } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { setMaterialId } from "redux/customize-action/customize-id";
@@ -29,7 +30,10 @@ import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import ProductAPI from "api/product-api";
 import YLButton from "components/custom-field/YLButton";
-import { setIsCapture } from "redux/customize-action/capture-model";
+import {
+  setCaptureModel,
+  setIsCapture,
+} from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -42,10 +46,11 @@ function RenderModel(props) {
   const dispatch = props.dispatch;
   const model3d = props.model3d;
 
-  const isCapture = props.isCapture;
+  const captureModel = props.captureModel;
   let customizeInfo = props.customizeInfo;
 
   //Load 3d model
+  console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
   const { nodes, materials } = useGLTF(
     `${BE_SERVER}${BE_FOLDER}${model3d}`,
     true
@@ -74,42 +79,42 @@ function RenderModel(props) {
 
   let texture0 = useTexture(
     customizeInfo.length > 0 && customizeInfo[0].img !== ""
-      ? customizeInfo[0].img
+      ? validateTexture(customizeInfo[0].img)
       : whiteImg
   );
   let texture1 = useTexture(
     customizeInfo.length > 1 && customizeInfo[1].img !== ""
-      ? customizeInfo[1].img
+      ? validateTexture(customizeInfo[1].img)
       : whiteImg
   );
   let texture2 = useTexture(
     customizeInfo.length > 2 && customizeInfo[2].img !== ""
-      ? customizeInfo[2].img
+      ? validateTexture(customizeInfo[2].img)
       : whiteImg
   );
   let texture3 = useTexture(
     customizeInfo.length > 3 && customizeInfo[3].img !== ""
-      ? customizeInfo[3].img
+      ? validateTexture(customizeInfo[3].img)
       : whiteImg
   );
   let texture4 = useTexture(
     customizeInfo.length > 4 && customizeInfo[4].img !== ""
-      ? customizeInfo[4].img
+      ? validateTexture(customizeInfo[4].img)
       : whiteImg
   );
   let texture5 = useTexture(
     customizeInfo.length > 5 && customizeInfo[5].img !== ""
-      ? customizeInfo[5].img
+      ? validateTexture(customizeInfo[5].img)
       : whiteImg
   );
   let texture6 = useTexture(
     customizeInfo.length > 6 && customizeInfo[6].img !== ""
-      ? customizeInfo[6].img
+      ? validateTexture(customizeInfo[6].img)
       : whiteImg
   );
   let texture7 = useTexture(
     customizeInfo.length > 7 && customizeInfo[7].img !== ""
-      ? customizeInfo[7].img
+      ? validateTexture(customizeInfo[7].img)
       : whiteImg
   );
 
@@ -164,7 +169,7 @@ function RenderModel(props) {
     ref.current.rotation.x = Math.cos(t / 4) / 8;
     ref.current.rotation.y = Math.sin(t / 4) / 8;
     ref.current.position.y = (1 + Math.sin(t / 1.5)) / 10;
-    if (isCapture.isCapture) {
+    if (captureModel.isCapture) {
       let scene = ref.current;
       let rerender = state.gl;
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: true });
@@ -184,8 +189,21 @@ function RenderModel(props) {
       let imgCapture = rerender.domElement.toDataURL();
 
       // w.document.body.appendChild(img);
+
+      let submitParams = {
+        model3dId: captureModel.modelId,
+        customizeId: captureModel.customizeId,
+        name: "your-custom",
+        materials: customizeInfo,
+        thumbnail: {
+          content: imgCapture,
+          name: "capture.png",
+        },
+      };
+      submitCustomize(submitParams, captureModel.isEdit);
+
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: false });
-      const action = setIsCapture({ isCapture: false, img: imgCapture });
+      const action = setCaptureModel({ isCapture: false });
       dispatch(action);
     }
   });
@@ -230,7 +248,7 @@ function RenderModel(props) {
 }
 
 function CanvasModel(props) {
-  const isCapture = useSelector((state) => state.isCapture);
+  const captureModel = useSelector((state) => state.captureModel);
   return (
     <div className="customize">
       <Canvas
@@ -253,7 +271,7 @@ function CanvasModel(props) {
             // customizeInit={props.customizeInit}
             customizeInfo={props.customizeInfo}
             model3d={props.model3d}
-            isCapture={isCapture}
+            captureModel={captureModel}
           />
           <Environment preset="sunset" background={false} />
           <ContactShadows
@@ -307,35 +325,25 @@ function ListActionMaterials(props) {
 
 function ExportCustomInformations(props) {
   const dispatch = props.dispatch;
-  const isCapture = useSelector((state) => state.isCapture);
+  const captureModel = useSelector((state) => state.captureModel);
+  const isCaptureStatus = useSelector((state) => state.captureModel.isCapture);
   const customizeInfo = useSelector((state) => state.customizeInfo);
 
   const [exportStatus, setExportStatus] = useState({
     isLoading: false,
     isSuccess: false,
   });
+
   const onCapture = () => {
-    const action = setIsCapture({ isCapture: true });
+    const action = setCaptureModel({ isCapture: true });
     dispatch(action);
-    let submitParams = {
-      model3dId: isCapture.model3dId,
-      customizeId: isCapture.customizeId,
-      name: "your-custom",
-      materials: customizeInfo,
-      thumbnail: {
-        content: isCapture.img,
-        name: "capture.jpg",
-      },
-    };
-    submitCustomize(submitParams, isCapture.isEdit, setExportStatus);
   };
   return (
     <div className="export">
       <YLButton variant="primary" onClick={() => onCapture()} type={"button"}>
-        Xong{" "}
-        {exportStatus.isLoading && (
-          <CircularProgress size={15} className="circle-progress" />
-        )}
+        Xong {/*{exportStatus.isLoading && (*/}
+        {/*  <CircularProgress size={15} className="circle-progress" />*/}
+        {/*)}*/}
       </YLButton>
     </div>
   );
@@ -348,6 +356,9 @@ export default function Customize(props) {
   const dispatch = useDispatch();
   const productId = new URLSearchParams(props.location.search).get("productId");
   const isEdit = new URLSearchParams(props.location.search).get("isEdit");
+  const customizeId = new URLSearchParams(props.location.search).get(
+    "customizeId"
+  );
 
   console.log(productId, isEdit);
   const [product, setProduct] = useState({
@@ -360,7 +371,7 @@ export default function Customize(props) {
     try {
       let response = {};
       if (String(isEdit).toLowerCase() == "true") {
-        response = await ProductAPI.getMaterialsCustomizeId(productId);
+        response = await ProductAPI.getMaterialsCustomizeId(customizeId);
       } else {
         response = await ProductAPI.getMaterialsInfoByProdId(productId);
       }
@@ -376,16 +387,16 @@ export default function Customize(props) {
       });
 
       const action = setCustomizeInfo(
-        setDefaultTexture(response.defaultMaterials)
+        setDefaultTexture(response.defaultMaterials, isEdit)
       );
 
       const selectMIdAction = setMaterialId(
         response.defaultMaterials[0]?.materialId
       );
 
-      const captureAction = setIsCapture({
-        model3dId: response.model3dId,
-        customizeId: response.customizeId,
+      const captureAction = setCaptureModel({
+        modelId: response.modelId,
+        customizeId: customizeId,
         isEdit: isEdit,
       });
       dispatch(captureAction);

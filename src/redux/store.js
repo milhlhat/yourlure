@@ -5,7 +5,7 @@ import customizeIdReducer from "./customize-action/customize-id";
 import customizeInfoReducer from "./customize-action/customize-info";
 import productFilterReducer from "./product-action/fetch-filter";
 import cateFishForFilterReducer from "./product-action/fetch-cate-fish";
-import isCaptureReducer from "./customize-action/capture-model";
+import captureReducer from "./customize-action/capture-model";
 import managerProductFilterReducer from "./product-action/manager/fetch-manager-filter";
 import backActionHistory from "./back-action/back-action";
 import {
@@ -18,7 +18,7 @@ import {
 } from "redux-persist/es/constants";
 
 const customizeReducer = {
-  isCapture: isCaptureReducer,
+  captureModel: captureReducer,
   customizeId: customizeIdReducer,
   customizeInfo: customizeInfoReducer,
   productFilter: productFilterReducer,

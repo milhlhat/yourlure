@@ -5,6 +5,7 @@ import ProductAPI, {
 } from "api/product-api";
 import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 import { setIsCapture } from "../redux/customize-action/capture-model";
+import { parseString2Boolean } from "./common";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -113,22 +114,49 @@ let customizeUtils = {
     }
     return "";
   },
-  setDefaultTexture: (defaultMaterials) => {
+  setDefaultTexture: (defaultMaterials, isEdit) => {
     let tempMaterials = JSON.parse(JSON.stringify(defaultMaterials));
-    for (let i = 0; i < tempMaterials.length; i++) {
-      const material = tempMaterials[i];
-      const textures = material.textures;
-      for (let j = 0; j < textures.length; j++) {
-        const texture = textures[j];
-        console.log(texture.isDefault);
-        if (texture.isDefault) {
-          tempMaterials[i].img = BE_SERVER + BE_FOLDER + texture.textureUrl;
-          tempMaterials[i].imgId = texture.textureId;
-          break;
+    if (!parseString2Boolean(isEdit)) {
+      for (let i = 0; i < tempMaterials.length; i++) {
+        const material = tempMaterials[i];
+        if (!material.img) {
+          tempMaterials[i].img = "";
+        }
+        const textures = material.textures;
+        for (let j = 0; j < textures.length; j++) {
+          const texture = textures[j];
+
+          if (texture.isDefault) {
+            tempMaterials[i].img = texture.textureUrl;
+            tempMaterials[i].imgId = texture.textureId;
+            break;
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < tempMaterials.length; i++) {
+        const material = tempMaterials[i];
+        const img = material.img;
+        if (!img) {
+          tempMaterials[i].img = "";
         }
       }
     }
+
     return tempMaterials;
+  },
+  validateTexture: (img) => {
+    if (!img) {
+      img = "";
+    }
+    if (
+      img !== "" &&
+      !img.startsWith("http") &&
+      !img.startsWith("data:image")
+    ) {
+      img = BE_SERVER + BE_FOLDER + img;
+    }
+    return img;
   },
   getMaterialByMId: (mId, materials) => {
     for (let i = 0; i < materials.length; i++) {
@@ -139,21 +167,21 @@ let customizeUtils = {
     }
     return null;
   },
-  submitCustomize: async (params, isEdit, setExportStatus) => {
-    setExportStatus({ isLoading: true, isSuccess: false });
+  submitCustomize: async (params, isEdit) => {
+    // setExportStatus({ isLoading: true, isSuccess: false });
 
     try {
-      if (isEdit) {
-        await createCustomizeByModelId(params);
-      } else {
+      if (parseString2Boolean(isEdit)) {
         await updateCustomizeByModelId(params);
+      } else {
+        await createCustomizeByModelId(params);
       }
-      setExportStatus({
-        isLoading: false,
-        isSuccess: true,
-      });
+      // setExportStatus({
+      //   isLoading: false,
+      //   isSuccess: true,
+      // });
     } catch (e) {
-      setExportStatus({ isLoading: false, isSuccess: false });
+      // setExportStatus({ isLoading: false, isSuccess: false });
 
       console.log(e);
     }
@@ -167,5 +195,6 @@ export const {
   setDefaultTexture,
   getImgTexturesByImgId,
   submitCustomize,
+  validateTexture,
 } = customizeUtils;
 export default productUtils;

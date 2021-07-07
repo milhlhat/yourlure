@@ -136,6 +136,7 @@ function AddTextToModelTab(props) {
   }
 
   function setUrlImage(url) {
+    url = BE_SERVER + BE_FOLDER + url;
     return new Promise(function (resolve, reject) {
       img.onload = function () {
         resolve(url);
@@ -176,11 +177,7 @@ function AddTextToModelTab(props) {
                 width={50}
                 height={50}
                 onClick={() =>
-                  handleChangeImg(
-                    BE_SERVER + BE_FOLDER + item.textureUrl,
-                    item.textureId,
-                    null
-                  )
+                  handleChangeImg(item.textureUrl, item.textureId, null)
                 }
               />
               // </>

@@ -29,23 +29,23 @@ const ProductAPI = {
   },
   getMaterialsInfoByProdId: (id) => {
     const url = "model3d/get-model-by-product-id/" + id;
-    // return AxiosClient.get(url);
-    return dumyCustomize.initMaterials();
+    return AxiosClient.get(url);
+    // return dumyCustomize.initMaterials();
   },
   getMaterialsCustomizeId: (id) => {
     const url = "model3d/find-custom-by-id/" + id;
-    // return AxiosClient.get(url);
-    return dumyCustomize.initMaterials();
+    return AxiosClient.get(url);
+    // return dumyCustomize.initMaterials();
   },
   createCustomizeByModelId: (params) => {
     const url = "/model3d/create-custom";
     console.log(params);
-    // return AxiosClient.post(url, params);
+    return AxiosClient.post(url, params);
   },
   updateCustomizeByModelId: (params) => {
     const url = "/model3d/update-custom";
     console.log(params);
-    // return AxiosClient.post(url, params);
+    return AxiosClient.post(url, params);
   },
 };
 export const {

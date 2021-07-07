@@ -5,6 +5,7 @@ import "assets/scss/scss-components/customer/manage-address.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import DEFINELINK from "routes/define-link";
 import { events } from "@react-three/fiber";
+
 function CustomerAddress(props) {
   function formatAddress(address) {
     let des = address.description;
@@ -37,11 +38,6 @@ function CustomerAddress(props) {
   const handleSetDefaultAddress = async (id) => {
     try {
       const response = await UserApi.setAddressDefault(id);
-      if (response.error) {
-        throw new Error(response.error);
-      } else {
-        alert("Đặt địa chỉ mặc định thành công");
-      }
     } catch (error) {
       alert("Đặt địa chỉ mặc định thất bại");
       console.log("fail to fetch customer list");
@@ -138,21 +134,16 @@ function CustomerAddress(props) {
               <div
               // onClick={() => handleSetDefaultAddress(address.userAddressID)}
               >
-                <form
-                  onSubmit={() =>
-                    handleSetDefaultAddress(address.userAddressID)
-                  }
+                <YLButton
+                  type="submit"
+                  variant="light"
+                  disabled={address.isDefault}
+                  height="25px"
+                  width="145px"
+                  onClick={() => handleSetDefaultAddress(address.userAddressID)}
                 >
-                  <YLButton
-                    type="submit"
-                    variant="light"
-                    disabled={address.isDefault}
-                    height="25px"
-                    width="145px"
-                  >
-                    Đặt làm mặc định
-                  </YLButton>
-                </form>
+                  Đặt làm mặc định
+                </YLButton>
               </div>
             </div>
           </div>
