@@ -105,6 +105,9 @@ public interface UserController {
             @ApiResponse(code = 422, message = "Invalid username/password supplied")})
     String login(@RequestBody UserDataDTO user);
 
+    @PostMapping("/change-password")
+    ResponseEntity<Object> changePwd(HttpServletRequest rq, @RequestBody String newPwd);
+
     @PostMapping("/forgot-password")
     ResponseEntity<Object> forgotPwd(@RequestBody @Valid String phone);
 

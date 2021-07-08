@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,9 @@ public interface ProductController {
 
     @GetMapping("/download")
     ResponseEntity<Resource> download(String path);
+
+    @GetMapping("/downloadFile/{fileName:.+}")
+    ResponseEntity<Resource> download2(@PathVariable String fileName, HttpServletRequest rq);
 
     @GetMapping("/get-file-base64")
     ResponseEntity<Object> downloadBase64(String path);
