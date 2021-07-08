@@ -28,8 +28,8 @@ public interface AdminUserController {
 //            @ApiResponse(code = 403, message = "Access denied")})
 //    ResponseEntity<Boolean> block(@ApiParam("phone") @PathVariable Long id);
 
-    @GetMapping(value = "/block/{id}")
-    ResponseEntity<Boolean> block(@PathVariable Long id);
+    @GetMapping(value = "/switch-status/{id}")
+    ResponseEntity<Boolean> switchStatus(@PathVariable Long id);
 
     @PostMapping(value = "/all-staff")
     ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody AdminFilterDtoInput filter);

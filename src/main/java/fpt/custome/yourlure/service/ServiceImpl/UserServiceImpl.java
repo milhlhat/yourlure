@@ -127,12 +127,15 @@ public class UserServiceImpl implements UserService {
         return isValid;
     }
 
-    public Boolean block(Long id) {
+    public Boolean switchStatus(Long id) {
         try {
             Optional<User> findUser = userRepos.findById(id);
-            findUser.get().setEnabled(false);
-            userRepos.save(findUser.get());
-            return true;
+           if (!findUser.get().getRoles().contains(Role.ROLE_ADMIN)){
+               findUser.get().setEnabled(!findUser.get().getEnabled());
+               userRepos.save(findUser.get());
+               return true;
+           }
+           return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

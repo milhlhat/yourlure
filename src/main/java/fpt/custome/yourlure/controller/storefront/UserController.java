@@ -26,7 +26,7 @@ import java.util.Set;
 public interface UserController {
 
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_ADMIN')or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> updateUser(HttpServletRequest req, @RequestBody UserDtoInp userDtoInp);
 
     @PostMapping("/add-address")

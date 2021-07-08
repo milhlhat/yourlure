@@ -59,7 +59,7 @@ public interface UserService {
 
     //admin front -------------------------------------------
 
-    Boolean block(Long id);
+    Boolean switchStatus(Long id);
 
     Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable);
 

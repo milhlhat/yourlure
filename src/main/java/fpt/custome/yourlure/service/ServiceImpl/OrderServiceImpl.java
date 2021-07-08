@@ -229,7 +229,7 @@ public class OrderServiceImpl implements OrderService {
             if (material.getText() != null && !material.getText().trim().equals("")) {
                 customAmount += prices.get("TEXT");
             }
-            if (material.getImgUrl() != null && !material.getImgUrl().trim().equals("")) {
+            if (material.getImg() != null && !material.getImg().trim().equals("")) {
                 customAmount += prices.get("IMG");
             }
         }

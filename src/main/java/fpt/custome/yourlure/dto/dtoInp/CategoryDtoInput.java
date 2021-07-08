@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class CategoryDtoInput {
 
-    private Long categoryId;
     private String categoryName;
 
 }

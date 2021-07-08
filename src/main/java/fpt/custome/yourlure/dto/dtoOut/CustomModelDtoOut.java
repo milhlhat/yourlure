@@ -20,7 +20,7 @@ public class CustomModelDtoOut {
     private Long customizeId;
     private String name;
     private String thumbnailUrl;
-    private String modelUrl;
+    private String url;
 
     private Collection<MaterialDtoOut> materials;
 
@@ -34,7 +34,7 @@ public class CustomModelDtoOut {
         this.customizeId = customizeModel.getCustomizeId();
         this.name = customizeModel.getName();
         this.thumbnailUrl = customizeModel.getThumbnailUrl();
-        this.modelUrl = customizeModel.getModel3d().getUrl();
+        this.url = customizeModel.getModel3d().getUrl();
         this.materials = materialDtoOuts;
 
 
@@ -57,7 +57,7 @@ public class CustomModelDtoOut {
         private String textColor;
         private Integer textSize;
         private String color;
-        private String imgUrl;
+        private String img;
 
         private Collection<Texture> textures;
 
@@ -73,7 +73,7 @@ public class CustomModelDtoOut {
             this.textColor = material.getTextColor();
             this.textSize = material.getTextSize();
             this.color = material.getColor();
-            this.imgUrl = material.getImgUrl();
+            this.img = material.getImg();
             this.textures = material.getDefaultMaterial().getTextures();
         }
     }

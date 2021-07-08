@@ -65,7 +65,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public Model3d createModel3d(Model3dDtoInput m3dIn) throws IOException {
         Product product = productJpaRepos.findById(m3dIn.getProductId()).orElse(null);
         // save model 3d file
-        String model3dUrl = m3dIn.getModel3dUrl();
+        String model3dUrl = m3dIn.getUrl();
 
         if(fileService.isFileExist(model3dUrl)){
             throw new FileNotFoundException("the 3d model wasn't uploaded yet!");
@@ -193,13 +193,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         String imgUrl = fileService.saveFileBase64(customModelDtoInput.getThumbnail().getName(), customModelDtoInput.getThumbnail().getContent(), FileService.CUSTOMS_DIR);
         customizeModel.setThumbnailUrl(imgUrl);
 
-
         // init custom material
         List<CustomMaterial> materials = new ArrayList<>();
         for (CustomModelDtoInput.MaterialDtoInput materialDtoInput : customModelDtoInput.getMaterials()) {
             CustomMaterial mat = customMaterialRepos.getById(materialDtoInput.getMaterialId());
             mat.setColor(materialDtoInput.getColor());
-            mat.setImgUrl(materialDtoInput.getImg());
+            mat.setImg(materialDtoInput.getImg());
             mat.setText(materialDtoInput.getText());
             mat.setTextColor(materialDtoInput.getTextColor());
             mat.setTextFont(materialDtoInput.getTextFont());

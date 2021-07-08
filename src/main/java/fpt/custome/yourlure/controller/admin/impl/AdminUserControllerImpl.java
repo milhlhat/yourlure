@@ -38,8 +38,8 @@ public class AdminUserControllerImpl implements AdminUserController {
     }
 
     @Override
-    public ResponseEntity<Boolean> block(Long id) {
-        Boolean result = userService.block(id);
+    public ResponseEntity<Boolean> switchStatus(Long id) {
+        Boolean result = userService.switchStatus(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
