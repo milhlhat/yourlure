@@ -1,28 +1,37 @@
 import React, { useState } from "react";
-import { useGLTF } from "@react-three/drei";
 import YLButton from "../../../components/custom-field/YLButton";
 import { useForm } from "react-hook-form";
-import m3d from "assets/3d-models/moi_thia_dw06.glb";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
+
 function Generate3DMaterial(props) {
   const [read, setRead] = useState({ isRead: false, data: null });
   const { register, handleSubmit } = useForm();
 
-  function onSubmit(data) {
-    console.log(data.model[0]);
-
+  function readFile(data) {
     let file = data.model[0];
-    let fr = new FileReader();
-    fr.onload = (e) => {
-      console.log(e.target.result);
-      setRead({ isRead: true, data: e.target.result });
-    };
+
+    let url = URL.createObjectURL(file);
+    let loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("/examples/js/libs/draco/");
+    loader.setDRACOLoader(dracoLoader);
+    loader.load(url, function (gltf) {
+      const materials = [];
+      const scene = gltf.scene;
+
+      scene.traverse(function (object) {
+        if (object.material) materials.push(object.material.name);
+      });
+      setRead(materials);
+    });
   }
 
   return (
     <div>
       <form
         onSubmit={handleSubmit((data) => {
-          onSubmit(data);
+          readFile(data);
         })}
       >
         <input type={"file"} {...register("model")} />
@@ -33,15 +42,12 @@ function Generate3DMaterial(props) {
           Cancel
         </YLButton>
       </form>
-      {read.isRead && <ReadMaterial file3d={read.data} />}
+      <div className={"bg-box"}>
+        {read?.length > 0 &&
+          read.map((item, index) => <p key={index}>{item}</p>)}
+      </div>
     </div>
   );
-}
-
-function ReadMaterial(file3d) {
-  const { materials } = useGLTF(file3d);
-  console.log(materials);
-  return <div className={"bg-box"}>run</div>;
 }
 
 export default Generate3DMaterial;
