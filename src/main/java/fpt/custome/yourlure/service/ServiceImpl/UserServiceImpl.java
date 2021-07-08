@@ -103,12 +103,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean changePwd(HttpServletRequest rq, String newPwd) {
+        try {
+            User user = whoami(rq);
+            user.setPassword(passwordEncoder.encode(newPwd));
+            userRepos.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
+    }
+
+    @Override
     public Boolean forgotPwd(String phone) {
         if (phone == null) {
             return false;
         }
         User user = userRepos.findByPhone(phone);
-        if(user != null){
+        if (user != null) {
             return otpService.generateOtp(phone);
         }
         return false;
@@ -118,7 +132,7 @@ public class UserServiceImpl implements UserService {
     public Boolean resetPwd(String phone, String newPwd, Integer otp) {
 
         Boolean isValid = otpService.validateOTP(phone, otp);
-        if (isValid){
+        if (isValid) {
             User user = userRepos.findByPhone(phone);
             user.setPassword(passwordEncoder.encode(newPwd));
             userRepos.save(user);
@@ -144,7 +158,7 @@ public class UserServiceImpl implements UserService {
     public Optional<AdminUserDtoOut> adminFindAll(String keyword, String type, Pageable pageable) {
         List<AdminUserDtoOut.UserDtoOut> listResult = new ArrayList<>();
         try {
-            Page<User> list ;
+            Page<User> list;
             switch (type.trim()) {
                 case "name": {
                     list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
@@ -181,7 +195,7 @@ public class UserServiceImpl implements UserService {
                 AdminUserDtoOut results = AdminUserDtoOut.builder()
                         .userDtoOutList(listResult)
                         .totalUser(listResult.size())
-                        .totalPage((int) Math.ceil(listResult.size()/pageable.getPageSize()))
+                        .totalPage((int) Math.ceil(listResult.size() / pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }
@@ -226,7 +240,7 @@ public class UserServiceImpl implements UserService {
                 AdminStaffDtoOut results = AdminStaffDtoOut.builder()
                         .userDtoOutList(listResult)
                         .totalUser(listResult.size())
-                        .totalPage((int) Math.ceil(listResult.size()/pageable.getPageSize()))
+                        .totalPage((int) Math.ceil(listResult.size() / pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }

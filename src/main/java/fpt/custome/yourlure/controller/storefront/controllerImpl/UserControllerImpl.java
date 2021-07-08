@@ -144,6 +144,11 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<Object> changePwd(HttpServletRequest rq, String newPwd) {
+        return new ResponseEntity<>(userService.changePwd(rq, newPwd), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Object> forgotPwd(String phone) {
         if (userService.forgotPwd(phone)) {
             // success
