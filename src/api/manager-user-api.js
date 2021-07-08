@@ -10,6 +10,11 @@ const ManagerUserApi = {
 		const url = `/admin/user/all-staff`;
 		return AxiosClient.post(url,param);
 	},
+	switchStatus: (param) => {
+		const url = `/admin/user/switch-status/${param}`;
+		return AxiosClient.get(url);
+	},
+	
 };
 export const {getAll } = ManagerUserApi;
 export default ManagerUserApi;

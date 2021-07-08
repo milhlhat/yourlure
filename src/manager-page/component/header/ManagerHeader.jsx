@@ -67,18 +67,22 @@ function ManagerHeader(props) {
     });
     dispatch(action);
   }
+const [isEdit, setIsEdit] = useState(false);
   const [account, setAccount] = useState({
     data: null,
     isLoading: false,
     isSuccess: false,
   });
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   //Dialog
   const handleClose = () => {
     setOpen(false);
   };
+  const handleEditSubmit=()=>{
+    setIsEdit(false);
+  }
 
   const ability = useContext(AbilityContext);
   const handleLogOut = () => {
@@ -87,8 +91,13 @@ function ManagerHeader(props) {
   };
 
   const handleShowInfomation = () => {
-    console.log("handel show");
     setOpen(true);
+  };
+
+  //edit dialog
+  const handleEdit = () => {
+    console.log("edit");
+    setIsEdit(true);
   };
 
   //format display role
@@ -178,35 +187,53 @@ function ManagerHeader(props) {
         aria-labelledby="draggable-dialog-title"
       >
         <div className="border-bottom">
-          
-        <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
-          Thông tin
-        </DialogTitle>
+          <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
+            Thông tin
+          </DialogTitle>
         </div>
         <DialogContent>
           <DialogContentText>
             <div className="ps-3 pe-5">
-              <p>Họ tên: {account?.data?.username}</p>
               <p>
-                Giới tính:{" "}
+                <b>Họ tên: </b>
+                {account?.data?.username}
+              </p>
+              <p>
+                <b>Giới tính:</b>{" "}
                 {account?.data?.gender != null
                   ? account?.data?.gender
                     ? "Nam"
                     : "Nữ"
                   : "N/A"}
               </p>
-              <p>Chức vụ: {displayRole(account?.data?.roles[0])}</p>
+              <p>
+                <b>Số điện thoại: </b>
+                {account?.data?.phone}
+              </p>
+              <p>
+                <b>Chức vụ: </b>
+                {displayRole(account?.data?.roles[0])}
+              </p>
             </div>
           </DialogContentText>
         </DialogContent>
-        {/* <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
-          </Button>
-        </DialogActions> */}
+        <DialogActions>
+          {isEdit && (
+            <>
+              <Button autoFocus onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={()=>handleEditSubmit} color="primary">
+                Xong
+              </Button>
+            </>
+          )}
+          {!isEdit && (
+            <Button onClick={handleEdit} color="primary">
+              Sửa
+            </Button>
+          )}
+        </DialogActions>
       </Dialog>
     </div>
   );
