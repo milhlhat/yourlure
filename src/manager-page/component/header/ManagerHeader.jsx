@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -5,17 +6,22 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { default as MuiDialogTitle } from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import { AbilityContext } from "ability/can";
 import UserApi from "api/user-api";
 import "assets/scss/scss-manager/manager-header.scss";
 import React, { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import DEFINELINK from "routes/define-link";
 import { logout } from "utils/user";
-import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import * as yup from "yup";
+import YLButton from "components/custom-field/YLButton";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 ManagerHeader.propTypes = {};
 
@@ -32,6 +38,7 @@ const styles = (theme) => ({
   },
 });
 
+//dialog
 const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
@@ -67,7 +74,7 @@ function ManagerHeader(props) {
     });
     dispatch(action);
   }
-const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [account, setAccount] = useState({
     data: null,
     isLoading: false,
@@ -77,12 +84,12 @@ const [isEdit, setIsEdit] = useState(false);
   const [open, setOpen] = useState(false);
 
   //Dialog
+  const fullScreen = useMediaQuery(useTheme().breakpoints.down('xs'));
+
   const handleClose = () => {
     setOpen(false);
-  };
-  const handleEditSubmit=()=>{
     setIsEdit(false);
-  }
+  };
 
   const ability = useContext(AbilityContext);
   const handleLogOut = () => {
@@ -92,12 +99,45 @@ const [isEdit, setIsEdit] = useState(false);
 
   const handleShowInfomation = () => {
     setOpen(true);
+    setInitialValue();
   };
 
   //edit dialog
   const handleEdit = () => {
-    console.log("edit");
     setIsEdit(true);
+  };
+  //form edit
+  const schema = yup.object().shape({
+    username: yup.string().required("Tên không được để trống"),
+  });
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    handleSubmit,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onsubmit = async (data) => {
+    console.log(data);
+    try {
+      const response = await UserApi.update(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        fetchCustomAccount();
+        setIsEdit(false);
+      }
+    } catch (error) {
+      alert("Swuar thông tin thất bại");
+      console.log("fail to fetch customer list");
+    }
+    // fetchCustomAccount();
+  };
+  const setInitialValue = () => {
+    setValue("username", account?.data?.username);
+    setValue("gender", account?.data?.gender);
+    setValue("userEmail", account?.data?.userEmail);
   };
 
   //format display role
@@ -111,21 +151,20 @@ const [isEdit, setIsEdit] = useState(false);
   };
 
   //get account information
+  const fetchCustomAccount = async () => {
+    setAccount((prevState) => {
+      return { ...prevState, isLoading: true };
+    });
+    try {
+      const response = await UserApi.getMe();
+      setAccount({ data: response, isLoading: false, isSuccess: true });
+    } catch (error) {
+      setAccount({ data: null, isLoading: false, isSuccess: false });
+      console.log("fail to fetch information");
+    }
+  };
   useEffect(() => {
-    const fetchCustomAccount = async () => {
-      setAccount((prevState) => {
-        return { ...prevState, isLoading: true };
-      });
-      try {
-        const response = await UserApi.getMe();
-        setAccount({ data: response, isLoading: false, isSuccess: true });
-      } catch (error) {
-        setAccount({ data: null, isLoading: false, isSuccess: false });
-        console.log("fail to fetch information");
-      }
-    };
     fetchCustomAccount();
-    return fetchCustomAccount();
   }, []);
   useEffect(() => {
     const action = setIsBack({
@@ -182,58 +221,128 @@ const [isEdit, setIsEdit] = useState(false);
         </div>
       </div>
       <Dialog
+        fullScreen={fullScreen} 
         open={open}
-        onClose={handleClose}
+        // onClose={handleClose}
         aria-labelledby="draggable-dialog-title"
       >
-        <div className="border-bottom">
-          <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
-            Thông tin
-          </DialogTitle>
-        </div>
-        <DialogContent>
-          <DialogContentText>
-            <div className="ps-3 pe-5">
-              <p>
-                <b>Họ tên: </b>
-                {account?.data?.username}
-              </p>
-              <p>
-                <b>Giới tính:</b>{" "}
-                {account?.data?.gender != null
-                  ? account?.data?.gender
-                    ? "Nam"
-                    : "Nữ"
-                  : "N/A"}
-              </p>
-              <p>
-                <b>Số điện thoại: </b>
-                {account?.data?.phone}
-              </p>
-              <p>
-                <b>Chức vụ: </b>
-                {displayRole(account?.data?.roles[0])}
-              </p>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {isEdit && (
-            <>
-              <Button autoFocus onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={()=>handleEditSubmit} color="primary">
-                Xong
-              </Button>
-            </>
-          )}
-          {!isEdit && (
-            <Button onClick={handleEdit} color="primary">
-              Sửa
-            </Button>
-          )}
-        </DialogActions>
+        <form onSubmit={handleSubmit(onsubmit)}>
+          <div className="border-bottom">
+            <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
+              {!isEdit ? "Thông tin" : "Sửa thông tin"}
+            </DialogTitle>
+          </div>
+          <DialogContent>
+            <DialogContentText>
+              <div className="">
+                {isEdit ? (
+                  <>
+                    <label htmlFor="name">Họ tên</label>
+                    <input
+                      className="form-control"
+                      {...register("username")}
+                      type="text"
+                      id="name"
+                      disabled={!isEdit}
+                      placeholder="Nhập tên sản phẩm"
+                    />
+                    {errors?.username&&<span className="error-message">
+                      {errors?.username?.message}
+                      <br />
+                    </span>}
+                    <label htmlFor="gender">Giới tính</label>
+                    <select
+                      id="gender"
+                      className="form-select"
+                      {...register("gender", {
+                        validate: (value) => {
+                          return value === "true" || value === "false";
+                        },
+                      })}
+                    >
+                      <option value="true">Nam</option>
+                      <option value="false">Nữ</option>
+                    </select>
+                    <span className="error-message">
+                      {errors?.gender?.message}
+                    </span>
+                    <label htmlFor="userEmail">Email</label>
+                    <input
+                      id="userEmail"
+                      className="form-control"
+                      {...register("userEmail", {})}
+                      type="email"
+                      placeholder="Email"
+                    ></input>
+                    {errors.userEmail && (
+                      <span className="text-danger">
+                        (*){errors.userEmail.message}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <th className="text-end">Họ tên:</th>
+                          <td className="ps-3">{account?.data?.username}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-end">Giới tính:</th>
+                          <td className="ps-3">
+                            {account?.data?.gender != null
+                              ? account?.data?.gender
+                                ? "Nam"
+                                : "Nữ"
+                              : "N/A"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <th className="text-end">Số điện thoại:</th>
+                          <td className="ps-3">{account?.data?.phone}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-end">Chức vụ:</th>
+                          <td className="ps-3">{displayRole(account?.data?.roles[0])}</td>
+                        </tr>
+                        <tr>
+                          <th className="text-end">Email:</th>
+                          <td className="ps-3">{account?.data?.userEmail}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </>
+                )}
+              </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {isEdit ? (
+              <>
+                <Button
+                  autoFocus
+                  onClick={() => setIsEdit(false)}
+                  color="primary"
+                >
+                  Hủy
+                </Button>
+                <button type="submit" className="btn btn-light">
+                  Xong
+                </button>
+              </>
+            ) : (
+              <>
+                <Button onClick={handleClose} color="primary">
+                  Đóng
+                </Button>
+                <Button onClick={handleEdit} color="primary">
+                  Sửa
+                </Button>
+              </>
+            )}
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );

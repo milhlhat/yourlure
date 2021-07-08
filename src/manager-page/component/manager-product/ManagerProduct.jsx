@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { findByManagerFilter } from "redux/product-action/manager/fetch-manager-filter";
 import { fetchFilter } from "utils/manager-product";
+import { convertToVND } from "utils/format-string";
 
 ManagerProduct.propTypes = {};
 
@@ -113,10 +114,7 @@ function ManagerProduct(props) {
                   <td className="text-end pe-4">
                     {!item
                       ? "N/A"
-                      : Number(item.defaultPrice).toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,
-                        })} {"\u20AB"}
+                      : convertToVND(item.defaultPrice)}
                   </td>
                   <td>
                     <img

@@ -56,6 +56,10 @@ const UserApi = {
     const url = `/user/signup`;
     return AxiosClient.post(url,user);
   },
+  changePassword:(param)=>{
+    const url = `/user/change-password`;
+    return AxiosClient.post(url,param);
+  },
   deleteAddress:(id)=>{
     const url = `/user/delete-address?userAddressId=${id}`;
     return AxiosClient.delete(url);

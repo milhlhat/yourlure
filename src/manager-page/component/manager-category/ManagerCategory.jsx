@@ -69,16 +69,18 @@ function ManagerCategory(props) {
   const handleDelete = async (id) => {
     try {
       const response = await ManagerCategoryAPI.delete(id);
-      if (response.error) {
+      if (response.data != null && !response.data) {
+        console.log(response);
+        throw new Error();
+      } else if (response.error) {
         throw new Error(response.error);
       } else {
-        alert("Xóa danh mục thành công");
+        fetchManagerCategory();
       }
     } catch (error) {
       alert("Xóa danh mục thất bại");
       console.log("fail to fetch delete address");
     }
-    fetchManagerCategory();
   };
 
   const onsubmit = async (data) => {
@@ -197,8 +199,9 @@ function ManagerCategory(props) {
                       className="pointer"
                       onClick={() =>
                         history.push({
-                          pathname:"/manager/category/detail/" + item.categoryID,
-                          canBack:setBack,
+                          pathname:
+                            "/manager/category/detail/" + item.categoryID,
+                          canBack: setBack,
                         })
                       }
                     >

@@ -8,9 +8,10 @@ import MuiAlert from "@material-ui/lab/Alert";
 import "assets/scss/scss-pages/login.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
+import UserApi from "api/user-api";
 
 function ChangePassword(props) {
-  const [open, setOpen] = useState({ isOpen: false, content: "" });
+  const [open, setOpen] = useState({ isOpen: false, content: "" ,severity:"success"});
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -40,9 +41,20 @@ function ChangePassword(props) {
       .required("Không được để trống."),
   });
 
-  const handleSubmit = (value) => {
-    console.log(value);
-    setOpen({ ...open, isOpen: true });
+  const handleSubmit = async (data) => {
+    console.log(data.password);
+    try {
+			const response = await UserApi.changePassword(data.password);
+			if (response.error) {
+				throw new Error(response.error);
+			} else {
+        setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
+			}
+		} catch (error) {
+      setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu không thành công", severity:"error"});
+			console.log('fail to fetch customer list');
+		}
+    // setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
   };
   return (
     <div className="bg-box d-flex flex-column align-items-center">
@@ -96,7 +108,7 @@ function ChangePassword(props) {
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity="success">
+        <Alert onClose={handleClose} severity={open.severity}>
           {open.content}
         </Alert>
       </Snackbar>

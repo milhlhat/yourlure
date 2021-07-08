@@ -101,8 +101,8 @@ function EditCustomerAccount(props) {
                   {...register("userEmail", {})}
                   type="email"
                 ></input>
-                {errors.email && (
-                  <span className="text-danger">(*){errors.email.message}</span>
+                {errors.userEmail && (
+                  <span className="text-danger">(*){errors.userEmail.message}</span>
                 )}
               </td>
             </tr>
