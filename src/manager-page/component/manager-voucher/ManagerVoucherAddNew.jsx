@@ -1,14 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 import "./scss/manager-add-new-voucher.scss";
 function ManagerVoucherAddNew(props) {
-
+    const dispatch = useDispatch();
+    const canBack = props.location.canBack;
     const [disabled, setDisabled] = useState(false);
 
     const handleChangeDisabled = (selectObject) => {
@@ -51,7 +54,16 @@ function ManagerVoucherAddNew(props) {
             console.log("fail to fetch add voucher");
         }
     };
-
+    useEffect(() => {
+        if (canBack) {
+            const action = setIsBack({
+                canBack: canBack.canBack,
+                path: canBack.path,
+                label: canBack.label,
+            });
+            dispatch(action);
+        }
+    }, [canBack]);
     return (
         <div>
             <h3>Tạo mã giảm giá mới</h3>

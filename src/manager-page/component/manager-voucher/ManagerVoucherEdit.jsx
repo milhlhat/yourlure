@@ -3,10 +3,14 @@ import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 import "./scss/manager-add-new-voucher.scss";
 function ManagerVoucherEdit(props) {
+    const canBack = props.location.canBack;
+    const dispatch = useDispatch();
     const voucherId = props.match.params.id;
     const history = useHistory();
     const schema = yup.object().shape({
@@ -66,6 +70,17 @@ function ManagerVoucherEdit(props) {
         setValue("start_date", formatDate(voucher?.data?.start_date));
         setValue("end_date", formatDate(voucher?.data?.end_date));
     }, [voucher]);
+
+    useEffect(() => {
+        if (canBack) {
+            const action = setIsBack({
+                canBack: canBack.canBack,
+                path: canBack.path,
+                label: canBack.label,
+            });
+            dispatch(action);
+        }
+    }, [canBack]);
 
     const onsubmit = async (data) => {
         try {

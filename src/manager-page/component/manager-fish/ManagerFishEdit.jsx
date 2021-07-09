@@ -4,13 +4,17 @@ import YLButton from "components/custom-field/YLButton";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { setIsBack } from "redux/back-action/back-action";
 import { handleChangeInput } from "utils/input";
 import * as yup from "yup";
 
 ManagerFishEdit.propTypes = {};
 
 function ManagerFishEdit(props) {
+    const canBack = props.location.canBack;
+    const dispatch = useDispatch();
     const history = useHistory();
     const [fishName, setFishName] = useState('');
     const fishID = props.match.params.id;
@@ -73,6 +77,16 @@ function ManagerFishEdit(props) {
         }
     };
 
+    useEffect(() => {
+        if (canBack) {
+            const action = setIsBack({
+                canBack: canBack.canBack,
+                path: canBack.path,
+                label: canBack.label,
+            });
+            dispatch(action);
+        }
+    }, [canBack]);
     return (
         <div>
             <h3>Tạo danh sách cá</h3>

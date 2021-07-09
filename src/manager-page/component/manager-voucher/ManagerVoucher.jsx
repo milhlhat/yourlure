@@ -1,16 +1,17 @@
 import ManagerVoucherAPI from "api/manager-voucher";
 import Editor from "assets/icon/editor.svg";
-import YLButton from "components/custom-field/YLButton";
 import Trash from "assets/icon/trash.svg";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import YLButton from "components/custom-field/YLButton";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
-import Pagination from "react-js-pagination";
-import ManagerSort from "./ManagerSort";
-import { useHistory, useLocation } from "react-router-dom";
-import './scss/manager-discount-voucher.scss';
 import { useForm } from "react-hook-form";
+import Pagination from "react-js-pagination";
+import { useHistory, useLocation } from "react-router-dom";
+import ManagerSort from "./ManagerSort";
+import './scss/manager-discount-voucher.scss';
 
 ManagerVoucher.propTypes = {};
 
@@ -64,7 +65,7 @@ function ManagerVoucher() {
     const setBack = {
         canBack: true,
         path: location,
-        label: "Sản phẩm",
+        label: "Voucher",
     };
 
     function handlePageChange(newPage) {
@@ -151,6 +152,8 @@ function ManagerVoucher() {
 
     if (voucherList.isLoading) {
         return <Loading />;
+    } else if (!voucherList.isSuccess) {
+        return <ErrorLoad />;
     } else
         return (
             <>
@@ -160,7 +163,10 @@ function ManagerVoucher() {
                         <YLButton
                             variant="warning"
                             value="Thêm"
-                            to={{ pathname: "/manager/voucher/addnew", canBack: setBack }}
+                            to={{
+                                pathname: "/manager/voucher/addnew",
+                                canBack: setBack
+                            }}
                         />
                     </div>
                 </div>
