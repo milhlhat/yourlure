@@ -49,12 +49,12 @@ function ManagerVoucher() {
             if (response.error) {
                 throw new Error(response.error);
             } else {
-                alert("Xóa loại cá thành công");
+                alert("Xóa loại mã giảm giá thành công");
             }
             fetchVoucher();
         } catch (error) {
-            alert("Xóa loại cá thất bại");
-            console.log("fail to fetch delete address");
+            alert("Xóa loại mã giảm giá thất bại");
+            console.log("fail to fetch delete voucher");
         }
 
     };
@@ -69,6 +69,17 @@ function ManagerVoucher() {
     useEffect(() => {
         fetchVoucher();
     }, [filter]);
+
+    const formatDate = (date) => {
+        let formatDate = new Date(date);
+        return (
+            formatDate.getDate() +
+            "/" +
+            (formatDate.getMonth() + 1) +
+            "/" +
+            formatDate.getFullYear()
+        );
+    };
 
 
     const fetchVoucher = async () => {
@@ -112,7 +123,7 @@ function ManagerVoucher() {
                     </div>
                 </div>
                 <div className="manager-user-show mt-3 bg-white bg-shadow">
-                    <h4>tất cả vouhcer</h4>
+                    <h4>tất cả mã giảm giá</h4>
                     <hr />
                     {/* <ManagerSort /> */}
                     <table>
@@ -121,12 +132,12 @@ function ManagerVoucher() {
                                 <th>ID</th>
                                 <th>Tên</th>
                                 <th>Loại giảm giá</th>
+                                <th>Giá trị</th>
                                 <th>Bắt đầu từ ngày</th>
                                 <th>Ngày kết thúc</th>
-                                <th>Giá trị</th>
                                 <th></th>
                             </tr>
-                            {voucherList?.data?.userDtoOutList?.map((item, i) => (
+                            {voucherList?.data?.discountVouchers?.map((item, i) => (
                                 <tr key={i}>
                                     <td>
                                         {item?.discountVoucherId}
@@ -137,14 +148,16 @@ function ManagerVoucher() {
                                     <td>
                                         {item.type}
                                     </td>
-                                    <td>{item.start_date ? item.start_date : '-'}</td>
-                                    <td>{item.end_date ? item.end_date : '-'}</td>
-                                    <td>{item.discountValue}</td>
+                                    <td>{item.type === "Free Ship" || !item.discountValue ?
+                                        '-'
+                                        : item.type == "Phần trăm" ? item.discountValue + '%' : item.discountValue + '000đ'}</td>
+                                    <td>{item.start_date ? formatDate(item.start_date) : '-'}</td>
+                                    <td>{item.end_date ? formatDate(item.end_date) : '-'}</td>
                                     <td>
                                         <td className="d-flex float-end">
                                             <img src={Editor}
                                                 className="pointer"
-                                                onClick={() => handleEditClicked(item.fishID)}
+                                                onClick={() => handleEditClicked(item.discountVoucherId)}
                                             />
                                             <ConfirmPopup
                                                 variant="link"
@@ -152,7 +165,7 @@ function ManagerVoucher() {
                                                 height="25px"
                                                 btnText={<img src={Trash} />}
                                                 content="Bạn chắc chắn muốn xóa?"
-                                                onConfirm={() => handleDelete(item.fishID)}
+                                                onConfirm={() => handleDelete(item.discountVoucherId)}
                                             />
                                         </td>
                                     </td>

@@ -1,12 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
+import "./scss/manager-add-new-voucher.scss";
 function ManagerVoucherAddNew(props) {
 
+    const history = useHistory();
     const schema = yup.object().shape({
-        productname: yup.string().required("Tên mã giảm giá không được để trống"),
+        name: yup.string().required("Tên mã giảm giá không được để trống"),
+        code: yup.string().required("Mã giảm giá không được để trống"),
     });
     const {
         register,
@@ -15,13 +20,34 @@ function ManagerVoucherAddNew(props) {
     } = useForm({
         resolver: yupResolver(schema),
     });
+    const onsubmit = async (data) => {
+        console.log(data)
+        try {
+            let start_date = new Date(data?.start_date);
+            let end_date = new Date(data?.end_date);
+            if (start_date.getTime() > end_date.getTime()) {
+                alert("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+            } else {
+                const response = await ManagerVoucherAPI.add(data);
+                if (response.error) {
+                    throw new Error(response.error);
+                } else {
+                    alert("Thêm mã giảm giá thành công");
+                    history.push("/manager/voucher");
+                }
+            }
+        } catch (error) {
+            alert("Thêm cá thất bại");
+            console.log("fail to fetch add voucher");
+        }
+    };
 
     return (
         <div>
             <h3>Tạo mã giảm giá mới</h3>
-            <form >
-                <div className=" product-add-new-form row">
-                    <div className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2" id="product-info">
+            <form onSubmit={handleSubmit(onsubmit)}>
+                <div className=" add-new-form row">
+                    <div className="info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2" id="product-info">
                         <div className="px-3 pt-3">
                             <h5>Thông tin mã giảm giá</h5>
                         </div>
@@ -47,215 +73,100 @@ function ManagerVoucherAddNew(props) {
                                             </span>
                                         </td>
                                         <td>
-                                            <label for="weight-default" className="form-label">
-                                                Độ nặng mặc định (g)
+                                            <label for="start-date" className="form-label">
+                                                Bắt đầu từ ngày
                                             </label>
                                             <input
-                                                type="text"
+                                                type="date"
                                                 className="form-control"
-                                                id="weight-default"
+                                                id="start-date"
                                                 placeholder="Ngày bắt đầu"
-                                                {...register("weightDefault")}
+                                                {...register("start_date")}
                                             />
-                                            <span>{errors.weightDefault?.message}</span>
+                                            <span className="error-message">
+                                                {errors.code?.message}
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="price" className="form-label">
-                                                Giá
+                                            <label for="code" className="form-label">
+                                                Mã giảm giá <span className="error-message">(*)</span>
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                id="price"
-                                                placeholder="Giá"
-                                                {...register("price")}
+                                                id="code"
+                                                placeholder="Mã giảm giá"
+                                                {...register("code")}
                                             />
                                             <span>{errors.price?.message}</span>
                                         </td>
                                         <td>
-                                            <label for="length" className="form-label">
-                                                chiều dài (cm)
+                                            <label for="end-date" className="form-label">
+                                                Ngày kết thúc
                                             </label>
                                             <input
-                                                type="text"
+                                                type="date"
                                                 className="form-control"
-                                                id="length"
-                                                placeholder="chiều dài (cm)"
-                                                {...register("length")}
+                                                id="end-date"
+                                                placeholder="Ngày kết thúc"
+                                                {...register("end_date")}
                                             />
-                                            <span>{errors.length?.message}</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="hook" className="form-label">
-                                                Số lượng móc
+                                            <label for="type" className="form-label">
+                                                Cách giảm giá
                                             </label>
-                                            <input
+                                            <select
                                                 type="text"
                                                 className="form-control"
-                                                id="hook"
-                                                placeholder="Số lượng móc"
-                                                {...register("hook")}
-                                            />
-                                            <span>{errors.hook?.message}</span>
+                                                {...register("type")}
+                                            >
+                                                <option value="Phần trăm">Phần trăm</option>
+                                                <option value="Giá trị">Giá trị</option>
+                                                <option value="Free Ship">Free Ship</option>
+                                            </select>
                                         </td>
                                         <td>
-                                            <label for="deepDiving" className="form-label">
-                                                Lặn sâu
+                                            <label for="min-spent-amount" className="form-label">
+                                                Số tiền thanh toán tối thiểu
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                id="deepDiving"
-                                                placeholder="Lặn sâu"
-                                                {...register("deepDiving")}
+                                                id="min-spent-amount"
+                                                placeholder="Số tiền thanh toán tối thiểu"
+                                                {...register("minSpentAmount")}
                                             />
-                                            <span>{errors.deepDiving?.message}</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <label for="material" className="form-label">
-                                                Chất liệu
+                                            <label for="discount-value" className="form-label">
+                                                Giá trị
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                id="material"
-                                                placeholder="Chất liệu"
-                                                {...register("material")}
+                                                id="discount-value"
+                                                placeholder="Giá trị"
+                                                {...register("discountValue")}
                                             />
-                                            <span>{errors.material?.message}</span>
                                         </td>
                                         <td>
-                                            <label for="brand" className="form-label">
-                                                Nhãn hiệu
+                                            <label for="minCheckoutItemsQuantity" className="form-label">
+                                                Số lượng tối thiểu
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
-                                                id="brand"
-                                                placeholder="Nhãn hiệu"
-                                                {...register("brand")}
+                                                id="minCheckoutItemsQuantity"
+                                                placeholder="Số lượng tối thiểu"
+                                                {...register("minCheckoutItemsQuantity")}
                                             />
-                                            <span>{errors.brand?.message}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input
-                                                class="form-check-input pointer"
-                                                type="checkbox"
-                                                id="customize"
-                                                {...register("customize")}
-                                                // onChange={handleChangeCustomModel}
-                                                defaultChecked={false}
-                                            />
-                                            <label class="form-check-label pointer" for="customize">
-                                                Customize
-                                            </label>
-                                            <span>{errors.customize?.message}</span>
-                                        </td>
-                                        <td>
-                                            <input
-                                                class="form-check-input pointer"
-                                                type="checkbox"
-                                                id="customize-weight"
-                                                {...register("customizeWeight")}
-                                                // onChange={handleChangeCustomWeight}
-                                                defaultChecked={false}
-                                            />
-                                            <label for="customize-weight" className="form-label">
-                                                Customizable độ nặng
-                                            </label>
-                                            <span>{errors.customizeWeight?.message}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            {/* {changeModel && (
-                                                <div>
-                                                    <label for="model" className="form-label">
-                                                        Link model 3D
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        id="model"
-                                                        placeholder="Link model 3D"
-                                                        {...register("model")}
-                                                    />
-                                                    <span>{errors.model?.message}</span>
-                                                </div>
-                                            )} */}
-                                        </td>
-                                        <td>
-                                            {/* {changeWeight && (
-                                                <div className="d-flex">
-                                                    <div className="col-6">
-                                                        <label for="weight-max" className="form-label">
-                                                            Max (g)
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            className="form-control input-customize-weight"
-                                                            id="weight-max"
-                                                            placeholder="Max"
-                                                            {...register("weightMax")}
-                                                        />
-
-                                                        <span>{errors.weightMax?.message}</span>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <label for="weight-min" className="form-label">
-                                                            Min
-                                                        </label>
-                                                        <input
-                                                            type="number"
-                                                            className="form-control  input-customize-weight"
-                                                            id="weight-min"
-                                                            placeholder="Min (g)"
-                                                            {...register("weightMin")}
-                                                        />
-
-                                                        <span>{errors.weightMin?.message}</span>
-                                                    </div>
-                                                </div>
-                                            )} */}
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td colSpan="2">
-                                            <label for="description" className="form-label">
-                                                Mô tả
-                                            </label>
-                                            <textarea
-                                                type="text"
-                                                className="form-control"
-                                                id="description"
-                                                placeholder="Mô tả"
-                                                {...register("description")}
-                                            ></textarea>
-                                            <span>{errors.description?.message}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2">
-                                            <label for="descriptionMore" className="form-label">
-                                                Mô tả chi tiết
-                                            </label>
-                                            <textarea
-                                                type="text"
-                                                className="form-control"
-                                                id="descriptionMore"
-                                                placeholder="Mô tả chi tiết "
-                                                {...register("descriptionMore")}
-                                            ></textarea>
-                                            <span>{errors.descriptionMore?.message}</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -264,7 +175,7 @@ function ManagerVoucherAddNew(props) {
                     </div>
 
                     <div className="col-12 bg-white bg-shadow submit-button-form">
-                        <YLButton variant="danger" type="submit" value="Hủy" />
+                        <YLButton variant="danger" to="/manager/voucher" value="Hủy" />
                         <YLButton variant="primary" type="submit" value="Xong" />
                     </div>
                 </div>

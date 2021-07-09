@@ -7,20 +7,20 @@ const ManagerVoucherAPI = {
     return AxiosClient.post(url, param);
   },
   getById: (id) => {
-    const url = `/admin/fish/getById?id=${id}`;
+    const url = `/admin/discount-voucher/${id}`;
     return AxiosClient.get(url);
   },
-  delete: (param) => {
-    const url = `/admin/discount-voucher/remove/id=${param}`;
+  delete: (id) => {
+    const url = `/admin/discount-voucher/remove/${id}`;
     return AxiosClient.delete(url);
   },
   add: (param) => {
     const url = '/admin/discount-voucher/add';
     return AxiosClient.post(url, param);
   },
-  update: (fish, id) => {
-    const url = `/admin/discount-voucher/update/id=${id}`;
-    return AxiosClient.post(url, fish);
+  update: (voucher, id) => {
+    const url = `/admin/discount-voucher/update?id=${id}`;
+    return AxiosClient.post(url, voucher);
   },
 };
 export const { getAll, add, update } = ManagerVoucherAPI;
