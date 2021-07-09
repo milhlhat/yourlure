@@ -69,7 +69,7 @@ function ManagerVoucherAddNew(props) {
             <h3>Tạo mã giảm giá mới</h3>
             <form onSubmit={handleSubmit(onsubmit)}>
                 <div className=" add-new-form row">
-                    <div className="info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2" id="product-info">
+                    <div className="info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2 pb-md-5 mt-md-3" id="product-info">
                         <div className="px-3 pt-3">
                             <h5>Thông tin mã giảm giá</h5>
                         </div>

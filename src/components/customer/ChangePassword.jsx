@@ -1,14 +1,13 @@
-import React, { useState } from "react";
-
-import { FastField, Form, Formik } from "formik";
-import InputField from "components/custom-field/YLInput";
-import YLButton from "components/custom-field/YLButton";
-import * as Yup from "yup";
-import MuiAlert from "@material-ui/lab/Alert";
-import "assets/scss/scss-pages/login.scss";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import UserApi from "api/user-api";
+import "assets/scss/scss-pages/login.scss";
+import YLButton from "components/custom-field/YLButton";
+import InputField from "components/custom-field/YLInput";
+import { FastField, Form, Formik } from "formik";
+import React, { useState } from "react";
+import * as Yup from "yup";
+
 
 function ChangePassword(props) {
   const [open, setOpen] = useState({ isOpen: false, content: "" ,severity:"success"});

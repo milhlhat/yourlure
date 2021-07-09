@@ -1,13 +1,20 @@
-import ManagerStaff from "manager-page/component/manager-staff/ManagerStaff";
-import ManagerStaffAddNew from "manager-page/component/manager-staff/ManagerStaffAddNew";
-import ManagerStaffDetail from "manager-page/component/manager-staff/ManagerStaffDetail";
-import ManagerStaffEdit from "manager-page/component/manager-staff/ManagerStaffEdit";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
-import NotFound from "store-front-pages/Notfound";
 ManagerCategoryRoute.propTypes = {};
-
+const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const ManagerStaffEdit = React.lazy(() =>
+  import("manager-page/component/manager-staff/ManagerStaffEdit")
+);
+const ManagerStaff = React.lazy(() =>
+  import("manager-page/component/manager-staff/ManagerStaff")
+);
+const ManagerStaffAddNew = React.lazy(() =>
+  import("manager-page/component/manager-staff/ManagerStaffAddNew")
+);
+const ManagerStaffDetail = React.lazy(() =>
+  import("manager-page/component/manager-staff/ManagerStaffDetail")
+);
 function ManagerCategoryRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;

@@ -8,6 +8,8 @@ import YLButton from "components/custom-field/YLButton";
 import ManagerCategoryAPI from "api/manager-category-api";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
 
 function ManagerCategoryEdit(props) {
   const canBack = props.location.canBack;
@@ -17,7 +19,11 @@ function ManagerCategoryEdit(props) {
   const schema = yup.object().shape({
     categoryName: yup.string().required("Tên danh mục không được để trống"),
   });
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState({
+    data:null,
+    isLoading:false,
+    isSuccess:true,
+  });
 
   const fetchCategoryById = async (id) => {
     setCategory((prevState) => {
@@ -76,6 +82,11 @@ function ManagerCategoryEdit(props) {
       dispatch(action);
     }
   }, [canBack]);
+  if (category.isLoading) {
+    return <Loading />;
+  } else if (!category.isSuccess) {
+    return <ErrorLoad />;
+  } else
   return (
     <div>
       {/* <Prompt
@@ -83,7 +94,7 @@ function ManagerCategoryEdit(props) {
                 message="Changes you made may not be saved."
             /> */}
       <div className="bg-box bg-shadow">
-        <h3>Thêm danh mục</h3>
+        <h3>Sửa danh mục</h3>
         <hr />
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="name">Tên danh mục</label>

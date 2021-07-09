@@ -1,12 +1,15 @@
 import React from "react";
 import DEFINELINK from "routes/define-link";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import ManagerUser from "manager-page/component/managerUser/ManagerUser";
-import NotFound from "store-front-pages/Notfound";
 import { Can } from "ability/can";
-import NoPermistion from "components/error-notify/NoPermistion";
 ManagerUserRoute.propTypes = {};
-
+const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const ManagerUser = React.lazy(() =>
+  import("manager-page/component/managerUser/ManagerUser")
+);
+const NoPermistion = React.lazy(() =>
+  import("components/error-notify/NoPermistion")
+);
 function ManagerUserRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;

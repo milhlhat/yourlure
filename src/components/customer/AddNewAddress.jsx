@@ -37,7 +37,7 @@ function AddNewAddress() {
     };
   });
   return (
-    <div className="bg-box">
+    <div className="bg-box bg-shadow">
       <Prompt
         when={isDirty && !isSubmitted}
         message="Changes you made may not be saved."
@@ -110,16 +110,6 @@ function AddNewAddress() {
                     (*){errors.description.message}
                   </span>
                 )}
-              </td>
-            </tr>
-            <tr>
-              <td className="text-end title-table">Email</td>
-              <td>
-                <input
-                  type="email"
-                  className="form-control"
-                  {...register("email")}
-                />
               </td>
             </tr>
             <tr>

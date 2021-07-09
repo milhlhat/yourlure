@@ -29,6 +29,7 @@ function ManagerCategoryAddNew(props) {
   const onSubmit = async (data) => {
     try {
       const response = await ManagerCategoryAPI.add(data);
+      
       if (response.error) {
         throw new Error(response.error);
       } else {

@@ -1,12 +1,22 @@
 import React from "react";
 import DEFINELINK from "routes/define-link";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import NotFound from "store-front-pages/Notfound";
-import ManagerCategory from "manager-page/component/manager-category/ManagerCategory";
-import ManagerCategoryAddNew from "manager-page/component/manager-category/ManagerCategoryAddNew";
-import ManagerCategoryEdit from "manager-page/component/manager-category/ManagerCategoryEdit";
-import ManagerCategoryDetail from "manager-page/component/manager-category/ManagerCategoryDetail";
+
 ManagerCategoryRoute.propTypes = {};
+
+const ManagerCategoryDetail = React.lazy(() =>
+  import("manager-page/component/manager-category/ManagerCategoryDetail")
+);
+const ManagerCategoryEdit = React.lazy(() =>
+  import("manager-page/component/manager-category/ManagerCategoryEdit")
+);
+const ManagerCategoryAddNew = React.lazy(() =>
+  import("manager-page/component/manager-category/ManagerCategoryAddNew")
+);
+const ManagerCategory = React.lazy(() =>
+  import("manager-page/component/manager-category/ManagerCategory")
+);
+const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 
 function ManagerCategoryRoute() {
   const match = useRouteMatch();
