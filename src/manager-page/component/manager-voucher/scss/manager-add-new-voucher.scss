@@ -1,0 +1,35 @@
+.add-new-form {
+    display: flex;
+    justify-content: space-between;
+    & input {
+    }
+    & table {
+        width: 100%;
+        border-spacing: 15px;
+
+        & td {
+            padding: 0 15px;
+        }
+    }
+    & .-info,
+    & .cate-fish {
+        height: fit-content;
+    }
+    & .cate-fish {
+        overflow: auto;
+    }
+
+    & .submit-button-form {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        border: 1px solid;
+    }
+    & .-images-add {
+        display: flex;
+        justify-content: space-between;
+    }
+    & .input-customize-weight {
+        width: 100px;
+    }
+}

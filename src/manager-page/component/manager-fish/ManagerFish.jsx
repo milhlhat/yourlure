@@ -3,12 +3,14 @@ import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import YLButton from "components/custom-field/YLButton";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-fish.scss";
+
 
 
 
@@ -38,7 +40,7 @@ function ManagerFish(props) {
     const setBack = {
         canBack: true,
         path: location,
-        label: "Sản phẩm",
+        label: "Fish",
     };
 
     function handlePageChange(newPage) {
@@ -93,6 +95,8 @@ function ManagerFish(props) {
 
     if (fishList.isLoading) {
         return <Loading />;
+    } else if (!fishList.isSuccess) {
+        return <ErrorLoad />;
     } else
         return (
             <>
@@ -118,7 +122,7 @@ function ManagerFish(props) {
                                 <th></th>
                             </tr>
                             {fishList.data?.fishDtoOuts?.map((item, i) => (
-                                <tr key={"fish-" + i}>
+                                <tr key={"fish-" + i} className="hover-background">
                                     <td>{i + 1}</td>
                                     <td>{item.fishName}</td>
                                     <td className="d-flex float-end">

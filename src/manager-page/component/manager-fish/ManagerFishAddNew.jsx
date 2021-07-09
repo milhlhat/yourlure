@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -6,10 +6,14 @@ import { useForm } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
 import { useHistory } from "react-router-dom";
 import ManagerFishAPI from "api/manager-fish-api";
+import { useDispatch } from "react-redux";
+import { setIsBack } from "redux/back-action/back-action";
 
 ManagerFishAddNew.propTypes = {};
 
-function ManagerFishAddNew() {
+function ManagerFishAddNew(props) {
+    const canBack = props.location.canBack;
+    const dispatch = useDispatch();
     const history = useHistory();
     const schema = yup.object().shape({
         fishName: yup.string().required("Tên loại cá không được để trống"),
@@ -36,6 +40,16 @@ function ManagerFishAddNew() {
             console.log("fail to fetch add fish");
         }
     };
+    useEffect(() => {
+        if (canBack) {
+            const action = setIsBack({
+                canBack: canBack.canBack,
+                path: canBack.path,
+                label: canBack.label,
+            });
+            dispatch(action);
+        }
+    }, [canBack]);
     return (
         <div>
             <h3>Tạo danh cá</h3>
