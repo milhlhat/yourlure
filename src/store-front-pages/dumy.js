@@ -15,74 +15,22 @@ const dumyCustomize = {
           canAddImg: true,
           canAddColor: true,
           canAddText: true,
-          text: "",
+          text: "mua xuan nho nho anh yeu em",
           textFont: "",
           textColor: "",
           textSize: 70,
-          color: "",
-          img: "textures/lung_texture_0.png",
+          color: "#eb5834",
+          img: "",
+          // img: "textures/lung_texture_0.png",
           textures: [
             {
               textureId: 21,
-              textureUrl: "textures/lung_texture_0.png",
+              textureUrl: "images/10-min.jpg",
               isDefault: true,
             },
           ],
         },
-        // {
-        //   materialId: 8,
-        //   defaultName: "Belly", // cái này để map với model để translate
-        //   vnName: "Bụng", // cái này để hiển thị
-        //   img: "textures/lung_texture_0.png",
-        //   color: "",
-        //   text: "",
-        //   textColor: "",
-        //   textFont: "",
-        //   textSize: "",
-        //
-        //   canAddText: true,
-        //   canAddImg: true,
-        //   canAddColor: true,
-        //   textures: [
-        //     {
-        //       textureId: 1,
-        //       textureUrl: "images/10-min.jpg",
-        //       isDefault: false,
-        //     },
-        //     {
-        //       textureId: 2,
-        //       textureUrl: "images/bo-6-spinner-SP06-4.jpg",
-        //       isDefault: true,
-        //     },
-        //   ],
-        // }
-        // {
-        //   materialId: 2,
-        //   defaultName: "back", // cái này để map với model để translate
-        //   vnName: "Lưng", // cái này để hiển thị
-        //   img: "",
-        //   color: "",
-        //   text: "",
-        //   textColor: "",
-        //   textFont: "",
-        //   textSize: "",
-        //
-        //   canAddText: true,
-        //   canAddImg: true,
-        //   canAddColor: true,
-        //   textures: [
-        //     {
-        //       textureId: 5,
-        //       textureUrl: "images/CR28.jpg",
-        //       isDefault: true,
-        //     },
-        //     {
-        //       textureId: 6,
-        //       textureUrl: "images/DK8.jpg",
-        //       isDefault: true,
-        //     },
-        //   ],
-        // },
+
         {
           materialId: 22,
           defaultName: "bung",
@@ -90,17 +38,17 @@ const dumyCustomize = {
           canAddImg: true,
           canAddColor: true,
           canAddText: true,
-          text: null,
+          text: "hú hồn chim én",
           textFont: "",
-          textColor: "",
+          textColor: "red",
           textSize: 60,
           color: null,
           img: null,
           textures: [
             {
               textureId: 22,
-              textureUrl: "textures/bung_texture_0.png",
-              isDefault: false,
+              textureUrl: "images/10-min.jpg",
+              isDefault: true,
             },
           ],
         },
