@@ -37,7 +37,7 @@ public class AdminDiscountVoucherControllerImpl implements AdminDiscountVoucherC
     }
 
     @Override
-    public ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getProductById(Long id) {
+    public ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getById(Long id) {
         Optional<AdminDiscountVoucherDetailDtoOut> result = discountVoucherService.getById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
                 AdminUserDtoOut results = AdminUserDtoOut.builder()
                         .userDtoOutList(listResult)
                         .totalUser(listResult.size())
-                        .totalPage((int) Math.ceil(listResult.size() / pageable.getPageSize()))
+                        .totalPage((int) Math.ceil((double) listResult.size() /(double) pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }
@@ -243,7 +243,7 @@ public class UserServiceImpl implements UserService {
                 AdminStaffDtoOut results = AdminStaffDtoOut.builder()
                         .userDtoOutList(listResult)
                         .totalUser(listResult.size())
-                        .totalPage((int) Math.ceil(listResult.size() / pageable.getPageSize()))
+                        .totalPage((int) Math.ceil((double) listResult.size() /(double) pageable.getPageSize()))
                         .build();
                 return Optional.of(results);
             }

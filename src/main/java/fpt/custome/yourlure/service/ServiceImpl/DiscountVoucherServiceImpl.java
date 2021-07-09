@@ -53,7 +53,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
             if (id != null) {
                 Optional<DiscountVoucher> discountVoucher = discountVoucherRepos.findById(id);
                 if (discountVoucher.isPresent()){
-                    AdminDiscountVoucherDetailDtoOut result = mapper.map(discountVoucher, AdminDiscountVoucherDetailDtoOut.class);
+                    AdminDiscountVoucherDetailDtoOut result = mapper.map(discountVoucher.get(), AdminDiscountVoucherDetailDtoOut.class);
                     return Optional.of(result);
                 }
             }

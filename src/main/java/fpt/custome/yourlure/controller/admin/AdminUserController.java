@@ -31,6 +31,7 @@ public interface AdminUserController {
     @GetMapping(value = "/switch-status/{id}")
     ResponseEntity<Boolean> switchStatus(@PathVariable Long id);
 
+    //staff-----------------------------------------------------
     @PostMapping(value = "/all-staff")
     ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody AdminFilterDtoInput filter);
 

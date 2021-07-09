@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +65,7 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Boolean> deleteProduct(Long id) {
+
         Boolean check = productService.remove(id);
         return new ResponseEntity<>(check, HttpStatus.OK);
     }
