@@ -21,13 +21,13 @@ public interface AdminDiscountVoucherController {
     ResponseEntity<Boolean> save(@RequestBody AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getProductById(@PathVariable("id") Long id);
+    ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getById(@PathVariable("id") Long id);
 
 //    @GetMapping("/search-product")
 //    ResponseEntity<List<DiscountSale>> searchProduct(@RequestParam("productName") String id);
 
-    @PostMapping("/update/")
-    ResponseEntity<Boolean> update(@PathVariable("id") Long id, @RequestBody @Validated AdminDiscountVoucherDtoInput discountVoucherDtoInput);
+    @PostMapping("/update")
+    ResponseEntity<Boolean> update(@RequestParam("id") Long id, @RequestBody @Validated AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
     @DeleteMapping("/remove/{id}")
     ResponseEntity<Boolean> delete(@PathVariable("id") Long id);
