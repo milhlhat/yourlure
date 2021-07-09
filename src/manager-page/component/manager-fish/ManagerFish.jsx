@@ -118,7 +118,7 @@ function ManagerFish(props) {
                                 <th></th>
                             </tr>
                             {fishList.data?.fishDtoOuts?.map((item, i) => (
-                                <tr key={"fish-" + i}>
+                                <tr key={"fish-" + i} className="hover-background">
                                     <td>{i + 1}</td>
                                     <td>{item.fishName}</td>
                                     <td className="d-flex float-end">

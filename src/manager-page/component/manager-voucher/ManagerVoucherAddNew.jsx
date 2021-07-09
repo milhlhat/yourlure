@@ -2,12 +2,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
 import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import "./scss/manager-add-new-voucher.scss";
 function ManagerVoucherAddNew(props) {
 
+    const [disabled, setDisabled] = useState(false);
+
+    const handleChangeDisabled = (selectObject) => {
+        if (selectObject.target.value === "Free Ship") {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    };
     const history = useHistory();
     const schema = yup.object().shape({
         name: yup.string().required("Tên mã giảm giá không được để trống"),
@@ -124,6 +134,7 @@ function ManagerVoucherAddNew(props) {
                                                 type="text"
                                                 className="form-control"
                                                 {...register("type")}
+                                                onChange={handleChangeDisabled}
                                             >
                                                 <option value="Phần trăm">Phần trăm</option>
                                                 <option value="Giá trị">Giá trị</option>
@@ -153,6 +164,7 @@ function ManagerVoucherAddNew(props) {
                                                 className="form-control"
                                                 id="discount-value"
                                                 placeholder="Giá trị"
+                                                disabled={disabled}
                                                 {...register("discountValue")}
                                             />
                                         </td>

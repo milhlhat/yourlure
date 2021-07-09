@@ -8,6 +8,13 @@
     padding: 20px;
     & table {
         width: 100%;
+        & tr {
+            border-bottom: 1px solid $border-line;
+        }
+    }
+    & span {
+        border-bottom: 4px solid $bottom-line;
+        padding: 15px 0;
     }
     & td,
     & th {

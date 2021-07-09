@@ -1,10 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
-import React from "react";
-import { useMemo } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
@@ -26,23 +23,18 @@ function ManagerVoucherEdit(props) {
         return (
             formatDate.getFullYear() +
             "-" +
-            (formatDate.getMonth() + 1) +
+            ` 0${(formatDate.getMonth() + 1)}`.slice(-2) +
             "-" +
-            formatDate.getDate()
+            ` 0${(formatDate.getDate() + 1)}`.slice(-2)
         );
     };
-    const { start_date } = useForm({
-        defaultValue: useMemo(() => {
-            return formatDate(voucher?.data?.end_date);
-        }, [])
-    })
     const {
         register,
         formState: { errors },
         handleSubmit,
+        setValue,
     } = useForm({
         resolver: yupResolver(schema),
-        start_date: formatDate(voucher?.data?.end_date),
     });
     const fetchVoucher = async () => {
         try {
@@ -64,8 +56,18 @@ function ManagerVoucherEdit(props) {
         fetchVoucher();
     }, [voucherId]);
 
+    useEffect(() => {
+
+        setValue("name", voucher?.data?.name);
+        setValue("code", voucher?.data?.code);
+        setValue("discountValue", voucher?.data?.discountValue);
+        setValue("minSpentAmount", voucher?.data?.minSpentAmount);
+        setValue("minCheckoutItemsQuantity", voucher?.data?.minCheckoutItemsQuantity);
+        setValue("start_date", formatDate(voucher?.data?.start_date));
+        setValue("end_date", formatDate(voucher?.data?.end_date));
+    }, [voucher]);
+
     const onsubmit = async (data) => {
-        console.log(data)
         try {
             let start_date = new Date(data?.start_date);
             let end_date = new Date(data?.end_date);
@@ -110,7 +112,6 @@ function ManagerVoucherEdit(props) {
                                                 className={`form-control ${errors.name ? "outline-red" : ""}`}
                                                 id="name"
                                                 placeholder="Tên mã giảm giá"
-                                                defaultValue={voucher?.data?.name}
                                                 {...register("name")}
                                             />
                                             <span className="error-message">
@@ -126,7 +127,6 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="start-date"
                                                 placeholder="Ngày bắt đầu"
-                                                defaultValue={start_date}
                                                 {...register("start_date")}
                                             />
                                         </td>
@@ -141,7 +141,7 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="code"
                                                 placeholder="Mã giảm giá"
-                                                defaultValue={voucher?.data?.code}
+
                                                 {...register("code")}
                                             />
                                             <span className="error-message">
@@ -157,11 +157,10 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="end-date"
                                                 placeholder="Ngày kết thúc"
-                                                defaultValue={formatDate(voucher?.data?.end_date)}
+                                                // defaultValue={formatDate(voucher?.data?.end_date)}
                                                 {...register("end_date")}
                                             />
                                         </td>
-                                        {formatDate(voucher?.data?.end_date)}
                                     </tr>
                                     <tr>
                                         <td>
@@ -188,7 +187,6 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="min-spent-amount"
                                                 placeholder="Số tiền thanh toán tối thiểu"
-                                                defaultValue={voucher?.data?.minSpentAmount}
                                                 {...register("minSpentAmount")}
                                             />
                                         </td>
@@ -203,10 +201,8 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="discount-value"
                                                 placeholder="Giá trị"
-                                                defaultValue={voucher?.data?.discountValue}
                                                 {...register("discountValue")}
                                             />
-                                            Ơ
                                         </td>
                                         <td>
                                             <label for="minCheckoutItemsQuantity" className="form-label">
@@ -217,7 +213,6 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="minCheckoutItemsQuantity"
                                                 placeholder="Số lượng tối thiểu"
-                                                defaultValue={voucher?.data?.minCheckoutItemsQuantity}
                                                 {...register("minCheckoutItemsQuantity")}
                                             />
                                         </td>

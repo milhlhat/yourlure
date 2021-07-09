@@ -1,12 +1,12 @@
 .add-new-form {
     display: flex;
     justify-content: space-between;
-    height: 410px;
     & input {
     }
     & table {
         width: 100%;
         border-spacing: 15px;
+
         & td {
             padding: 0 15px;
         }

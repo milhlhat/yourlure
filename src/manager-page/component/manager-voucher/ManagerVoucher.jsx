@@ -7,12 +7,15 @@ import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
+import ManagerSort from "./ManagerSort";
 import { useHistory, useLocation } from "react-router-dom";
 import './scss/manager-discount-voucher.scss';
+import { useForm } from "react-hook-form";
 
 ManagerVoucher.propTypes = {};
 
 function ManagerVoucher() {
+    const { register, handleSubmit } = useForm();
     const history = useHistory();
     const location = useLocation();
     const [activePage, setActivePage] = useState(1);
@@ -31,6 +34,33 @@ function ManagerVoucher() {
         isSuccess: true,
     });
 
+    //option sort
+    const options = [
+        {
+            display: "Cũ nhất",
+            isAsc: true,
+            sortBy: "discountVoucherId",
+            value: "SORT_id_ASC",
+        },
+        {
+            display: "Mới nhất",
+            isAsc: false,
+            sortBy: "discountVoucherID",
+            value: "SORT_id_DESC",
+        },
+        {
+            display: "Tên từ A-Z",
+            isAsc: true,
+            sortBy: "name",
+            value: "SORT_NAME_DESC",
+        },
+        {
+            display: "Tên từ Z-A",
+            isAsc: false,
+            sortBy: "name",
+            value: "SORT_NAME_DESC",
+        },
+    ];
     const setBack = {
         canBack: true,
         path: location,
@@ -99,6 +129,22 @@ function ManagerVoucher() {
             console.log("fail to fetch address");
         }
     };
+
+    const onsubmit = async (data) => {
+        let searchFilter = { ...filter, keyword: data.keyWord };
+        setFilter({ ...filter, keyword: data.keyWord });
+        setVoucherList((prevState) => {
+            return { ...prevState, isLoading: true };
+        });
+        try {
+            const response = await ManagerVoucherAPI.getAll(searchFilter);
+            setVoucherList({ data: response, isLoading: false, isSuccess: true });
+        } catch (error) {
+            setVoucherList({ data: null, isLoading: false, isSuccess: false });
+            console.log("fail to fetch address");
+        }
+    };
+
     useEffect(() => {
         fetchVoucher();
     }, [filter]);
@@ -125,7 +171,39 @@ function ManagerVoucher() {
                 <div className="manager-user-show mt-3 bg-white bg-shadow">
                     <h4>tất cả mã giảm giá</h4>
                     <hr />
-                    {/* <ManagerSort /> */}
+                    <div className="bg-white manager-sort p-2">
+                        <form onSubmit={handleSubmit(onsubmit)}>
+                            <div className="row">
+                                <div className="col-4">
+                                    <div className="row">
+                                        <div className="col-4">
+                                            <YLButton
+                                                type="submit"
+                                                value="tìm kiếm tên"
+                                                variant="primary"
+                                            ></YLButton>
+                                        </div>
+                                        <div className="col-8">
+                                            <ManagerSort
+                                                filter={filter}
+                                                setFilter={setFilter}
+                                                options={options}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-8">
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        {...register("keyWord")}
+                                        placeholder="Tìm kiếm"
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <table>
                         <tbody>
                             <tr>
@@ -138,7 +216,7 @@ function ManagerVoucher() {
                                 <th></th>
                             </tr>
                             {voucherList?.data?.discountVouchers?.map((item, i) => (
-                                <tr key={i}>
+                                <tr key={i} className="hover-background">
                                     <td>
                                         {item?.discountVoucherId}
                                     </td>
