@@ -26,7 +26,7 @@ public interface UserService {
 
     String signup(User user);
 
-    Boolean changePwd(HttpServletRequest rq, String newPwd);
+    Boolean changePwd(HttpServletRequest rq, String oldPwd, String newPwd);
 
     Boolean forgotPwd(String phone);
 
