@@ -144,8 +144,11 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Object> changePwd(HttpServletRequest rq, String newPwd) {
-        return new ResponseEntity<>(userService.changePwd(rq, newPwd), HttpStatus.OK);
+    public ResponseEntity<Object> changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
+        if(oldPwd.equals(newPwd)){
+            return new ResponseEntity<>("new password must be different old password!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(userService.changePwd(rq,oldPwd, newPwd), HttpStatus.OK);
     }
 
     @Override

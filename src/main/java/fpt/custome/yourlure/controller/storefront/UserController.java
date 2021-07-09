@@ -13,16 +13,19 @@ import fpt.custome.yourlure.entity.address.Ward;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
 @RequestMapping(path = "/user")
+@Validated
 public interface UserController {
 
     @PostMapping("/update")
@@ -106,12 +109,16 @@ public interface UserController {
     String login(@RequestBody UserDataDTO user);
 
     @PostMapping("/change-password")
-    ResponseEntity<Object> changePwd(HttpServletRequest rq, @RequestBody String newPwd);
+    ResponseEntity<Object> changePwd(HttpServletRequest rq,
+                                     @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String oldPassword,
+                                     @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String password);
 
     @PostMapping("/forgot-password")
-    ResponseEntity<Object> forgotPwd(@RequestBody @Valid String phone);
+    ResponseEntity<Object> forgotPwd(@RequestBody @NotBlank @Size(min = 10, max = 10, message = "phone number just contains 10 characters") String phone);
 
     @PostMapping("/reset-password")
-    ResponseEntity<Object> resetPwd(@RequestParam @Valid String phone,@RequestParam @Valid String newPwd, @RequestParam @Valid Integer otp);
+    ResponseEntity<Object> resetPwd(@RequestParam @NotBlank @Size(min = 10, max = 10, message = "phone number just contains 10 characters") String phone,
+                                    @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String newPwd,
+                                    @RequestParam @NotBlank @Size(min = 6, max = 6, message = "otp just has: 6 characters") Integer otp);
 
 }
