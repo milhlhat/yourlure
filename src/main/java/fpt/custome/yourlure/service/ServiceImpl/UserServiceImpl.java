@@ -74,11 +74,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OtpService otpService;
 
+    protected String verifyPhone(String phone){
+        phone = phone.replace("+84", "0");
+        if(phone.startsWith("84")){
+            phone = "0" + phone.substring(2);
+        }
+        return phone;
+    }
+
     @Override
     public String signin(String phone, String password) {
         try {
             User findUser = userRepos.findByPhone(phone);
             if (findUser.getEnabled()) {
+                phone = verifyPhone(phone);
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
             }
@@ -127,6 +136,7 @@ public class UserServiceImpl implements UserService {
         if (phone == null) {
             return false;
         }
+        phone = verifyPhone(phone);
         User user = userRepos.findByPhone(phone);
         if (user != null) {
             return otpService.generateOtp(phone);
@@ -136,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean resetPwd(String phone, String newPwd, Integer otp) {
-
+        phone = verifyPhone(phone);
         Boolean isValid = otpService.validateOTP(phone, otp);
         if (isValid) {
             User user = userRepos.findByPhone(phone);
