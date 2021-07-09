@@ -22,6 +22,6 @@ public class AdminDiscountVoucherDetailDtoOut {
     private Integer discountValue;
     private Integer minSpentAmount;
     private Integer minCheckoutItemsQuantity;
-    private Integer applyOncePerCustomer;
+//    private Integer applyOncePerCustomer;
 
 }

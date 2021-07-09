@@ -37,7 +37,7 @@ public class CustomMaterial {
     private String textColor;
     private Integer textSize;
     private String color;
-    private String imgUrl;
+    private String img;
 
 
 }

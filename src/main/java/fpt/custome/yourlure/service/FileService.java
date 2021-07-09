@@ -74,7 +74,10 @@ public class FileService {
     }
 
     public String saveFileBase64(String fileName, String content, String path) throws IOException {
-        return saveFileByte(fileName, Base64.decodeBase64(content.split(",")[1]), path);
+        if(content.contains(",")){
+            content = content.split(",")[1];
+        }
+        return saveFileByte(fileName, Base64.decodeBase64(content), path);
     }
 
     public Boolean deleteFile(String filePath) {
