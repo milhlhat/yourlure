@@ -1,6 +1,7 @@
 import { Can } from "ability/can";
 import NoPermistion from "components/error-notify/NoPermistion";
 import ManagerLayout from "layout/ManagerLayout";
+import ManagerCampaign from "manager-page/component/manager-campaign/ManagerCampaign.jsx";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
@@ -45,6 +46,9 @@ function ManagementRouter(props) {
               />
               <Route path={path + DEFINELINK.managementOrder}
                 component={ManagerOrder}
+              />
+              <Route path={path + DEFINELINK.managementCampaign}
+                component={ManagerCampaign}
               />
             </Switch>
           </ManagerLayout>

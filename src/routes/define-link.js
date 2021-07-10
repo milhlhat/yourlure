@@ -65,5 +65,10 @@ const DEFINELINK = {
   managementVoucherAddNew: "/addnew",
   managementVoucherEdit: "/edit/:id",
   managementVoucherDetail: "/detail/:id",
+
+  //manager campaign route
+  managementCampaign: "/campaign",
+  managementCampaignAddNew: "/addnew",
+  managementCampaignEdit: "/edit/:id",
 };
 export default DEFINELINK;
