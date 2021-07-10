@@ -1,7 +1,7 @@
 import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getImgTexturesByImgId, getMaterialByMId } from "utils/product";
+import { getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { HexColorPicker } from "react-colorful";
 
@@ -48,57 +48,7 @@ function AddTextToModelTab(props) {
     setText(value);
   }
 
-  function scalePreserveAspectRatio(imgW, imgH, maxW, maxH) {
-    return Math.min(maxW / imgW, maxH / imgH);
-  }
-
-  function draw(ctx, textInput) {
-    //
-    const canvas = canvasRef.current;
-
-    let w = img.width;
-    let h = img.height;
-
-    // resize img to fit in the canvas
-    // You can alternately request img to fit into any specified width/height
-    let sizer = scalePreserveAspectRatio(w, h, canvas.width, canvas.height);
-
-    // resize canvas height to fit with the image
-    canvas.height = h * sizer;
-    ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
-
-    let textSize = textAttribute.textSize ? textAttribute.textSize : 100;
-    let fontFamily = textAttribute.textFont ? textAttribute.textFont : fonts[0];
-    let textColor = textAttribute.textColor
-      ? textAttribute.textColor
-      : "#0000FF";
-    // write text to canvas
-    ctx.fillStyle = textColor;
-    //  "50px 'Kirang Haerang'";
-    ctx.font = textSize + "px " + fontFamily;
-    console.log("font:", ctx.font);
-
-    let textString = textInput ? textInput : currentMaterial.text;
-
-    let textWidth = ctx.measureText(textString).width;
-
-    console.log("text width size:", textSize);
-    ctx.fillText(
-      textString,
-      canvas.width / 2 - textWidth / 2,
-      img.height / 2 + textSize / 2
-    );
-  }
-
-  async function handleChangeImg(img, imgId, textInput) {
-    //DRAW CANVAS
-    img = img ? img : getImgTexturesByImgId(currentMaterial);
-    await setUrlImage(img);
-    const canvas = canvasRef.current;
-    const ctx = await canvas.getContext("2d");
-    draw(ctx, textInput);
-    const myImage = await canvasRef.current.toDataURL("image/png");
-
+  function handleChangeImg(img, imgId, textInput) {
     //TEXT ATTRIBUTE
     const textColor = textAttribute.textColor;
     const textFont = textAttribute.textFont;
@@ -107,7 +57,9 @@ function AddTextToModelTab(props) {
     let list = JSON.parse(JSON.stringify(customizeInfo));
     for (let i = 0; i < list.length; i++) {
       if (list[i].materialId === mId) {
-        list[i].img = myImage;
+        if (img) {
+          list[i].img = img;
+        }
         if (imgId) {
           list[i].imgId = imgId;
           console.log("img", imgId);
@@ -127,38 +79,25 @@ function AddTextToModelTab(props) {
     dispatch(action);
   }
 
+  function removeImg() {
+    let list = JSON.parse(JSON.stringify(customizeInfo));
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].materialId === mId) {
+        list[i].img = "";
+        list[i].imgId = "";
+      }
+    }
+
+    let action = setCustomizeInfo(list);
+    dispatch(action);
+  }
+
   function applyText() {
     if (currentMaterial.imgId) {
       handleChangeImg(null, null, text);
     } else {
       setIsWarning(true);
     }
-  }
-
-  function setUrlImage(url) {
-    url = BE_SERVER + BE_FOLDER + url;
-    return new Promise(function (resolve, reject) {
-      img.onload = function () {
-        resolve(url);
-      };
-      img.onerror = function () {
-        reject(url);
-      };
-      img.src = url;
-    });
-  }
-
-  function CanvasText() {
-    return (
-      <canvas
-        className="d-none"
-        ref={canvasRef}
-        // width={img.width ? img.width : 500}
-        // height={img.height ? img.height : 500}
-        width={500}
-        height={500}
-      />
-    );
   }
 
   return (
@@ -184,7 +123,12 @@ function AddTextToModelTab(props) {
             ))}
           </div>
           <div className="d-flex flex-column mt-3 align-items-center">
-            {/* <YLButton variant="negative" type="button" value="Không dùng ảnh" onClick={handleRemoveImg} /> */}
+            <YLButton
+              variant="negative"
+              type="button"
+              value="Không dùng ảnh"
+              onClick={() => removeImg()}
+            />
 
             {/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
           </div>
@@ -269,7 +213,6 @@ function AddTextToModelTab(props) {
               {isWarning && !currentMaterial.imgId && (
                 <p className="text-danger">Vui lòng chọn 1 texture</p>
               )}
-              <CanvasText />
             </div>
           )}
         </>

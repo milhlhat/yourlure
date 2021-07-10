@@ -1,24 +1,21 @@
-import React, { Suspense, useRef, useState, useEffect } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   ContactShadows,
   Environment,
-  useGLTF,
-  OrbitControls,
-  useTexture,
   Loader,
+  OrbitControls,
+  useGLTF,
 } from "@react-three/drei";
 import * as THREE from "three";
 
-import whiteImg from "assets/images/white-img.jpg";
 import "assets/scss/scss-pages/customize-lure.scss";
 import TabSelectCustomize from "components/tab-select-customize/TabSelectCustomize";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getColorMaterialByName,
   getMaterialsInfoBy,
   getNodesInfoBy,
-  getMaterialsName,
-  getColorMaterialByName,
   setDefaultTexture,
   submitCustomize,
   validateTexture,
@@ -30,12 +27,10 @@ import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import ProductAPI from "api/product-api";
 import YLButton from "components/custom-field/YLButton";
-import {
-  setCaptureModel,
-  setIsCapture,
-} from "redux/customize-action/capture-model";
+import { setCaptureModel } from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import DEFINELINK from "../routes/define-link";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -47,22 +42,83 @@ function RenderModel(props) {
   const model3d = props.model3d;
 
   const captureModel = props.captureModel;
+  const handleExportModel = props.handleExportModel;
   let customizeInfo = props.customizeInfo;
 
   //Load 3d model
-  console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
+  // console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
   const { nodes, materials } = useGLTF(
     `${BE_SERVER}${BE_FOLDER}${model3d}`,
     true
   );
-  // const { nodes, materials } = useGLTF(m3d, true);
 
-  let listNodes = getNodesInfoBy(nodes, "Mesh");
-  let listMaterials = getMaterialsInfoBy(
-    materials,
-    "MeshStandardMaterial",
-    "MeshBasicMaterial"
+  const [meshs, setMeshs] = useState([]);
+
+  const [listNodes, setListNodes] = useState(getNodesInfoBy(nodes, "Mesh"));
+  const [listMaterials, setListMaterials] = useState(
+    getMaterialsInfoBy(materials, "MeshStandardMaterial", "MeshBasicMaterial")
   );
+  // load texture
+
+  useEffect(async () => {
+    //load texture
+    const promisesTextureDraw = (listNodes, customInfo) => {
+      let promises = [];
+      for (let i = 0; i < listNodes.length; i++) {
+        promises.push(validateTexture(customInfo[i]));
+      }
+      return Promise.all(promises);
+    };
+    let textureLoader = new THREE.TextureLoader();
+
+    promisesTextureDraw(listNodes, customizeInfo)
+      .then((result) => {
+        for (let i = 0; i < result.length; i++) {
+          const r = result[i];
+          if (r) {
+            textureLoader.load(r, (textureResult) => {
+              textureResult.flipY = false;
+              textureResult.flipX = false;
+              textureResult.flipZ = false;
+              const material = new THREE.MeshPhysicalMaterial({
+                map: textureResult,
+                color: customizeInfo[i].color,
+              });
+              ref.current.children[i].material = material;
+            });
+          } else if (customizeInfo[i].color !== "") {
+            const material = new THREE.MeshPhysicalMaterial({
+              color: customizeInfo[i].color,
+            });
+            ref.current.children[i].material = material;
+          } else {
+            const material = new THREE.MeshPhysicalMaterial({ map: null });
+            ref.current.children[i].material = material;
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [customizeInfo, listNodes, listMaterials]);
+
+  useEffect(() => {
+    let listMesh = [];
+    for (let i = 0; i < listNodes.length; i++) {
+      let node = listNodes[i];
+      let item = {
+        geometry: node.geometry,
+        material: listMaterials[i],
+      };
+
+      // if (customizeInfo[i] && customizeInfo[i].img !== "") {
+      //   item = { ...item, ["material-map"]: textures[i] };
+      // }
+      // if (customizeInfo[i] && customizeInfo[i].color !== "") {
+      //   item = { ...item, ["material-color"]: customizeInfo[i].color };
+      // }
+      listMesh.push(item);
+    }
+    setMeshs(listMesh);
+  }, [customizeInfo, listNodes, listMaterials]);
 
   // thay bang database
   // let listMaterialsName = getMaterialsName(
@@ -75,88 +131,6 @@ function RenderModel(props) {
   //   dispatch(action);
   // }, []);
 
-  let listTextures = [];
-
-  let texture0 = useTexture(
-    customizeInfo.length > 0 && customizeInfo[0].img !== ""
-      ? validateTexture(customizeInfo[0].img)
-      : whiteImg
-  );
-  let texture1 = useTexture(
-    customizeInfo.length > 1 && customizeInfo[1].img !== ""
-      ? validateTexture(customizeInfo[1].img)
-      : whiteImg
-  );
-  let texture2 = useTexture(
-    customizeInfo.length > 2 && customizeInfo[2].img !== ""
-      ? validateTexture(customizeInfo[2].img)
-      : whiteImg
-  );
-  let texture3 = useTexture(
-    customizeInfo.length > 3 && customizeInfo[3].img !== ""
-      ? validateTexture(customizeInfo[3].img)
-      : whiteImg
-  );
-  let texture4 = useTexture(
-    customizeInfo.length > 4 && customizeInfo[4].img !== ""
-      ? validateTexture(customizeInfo[4].img)
-      : whiteImg
-  );
-  let texture5 = useTexture(
-    customizeInfo.length > 5 && customizeInfo[5].img !== ""
-      ? validateTexture(customizeInfo[5].img)
-      : whiteImg
-  );
-  let texture6 = useTexture(
-    customizeInfo.length > 6 && customizeInfo[6].img !== ""
-      ? validateTexture(customizeInfo[6].img)
-      : whiteImg
-  );
-  let texture7 = useTexture(
-    customizeInfo.length > 7 && customizeInfo[7].img !== ""
-      ? validateTexture(customizeInfo[7].img)
-      : whiteImg
-  );
-
-  listTextures.push(
-    texture0,
-    texture1,
-    texture2,
-    texture3,
-    texture4,
-    texture5,
-    texture6,
-    texture7
-  );
-  // disable flip texture (default is flip texture. wtf it's reverse my texture)
-  for (let i = 0; i < listTextures.length; i++) {
-    listTextures[i].flipY = false;
-    listTextures[i].flipX = false;
-    listTextures[i].flipZ = false;
-  }
-
-  let listMesh = [];
-  for (let i = 0; i < listNodes.length; i++) {
-    let node = listNodes[i];
-    let item = {
-      geometry: node.geometry,
-      material: listMaterials[i],
-      ["material-map"]: listTextures[i],
-    };
-    // if (customizeInfo[i] && customizeInfo[i].img === '') {
-    // 	item = { ...item, material: initMaterials.current.data[i] };
-    // }
-    // if (customizeInfo[i] && customizeInfo[i].img !== '') {
-    // 	item = { ...item, ['material-map']: listTextures[i] };
-    // }
-    // else{
-    // 	item = { ...item, 'material-map': null };
-    // }
-    if (customizeInfo[i] && customizeInfo[i].color !== "") {
-      item = { ...item, ["material-color"]: customizeInfo[i].color };
-    }
-    listMesh.push(item);
-  }
   // texture0.wrapS = THREE.RepeatWrapping;
   // texture0.wrapT = THREE.RepeatWrapping;
   // texture0.repeat.set(4, 4);
@@ -200,8 +174,8 @@ function RenderModel(props) {
           name: "capture.png",
         },
       };
-      submitCustomize(submitParams, captureModel.isEdit);
 
+      handleExportModel(submitParams, captureModel.isEdit);
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: false });
       const action = setCaptureModel({ isCapture: false });
       dispatch(action);
@@ -239,8 +213,8 @@ function RenderModel(props) {
         e.stopPropagation();
       }}
     >
-      {listMesh.length > 0 &&
-        listMesh.map((item, i) => (
+      {meshs.length > 0 &&
+        meshs.map((item, i) => (
           <mesh key={i} receiveShadow castShadow {...item} />
         ))}
     </group>
@@ -248,7 +222,23 @@ function RenderModel(props) {
 }
 
 function CanvasModel(props) {
+  const history = useHistory();
   const captureModel = useSelector((state) => state.captureModel);
+  const [exportStatus, setExportStatus] = useState({
+    isLoading: false,
+    isSuccess: false,
+  });
+  const handleExportModel = async (params, isEdit) => {
+    setExportStatus({ ...exportStatus, isLoading: true });
+    try {
+      await submitCustomize(params, isEdit);
+      setExportStatus({ isLoading: false, isSuccess: true });
+      history.push(`${DEFINELINK.product}/detail/${captureModel.productId}`);
+    } catch (e) {
+      setExportStatus({ isLoading: false, isSuccess: false });
+    }
+  };
+
   return (
     <div className="customize">
       <Canvas
@@ -268,12 +258,12 @@ function CanvasModel(props) {
         <Suspense fallback={null}>
           <RenderModel
             dispatch={props.dispatch}
-            // customizeInit={props.customizeInit}
             customizeInfo={props.customizeInfo}
             model3d={props.model3d}
             captureModel={captureModel}
+            handleExportModel={handleExportModel}
           />
-          <Environment preset="sunset" background={false} />
+          <Environment preset="sunset" background={true} />
           <ContactShadows
             rotation-x={Math.PI / 2}
             position={[0, -0.8, 0]}
@@ -292,7 +282,10 @@ function CanvasModel(props) {
         mId={props.mId}
         customizeInfo={props.customizeInfo}
       />
-      <ExportCustomInformations dispatch={props.dispatch} />
+      <ExportCustomInformation
+        dispatch={props.dispatch}
+        exportStt={exportStatus}
+      />
     </div>
   );
 }
@@ -323,16 +316,9 @@ function ListActionMaterials(props) {
   );
 }
 
-function ExportCustomInformations(props) {
+function ExportCustomInformation(props) {
   const dispatch = props.dispatch;
-  const captureModel = useSelector((state) => state.captureModel);
-  const isCaptureStatus = useSelector((state) => state.captureModel.isCapture);
-  const customizeInfo = useSelector((state) => state.customizeInfo);
-
-  const [exportStatus, setExportStatus] = useState({
-    isLoading: false,
-    isSuccess: false,
-  });
+  const exportStt = props.exportStt;
 
   const onCapture = () => {
     const action = setCaptureModel({ isCapture: true });
@@ -340,10 +326,19 @@ function ExportCustomInformations(props) {
   };
   return (
     <div className="export">
-      <YLButton variant="primary" onClick={() => onCapture()} type={"button"}>
-        Xong {/*{exportStatus.isLoading && (*/}
-        {/*  <CircularProgress size={15} className="circle-progress" />*/}
-        {/*)}*/}
+      <YLButton
+        variant="primary"
+        onClick={() => onCapture()}
+        type={"button"}
+        disabled={exportStt.isLoading}
+        width={"70px"}
+        height={"38px"}
+      >
+        {exportStt.isLoading ? (
+          <CircularProgress size={20} className="circle-progress" />
+        ) : (
+          "Xong"
+        )}
       </YLButton>
     </div>
   );
@@ -398,6 +393,7 @@ export default function Customize(props) {
         modelId: response.modelId,
         customizeId: customizeId,
         isEdit: isEdit,
+        productId: productId,
       });
       dispatch(captureAction);
       dispatch(action);

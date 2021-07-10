@@ -6,6 +6,7 @@ import ProductAPI, {
 import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 import { setIsCapture } from "../redux/customize-action/capture-model";
 import { parseString2Boolean } from "./common";
+import dumyImg from "assets/images/g1.jpg";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -145,18 +146,28 @@ let customizeUtils = {
 
     return tempMaterials;
   },
-  validateTexture: (img) => {
-    if (!img) {
-      img = "";
+  validateTexture: async (currentMaterial) => {
+    let imgLink = currentMaterial.img;
+    if (imgLink === "") {
+      return null;
     }
     if (
-      img !== "" &&
-      !img.startsWith("http") &&
-      !img.startsWith("data:image")
+      imgLink !== "" &&
+      !imgLink.startsWith("http") &&
+      !imgLink.startsWith("data:image")
     ) {
-      img = BE_SERVER + BE_FOLDER + img;
+      imgLink = BE_SERVER + BE_FOLDER + imgLink;
     }
-    return img;
+    let image = new Image();
+    image.crossOrigin = "anonymous";
+
+    console.log(imgLink, currentMaterial.defaultName);
+    await setUrlImage(imgLink, image)
+      .then()
+      .catch((err) => {
+        console.error(err);
+      });
+    return draw(image, currentMaterial);
   },
   getMaterialByMId: (mId, materials) => {
     for (let i = 0; i < materials.length; i++) {
@@ -168,22 +179,14 @@ let customizeUtils = {
     return null;
   },
   submitCustomize: async (params, isEdit) => {
-    // setExportStatus({ isLoading: true, isSuccess: false });
-
     try {
       if (parseString2Boolean(isEdit)) {
         await updateCustomizeByModelId(params);
       } else {
         await createCustomizeByModelId(params);
       }
-      // setExportStatus({
-      //   isLoading: false,
-      //   isSuccess: true,
-      // });
     } catch (e) {
-      // setExportStatus({ isLoading: false, isSuccess: false });
-
-      console.log(e);
+      throw e;
     }
   },
 };
@@ -197,4 +200,68 @@ export const {
   submitCustomize,
   validateTexture,
 } = customizeUtils;
+
+const canvasUtils = {
+  setUrlImage: async (url, img) => {
+    return new Promise(function (resolve, reject) {
+      img.onload = function () {
+        resolve(url);
+      };
+      img.onerror = function () {
+        reject(url);
+      };
+      img.src = url;
+    });
+  },
+  scalePreserveAspectRatio: (imgW, imgH, maxW, maxH) => {
+    return Math.min(maxW / imgW, maxH / imgH);
+  },
+
+  draw: (img, currentMaterial) => {
+    //
+    let canvas = document.createElement("CANVAS");
+    canvas.height = 500;
+    canvas.width = 500;
+    let ctx = canvas.getContext("2d");
+
+    let w = img.width;
+    let h = img.height;
+
+    // resize img to fit in the canvas
+    // You can alternately request img to fit into any specified width/height
+    let sizer = scalePreserveAspectRatio(w, h, canvas.width, canvas.height);
+
+    // resize canvas height to fit with the image
+    canvas.height = h * sizer;
+    ctx.drawImage(img, 0, 0, w, h, 0, 0, w * sizer, h * sizer);
+    // ctx.drawImage(img, 10, 10);
+    let textSize = currentMaterial.textSize ? currentMaterial.textSize : 100;
+    let fontFamily = currentMaterial.textFont
+      ? currentMaterial.textFont
+      : "Big Shoulders Display";
+    let textColor = currentMaterial.textColor
+      ? currentMaterial.textColor
+      : "#0000FF";
+    // write text to canvas
+    ctx.fillStyle = textColor;
+    //  "50px 'Kirang Haerang'";
+    ctx.font = textSize + "px " + fontFamily;
+    console.log(ctx.font);
+    let textString = currentMaterial.text ? currentMaterial.text : "";
+
+    let textWidth = ctx.measureText(textString).width;
+
+    ctx.fillText(
+      textString,
+      canvas.width / 2 - textWidth / 2,
+      img.height / 2 + textSize / 2
+    );
+    const combineImg = canvas.toDataURL("image/png");
+    // console.log(combineImg);
+    // img.src = combineImg;
+    return combineImg;
+  },
+};
+
+export const { scalePreserveAspectRatio, draw, setUrlImage } = canvasUtils;
 export default productUtils;
