@@ -39,9 +39,8 @@ function Sidebar(props) {
               <li className="nav-item">
                 <Link
                   to="/manager/home"
-                  className={`nav-link ${
-                    path.indexOf("manager/home") > -1 ? "active" : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/home") > -1 ? "active" : "link-dark"
+                    }`}
                 >
                   <span className="text-side-bar"> Home</span>
                 </Link>
@@ -52,11 +51,10 @@ function Sidebar(props) {
                     <li>
                       <Link
                         to="/manager/user"
-                        className={`nav-link ${
-                          path.indexOf("manager/user") > -1
-                            ? "active"
-                            : "link-dark"
-                        }`}
+                        className={`nav-link ${path.indexOf("manager/user") > -1
+                          ? "active"
+                          : "link-dark"
+                          }`}
                       >
                         <i className="fas fa-users-cog"></i>
                         <span className="text-side-bar"> Tài khoản</span>
@@ -70,11 +68,10 @@ function Sidebar(props) {
               <li>
                 <Link
                   to="/manager/product"
-                  className={`nav-link ${
-                    path.indexOf("manager/product") > -1
-                      ? "active"
-                      : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/product") > -1
+                    ? "active"
+                    : "link-dark"
+                    }`}
                 >
                   <i className="far fa-box"></i>
                   <span className="text-side-bar"> Sản phẩm</span>
@@ -83,11 +80,10 @@ function Sidebar(props) {
               <li>
                 <Link
                   to="/manager/category"
-                  className={`nav-link ${
-                    path.indexOf("manager/category") > -1
-                      ? "active"
-                      : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/category") > -1
+                    ? "active"
+                    : "link-dark"
+                    }`}
                 >
                   <i className="far fa-list-alt"></i>
                   <span className="text-side-bar"> Danh mục</span>
@@ -96,9 +92,8 @@ function Sidebar(props) {
               <li>
                 <Link
                   to="/manager/fish"
-                  className={`nav-link ${
-                    path.indexOf("manager/fish") > -1 ? "active" : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/fish") > -1 ? "active" : "link-dark"
+                    }`}
                 >
                   <i className="fal fa-fish-cooked"></i>
                   <span className="text-side-bar"> Loại cá</span>
@@ -107,9 +102,8 @@ function Sidebar(props) {
               <li>
                 <Link
                   to="/manager/order"
-                  className={`nav-link ${
-                    path.indexOf("manager/order") > -1 ? "active" : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/order") > -1 ? "active" : "link-dark"
+                    }`}
                 >
                   <i className="fal fa-clipboard-prescription"></i>
                   <span className="text-side-bar"> Đơn hàng</span>
@@ -121,11 +115,10 @@ function Sidebar(props) {
                     <li>
                       <Link
                         to="/manager/staff"
-                        className={`nav-link ${
-                          path.indexOf("manager/staff") > -1
-                            ? "active"
-                            : "link-dark"
-                        }`}
+                        className={`nav-link ${path.indexOf("manager/staff") > -1
+                          ? "active"
+                          : "link-dark"
+                          }`}
                       >
                         <i className="fal fa-suitcase"></i>
                         <span className="text-side-bar"> Nhân viên</span>
@@ -139,14 +132,37 @@ function Sidebar(props) {
               <li>
                 <Link
                   to="/manager/voucher"
-                  className={`nav-link ${
-                    path.indexOf("manager/voucher") > -1
-                      ? "active"
-                      : "link-dark"
-                  }`}
+                  className={`nav-link ${path.indexOf("manager/voucher") > -1
+                    ? "active"
+                    : "link-dark"
+                    }`}
                 >
                   <i className="fal fa-box-heart"></i>
                   <span className="text-side-bar"> Mã giảm giá</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/campaign"
+                  className={`nav-link ${path.indexOf("manager/campaign") > -1
+                    ? "active"
+                    : "link-dark"
+                    }`}
+                >
+                  <i className="fal fa-box-heart"></i>
+                  <span className="text-side-bar"> Campaign</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/manager/about"
+                  className={`nav-link ${path.indexOf("manager/about") > -1
+                    ? "active"
+                    : "link-dark"
+                    }`}
+                >
+                  <i className="fal fa-box-heart"></i>
+                  <span className="text-side-bar"> About</span>
                 </Link>
               </li>
               {/* <li>
