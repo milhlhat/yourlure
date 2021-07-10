@@ -211,7 +211,9 @@ function AddTextToModelTab(props) {
                 Thêm
               </YLButton>
               {isWarning && !currentMaterial.imgId && (
-                <p className="text-danger">Vui lòng chọn 1 texture</p>
+                <p className="text-danger">
+                  <i className="fad fa-image"></i> Vui lòng chọn 1 texture
+                </p>
               )}
             </div>
           )}

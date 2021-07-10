@@ -220,8 +220,8 @@ const canvasUtils = {
   draw: (img, currentMaterial) => {
     //
     let canvas = document.createElement("CANVAS");
-    canvas.height = 500;
-    canvas.width = 500;
+    canvas.height = img.height;
+    canvas.width = img.width;
     let ctx = canvas.getContext("2d");
 
     let w = img.width;

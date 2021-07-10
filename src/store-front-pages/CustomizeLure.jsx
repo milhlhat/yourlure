@@ -75,6 +75,7 @@ function RenderModel(props) {
       .then((result) => {
         for (let i = 0; i < result.length; i++) {
           const r = result[i];
+          console.log(r);
           if (r) {
             textureLoader.load(r, (textureResult) => {
               textureResult.flipY = false;
