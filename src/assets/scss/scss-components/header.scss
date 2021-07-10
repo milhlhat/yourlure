@@ -7,6 +7,30 @@ $grid-breakpoints: (
   xl: 1200px,
   xxl: 1400px,
 );
+input:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+  -webkit-text-fill-color: #333;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 50px white inset;/*your box-shadow*/
+  -webkit-text-fill-color: #333;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 1em;
+  width: 1em;
+  border-radius: 50em;
+  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;
+  background-size: contain;
+  opacity: 0;
+  pointer-events: none;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+  opacity: .3;
+  pointer-events: all;
+}
 .nav-bar-light {
   justify-content: flex-end !important;
   & .search-form {
@@ -23,6 +47,7 @@ $grid-breakpoints: (
     border-radius: 50px;
     width: 90%;
     border: none;
+    background-color: #fff !important;
   }
 
   & .fa-search {

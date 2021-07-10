@@ -14,6 +14,7 @@ import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 import { filterConfig } from "constant/filter-setting";
 import DEFINELINK from "routes/define-link";
 import logo from "assets/images/logo/logo-social.png";
+
 function Header(props) {
   const productFilter = useSelector((state) => state.productFilter.filter);
   const dispatch = useDispatch();
@@ -73,11 +74,13 @@ function Header(props) {
       dispatch(action);
     }
   }, [path]);
+
   function goToSearchPage() {
     history.push({
       pathname: "/product/search",
     });
   }
+
   function handleSubmitSearch() {
     const action = setFilter({
       listCateId: [],
@@ -92,12 +95,13 @@ function Header(props) {
     dispatch(action);
     goToSearchPage();
   }
+
   function onChangeTextSearch(e) {
-    setKeyword(e.target.value);
     if (e.key === "Enter") {
       handleSubmitSearch();
     }
   }
+
   return (
     <div className="bg-white bg-shadow">
       <div className="container">
@@ -162,11 +166,12 @@ function Header(props) {
                       placeholder="Tìm kiếm..."
                       name="keyword"
                       onKeyDown={(e) => onChangeTextSearch(e)}
+                      onChange={(e) => setKeyword(e.target.value)}
                     />
                     <i
                       className="fad fa-search text-success"
                       onClick={() => handleSubmitSearch()}
-                    ></i>
+                    />
                   </NavItem>
                 </div>
                 <NavItem className="header-cart ms-2 ">
@@ -175,7 +180,7 @@ function Header(props) {
                       className={`fad fa-shopping-cart ${
                         path.indexOf("/cart") > -1 ? "active" : ""
                       }`}
-                    ></i>
+                    />
                   </Link>
                 </NavItem>
                 <NavItem className="header-user ms-2 me-2 ">
@@ -185,7 +190,7 @@ function Header(props) {
                         "fa fa-user " +
                         (path.indexOf(DEFINELINK.customer) > -1 ? "active" : "")
                       }
-                    ></i>
+                    />
                   </Link>
                 </NavItem>
               </div>

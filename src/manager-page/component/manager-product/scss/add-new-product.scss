@@ -10,19 +10,18 @@
       padding: 0 15px;
     }
   }
-  & .product-info,
-  & .cate-fish {
-    height: fit-content;
-  }
+
   & .cate-fish{
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 50vh;
   }
   
   & .submit-button-form {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-    border: 1px solid;
+
   }
   & .product-images-add {
     display: flex;
