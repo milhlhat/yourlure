@@ -64,7 +64,7 @@ function ManagerProduct(props) {
           <h3>Sản phẩm</h3>
           <div className="product-add-new">
             <YLButton
-              variant="warning"
+              variant="primary"
               onClick={() => history.push("/manager/product/addnew")}
               value="Thêm"
               to={{ pathname: "/manager/product/addnew", canBack: setBack }}

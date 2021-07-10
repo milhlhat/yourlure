@@ -99,6 +99,9 @@ body {
 .text-small {
   font-size: small;
 }
+.text-x-small {
+  font-size: x-small;
+}
 
 .pointer {
   cursor: pointer;
@@ -122,4 +125,8 @@ body {
 
 .text-bold {
   font-weight: 500;
+}
+.bottom-line {
+  width: 100px;
+  border-bottom: 2px solid $primary;
 }

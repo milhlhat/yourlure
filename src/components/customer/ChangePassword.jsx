@@ -41,15 +41,18 @@ function ChangePassword(props) {
   });
 
   const handleSubmit = async (data) => {
-    console.log(data.password);
+    delete data.rePassword;
+    console.log(data);
     try {
-			const response = await UserApi.changePassword(data.password);
+			const response = await UserApi.changePassword(data);
+      console.log(response);
 			if (response.error) {
 				throw new Error(response.error);
 			} else {
         setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
 			}
 		} catch (error) {
+      console.log(error);
       setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu không thành công", severity:"error"});
 			console.log('fail to fetch customer list');
 		}

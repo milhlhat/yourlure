@@ -104,14 +104,14 @@ function ManagerFish(props) {
                     <h3>Loại Cá</h3>
                     <div className="product-add-new">
                         <YLButton
-                            variant="warning"
+                            variant="primary"
                             value="Thêm"
                             to={{ pathname: "/manager/fish/addnew", canBack: setBack }}
                         />
                     </div>
                 </div>
                 <div className="manager-fish-show mt-3 bg-white bg-shadow">
-                    <h4 >tất cả loại cá</h4>
+                    <span>tất cả loại cá</span>
                     <hr />
                     <table>
                         <tbody>

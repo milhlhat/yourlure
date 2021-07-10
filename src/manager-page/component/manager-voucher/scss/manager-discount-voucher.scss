@@ -4,7 +4,7 @@
     display: flex;
     justify-content: space-between;
 }
-.manager-user-show {
+.manager-voucher-show {
     padding: 20px;
     & table {
         width: 100%;
@@ -22,7 +22,7 @@
     }
     & th,
     & caption {
-        font-weight: bold;
+        font-weight: 500;
         color: $primary;
     }
     & .page-item.active .page-link {

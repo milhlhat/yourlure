@@ -100,8 +100,9 @@ function ManagerChangePassWord(props) {
   });
 
   const handleSubmit = async (data) => {
+    delete data.rePassword;
     try {
-              const response = await UserApi.changePassword(data.password);
+              const response = await UserApi.changePassword(data);
               if (response.error) {
                 throw new Error(response.error);
               } else {
@@ -114,14 +115,14 @@ function ManagerChangePassWord(props) {
                 setOpen(false);
               }
             } catch (error) {
-              alert("Đổi địa chỉ không thành công");
+              alert("Đổi mật khẩu không thành công");
               //   setOpenAlert({
               //     ...open,
               //     isOpen: true,
               //     content: "Đổi mật khẩu không thành công",
               //     severity: "error",
               //   });
-              console.log("fail to fetch customer list");
+              console.log("fail to fetch password change");
             }
   };
 

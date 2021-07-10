@@ -57,8 +57,8 @@ const UserApi = {
     return AxiosClient.post(url,user);
   },
   changePassword:(param)=>{
-    const url = `/user/change-password`;
-    return AxiosClient.post(url,param);
+    const url = `/user/change-password?oldPassword=${param.oldPassword}&password=${param.password}`;
+    return AxiosClient.post(url);
   },
   deleteAddress:(id)=>{
     const url = `/user/delete-address?userAddressId=${id}`;

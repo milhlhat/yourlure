@@ -9,6 +9,10 @@
     text-decoration: underline;
   }
 }
+.list-item{
+  height: 200px;
+  overflow: auto;
+}
 
 
 @media screen and (min-width: $tablet-width) {

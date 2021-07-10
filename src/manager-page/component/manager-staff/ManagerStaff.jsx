@@ -100,7 +100,7 @@ function ManagerStaff(props) {
           </div>
         </div>
         <div className="manager-staff-show mt-3 bg-white bg-shadow">
-          <span>tất cả Khách hàng</span>
+          <span>Tất cả nhân viên</span>
           <hr />
           {/* <ManagerSort /> */}
           {staffList?.data?.userDtoOutList?.length <= 0 && (

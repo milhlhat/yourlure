@@ -5,6 +5,7 @@ import "assets/scss/scss-pages/card.scss";
 import { Link } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLButon from "components/custom-field/YLButton";
+import { Can } from "ability/can";
 function CartProduct(props) {
   const carts = data.cart();
   const [listCheck, setListCheck] = useState({
@@ -43,7 +44,7 @@ function CartProduct(props) {
                 </tr>
                 <tr>
                   <td colSpan="2">
-                    <YLButon variant="primary" width="100%">
+                    <YLButon variant="primary" to="/cart/payment" width="100%">
                       Tiếp tục
                     </YLButon>
                   </td>
@@ -57,19 +58,29 @@ function CartProduct(props) {
             </table>
           </div>
         </div>
-        <div className="d-flex payment-methods">
-          <div className=" cart-left col-lg-8 col-md-7 col-sm-12 bg-box bg-shadow  p-3 mt-5">
-            <h4>Phương thức thanh toán</h4>
-            <div className="mb-4 bottom-line"></div>
-            <div className="payment-method-content col-md-8 col-11">
-              <h6>COD-Thanh toán khi nhận hàng</h6>
-              <p>
-                Tất cả đơn hàng được gửi đảm bảo qua đường bưu điện sẽ đến tay
-                quý khách hàng chỉ trong 1-3 ngày làm việc
-              </p>
-            </div>
+      </div>
+      <div className="cart-product mt-5">
+        <div className=" cart-left col-lg-8 col-md-7 col-sm-12 bg-box bg-shadow p-3">
+          <h4>Phương thức thanh toán</h4>
+          <div className="mb-4 bottom-line"></div>
+          <div className="payment-method-content col-md-8 col-11">
+            <h6>COD-Thanh toán khi nhận hàng</h6>
+            <p>
+              Tất cả đơn hàng được gửi đảm bảo qua đường bưu điện sẽ đến tay quý
+              khách hàng chỉ trong 1-3 ngày làm việc
+            </p>
           </div>
         </div>
+        <Can do="read-write" on="customer" passThrough>
+          {(allow) => !allow&&(
+            <div className="col-lg-3 col-md-4 col-sm-12 bg-shadow bg-box p-3">
+              <span>
+                Bạn đã có tài khoản chưa? <Link to="/login">Đăng Nhập</Link> để
+                thanh toán mượt mà hơn
+              </span>
+            </div>
+          )}
+        </Can>
       </div>
     </div>
   );

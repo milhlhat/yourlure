@@ -157,7 +157,7 @@ function ManagerCategory(props) {
                     <div className="col-4">
                       <YLButton
                         type="submit"
-                        value="tìm kiếm"
+                        value="Tìm kiếm"
                         variant="primary"
                       ></YLButton>
                     </div>
@@ -182,7 +182,7 @@ function ManagerCategory(props) {
               </div>
             </form>
           </div>
-          {categoryList?.data?.length <= 0 && <p>Không có sản phẩm </p>}
+          {categoryList?.data?.length <= 0 && <p>Không có danh mục {filter?.keyword&& `"${filter?.keyword}"`}</p>}
           {categoryList?.data?.length > 0 && (
             <table>
               <tbody>

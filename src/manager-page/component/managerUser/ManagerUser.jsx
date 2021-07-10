@@ -35,9 +35,9 @@ function ManagerUser(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     const action = setIsBack({
-      canBack: true,
-      path: "/manager/product",
-      label: "Product",
+      canBack: false,
+      path: "",
+      label: "",
     });
     dispatch(action);
   }, []);
@@ -85,11 +85,11 @@ function ManagerUser(props) {
           <div className="product-add-new"></div>
         </div>
         <div className="manager-user-show mt-3 bg-white bg-shadow">
-          <span>Tất cả Khách hàng</span>
+          <span>Tất cả khách hàng</span>
           <hr />
           {/* <ManagerSort /> */}
           {userList?.data?.userDtoOutList?.length <= 0 && (
-            <p>Không có sản phẩm </p>
+            <p>Không có khách hàng</p>
           )}
           <table className="table">
             <tbody>

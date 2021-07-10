@@ -5,7 +5,6 @@ import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 
 function CartRowProduct(props) {
   const { item } = props;
-  console.log(item);
   const handleChangeQuantity = (quantity) => {};
   const handleCheckBox = (value, checked) => {};
   const onConfirm =  ()=>{}

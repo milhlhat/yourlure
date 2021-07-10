@@ -74,11 +74,11 @@ function ManagerOrder(props) {
           <div className="product-add-new"></div>
         </div>
         <div className="manager-order-show mt-3 bg-white bg-shadow">
-          <span>tất cả đơn hàng</span>
+          <span>Tất cả đơn hàng</span>
           <hr />
           {/* <ManagerSort /> */}
           {orderList?.data?.orderDtoOutList?.length <= 0 && (
-            <p>Không có sản phẩm </p>
+            <p>Không có đơn hàng</p>
           )}
           <table className="table">
             <tbody>

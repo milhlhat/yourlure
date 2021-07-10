@@ -9,6 +9,10 @@
   & table {
     width: 100%;
   }
+  & span {
+    border-bottom: 4px solid $bottom-line;
+    padding: 15px 0;
+  }
 }
 .page-item.active .page-link {
   background-color: $primary;

@@ -161,7 +161,7 @@ function ManagerVoucher() {
                     <h3>Mã Giảm Giá</h3>
                     <div className="product-add-new">
                         <YLButton
-                            variant="warning"
+                            variant="primary"
                             value="Thêm"
                             to={{
                                 pathname: "/manager/voucher/addnew",
@@ -174,8 +174,8 @@ function ManagerVoucher() {
                     <div className="product-add-new">
                     </div>
                 </div>
-                <div className="manager-user-show mt-3 bg-white bg-shadow">
-                    <h4>tất cả mã giảm giá</h4>
+                <div className="manager-voucher-show mt-3 bg-white bg-shadow">
+                    <span>Tất cả mã giảm giá</span>
                     <hr />
                     <div className="bg-white manager-sort p-2">
                         <form onSubmit={handleSubmit(onsubmit)}>
@@ -185,7 +185,7 @@ function ManagerVoucher() {
                                         <div className="col-4">
                                             <YLButton
                                                 type="submit"
-                                                value="tìm kiếm tên"
+                                                value="Tìm kiếm tên"
                                                 variant="primary"
                                             ></YLButton>
                                         </div>
