@@ -14,14 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/admin/product")
-
 public interface AdminProductController {
 
     @PostMapping("/all")
     ResponseEntity<Optional<AdminProductDtoOut>> findAll(@RequestBody @Valid Filter filter);
 
     @PostMapping("/save")
-    ResponseEntity<Boolean> saveProduct(@RequestBody @Valid ProductsDtoInp productsDtoInp);
+    ResponseEntity<Long> saveProduct(@RequestBody @Valid ProductsDtoInp productsDtoInp);
 
     @GetMapping("/{id}")
     ResponseEntity<Optional<AdminProductDetailDtoOut>> getProductById(@PathVariable("id") Long id);

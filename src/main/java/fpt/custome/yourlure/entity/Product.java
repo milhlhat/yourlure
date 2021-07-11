@@ -47,6 +47,10 @@ public class Product {
     private String content;
 
     @Nullable
+    @Column(name = "isCustomizeWeight")
+    private Boolean isCustomizeWeight;
+
+    @Nullable
     @Column(name = "minWeight")
     private Float minWeight;
 

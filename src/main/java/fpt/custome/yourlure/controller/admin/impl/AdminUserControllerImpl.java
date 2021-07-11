@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.admin.impl;
 
 import fpt.custome.yourlure.controller.admin.AdminUserController;
 import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
@@ -50,6 +51,25 @@ public class AdminUserControllerImpl implements AdminUserController {
                         filter.getLimit(),
                         filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<AdminStaffDtoOut.StaffDtoOut>> staffGetById(Long id) {
+        Optional<AdminStaffDtoOut.StaffDtoOut> result = userService.staffGetById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<Boolean>> staffUpdateById(AdminStaffDtoInput adminStaffDtoInput,Long id) {
+        Boolean result = userService.staffUpdateById(adminStaffDtoInput,id);
+        return new ResponseEntity<>(Optional.of(result), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Optional<Boolean>> staffSave(AdminStaffDtoInput adminStaffDtoInput) {
+
+        Boolean result = userService.staffSave(adminStaffDtoInput);
+        return new ResponseEntity<>(Optional.of(result), HttpStatus.OK);
     }
 
 

@@ -32,6 +32,7 @@ public class AdminProductDetailDtoOut {
     private Boolean customizable;
     private String brand;
     private Boolean visibleInStorefront;
+    private Boolean isCustomizeWeight;
     private Date dateCreate;
     private String imgUrlModel;
     private Category category;

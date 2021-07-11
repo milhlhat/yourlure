@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.admin;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
@@ -37,5 +38,14 @@ public interface AdminUserController {
     //staff-----------------------------------------------------
     @PostMapping(value = "/all-staff")
     ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody @Valid AdminFilterDtoInput filter);
+
+    @GetMapping(value = "/staff/get-by-id")
+    ResponseEntity<Optional<AdminStaffDtoOut.StaffDtoOut>> staffGetById(@RequestParam Long id);
+
+    @PostMapping(value = "/staff/update")
+    ResponseEntity<Optional<Boolean>> staffUpdateById(@RequestBody AdminStaffDtoInput adminStaffDtoInput, @RequestParam Long id);
+
+    @PostMapping(value = "/staff/save")
+    ResponseEntity<Optional<Boolean>> staffSave(@RequestBody AdminStaffDtoInput adminStaffDtoInput);
 
 }

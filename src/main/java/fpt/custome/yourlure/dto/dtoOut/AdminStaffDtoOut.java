@@ -27,7 +27,6 @@ public class AdminStaffDtoOut {
         private String username;
         private String phone;
         private Boolean gender;
-        private String userEmail;
         private Boolean enabled;
         List<Role> roles;
 

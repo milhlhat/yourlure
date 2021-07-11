@@ -41,9 +41,12 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
-    public ResponseEntity<Boolean> saveProduct(ProductsDtoInp productsDtoInp) {
-        Boolean check = productService.save(productsDtoInp);
-        return new ResponseEntity<>(check, HttpStatus.OK);
+    public ResponseEntity<Long> saveProduct(ProductsDtoInp productsDtoInp) {
+        Long result = productService.save(productsDtoInp);
+        if (result == null) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override

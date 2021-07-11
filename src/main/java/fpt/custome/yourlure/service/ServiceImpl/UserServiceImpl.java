@@ -1,15 +1,13 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
+import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.entity.Provider;
-import fpt.custome.yourlure.entity.Role;
-import fpt.custome.yourlure.entity.User;
-import fpt.custome.yourlure.entity.UserAddress;
+import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
@@ -33,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -178,28 +177,26 @@ public class UserServiceImpl implements UserService {
         List<AdminUserDtoOut.UserDtoOut> listResult = new ArrayList<>();
         try {
             Page<User> list;
-            switch (type.trim()) {
-                case "name": {
-                    list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                case "phone": {
-                    list = userRepos.findByPhoneContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                case "email": {
-                    list = userRepos.findByUserEmailContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                case "orderId": {
-                    list = userRepos.findByOrderId(Long.parseLong(keyword), pageable);
-                    break;
-                }
-                default: {
-                    list = userRepos.findAll(pageable);
-                    break;
-                }
-            }
+//            switch (type.trim()) {
+//                case "name": {
+//                    list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
+//                    break;
+//                }
+//                case "phone": {
+//                    list = userRepos.findByPhoneContainsIgnoreCase(keyword, pageable);
+//                    break;
+//                }
+//                case "orderId": {
+//                    list = userRepos.findByOrderId(Long.parseLong(keyword), pageable);
+//                    break;
+//                }
+//                default: {
+//                    list = userRepos.findAll(pageable);
+//                    break;
+//                }
+//            }
+//            list = userRepos.findAllStaff(pageable);
+            list = userRepos.findAll(pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
@@ -229,37 +226,34 @@ public class UserServiceImpl implements UserService {
         List<AdminStaffDtoOut.StaffDtoOut> listResult = new ArrayList<>();
         try {
             Page<User> list;
-            switch (type.trim()) {
-                case "name": {
-                    list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                case "phone": {
-                    list = userRepos.findByPhoneContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                case "email": {
-                    list = userRepos.findByUserEmailContainsIgnoreCase(keyword, pageable);
-                    break;
-                }
-                default: {
-                    list = userRepos.findAll(pageable);
-                    break;
-                }
-            }
+//            switch (type.trim()) {
+//                case "name": {
+//                    list = userRepos.findByUsernameContainsIgnoreCase(keyword, pageable);
+//                    break;
+//                }
+//                case "phone": {
+//                    list = userRepos.findByPhoneContainsIgnoreCase(keyword, pageable);
+//                    break;
+//                }
+//                default: {
+//                    list = userRepos.findAll(pageable);
+//                    break;
+//                }
+//            }
+            list = userRepos.findAllStaff(pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
                 for (User item : list.getContent()) {
-                    if (!item.getRoles().contains(Role.ROLE_CUSTOMER)) {
+                    if (item.getRoles().contains(Role.ROLE_STAFF) || item.getRoles().contains(Role.ROLE_ADMIN)) {
                         AdminStaffDtoOut.StaffDtoOut dtoOut = mapper.map(item, AdminStaffDtoOut.StaffDtoOut.class);
                         listResult.add(dtoOut);
                     }
                 }
                 AdminStaffDtoOut results = AdminStaffDtoOut.builder()
                         .userDtoOutList(listResult)
-                        .totalUser(listResult.size())
-                        .totalPage((int) Math.ceil((double) listResult.size() /(double) pageable.getPageSize()))
+                        .totalUser((int) list.getTotalElements())
+                        .totalPage(list.getTotalPages())
                         .build();
                 return Optional.of(results);
             }
@@ -288,6 +282,56 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<AdminStaffDtoOut.StaffDtoOut> staffGetById(Long id) {
+        try {
+            Optional<User> userOptional = userRepos.findById(id);
+            User user = userOptional.get();
+            AdminStaffDtoOut.StaffDtoOut result = mapper.map(user, AdminStaffDtoOut.StaffDtoOut.class);
+            return Optional.of(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Transactional
+    @Override
+    public Boolean staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long idInput) {
+        try {
+            User userUpdate = userRepos.getById(idInput);
+            userUpdate.setUsername(adminStaffDtoInput.getUsername());
+            userUpdate.setGender(adminStaffDtoInput.getGender());
+            userUpdate.setPhone(adminStaffDtoInput.getPhone());
+            userUpdate.setRoles(adminStaffDtoInput.getRoles());
+            userRepos.save(userUpdate);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean staffSave(AdminStaffDtoInput adminStaffDtoInput) {
+        try {
+            User checkPhone = userRepos.findByPhone(adminStaffDtoInput.getPhone());
+            if ( checkPhone == null ){
+                User user = mapper.map(adminStaffDtoInput, User.class);
+                user.setEnabled(true);
+                user.setRoles(Collections.singleton(Role.ROLE_STAFF));
+                user.setPassword(passwordEncoder.encode("123@123a"));
+                userRepos.save(user);
+                return true;
+            }
+            return false;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -326,7 +370,6 @@ public class UserServiceImpl implements UserService {
         try {
             User userUpdate = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
             userUpdate.setUsername(userDtoInp.getUsername());
-            userUpdate.setUserEmail(userDtoInp.getUserEmail());
             userUpdate.setGender(userDtoInp.getGender());
             userRepos.save(userUpdate);
             return true;

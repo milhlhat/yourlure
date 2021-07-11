@@ -1,23 +1,21 @@
-package fpt.custome.yourlure.dto.dtoOut;
+package fpt.custome.yourlure.dto.dtoInp;
 
+import fpt.custome.yourlure.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdminUserDetailDtoOut {
-
-    private Long userId;
+public class AdminStaffDtoInput {
     private String username;
     private String phone;
     private Boolean gender;
-    private String userEmail;
-    private String note;
-    private Integer maxCustomizable;
-
-
+    private Boolean enabled;
+    Set<Role> roles;
 }
