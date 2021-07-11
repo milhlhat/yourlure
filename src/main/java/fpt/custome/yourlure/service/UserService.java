@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.service;
 
+import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
@@ -68,6 +69,12 @@ public interface UserService {
     Optional<AdminStaffDtoOut> adminStaffAll(String keyword, String type, Pageable pageable);
 
     Optional<AdminUserDetailDtoOut> getUser(Long id);
+
+    Optional<AdminStaffDtoOut.StaffDtoOut> staffGetById(Long id);
+
+    Boolean staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id);
+
+    Boolean staffSave(AdminStaffDtoInput adminStaffDtoInput);
 
     Set<Role> getRoles(HttpServletRequest rq);
 

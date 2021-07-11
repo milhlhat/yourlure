@@ -18,6 +18,7 @@ public class ProductsDtoInp {
     private Float defaultPrice;
     private String description;
     private String content;
+    private Boolean isCustomizeWeight;
     private Float minWeight;
     private Float defaultWeight;
     private Float maxWeight;

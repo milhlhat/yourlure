@@ -34,7 +34,9 @@ public class ProductReposImpl implements ProductRepos {
             query.append(" and tbl_products.customizable = true \n");
         }
         if (!filter.getKeyword().isEmpty()) {
-            query.append(" and UPPER( tbl_products.product_name) like UPPER(:keyword) \n");
+            query.append("and to_tsvector(COALESCE(lower(unaccent(tbl_products.product_name)),'')\n" +
+                    " || COALESCE(lower(unaccent(tbl_products.description)),'')) @@ \n" +
+                    "plainto_tsquery(lower(unaccent(:keyword))) \n");
         }
         query.append(" GROUP BY tbl_products.product_id,tbl_products.product_name \n");
 

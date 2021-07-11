@@ -19,7 +19,7 @@ public interface AdminProductController {
     ResponseEntity<Optional<AdminProductDtoOut>> findAll(@RequestBody Filter filter);
 
     @PostMapping("/save")
-    ResponseEntity<Boolean> saveProduct(@RequestBody ProductsDtoInp productsDtoInp);
+    ResponseEntity<Long> saveProduct(@RequestBody ProductsDtoInp productsDtoInp);
 
     @GetMapping("/{id}")
     ResponseEntity<Optional<AdminProductDetailDtoOut>> getProductById(@PathVariable("id") Long id);

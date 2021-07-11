@@ -196,16 +196,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean save(ProductsDtoInp productsDtoInp) {
+    public Long save(ProductsDtoInp productsDtoInp) {
         try {
             Product product;
+            Long idReturn = null;
+
             if (productsDtoInp != null) {
                 //save product
                 product = mapper.map(productsDtoInp, Product.class);
                 Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
                 product.setCategory(categoryInput.get());
+                product.setDateCreate(new Date());
                 Product productToSaveImage = productJPARepos.save(product);
-
+                idReturn = productToSaveImage.getProductId();
                 //add list image product
                 List<String> imageLink = productsDtoInp.getImgList();
                 for (String link : imageLink) {
@@ -215,24 +218,27 @@ public class ProductServiceImpl implements ProductService {
                             .build();
                     imageRepos.save(image);
                 }
-
-                //save fish_product
-                for (Long fishId : productsDtoInp.getListFishId()) {
-                    Fish fishInput = fishRepos.getById(fishId);
-                    fishInput.addProduct(product);
-                    //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
+                // check fish list is empty
+                if (!productsDtoInp.getListFishId().isEmpty()){
+                    //save fish_product
+                    for (Long fishId : productsDtoInp.getListFishId()) {
+                        Fish fishInput = fishRepos.getById(fishId);
+                        fishInput.addProduct(product);
+                        //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
 //                fishInput.getProducts().add(product);
-                    fishRepos.save(fishInput);
+                        fishRepos.save(fishInput);
                 }
+
+                }
+                return idReturn;
             } else {
-                return false;
+                return null;
             }
         } catch (
                 Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
     }
 
     @Override

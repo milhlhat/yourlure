@@ -28,7 +28,7 @@ public interface ProductService {
 
     Optional<AdminProductDtoOut> getAll(String keyword, Pageable pageable);
 
-    Boolean save(ProductsDtoInp productsDtoInp);
+    Long save(ProductsDtoInp productsDtoInp);
 
     AdminProductDetailDtoOut adminGetById(Long id);
 

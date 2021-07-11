@@ -47,10 +47,6 @@ public class User {
     @Column(name = "gender")
     private Boolean gender;
 
-    @Nullable
-    @Column(name = "userEmail", unique = true)
-    private String userEmail;
-
     @Override
     public String toString() {
         return "User{" +
@@ -59,7 +55,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", gender=" + gender +
-                ", userEmail='" + userEmail + '\'' +
                 ", enabled=" + enabled +
                 ", maxCustomizable=" + maxCustomizable +
                 ", note='" + note + '\'' +
@@ -118,7 +113,6 @@ public class User {
         setUsername(userUpdate.getUsername());
         setPhone(userUpdate.getPhone());
         setEnabled(userUpdate.getEnabled());
-        setUserEmail(userUpdate.getUserEmail());
         setProvider(userUpdate.getProvider());
         setMaxCustomizable(userUpdate.getMaxCustomizable());
         setGender(userUpdate.getGender());
