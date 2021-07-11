@@ -25,6 +25,16 @@ public class OrderControllerImpl implements OrderController {
 
 
     @Override
+    public ResponseEntity<Object> verifyDiscount(String code) {
+        try{
+            return new ResponseEntity<>(orderService.verifyDiscountCode(code), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> guestProcessOrder(OrderGuestDtoInput order) {
         try {
             return new ResponseEntity<>(orderService.guestProcessOrder(order), HttpStatus.OK);
