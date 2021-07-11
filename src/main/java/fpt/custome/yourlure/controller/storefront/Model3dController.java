@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RequestMapping(path = "/model3d")
 public interface Model3dController {
@@ -25,7 +26,6 @@ public interface Model3dController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Model3d> createModel(@RequestBody Model3dDtoInput model3d);
-
 
     @GetMapping(value = "/find-custom-by-id/{customId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
@@ -70,5 +70,13 @@ public interface Model3dController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Model3d> getModelByModelId(@PathVariable(name = "modelId") Long modelId);
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Object> getAllCustomizes(HttpServletRequest rq);
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Object> deleteCustomize(HttpServletRequest rq, @RequestParam @Valid Long customizeId);
 
 }

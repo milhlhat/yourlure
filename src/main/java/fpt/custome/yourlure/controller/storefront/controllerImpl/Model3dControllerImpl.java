@@ -80,4 +80,14 @@ public class Model3dControllerImpl implements Model3dController {
     public ResponseEntity<Model3d> getModelByModelId(Long modelId) {
         return new ResponseEntity<>(customizeModelService.getModelByModelId(modelId), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Object> getAllCustomizes(HttpServletRequest rq) {
+        return new ResponseEntity<>(customizeModelService.findAllCustomizeModelByUser(rq), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteCustomize(HttpServletRequest rq, Long customizeId) {
+        return new ResponseEntity<>(customizeModelService.deleteCustomizeModel(rq, customizeId), HttpStatus.OK);
+    }
 }
