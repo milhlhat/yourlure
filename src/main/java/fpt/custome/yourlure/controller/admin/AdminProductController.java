@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/admin/product")
@@ -35,5 +36,8 @@ public interface AdminProductController {
 
     @PostMapping(value = "/upload")
     ResponseEntity<Object> uploadFile(@RequestParam("files") MultipartFile[] file) throws IOException;
+
+    @GetMapping(value = "/delete-file")
+    ResponseEntity<Object> deleteFiles(@RequestParam List<String> urls);
 
 }

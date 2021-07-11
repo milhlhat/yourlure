@@ -38,7 +38,8 @@ public class FileService {
         return f.exists() && !f.isDirectory();
     }
 
-    public String saveMultipartFile(String fileName, MultipartFile file, String path) {
+
+    public String saveMultipartFile(MultipartFile file, String path, String fileName) {
         Path filePath = Paths.get(parentPath, path, fileName);
         try {
             Files.write(filePath, file.getBytes());
@@ -48,21 +49,11 @@ public class FileService {
         return path + "/" + fileName;
     }
 
-    public String saveImage(MultipartFile file, String path, String fileName) {
-        Path filePath = Paths.get(parentPath, path, fileName);
-        try {
-            Files.write(filePath, file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return path + "/" + fileName;
-    }
-
-    public List<String> saveImages(MultipartFile[] files, String path) {
+    public List<String> saveMultipartFiles(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
             String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
-            result.add(saveImage(file, path, fileName));
+            result.add(saveMultipartFile(file, path, fileName));
         }
         return result;
     }
