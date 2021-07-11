@@ -1,80 +1,28 @@
-import { events } from "@react-three/fiber";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "redux/product-action/manager/fetch-manager-filter";
-import { useForm } from "react-hook-form";
-import "./manager-sort.scss";
+import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
-function Sort(props) {
-  const { register, handleSubmit } = useForm();
-  const sortBy = useSelector(
-    (state) => state.managerProductFilter.filter.sortBy
-  );
-  const isAsc = useSelector((state) => state.managerProductFilter.filter.isAsc);
-  const keyword = useSelector(
-    (state) => state.managerProductFilter.filter.keyword
-  );
+import { useForm } from "react-hook-form";
 
-  const SORT_OPTIONS = [
-    {
-      display: "Id sản phẩm",
-      isAsc: false,
-      sortBy: "productId",
-      value: "SORT_PRODUCT_ID",
-    },
-    {
-      display: "Tên giảm dần",
-      isAsc: false,
-      sortBy: "productName",
-      value: "SORT_NAME_PRODUCT_ASC",
-    },
-    {
-      display: "Tên sản phẩm tăng dần",
-      isAsc: true,
-      sortBy: "productName",
-      value: "SORT_NME_PRODUCT_DESC",
-    },
-    {
-      display: "Giá tăng dần",
-      isAsc: true,
-      sortBy: "defaultPrice",
-      value: "SORT_PRICE_PRODUCT_DESC",
-    },
-    {
-      display: "Giá giảm dần",
-      isAsc: false,
-      sortBy: "defaultPrice",
-      value: "SORT_PRICE_PRODUCT_ASC",
-    },
-  ];
-  const dispatch = useDispatch();
-  function getSortSelectedByList(list, value) {
-    if (list) {
-      console.log(value);
-      for (let i = 0; i < list.length; i++) {
-        let item = list[i];
-        if (item.value === value) {
-          return { sortBy: item.sortBy, isAsc: item.isAsc };
-        }
+function ManagerSort(props) {
+  const { filter, setFilter, options } = props;
+  function handleSelectSort(e) {
+    let sort = e.target.value;
+    for (let o of options) {
+      if (sort === o.display) {
+        setFilter({ ...filter, isAsc: o.isAsc, sortBy: o.sortBy });
+        break;
       }
-      return {};
-    } else {
-      return {};
     }
   }
-  function handleSelectSort(e) {
-    const value = getSortSelectedByList(SORT_OPTIONS, e.target.value);
-    const action = setFilter({ ...value });
-    dispatch(action);
-  }
+
+  const { register, handleSubmit,setValue } = useForm();
   const onsubmit = (data) => {
-    const value = getSortSelectedByList(SORT_OPTIONS, data.sortBy);
-    const finalValue = { ...value, keyword: data.keyWord };
-    const action = setFilter({ ...finalValue });
-    dispatch(action);
+    setFilter({ ...filter, keyword: data.keyWord });
   };
+  useEffect(() => {
+    setValue("keyWord",filter.keyword)
+  }, []);
   return (
-    <div className="bg-white manager-sort p-2">
+    <div>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="row">
           <div className="col-4">
@@ -88,16 +36,18 @@ function Sort(props) {
               </div>
               <div className="col-8">
                 <select
-                  {...register("sortBy")}
                   className="form-select select-sort pointer border-0 ms-2"
                   onChange={(e) => handleSelectSort(e)}
+                  
                 >
-                  {SORT_OPTIONS.map((item, i) => (
+                  {options.map((item, i) => (
                     <option
-                      value={item.value}
-                      key={`sort-${i}`}
+                      key={"option-" + i}
                       className="pointer"
-                      selected={item.sortBy === sortBy && item.isAsc === isAsc}
+                      selected={
+                        filter.sortBy === item.sortBy &&
+                        filter.isAsc === item.isAsc
+                      }
                     >
                       {item.display}
                     </option>
@@ -112,7 +62,6 @@ function Sort(props) {
               className="form-control"
               type="text"
               {...register("keyWord")}
-              defaultValue={keyword}
               placeholder="Tìm kiếm"
             />
           </div>
@@ -122,4 +71,4 @@ function Sort(props) {
   );
 }
 
-export default Sort;
+export default ManagerSort;

@@ -18,7 +18,7 @@ const CommonUtils = {
 export const { parseString2Boolean } = CommonUtils;
 export default CommonUtils;
 
-export function RenderRoutes({ routes }) {
+export function RenderRoutes({ routes, properties }) {
   return (
     <React.Fragment>
       {routes.map((item, index) => (
@@ -30,18 +30,13 @@ export function RenderRoutes({ routes }) {
           passThrough
         >
           {(allowed) => (
-            <Route
-              exact={item.exact}
-              key={item.path + index}
-              path={item.path}
-              render={(props) =>
-                allowed ? (
-                  <item.component {...props} />
-                ) : (
-                  <NoPermistion hasLayout />
-                )
-              }
-            />
+            <Route exact={item.exact} key={item.path + index} path={item.path}>
+              {allowed ? (
+                <item.component properties={properties} />
+              ) : (
+                <NoPermistion hasLayout />
+              )}
+            </Route>
           )}
         </Can>
       ))}

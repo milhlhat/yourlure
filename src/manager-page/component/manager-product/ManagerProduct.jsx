@@ -1,3 +1,4 @@
+import ManagerProductAPI from "api/manager-product-api";
 import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
 import "assets/scss/scss-manager/manager-product.scss";
@@ -8,24 +9,73 @@ import { filterConfig } from "constant/filter-setting";
 import ManagerSort from "manager-page/component/sort/ManagerSort";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { findByManagerFilter } from "redux/product-action/manager/fetch-manager-filter";
-import { fetchFilter } from "utils/manager-product";
 import { convertToVND } from "utils/format-string";
 
 ManagerProduct.propTypes = {};
 
 function ManagerProduct(props) {
-  const productFilter = useSelector(
-    (state) => state.managerProductFilter.filter
-  );
-  const products = useSelector((state) => state.managerProductFilter.data);
-  const isLoading = useSelector((state) => state.managerProductFilter.loading);
-  const success = useSelector((state) => state.managerProductFilter.success);
-  const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(1);
-
+  const [productFilter, setProductFilter] = useState({
+    listCateId: [],
+    listFishId: [],
+    page: filterConfig.PAGE_NUMBER_DEFAULT,
+    limit: filterConfig.LIMIT_DATA_PER_PAGE,
+    isAsc: false,
+    sortBy: "productId",
+    keyword: "",
+  });
+  const [products, setProducts] = useState({
+    data: [],
+    isLoading: false,
+    success: true,
+  });
+  const SORT_OPTIONS = [
+    {
+      display: "Id sản phẩm",
+      isAsc: false,
+      sortBy: "productId",
+      value: "SORT_PRODUCT_ID",
+    },
+    {
+      display: "Tên giảm dần",
+      isAsc: false,
+      sortBy: "productName",
+      value: "SORT_NAME_PRODUCT_ASC",
+    },
+    {
+      display: "Tên sản phẩm tăng dần",
+      isAsc: true,
+      sortBy: "productName",
+      value: "SORT_NME_PRODUCT_DESC",
+    },
+    {
+      display: "Giá tăng dần",
+      isAsc: true,
+      sortBy: "defaultPrice",
+      value: "SORT_PRICE_PRODUCT_DESC",
+    },
+    {
+      display: "Giá giảm dần",
+      isAsc: false,
+      sortBy: "defaultPrice",
+      value: "SORT_PRICE_PRODUCT_ASC",
+    },
+  ];
+  const fetchManagerProduct = async () => {
+    setProducts((prevState) => {
+      return { ...prevState, isLoading: true };
+    });
+    try {
+      const response = await ManagerProductAPI.getProductByFilter(
+        productFilter
+      );
+      setProducts({ data: response, isLoading: false, success: true });
+    } catch (error) {
+      setProducts({ data: null, isLoading: false, success: false });
+      console.log("fail to fetch product");
+    }
+  };
   const history = useHistory();
   const location = useLocation();
 
@@ -37,12 +87,8 @@ function ManagerProduct(props) {
   };
 
   function handlePageChange(newPage) {
+    setProductFilter({ ...productFilter, page: newPage - 1 });
     setActivePage(newPage);
-    const filterAction = findByManagerFilter({
-      ...productFilter,
-      page: newPage - 1,
-    });
-    dispatch(filterAction);
   }
   const setBack = {
     canBack: true,
@@ -51,11 +97,11 @@ function ManagerProduct(props) {
   };
   const handleClickDetail = () => {};
   useEffect(() => {
-    fetchFilter(dispatch, productFilter);
+    fetchManagerProduct();
   }, [productFilter]);
-  if (isLoading) {
+  if (products.isLoading) {
     return <Loading />;
-  } else if (!success) {
+  } else if (!products.success) {
     return <ErrorLoad />;
   } else
     return (
@@ -74,8 +120,12 @@ function ManagerProduct(props) {
         <div className="manager-product-show mt-3 bg-white bg-shadow">
           <span>Tất cả sản phẩm</span>
           <hr />
-          <ManagerSort />
-          {products?.productOutputList?.length <= 0 && (
+          <ManagerSort
+            filter={productFilter}
+            setFilter={setProductFilter}
+            options={SORT_OPTIONS}
+          />
+          {products?.data?.productOutputList?.length <= 0 && (
             <p>Không có sản phẩm </p>
           )}
           <table>
@@ -85,10 +135,10 @@ function ManagerProduct(props) {
                 <th>Tên sản phẩm</th>
                 <th>Danh mục</th>
                 <th className="text-center">Trạng thái</th>
-                <th className="text-center">Giá</th>
+                <th onClick={()=>setProductFilter({...productFilter,isAsc:!productFilter.isAsc,sortBy:"defaultPrice"})} className="text-center pointer">Giá</th>
                 <th></th>
               </tr>
-              {products?.productOutputList?.map((item, i) => (
+              {products?.data?.productOutputList?.map((item, i) => (
                 <tr key={i} className="hover-background">
                   <td>
                     {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
@@ -98,7 +148,10 @@ function ManagerProduct(props) {
                   <td
                     className="pointer"
                     onClick={() =>
-                      history.push({pathname:"/manager/product/detail/" + item.productId,canBack:setBack})
+                      history.push({
+                        pathname: "/manager/product/detail/" + item.productId,
+                        canBack: setBack,
+                      })
                     }
                   >
                     {item.productName}
@@ -112,9 +165,7 @@ function ManagerProduct(props) {
                       : "Ngừng kinh doanh"}
                   </td>
                   <td className="text-end pe-4">
-                    {!item
-                      ? "N/A"
-                      : convertToVND(item.defaultPrice)}
+                    {!item ? "N/A" : convertToVND(item.defaultPrice)}
                   </td>
                   <td>
                     <img
@@ -131,13 +182,13 @@ function ManagerProduct(props) {
             </tbody>
           </table>
           <div className="m-auto p-4 d-flex justify-content-center">
-            {products.totalPage > 1 && (
+            {products?.data?.totalPage > 1 && (
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
                 activePage={activePage}
                 itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
-                totalItemsCount={products.totalProduct}
+                totalItemsCount={products?.data?.totalProduct}
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                 onChange={handlePageChange}
               />

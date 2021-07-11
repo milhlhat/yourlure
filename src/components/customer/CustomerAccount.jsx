@@ -9,7 +9,6 @@ import { logout } from "utils/user";
 function CustomerAccount(props) {
   const history = useHistory();
   const ability = useContext(AbilityContext);
-
   const handleLogout = () => {
     logout(ability);
     history.push(DEFINELINK.home);

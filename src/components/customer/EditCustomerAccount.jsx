@@ -7,7 +7,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 function EditCustomerAccount(props) {
-  
+  const { properties } = props;
   const location = useLocation();
   const { account } = location.state;
   const defaultValues = {};
@@ -20,29 +20,28 @@ function EditCustomerAccount(props) {
     formState: { errors },
   } = methods;
   const onSubmit = async (data) => {
-    console.log(data);
-		try {
-			const response = await UserApi.update(data);
-			if (response.error) {
-				throw new Error(response.error);
-			} else {
-        alert('update thành công');
+    try {
+      const response = await UserApi.update(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        alert("update thành công");
+        properties();
         history.push("/customer/account");
-			}
-		} catch (error) {
-      alert('update thất bại')
-			console.log('fail to fetch customer list');
-		}
+      }
+    } catch (error) {
+      alert("update thất bại");
+      console.log("fail to fetch customer list");
+    }
   };
-  const initialData = ()=>{
-    console.log(account?.data?.gender);
-    setValue('username', account?.data?.username); 
-    setValue('gender', account?.data?.gender); 
-    setValue('userEmail', account?.data?.userEmail); 
-  }
-  useEffect(()=>{
+  const initialData = () => {
+    setValue("username", account?.data?.username);
+    setValue("gender", account?.data?.gender);
+    setValue("userEmail", account?.data?.userEmail);
+  };
+  useEffect(() => {
     initialData();
-  },[])
+  }, []);
   return (
     <div className="bg-box">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,9 +67,9 @@ function EditCustomerAccount(props) {
                 <select
                   className="form-select"
                   {...register("gender", {
-                    validate: (value) => {
-                      return value === "true" || value === "false";
-                    },
+                    // validate: (value) => {
+                    //   return value === "true" || value === "false";
+                    // },
                   })}
                 >
                   <option value="true">Nam</option>
@@ -102,7 +101,9 @@ function EditCustomerAccount(props) {
                   type="email"
                 ></input>
                 {errors.userEmail && (
-                  <span className="text-danger">(*){errors.userEmail.message}</span>
+                  <span className="text-danger">
+                    (*){errors.userEmail.message}
+                  </span>
                 )}
               </td>
             </tr>

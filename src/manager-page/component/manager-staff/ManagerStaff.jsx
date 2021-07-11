@@ -10,6 +10,7 @@ import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-staff.scss";
 import { useHistory } from "react-router-dom";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import { setFilter } from "redux/product-action/manager/fetch-manager-filter";
 
 function ManagerStaff(props) {
   const totalItem = 10;
@@ -44,12 +45,14 @@ function ManagerStaff(props) {
   }, []);
 
   const detectRole = (role) => {
-    if (role) {
-      if (role === "ROLE_ADMIN") return "Quản lý";
-      if (role === "ROLE_STAFF") return "Nhân viên";
-      if (role === "ROLE_CUSTOMER") return "Khách hàng";
-      return "chưa xác định";
-    } else return "-";
+    let rs='';
+    role.map((r)=>{
+      if (r === "ROLE_ADMIN") rs+= "Quản lý, ";
+      else if (r === "ROLE_STAFF") rs+= "Nhân viên, ";
+      else if (r === "ROLE_CUSTOMER") rs+= "Khách hàng, ";
+
+    })
+    return rs!==''?rs:"-"
   };
   const handleSwitchStatus = async (data) => {
     try {
@@ -112,7 +115,7 @@ function ManagerStaff(props) {
                 <th>#</th>
                 <th>Tên</th>
                 <th>Giới tính</th>
-                <th>Số điện thoại</th>
+                <th onClick={()=>setFilterStaff({...filterStaff,sortBy:"phone",isAsc:!filterStaff.isAsc})}>Số điện thoại</th>
                 <th>Email</th>
                 <th>Trạng thái</th>
                 <th>Vị trí</th>
@@ -128,7 +131,7 @@ function ManagerStaff(props) {
                   <td>{item.phone}</td>
                   <td>{item.userEmail ? item.userEmail : "-"}</td>
                   <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
-                  <td>{detectRole(item.roles[0])}</td>
+                  <td>{detectRole(item.roles)}</td>
                   <td>
                     {item.enabled ? (
                       <ConfirmPopup

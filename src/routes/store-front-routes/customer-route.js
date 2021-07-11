@@ -55,10 +55,13 @@ function CutomerInfoRoute() {
       {(allowed) =>
         allowed ? (
           <CustomerInfoLayout>
-            {(account) => (
+            {(properties) => (
               <Switch>
                 <Redirect exact from={path} to={path + DEFINELINK.account} />
-                <RenderRoutes routes={routes} />
+                {/* <Route exact path={path + DEFINELINK.account}  >
+                  <CustomerAccount fetchLayoutCustomAccount={properties} />
+                </Route> */}
+                <RenderRoutes routes={routes} properties={properties}/>
                 <Route component={NotFound} />
               </Switch>
             )}

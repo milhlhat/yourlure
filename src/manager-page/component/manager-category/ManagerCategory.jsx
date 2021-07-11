@@ -8,7 +8,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-category.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import { useForm } from "react-hook-form";
-import ManagerSort from "./ManagerSort";
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 
@@ -70,7 +70,6 @@ function ManagerCategory(props) {
     try {
       const response = await ManagerCategoryAPI.delete(id);
       if (response.data != null && !response.data) {
-        console.log(response);
         throw new Error();
       } else if (response.error) {
         throw new Error(response.error);
@@ -150,37 +149,11 @@ function ManagerCategory(props) {
           <hr />
 
           <div className="bg-white manager-sort p-2">
-            <form onSubmit={handleSubmit(onsubmit)}>
-              <div className="row">
-                <div className="col-4">
-                  <div className="row">
-                    <div className="col-4">
-                      <YLButton
-                        type="submit"
-                        value="Tìm kiếm"
-                        variant="primary"
-                      ></YLButton>
-                    </div>
-                    <div className="col-8">
-                      <ManagerSort
-                        filter={filter}
-                        setFilter={setFilter}
-                        options={options}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-8">
-                  <input
-                    className="form-control"
-                    type="text"
-                    {...register("keyWord")}
-                    placeholder="Tìm kiếm"
-                  />
-                </div>
-              </div>
-            </form>
+          <ManagerSort
+            filter={filter}
+            setFilter={setFilter}
+            options={options}
+          />
           </div>
           {categoryList?.data?.length <= 0 && <p>Không có danh mục {filter?.keyword&& `"${filter?.keyword}"`}</p>}
           {categoryList?.data?.length > 0 && (

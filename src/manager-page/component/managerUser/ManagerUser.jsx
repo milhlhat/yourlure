@@ -8,6 +8,7 @@ import { setIsBack } from "redux/back-action/back-action";
 import "./scss/manager-user.scss";
 import { Tooltip } from "@material-ui/core";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 
 ManagerUser.propTypes = {};
 
@@ -40,7 +41,32 @@ function ManagerUser(props) {
       label: "",
     });
     dispatch(action);
-  }, []);
+  }, []);const SORT_OPTIONS = [
+    {
+      display: "Tên A-Z",
+      isAsc: true,
+      sortBy: "username",
+      value: "SORT_NAME_ASC",
+    },
+    {
+      display: "Tên Z-A",
+      isAsc: false,
+      sortBy: "username",
+      value: "SORT_NAME_DESC",
+    },
+    {
+      display: "Số điện thoại",
+      isAsc: false,
+      sortBy: "phone",
+      value: "SORT_PHONE_ASC",
+    },
+    {
+      display: "Số đơn hàng",
+      isAsc: true,
+      sortBy: "numberOfOrder",
+      value: "SORT_ORDER_DESC",
+    },
+  ];
 
   const handleSwitchStatus = async (data) => {
     try {
@@ -87,7 +113,11 @@ function ManagerUser(props) {
         <div className="manager-user-show mt-3 bg-white bg-shadow">
           <span>Tất cả khách hàng</span>
           <hr />
-          {/* <ManagerSort /> */}
+          <ManagerSort
+            filter={filterUser}
+            setFilter={setFilterUser}
+            options={SORT_OPTIONS}
+          />
           {userList?.data?.userDtoOutList?.length <= 0 && (
             <p>Không có khách hàng</p>
           )}

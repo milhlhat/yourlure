@@ -18,8 +18,7 @@ function ManagementAccount({ children }) {
   const ORDER_PATH = DEFINELINK.customer + DEFINELINK.order;
   const ADDRESS_PATH = DEFINELINK.customer + DEFINELINK.address;
   const CHANGEPASSWORD_PATH = DEFINELINK.customer + DEFINELINK.changePassword;
-  useEffect(() => {
-    const fetchCustomAccount = async () => {
+    const fetchLayoutCustomAccount = async () => {
       setAccount((prevState) => {
         return { ...prevState, isLoading: true };
       });
@@ -32,8 +31,8 @@ function ManagementAccount({ children }) {
         console.log("fail to fetch information");
       }
     };
-    fetchCustomAccount();
-    return fetchCustomAccount();
+  useEffect(() => {
+    fetchLayoutCustomAccount();
   }, []);
 
   if (account.isLoading) {
@@ -92,7 +91,7 @@ function ManagementAccount({ children }) {
               </Link>
             </div>
           </div>
-          <div className="tab-show  col-9">{children()}</div>
+          <div className="tab-show  col-9">{children(fetchLayoutCustomAccount)}</div>
         </div>
       </div>
     );
