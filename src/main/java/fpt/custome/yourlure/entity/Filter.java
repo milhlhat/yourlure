@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Data
@@ -14,6 +15,7 @@ public class Filter {
     private String keyword;
     private Boolean custom;
     private int page;
+    @Min(1)
     private int limit;
     private String sortBy;
     private Boolean isAsc;

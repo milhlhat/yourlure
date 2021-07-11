@@ -2,9 +2,11 @@ package fpt.custome.yourlure.controller.storefront;
 
 import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 
 @RequestMapping(path = "/cart")
@@ -26,7 +28,7 @@ public interface CartController {
      */
     @PostMapping("/add-product")
     ResponseEntity<Object> addItem(@RequestParam("req") HttpServletRequest req,
-                                   @RequestBody AddToCartDto addToCartDto);
+                                   @RequestBody @Valid AddToCartDto addToCartDto);
 
     /**
      *

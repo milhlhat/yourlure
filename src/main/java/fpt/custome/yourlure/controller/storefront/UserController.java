@@ -26,6 +26,7 @@ import java.util.Set;
 
 @RequestMapping(path = "/user")
 @Validated
+
 public interface UserController {
 
     @PostMapping("/update")

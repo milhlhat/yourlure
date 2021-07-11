@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +77,27 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Object> uploadFile(MultipartFile[] files) {
-        List<String> result = fileService.saveImages(files, FileService.IMAGES_DIR);
+        List<String> result = fileService.saveMultipartFiles(files, FileService.IMAGES_DIR);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteFiles(List<String> urls) {
+        List<String> fileFailDelete = new ArrayList<>();
+        List<String> fileSuccessDelete = new ArrayList<>();
+        for (String url : urls) {
+            if (fileService.deleteFile(url)) {
+                fileSuccessDelete.add(url);
+            } else {
+                fileFailDelete.add(url);
+            }
+        }
+        HashMap<String, Object> result = new HashMap<>();
+
+        // add elements dynamically
+        result.put("fileDeleteSuccess", fileSuccessDelete);
+        result.put("fileDeleteFail", fileFailDelete);
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

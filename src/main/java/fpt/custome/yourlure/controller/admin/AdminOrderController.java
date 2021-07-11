@@ -5,11 +5,14 @@ import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RequestMapping("/admin/order")
+
 public interface AdminOrderController {
 
     /**
@@ -19,7 +22,7 @@ public interface AdminOrderController {
      * @return
      */
     @PostMapping("/all-by-phone-or-name")
-    ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody AdminFilterDtoInput adminFilterDtoInput);
+    ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody @Valid AdminFilterDtoInput adminFilterDtoInput);
 
 //    /**
 //     * tìm kiếm order theo điện thoại

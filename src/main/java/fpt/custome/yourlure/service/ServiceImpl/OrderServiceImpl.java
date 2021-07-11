@@ -74,11 +74,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ModelMapper mapper;
 
-    protected Integer verifyDiscountCode(String discountCode) throws Exception {
+    @Override
+    public Integer verifyDiscountCode(String discountCode) throws Exception {
         DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
         return verifyDiscountCode(voucher);
     }
-    protected Integer verifyDiscountCode(DiscountVoucher voucher) throws Exception {
+    public Integer verifyDiscountCode(DiscountVoucher voucher) throws Exception {
         if (voucher != null) {
             if (voucher.getStart_date().compareTo(new Date()) < 0) {
                 // the voucher is not start
