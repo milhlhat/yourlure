@@ -9,16 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RequestMapping("/admin/discount-voucher")
+
 public interface AdminDiscountVoucherController {
 
     @PostMapping("/all")
-    ResponseEntity<Optional<AdminDiscountVoucherDtoOut>> findAll(@RequestBody  Filter filter);
+    ResponseEntity<Optional<AdminDiscountVoucherDtoOut>> findAll(@RequestBody @Valid Filter filter);
 
     @PostMapping("/add")
-    ResponseEntity<Boolean> save(@RequestBody AdminDiscountVoucherDtoInput discountVoucherDtoInput);
+    ResponseEntity<Boolean> save(@RequestBody @Valid AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
     @GetMapping("/{id}")
     ResponseEntity<Optional<AdminDiscountVoucherDetailDtoOut>> getById(@PathVariable("id") Long id);
@@ -27,7 +29,7 @@ public interface AdminDiscountVoucherController {
 //    ResponseEntity<List<DiscountSale>> searchProduct(@RequestParam("productName") String id);
 
     @PostMapping("/update")
-    ResponseEntity<Boolean> update(@RequestParam("id") Long id, @RequestBody @Validated AdminDiscountVoucherDtoInput discountVoucherDtoInput);
+    ResponseEntity<Boolean> update(@RequestParam("id") Long id, @RequestBody @Valid AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
     @DeleteMapping("/remove/{id}")
     ResponseEntity<Boolean> delete(@PathVariable("id") Long id);

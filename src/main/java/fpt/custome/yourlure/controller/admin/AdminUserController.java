@@ -5,15 +5,18 @@ import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RequestMapping(path = "/admin/user")
+
 public interface AdminUserController {
 
     @PostMapping(value = "/all")
-    ResponseEntity<Optional<AdminUserDtoOut>> getAll(@RequestBody AdminFilterDtoInput filter);
+    ResponseEntity<Optional<AdminUserDtoOut>> getAll(@RequestBody @Valid AdminFilterDtoInput filter);
 
     @GetMapping("/find-by-id")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -33,6 +36,6 @@ public interface AdminUserController {
 
     //staff-----------------------------------------------------
     @PostMapping(value = "/all-staff")
-    ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody AdminFilterDtoInput filter);
+    ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody @Valid AdminFilterDtoInput filter);
 
 }
