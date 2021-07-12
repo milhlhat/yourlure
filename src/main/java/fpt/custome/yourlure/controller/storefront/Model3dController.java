@@ -27,6 +27,23 @@ public interface Model3dController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Model3d> createModel(@RequestBody Model3dDtoInput model3d);
 
+    @PostMapping(value = "/update-model")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    ResponseEntity<Model3d> update(@RequestBody Model3d model3d);
+
+    @DeleteMapping(value = "/delete-model")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    ResponseEntity<Object> deleteModel(@RequestParam Long modelId);
+
+
     @GetMapping(value = "/find-custom-by-id/{customId}")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ApiResponses(value = {
@@ -71,11 +88,11 @@ public interface Model3dController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Model3d> getModelByModelId(@PathVariable(name = "modelId") Long modelId);
 
-    @GetMapping("/all")
+    @GetMapping("/all-customize")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Object> getAllCustomizes(HttpServletRequest rq);
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete-custom")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Object> deleteCustomize(HttpServletRequest rq, @RequestParam @Valid Long customizeId);
 

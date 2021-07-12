@@ -118,6 +118,21 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     }
 
     @Override
+    public Model3d updateModel3d(Model3d m3d) {
+        return model3dRepos.save(m3d);
+    }
+
+    @Override
+    public Boolean deleteModel3d(Long modelId) {
+        Model3d m3d = model3dRepos.getById(modelId);
+        if(!m3d.getCustomizeModels().isEmpty()){
+            return false;
+        }
+        model3dRepos.delete(m3d);
+        return true;
+    }
+
+    @Override
     public Model3d getModelByProductId(Long productId) {
         List<Model3d> model3d = model3dRepos.findAllByProductProductId(productId);
         return model3d.get(model3d.size() - 1);

@@ -12,13 +12,13 @@ public interface UserRepos extends JpaRepository<User, Long> {
 
     User findByPhone(String phone);
 
-    @Query(value = " SELECT * \n" +
+    @Query(value = "SELECT tbl_users.* \n" +
             "from tbl_users,user_roles,tbl_orders\n" +
             "WHERE tbl_users.user_id = user_roles.user_user_id\n" +
             "and user_roles.roles = 2\n " +
-            "and concat(lower(unaccent(tbl_users.username)),\n " +
-            "lower(unaccent(tbl_users.phone)),tbl_orders.order_id)\n " +
-            " like lower(unaccent(?1)) " , nativeQuery = true)
+            "and concat(lower((tbl_users.username)),\n " +
+            "lower((tbl_users.phone)),tbl_orders.order_id)\n " +
+            " like lower((?1)) " , nativeQuery = true)
     Page<User> findAllUser(String keyword,Pageable pageable);
 
     @Query(value = "SELECT * \n" +

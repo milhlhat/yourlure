@@ -31,7 +31,7 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<Model3d> createModel(Model3dDtoInput model3d) {
-        try{
+        try {
             return new ResponseEntity<>(customizeModelService.createModel3d(model3d), HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,9 +40,20 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
+    public ResponseEntity<Model3d> update(Model3d model3d) {
+        return new ResponseEntity<>(customizeModelService.updateModel3d(model3d), HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteModel(Long modelId) {
+        return new ResponseEntity<>(customizeModelService.deleteModel3d(modelId), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, Long customId) {
         CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
-        if(customizeModel==null){
+        if (customizeModel == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(customizeModel, HttpStatus.OK);
@@ -50,7 +61,7 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<CustomModelDtoOut> createCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
-        try{
+        try {
             CustomModelDtoOut customizeModel = customizeModelService.createCustomizeModel(rq, customModelDtoInput);
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
         } catch (IOException e) {
@@ -61,7 +72,7 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<CustomModelDtoOut> updateCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
-        try{
+        try {
             return new ResponseEntity<>(customizeModelService.updateCustomizeModel(rq, customModelDtoInput), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
