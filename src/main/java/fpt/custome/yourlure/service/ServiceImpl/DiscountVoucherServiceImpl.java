@@ -6,8 +6,8 @@ import fpt.custome.yourlure.dto.dtoOut.AdminDiscountVoucherDtoOut;
 import fpt.custome.yourlure.entity.DiscountVoucher;
 import fpt.custome.yourlure.repositories.DiscountVoucherRepos;
 import fpt.custome.yourlure.service.DiscountVoucherService;
+import fpt.custome.yourlure.utils.RandomString;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,15 +16,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class DiscountVoucherServiceImpl implements DiscountVoucherService {
 
     @Autowired
     private DiscountVoucherRepos discountVoucherRepos;
-
-    @Autowired
-    RandomString randomString;
 
     @Autowired
     private ModelMapper mapper;
@@ -72,7 +70,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
     public Boolean saveVoucher(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
         try {
             DiscountVoucher save = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
-            save.setCode(randomString.);
+            save.setCode(new RandomString(8, ThreadLocalRandom.current()).nextString());
             discountVoucherRepos.save(save);
         } catch (Exception e) {
             e.printStackTrace();

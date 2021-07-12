@@ -26,7 +26,7 @@ public interface CartController {
      * @return
      */
     @PostMapping("/add-product")
-    ResponseEntity<Object> addItem(@RequestParam("req") HttpServletRequest req,
+    ResponseEntity<Object> addItem(HttpServletRequest req,
                                    @RequestBody @Valid AddToCartDto addToCartDto);
 
     /**
@@ -36,7 +36,7 @@ public interface CartController {
      * @return
      */
     @DeleteMapping("remove-item")
-    ResponseEntity<Object> removeItem(@RequestParam("req") HttpServletRequest req, Long cartItemId);
+    ResponseEntity<Object> removeItem( HttpServletRequest req, Long cartItemId);
 
     /**
      *
@@ -46,7 +46,7 @@ public interface CartController {
      * @return
      */
     @PostMapping("save-quantity")
-    ResponseEntity<Object> setItemQuantity(@RequestParam("req") HttpServletRequest req,
+    ResponseEntity<Object> setItemQuantity( HttpServletRequest req,
                                            @RequestParam Long itemId,
                                            @RequestParam int quantity);
 

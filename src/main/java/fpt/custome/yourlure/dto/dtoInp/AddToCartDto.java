@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
 
 @Data
 @Builder
@@ -15,7 +15,7 @@ public class AddToCartDto {
 
     private Long productId;
     private Long variantId;
-    @Size(min = 1, max = 20)
+    @Min(1)
     private Integer quantity;
     private Float weight;
     private Long customModelId;
