@@ -34,9 +34,9 @@ public class ProductReposImpl implements ProductRepos {
             query.append(" and tbl_products.customizable = true \n");
         }
         if (!filter.getKeyword().isEmpty()) {
-            query.append("and to_tsvector(COALESCE(lower(unaccent(tbl_products.product_name)),'')\n" +
+            query.append("and to_tsvector('simple',COALESCE(lower(unaccent(tbl_products.product_name)),'')\n" +
                     " || COALESCE(lower(unaccent(tbl_products.description)),'')) @@ \n" +
-                    "to_tsquery(lower(unaccent('''" + filter.getKeyword().trim()+" '':*'))) \n");
+                    "to_tsquery('simple',lower(unaccent('''" + filter.getKeyword().trim()+" '':*'))) \n");
         }
         query.append(" GROUP BY tbl_products.product_id,tbl_products.product_name \n");
 

@@ -10,56 +10,24 @@ import javax.transaction.Transactional;
 
 public interface UserRepos extends JpaRepository<User, Long> {
 
-    //    User findByUsername(String username);
     User findByPhone(String phone);
 
-    Page<User> findByUsernameContainsIgnoreCase(String Keyword, Pageable pageable);
+    @Query(value = " SELECT * \n" +
+            "from tbl_users,user_roles,tbl_orders\n" +
+            "WHERE tbl_users.user_id = user_roles.user_user_id\n" +
+            "and user_roles.roles = 2\n " +
+            "and concat(lower(unaccent(tbl_users.username)),\n " +
+            "lower(unaccent(tbl_users.phone)),tbl_orders.order_id)\n " +
+            " like lower(unaccent(?1)) " , nativeQuery = true)
+    Page<User> findAllUser(String keyword,Pageable pageable);
 
-    Page<User> findByPhoneContainsIgnoreCase(String Keyword, Pageable pageable);
-
-
-    @Query(value = "SELECT\n" +
-            "\ttbl_users.*\n" +
-            "FROM\n" +
-            "\ttbl_users\n" +
-            "\tINNER JOIN\n" +
-            "\ttbl_orders\n" +
-            "\tON \n" +
-            "\t\ttbl_users.user_id = tbl_orders.user_id \n" +
-            "\t\tWHERE order_id = ?1 ", nativeQuery = true)
-    Page<User> findByOrderId(Long Keyword, Pageable pageable);
-
-    @Query(value = "SELECT\n" +
-            "\ttbl_users.*\n" +
-            "FROM\n" +
-            "\ttbl_users\n" +
-            "\tINNER JOIN\n" +
-            "\tuser_roles\n" +
-            "\tON \n" +
-            "\t\ttbl_users.user_id = user_roles.user_user_id\n" +
-            "WHERE\n" +
-            "\tuser_roles.roles = 0\n" +
-            " OR\n" +
-            "\tuser_roles.roles = 1", nativeQuery = true)
-    Page<User> findAllUser(Pageable pageable);
-
-    @Query(value = " SELECT " +
-            "        * " +
-            "    FROM " +
-            "        tbl_users   " +
-            "    INNER JOIN " +
-            "        user_roles   " +
-            "            ON    tbl_users.user_id = user_roles.user_user_id  " +
-            "    WHERE user_roles.roles = 1 ", nativeQuery = true)
-    Page<User> findAllStaff(Pageable pageable);
-
-    /*
-      SELECT *
-        FROM tbl_users
-       WHERE to_tsvector(COALESCE(tbl_users.username,'')) @@ plainto_tsquery('đạt & sơn	')
-     *
-     *
-     * */
+    @Query(value = "SELECT * \n" +
+            "from tbl_users,user_roles\n" +
+            "WHERE tbl_users.user_id = user_roles.user_user_id\n" +
+            "and user_roles.roles in (1,0) " +
+            "and concat(lower(unaccent(tbl_users.username))," +
+            "lower(unaccent(tbl_users.phone))) like lower(unaccent(?1))", nativeQuery = true)
+    Page<User> findAllStaff(String keyword,Pageable pageable);
 
     boolean existsByPhone(String phone);
 

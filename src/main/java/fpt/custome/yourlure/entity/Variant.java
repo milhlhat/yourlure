@@ -23,8 +23,8 @@ public class Variant {
     private Long variantId;
 
     @Nullable
-    @Column(name = "backgroundColor")
-    private String backgroundColor;
+    @Column(name = "variantName")
+    private String variantName;
 
     @Nullable
     @Column(name = "quantity")

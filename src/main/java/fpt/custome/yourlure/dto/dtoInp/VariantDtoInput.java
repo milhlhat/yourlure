@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VariantDtoInput {
 
-    private String backgroundColor;
+    private String variantName;
     private Integer quantity;
     private Float newPrice;
     private String imageUrl;
