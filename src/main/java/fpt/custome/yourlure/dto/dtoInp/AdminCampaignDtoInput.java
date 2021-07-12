@@ -1,6 +1,5 @@
-package fpt.custome.yourlure.dto.dtoOut;
+package fpt.custome.yourlure.dto.dtoInp;
 
-import fpt.custome.yourlure.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,14 +12,13 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CampaignDtoOut {
+public class AdminCampaignDtoInput {
 
-    private Long campaignID;
     private String description;
     private Date startDate;
     private Date endDate;
     private String banner;
     private String content;
-    private Collection<Image> imageCollection;
+    private Collection<String> imageCollection;
 
 }

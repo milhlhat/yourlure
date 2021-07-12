@@ -12,7 +12,7 @@ public interface UserRepos extends JpaRepository<User, Long> {
 
     User findByPhone(String phone);
 
-    @Query(value = " SELECT * \n" +
+    @Query(value = " SELECT tbl_users.* \n" +
             "from tbl_users,user_roles,tbl_orders\n" +
             "WHERE tbl_users.user_id = user_roles.user_user_id\n" +
             "and user_roles.roles = 2\n " +

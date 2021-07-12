@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import lombok.*;
 
@@ -22,7 +23,7 @@ public class DiscountVoucher {
     @Column(name = "discountVoucherId")
     private Long discountVoucherId;
 
-    @Nullable
+    @NotNull
     @Column(name = "name")
     private String name;
 
@@ -31,12 +32,12 @@ public class DiscountVoucher {
      * Tỷ Lệ Phần Trăm
      * Miễn Phí Vận Chuyển
      */
-    @Nullable
+    @NotNull
     @Column(name = "type")
     private String type;
 
-    @Nullable
-    @Column(name = "code")
+    @NotNull
+    @Column(name = "code", unique = true)
     private String code;
 
     @Nullable
@@ -55,7 +56,7 @@ public class DiscountVoucher {
     @Column(name = "end_date")
     private Date end_date;
 
-    @Nullable
+    @NotNull
     @Column(name = "discountValue")
     private Integer discountValue;
 

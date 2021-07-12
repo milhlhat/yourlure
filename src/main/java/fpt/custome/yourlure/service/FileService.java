@@ -80,6 +80,16 @@ public class FileService {
         }
     }
 
+    public void deleteFiles(List<String> listFile){
+        try {
+            for (String item : listFile) {
+                Files.deleteIfExists(Paths.get(parentPath, item));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String getFileBase64(String filePath) {
         try {
             byte[] fileContent = FileUtils.readFileToByteArray(new File(parentPath + filePath));
