@@ -13,14 +13,17 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import org.springframework.core.io.InputStreamResource;
+import fpt.custome.yourlure.utils.RandomString;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class DriveService {
@@ -118,8 +121,11 @@ public class DriveService {
 //    }
 
     public static void main(String[] args) throws FileNotFoundException {
-        java.io.File file = ResourceUtils.getFile("classpath:model/model_1.glb");
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        System.out.println(resource);
+//        java.io.File file = ResourceUtils.getFile("classpath:model/model_1.glb");
+//        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//        System.out.println(resource);
+
+        RandomString gen = new RandomString(8, ThreadLocalRandom.current());
+        System.out.println(gen.nextString());
     }
 }
