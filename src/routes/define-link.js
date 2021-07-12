@@ -31,6 +31,7 @@ const DEFINELINK = {
 
   //manager user route
   managementUser: "/user",
+  managementUserDetail: "/detail/:id",
 
   //manager product router
   managementProduct: "/product",

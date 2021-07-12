@@ -5,6 +5,7 @@ import YLButton from "components/custom-field/YLButton";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import "assets/scss/scss-pages/forgot-password.scss";
+import Fishing from "assets/images/fishing.jpg";
 
 function FogotPassWord(props) {
   const [onTab, setOnTab] = useState(0);
@@ -27,7 +28,7 @@ function FogotPassWord(props) {
     <div className="login">
       <div className="login-big-image">
         <img
-          src="https://i.pinimg.com/564x/d5/22/3f/d5223f9a7ffd85e69e8176030c745892.jpg"
+          src={Fishing}
           alt=""
         />
       </div>

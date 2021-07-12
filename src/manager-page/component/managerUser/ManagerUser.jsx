@@ -9,11 +9,13 @@ import "./scss/manager-user.scss";
 import { Tooltip } from "@material-ui/core";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import ManagerSort from "manager-page/component/sort/ManagerSort";
+import { useHistory } from "react-router-dom";
 
 ManagerUser.propTypes = {};
 
 function ManagerUser(props) {
   const totalItem = 10;
+  const history = useHistory();
   const [filterUser, setFilterUser] = useState({
     isAsc: true,
     keyword: "",
@@ -41,7 +43,8 @@ function ManagerUser(props) {
       label: "",
     });
     dispatch(action);
-  }, []);const SORT_OPTIONS = [
+  }, []);
+  const SORT_OPTIONS = [
     {
       display: "Tên A-Z",
       isAsc: true,
@@ -71,9 +74,9 @@ function ManagerUser(props) {
   const handleSwitchStatus = async (data) => {
     try {
       const response = await ManagerUserApi.switchStatus(data.userId);
-      if (response.data!=null &&!response.data) {
+      if (response.data != null && !response.data) {
         throw new Error();
-      }else {
+      } else {
         fetchManagerUser();
       }
     } catch (error) {
@@ -136,7 +139,14 @@ function ManagerUser(props) {
               {userList?.data?.userDtoOutList?.map((item, i) => (
                 <tr key={"manager-user-" + i} className="hover-background">
                   <td>{(activePage - 1) * totalItem + i + 1}</td>
-                  <td>{item?.username ? item?.username : "-"}</td>
+                  <td
+                    className="pointer"
+                    onClick={() =>
+                      history.push(`/manager/user/detail/${item?.userId}`)
+                    }
+                  >
+                    {item?.username ? item?.username : "-"}
+                  </td>
                   <td>
                     {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
                   </td>
@@ -147,27 +157,37 @@ function ManagerUser(props) {
                   <td>
                     {item.enabled ? (
                       <Tooltip title="Chặn">
-                        <ConfirmPopup
-                          variant="link"
-                          width="70px"
-                          height="25px"
-                          btnText={
-                            <i className="far fa-user-slash text-danger"></i>
-                          }
-                          content={`Bạn chắc chắn muốn chặn ${item.username?item.username:item.phone} ?`}
-                          onConfirm={() => handleSwitchStatus(item)}
-                        />
+                        <div>
+                          <ConfirmPopup
+                            variant="link"
+                            width="70px"
+                            height="25px"
+                            btnText={
+                              <i className="far fa-user-slash text-danger"></i>
+                            }
+                            content={`Bạn chắc chắn muốn chặn ${
+                              item.username ? item.username : item.phone
+                            } ?`}
+                            onConfirm={() => handleSwitchStatus(item)}
+                          />
+                        </div>
                       </Tooltip>
                     ) : (
                       <Tooltip title="Bỏ chặn">
-                        <ConfirmPopup
-                          variant="link"
-                          width="70px"
-                          height="25px"
-                          btnText={<i className="far fa-user text-success"></i>}
-                          content={`Bạn chắc chắn muốn bỏ chặn ${item.username?item.username:item.phone} ?`}
-                          onConfirm={() => handleSwitchStatus(item)}
-                        />
+                        <div>
+                          <ConfirmPopup
+                            variant="link"
+                            width="70px"
+                            height="25px"
+                            btnText={
+                              <i className="far fa-user text-success"></i>
+                            }
+                            content={`Bạn chắc chắn muốn bỏ chặn ${
+                              item.username ? item.username : item.phone
+                            } ?`}
+                            onConfirm={() => handleSwitchStatus(item)}
+                          />
+                        </div>
                       </Tooltip>
                     )}
                   </td>

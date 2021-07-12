@@ -11,6 +11,8 @@ import { updateRoles } from "utils/user";
 import * as Yup from "yup";
 import { Redirect } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
+import Fishing from "assets/images/fishing.jpg";
+
 const EXISTED_PHONE_STATUS = 422;
 function Register(props) {
   const [info, setInfo] = useState();
@@ -38,12 +40,9 @@ function Register(props) {
         allowed ? (
           <Redirect exact from={DEFINELINK.register} to={DEFINELINK.home} />
         ) : (
-          <div className="register">
+          <div className="register container">
             <div className="register-big-image">
-              <img
-                src="https://i.pinimg.com/564x/d5/22/3f/d5223f9a7ffd85e69e8176030c745892.jpg"
-                alt=""
-              />
+              <img src={Fishing} alt="" />
             </div>
             {component[onTab].component}
           </div>

@@ -30,7 +30,7 @@ function ProductShow(props) {
         <div className="flex-card-row">
           <div className="product-card-row">
             <div className="product-list">
-              {products.productOutList.length <= 0 && <p>Không có sản phẩm </p>}
+              {products?.productOutList?.length <= 0 && <p>Không có sản phẩm </p>}
               {products.productOutList &&
                 products.productOutList.map((item, i) => (
                   <CardProduct product={item} key={`card-prod-${i}`} />

@@ -16,6 +16,7 @@ import defineAbilityFor from "ability/ability";
 import { useContext } from "react";
 import { fetchRoles, updateRoles } from "utils/user";
 import DEFINELINK from "routes/define-link";
+import Fishing from "assets/images/fishing.jpg";
 function Login() {
   const history = useHistory();
   //context
@@ -103,10 +104,10 @@ function Login() {
   }
 
   return (
-    <div className="login">
+    <div className="container login">
       <div className="login-big-image">
         <img
-          src="https://i.pinimg.com/564x/d5/22/3f/d5223f9a7ffd85e69e8176030c745892.jpg"
+          src={Fishing}
           alt="bg"
         />
       </div>

@@ -10,6 +10,9 @@ const ManagerUser = React.lazy(() =>
 const NoPermistion = React.lazy(() =>
   import("components/error-notify/NoPermistion")
 );
+const ManagerUserDetail = React.lazy(() =>
+  import("manager-page/component/managerUser/ManagerUserDetail")
+);
 function ManagerUserRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;
@@ -19,6 +22,7 @@ function ManagerUserRoute() {
         allowed ? (
           <Switch>
             <Route exact path={path} component={ManagerUser} />
+            <Route path={path+DEFINELINK.managementUserDetail} component={ManagerUserDetail} />
             <Route component={NotFound} />
           </Switch>
         ) : (

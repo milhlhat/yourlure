@@ -65,7 +65,7 @@ function ManagerStaffAddNew(props) {
       <div className="bg-box bg-shadow">
         <h3>Thêm nhân viên mới</h3>
         <hr />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="mx-5">
           <label htmlFor="username">Tên</label>
           <input
             className="form-control"

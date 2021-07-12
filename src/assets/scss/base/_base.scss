@@ -12,8 +12,8 @@ input::-ms-clear {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 2px grey;
-  border-radius: 10px;
+  // box-shadow: inset 0 0 2px grey;
+  // border-radius: 10px;
 }
 
 /* Handle */
@@ -129,4 +129,7 @@ body {
 .bottom-line {
   width: 100px;
   border-bottom: 2px solid $primary;
+}
+.content-fit{
+  object-fit: contain;
 }

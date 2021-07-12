@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { setCartGuest } from "redux/cart/cart-guest";
+import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
 
 function ProductAction(props) {
@@ -7,12 +11,15 @@ function ProductAction(props) {
   const [color, setColor] = useState();
   const [price, setPrice] = useState();
   let takeOut = 0;
+  const { register, getValues, setValue } = useForm();
   const { product } = props;
   const decrement = () => {
     Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
   };
   const increment = () => {
-    Number(quantity) >= takeOut ? setQuantity(takeOut) : setQuantity(Number(quantity) + 1);
+    Number(quantity) >= takeOut
+      ? setQuantity(takeOut)
+      : setQuantity(Number(quantity) + 1);
     // setQuantity(Number(quantity) + 1);
   };
   function handleChooseColor(index) {
@@ -21,13 +28,36 @@ function ProductAction(props) {
   function handleChangePrice(value) {
     setPrice(value ? value : product.defaultPrice);
   }
-
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    let data = {
+      customModelId: null,
+      productId: product.productId,
+      quantity: quantity,
+      variantId: color,
+      price:product.defaultPrice,
+      variantName:color,
+      weight: getValues("weight"),
+    };
+    if (data.weight > product.maxWeight || data.weight < product.minWeight) {
+      alert("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
+      setValue("weight", product.defaultWeight);
+    } else {
+      // console.log(data);
+      // let fin=[data]
+      // cartData.push(data);
+      const action = setCartGuest(data);
+      dispatch(action);
+      alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`)
+    }
+  };
   useEffect(() => {
     setColor(
-      product && product.variantCollection[0]
+      product?.variantCollection[0]
         ? product.variantCollection[0].variantId
         : ""
     );
+    setValue("weight", product?.defaultWeight);
     setPrice(product ? product.defaultPrice : "");
   }, [product]);
   return (
@@ -38,10 +68,7 @@ function ProductAction(props) {
       <div className="">
         {product == null
           ? "price"
-          : Number(price).toLocaleString(undefined, {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 2,
-            })}{"\u20AB"}
+          : convertToVND(price)}
       </div>
       <div className="tab p-3">
         <div className="buy-tab p-1">
@@ -61,6 +88,7 @@ function ProductAction(props) {
         <span>
           Trọng lượng:{" "}
           <input
+            {...register("weight")}
             type="number"
             defaultValue={product ? product.defaultWeight : ""}
             min={product ? product.minWeight : ""}
@@ -73,46 +101,47 @@ function ProductAction(props) {
       <div className="product-choose-color">
         <h5>Mã màu: {color}</h5>
         <div className="choose-color">
-          {product &&
-            product.variantCollection.map((value, index) => (
+          {product?.variantCollection?.map((value, index) => (
+            <div
+              key={index}
+              className={`box-choose `}
+              onClick={() => {
+                handleChooseColor(product.variantCollection[index].variantId);
+                handleChangePrice(
+                  product.variantCollection[index].newPrice
+                    ? product.variantCollection[index].newPrice
+                    : null
+                );
+              }}
+            >
               <div
-                key={index}
-                className={`box-choose `}
-                onClick={() => {
-                  handleChooseColor(product.variantCollection[index].variantId);
-                  handleChangePrice(
-                    product.variantCollection[index].newPrice
-                      ? product.variantCollection[index].newPrice
-                      : null
-                  );
-                }}
+                className={`box-color m-1 ${value.variantId} ${
+                  product.variantCollection[index].variantId == color
+                    ? "clicked-color"
+                    : ""
+                }`}
               >
-                <div
-                  className={`box-color m-1 ${value.variantId} ${
-                    product.variantCollection[index].variantId == color
-                      ? "clicked-color"
-                      : ""
-                  }`}
-                >
-                  <img
-                    src={
-                      product.variantCollection[index].imageUrl
-                        ? product.variantCollection[index].imageUrl
-                        : product.imageCollection[0].linkImage
-                    }
-                    alt="lỗi"
-                  />
-                </div>
-                <span className="d-none">
-                  {" "}
-                  {product.variantCollection[index].variantId == color
-                    ? (takeOut = product.variantCollection[index].quantity)
-                    : ""}
-                </span>
+                <img
+                  src={
+                    product.variantCollection[index].imageUrl
+                      ? product.variantCollection[index].imageUrl
+                      : product.imageCollection[0].linkImage
+                  }
+                  alt="ảnh sản phẩm"
+                />
               </div>
-            ))}
+              <span className="d-none">
+                {" "}
+                {product.variantCollection[index].variantId == color
+                  ? (takeOut = product.variantCollection[index].quantity)
+                  : ""}
+              </span>
+            </div>
+          ))}
         </div>
-        <span>{takeOut <= 0 ? "Hết hàng" : "còn "+takeOut+" sản phẩm"}</span>
+        <span>
+          {takeOut <= 0 ? "Hết hàng" : "còn " + takeOut + " sản phẩm"}
+        </span>
       </div>
       <div className="product-quantity mt-4 row">
         <h5>Số lượng:</h5>
@@ -121,6 +150,7 @@ function ProductAction(props) {
             &mdash;
           </button>
           <input
+            {...register("quantity")}
             type="number"
             className="input-quickview"
             value={quantity}
@@ -133,8 +163,12 @@ function ProductAction(props) {
       </div>
 
       <div className="product-buy mt-5">
-        <YLButton variant="primary" value="Thêm vào giỏ hàng"></YLButton>
-        <YLButton variant="light" value="Mua ngay"></YLButton>
+        <div onClick={() => handleAddToCart()}>
+          <YLButton variant="light" value="Mua ngay"></YLButton>
+        </div>
+        <div className="ms-2" onClick={() => handleAddToCart()}>
+          <YLButton variant="primary" value="Thêm vào giỏ hàng"></YLButton>
+        </div>
       </div>
     </div>
   );
