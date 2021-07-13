@@ -7,6 +7,7 @@ import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +37,12 @@ public class AdminUserControllerImpl implements AdminUserController {
     @Override
     public ResponseEntity<Optional<AdminUserDetailDtoOut>> getUser(Long id) {
         Optional<AdminUserDetailDtoOut> result = userService.getUser(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(Long id) {
+        List<UserAddressDtoOut> result = userService.adminGetAddressUser(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

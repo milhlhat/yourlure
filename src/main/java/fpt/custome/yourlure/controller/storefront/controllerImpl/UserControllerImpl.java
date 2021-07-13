@@ -110,12 +110,6 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(Long id) {
-        List<UserAddressDtoOut> result = userService.adminGetAddressUser(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @Override
     public Set<Role> getRoles(HttpServletRequest req) {
         return userService.getRoles(req);
     }

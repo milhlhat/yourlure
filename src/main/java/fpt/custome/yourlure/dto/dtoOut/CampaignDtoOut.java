@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class CampaignDtoOut {
 
-    private Long campaignID;
+    private Long campaignId;
     private String description;
     private Date startDate;
     private Date endDate;

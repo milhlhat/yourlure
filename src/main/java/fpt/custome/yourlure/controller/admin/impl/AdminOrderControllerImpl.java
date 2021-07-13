@@ -41,7 +41,7 @@ public class AdminOrderControllerImpl implements AdminOrderController {
     }
 
     @Override
-    public ResponseEntity<Optional<AdminOrderDtoOut>> getOrderByUserId(Filter filter) {
+    public ResponseEntity<Optional<AdminOrderDtoOut>> getListOrderByUserId(Filter filter) {
         Optional<AdminOrderDtoOut> result = orderService.getOrderByUserId(Long.parseLong(filter.getKeyword().trim()), PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);

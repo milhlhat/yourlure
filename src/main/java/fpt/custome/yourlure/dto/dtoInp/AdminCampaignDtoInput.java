@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,6 +19,6 @@ public class AdminCampaignDtoInput {
     private Date endDate;
     private String banner;
     private String content;
-    private Collection<String> imageCollection;
+    private List<String> imageCollection;
 
 }

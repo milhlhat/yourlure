@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.DiscountVoucherDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
@@ -75,26 +76,38 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper mapper;
 
     @Override
-    public Integer verifyDiscountCode(String discountCode) throws Exception {
+    public DiscountVoucherDtoOutput verifyDiscountCode(String discountCode) throws Exception {
         DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
-        return verifyDiscountCode(voucher);
+        DiscountVoucherDtoOutput result = DiscountVoucherDtoOutput.builder()
+                .type(voucher.getType())
+                .discountValue( verifyDiscountCode(voucher))
+                .build();
+        return result;
     }
-    public Integer verifyDiscountCode(DiscountVoucher voucher) throws Exception {
+    public float verifyDiscountCode(DiscountVoucher voucher) throws Exception {
         if (voucher != null) {
-            if (voucher.getStart_date().compareTo(new Date()) < 0) {
+            if (voucher.getStart_date().compareTo(new Date()) > 0) {
                 // the voucher is not start
                 throw new Exception("voucher is not start!");
             }
-            if (voucher.getEnd_date().compareTo(new Date()) > 0) {
+            if (voucher.getEnd_date().compareTo(new Date()) < 0) {
                 // expire voucher
                 throw new Exception("voucher is expired!");
             }
-            if (voucher.getUsed() >= voucher.getUsageLimit()) {
-                throw new Exception("voucher is over used!");
+            if (voucher.getType().equals("Free Ship")){
+                return 0;
+            }else{
+                if (voucher.getType().equals("Giá Trị")){
+                    return voucher.getDiscountValue()*1000;
+                }else{
+                    if (voucher.getDiscountValue() != 0)
+                    return voucher.getDiscountValue()/100;
+                    else
+                        throw new Exception("voucher must not zero(0)!");
+                }
             }
-            return voucher.getDiscountValue();
         }
-        return 0;
+        return -1;
     }
 
     protected Payment verifyPayment(Long paymentId) {
@@ -165,7 +178,7 @@ public class OrderServiceImpl implements OrderService {
         // check condition and apply discount
         DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
         if(calculateItemPrices(items) >= voucher.getMinSpentAmount()){
-            order.setDiscount(verifyDiscountCode(voucher));
+            order.setDiscount( verifyDiscountCode(voucher));
         }
 
         order.setOrderLineCollection(orderLines);
@@ -182,7 +195,7 @@ public class OrderServiceImpl implements OrderService {
                 .user(user)
                 .orderDate(new Date())
                 .phone(user.getPhone())
-                .discount(verifyDiscountCode(orderUserDtoInput.getDiscountCode()))
+                .discount(verifyDiscountCode(orderUserDtoInput.getDiscountCode()).getDiscountValue())
                 .payment(verifyPayment(orderUserDtoInput.getPaymentId()))
                 .receiverName(user.getUsername())
                 .note(orderUserDtoInput.getNote())

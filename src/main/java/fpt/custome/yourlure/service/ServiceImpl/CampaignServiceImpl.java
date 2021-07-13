@@ -15,7 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,12 +51,14 @@ public class CampaignServiceImpl implements CampaignService {
     public Optional<AdminCampaignDtoOut> adminGetAll(String keyword, Pageable pageable) {
         Page<Campaign> list = campaignRepos.findByBannerContainsIgnoreCase(keyword, pageable);
         AdminCampaignDtoOut result = AdminCampaignDtoOut.builder().build();
+        List<CampaignDtoOut> campaignDtoOuts = new ArrayList<>();
         for (Campaign item : list) {
             CampaignDtoOut dtoOut = mapper.map(item, CampaignDtoOut.class);
-            result.getCampaignDtoOuts().add(dtoOut);
+            campaignDtoOuts.add(dtoOut);
         }
         result.setTotalItem(list.getTotalPages());
         result.setTotalPage(list.getTotalPages());
+        result.setCampaignDtoOuts(campaignDtoOuts);
         return Optional.of(result);
     }
 
@@ -70,6 +74,7 @@ public class CampaignServiceImpl implements CampaignService {
         return Optional.empty();
     }
 
+    @Transactional
     @Override
     public Optional<Boolean> update(Long idInput, AdminCampaignDtoInput adminCampaignDtoInput) {
         try {
@@ -101,24 +106,51 @@ public class CampaignServiceImpl implements CampaignService {
         return Optional.of(true);
     }
 
+    @Transactional
     @Override
     public Optional<Boolean> save(AdminCampaignDtoInput adminCampaignDtoInput) {
         Campaign campaign;
         if (adminCampaignDtoInput != null) {
             campaign = mapper.map(adminCampaignDtoInput, Campaign.class);
-            if (!adminCampaignDtoInput.getImageCollection().isEmpty()){
+            Campaign campaignSaved = campaignRepos.save(campaign);
+
+            if (adminCampaignDtoInput.getImageCollection() != null) {
                 //add list image product
-                List<String> imageLink = (List<String>) adminCampaignDtoInput.getImageCollection();
+                List<String> imageLink = adminCampaignDtoInput.getImageCollection();
                 for (String link : imageLink) {
                     Image image = Image.builder()
-                            .campaign(campaign)
+                            .campaign(campaignSaved)
                             .linkImage(link)
                             .build();
                     imageRepos.save(image);
                 }
             }
-            campaignRepos.save(campaign);
             return Optional.of(true);
         } else return Optional.of(false);
+    }
+
+    @Transactional
+    @Override
+    public Optional<Boolean> delete(Long id) {
+        try {
+            Optional<Campaign> campaign = campaignRepos.findById(id);
+
+            //check id is present
+            if (campaign.isPresent()) {
+                if (campaign.get().getStartDate() == null || campaign.get().getEndDate() == null ||
+                        (campaign.get().getStartDate().compareTo(new Date()) < 0 && campaign.get().getEndDate().compareTo(new Date()) > 0)
+                        ) {
+                    campaignRepos.deleteById(id);
+                    return Optional.of(true);
+                } else {
+                    // the voucher is not start
+                    throw new Exception("chiến dịch đang thực hiện không thể xóa!");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Optional.of(false);
+        }
+        return Optional.of(false);
     }
 }

@@ -401,8 +401,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean removeUserAddress(Long userAddressId) {
         try {
-            userAddressRepos.deleteById(userAddressId);
-            return true;
+            UserAddress userAddress = userAddressRepos.getById(userAddressId);
+            if (!userAddress.getIsDefault()){
+                userAddressRepos.deleteById(userAddressId);
+                return true;
+            }
+           return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

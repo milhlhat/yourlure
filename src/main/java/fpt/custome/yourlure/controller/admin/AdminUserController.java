@@ -5,11 +5,12 @@ import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping(path = "/admin/user")
@@ -22,6 +23,10 @@ public interface AdminUserController {
     @GetMapping("/find-by-id")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<AdminUserDetailDtoOut>> getUser(@RequestParam Long id);
+
+    @GetMapping("/get-address-user/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<List<UserAddressDtoOut>> getAddressUser(@PathVariable Long id);
 
 
 //    @GetMapping(value = "/{phone}")
