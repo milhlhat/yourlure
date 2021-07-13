@@ -128,7 +128,7 @@ public class CartServiceImpl implements CartService {
         for (CartItem cartItem : cartItems) {
             if(cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
                 cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
-                cart = cartRepos.save(cart);
+                cartItemRepos.save(cartItem);
                 return true;
             }
         }
@@ -138,9 +138,7 @@ public class CartServiceImpl implements CartService {
                 .quantity(addToCartDto.getQuantity())
                 .weight(addToCartDto.getWeight())
                 .build();
-        cartItems.add(item);
-        cart.setCartItemCollection(cartItems);
-        cart = cartRepos.save(cart);
+        cartItemRepos.save(item);
 
         return true;
 
@@ -160,7 +158,7 @@ public class CartServiceImpl implements CartService {
             for (CartItem cartItem : cartItems) {
                 if(cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
                     cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
-                    cart = cartRepos.save(cart);
+                    cartItemRepos.save(cartItem);
                     return true;
                 }
             }
@@ -172,10 +170,7 @@ public class CartServiceImpl implements CartService {
                     .quantity(addToCartDto.getQuantity())
                     .weight(addToCartDto.getWeight())
                     .build();
-            cartItems.add(item);
-            cart.setCartItemCollection(cartItems);
-            cart = cartRepos.save(cart);
-
+            cartItemRepos.save(item);
             return true;
         }
         return false;
