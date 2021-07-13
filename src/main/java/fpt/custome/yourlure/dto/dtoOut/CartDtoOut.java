@@ -31,6 +31,7 @@ public class CartDtoOut {
         private Integer quantity;
         private Long variantId;
         private String variantName;
+        private String variantImg;
         private Float weight;
         private Float price;
 

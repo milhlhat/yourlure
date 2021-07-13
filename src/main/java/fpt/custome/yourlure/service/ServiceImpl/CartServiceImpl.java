@@ -107,6 +107,7 @@ public class CartServiceImpl implements CartService {
                 Variant variant = variantRepos.getById(item.getVariantId());
                 itemDtoOut.setVariantId(variant.getVariantId());
                 itemDtoOut.setVariantName(variant.getVariantName());
+                itemDtoOut.setVariantImg(variant.getImageUrl());
                 itemDtoOut.setProductId(variant.getProduct().getProductId());
                 itemDtoOut.setProductName(variant.getProduct().getProductName());
                 itemDtoOut.setPrice(variant.getNewPrice());
@@ -169,6 +170,7 @@ public class CartServiceImpl implements CartService {
             // cart item exist
             for (CartItem cartItem : cartItems) {
                 if(cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
+
                     cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
                     cartItemRepos.save(cartItem);
                     return true;
