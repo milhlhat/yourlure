@@ -25,7 +25,15 @@ const ManagerProductAPI = {
 
     return AxiosClient.post(url, formData, config);
   },
+  creatProduct: (param) => {
+    const url = "/admin/product/save";
+    return AxiosClient.post(url, param);
+  },
 };
-export const { getProductByID, getProductByFilter, uploadMultiFiles } =
-  ManagerProductAPI;
+export const {
+  getProductByID,
+  getProductByFilter,
+  uploadMultiFiles,
+  creatProduct,
+} = ManagerProductAPI;
 export default ManagerProductAPI;

@@ -1,56 +1,112 @@
+@import "src/assets/scss/base/variable";
+
 .product-add-new-form {
   display: flex;
   justify-content: space-between;
+
   & input {
   }
-  & table {
+
+  .form-edit {
     width: 100%;
     border-spacing: 15px;
+
     & td {
       padding: 0 15px;
+      width: 50%;
+      vertical-align: top;
+
     }
+
   }
 
-  & .cate-fish{
+  & .cate-fish {
     overflow-y: auto;
     overflow-x: hidden;
     height: 50vh;
   }
-  
+
   & .submit-button-form {
     display: flex;
     justify-content: space-between;
     padding: 20px;
 
   }
+
   & .product-images-add {
     display: flex;
     justify-content: space-between;
   }
+
+  & .boder-choose-texture {
+    border: 1px solid #ADC4ADFF;
+    padding: 5px 25px 5px 0;
+    border-radius: 2px;
+    display: flex;
+    & .img-item {
+
+      & img {
+        width: 35px;
+        height: 35px;
+        margin-left: 10px;
+      }
+
+      & button {
+        margin-left: -35px;
+        width: 35px;
+        padding: 0;
+        font-size: smaller;
+        visibility: hidden;
+      }
+    }
+  }
+
   & .input-customize-weight {
     width: 100px;
   }
+
   & .manager-product-imgList {
     display: flex;
     flex-wrap: wrap;
+
     & .img-item {
       & img {
         width: 50px;
         height: 50px;
         margin: 10px;
       }
+
       & button {
         margin-left: -60px;
         visibility: hidden;
       }
     }
   }
+
   & .img-item:hover {
     & button {
       visibility: visible;
     }
-    & img{
+
+    & img {
       opacity: 0.3;
     }
+  }
+}
+
+.side-bar-right {
+  height: fit-content;
+}
+
+.table-material {
+  width: 100%;
+  text-align: center;
+
+  & thead {
+    font-weight: 500;
+  }
+
+  .mate-name {
+    height: 30px;
   }
 }
