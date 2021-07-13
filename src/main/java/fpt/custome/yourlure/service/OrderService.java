@@ -6,6 +6,7 @@ import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.entity.Order;
+import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,4 +34,6 @@ public interface OrderService {
     List<AdminOrderDtoOut.OrderDtoOut> mapCustomData(List<Order> list);
 
     Optional<AdminOrderDtoOut> getOrderByUserId(Long userId, Pageable pageable);
+
+    Float calculateCustomizePrice(CustomizeModel customizeModel);
 }

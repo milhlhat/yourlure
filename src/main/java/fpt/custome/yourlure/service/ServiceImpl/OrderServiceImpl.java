@@ -214,6 +214,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
     public Float calculateCustomizePrice(CustomizeModel customizeModel){
         // TODO: calculate product price include custom model
         // get customize price

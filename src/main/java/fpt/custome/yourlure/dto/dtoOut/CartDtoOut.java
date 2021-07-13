@@ -22,7 +22,18 @@ public class CartDtoOut {
     @AllArgsConstructor
     public static class CartItemDtoOut{
 
+        private Long cartItemId;
+        private Long customizeId;
+        private String thumbnailUrl;
+        private String customizeName;
         private Long productId;
+        private String productName;
+        private Integer quantity;
+        private Long variantId;
+        private String variantName;
+        private Float weight;
+        private Float price;
+
 
     }
 }

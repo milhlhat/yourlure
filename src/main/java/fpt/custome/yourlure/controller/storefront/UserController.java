@@ -120,6 +120,6 @@ public interface UserController {
     @PostMapping("/reset-password")
     ResponseEntity<Object> resetPwd(@RequestParam @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone,
                                     @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String newPwd,
-                                    @RequestParam @NotBlank @Size(min = 6, max = 6, message = "otp just has: 6 characters") Integer otp);
+                                    @RequestParam Integer otp);
 
 }

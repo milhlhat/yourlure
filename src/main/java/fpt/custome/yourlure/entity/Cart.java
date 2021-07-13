@@ -28,7 +28,7 @@ public class Cart {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart")
     // MapopedBy trỏ tới tên biến cart ở trong cartItem.
     //1 cart có nhiều cartItem
     private Collection<CartItem> cartItemCollection;
