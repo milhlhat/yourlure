@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -54,7 +51,22 @@ public class CartServiceImpl implements CartService {
 
         User user = userService.whoami(req);
         Optional<Cart> cart = cartRepos.findCartByUserUserId(user.getUserId());
-        return cart.map(this::cartToCartDto).orElse(null);
+        if(cart.isPresent()){
+            List<CartItem> items = (List<CartItem>) cart.get().getCartItemCollection();
+            items.sort(new Comparator<CartItem>() {
+                @Override
+                public int compare(CartItem o1, CartItem o2) {
+                    return o2.getCartItemId().compareTo(o1.getCartItemId());
+                }
+
+                @Override
+                public boolean equals(Object obj) {
+                    return false;
+                }
+            });
+            return cart.map(this::cartToCartDto).orElse(null);
+        }
+        return null;
 
     }
 

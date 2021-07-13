@@ -88,7 +88,8 @@ public interface UserController {
     UserResponseDTO whoami(HttpServletRequest req);
 
     @GetMapping("/refresh")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+
+
     String refresh(HttpServletRequest req);
 
     @PostMapping("/signup")

@@ -13,7 +13,6 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class AddToCartDto {
 
-    private Long productId;
     private Long variantId;
     @Min(1)
     private Integer quantity;
