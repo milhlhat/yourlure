@@ -21,7 +21,7 @@ function ManagerUser(props) {
     keyword: "",
     limit: totalItem,
     page: 0,
-    sortBy: "userId",
+    sortBy: "user_id",
     typeSearch: "",
   });
   const [userList, setUserList] = useState({

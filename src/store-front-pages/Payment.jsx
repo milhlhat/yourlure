@@ -1,5 +1,4 @@
 import { AbilityContext, Can } from "ability/can";
-import data from "assets/dumy-data/data-product.js";
 import "assets/scss/scss-pages/payment.scss";
 import CartRowProduct from "components/cart/CartRowProduct";
 import CustomerAddressInput from "components/payment/CustomerAddressInput";
@@ -13,9 +12,9 @@ import DEFINELINK from "../routes/define-link";
 import { convertToVND, totalPrice } from "../utils/format-string";
 
 function Payment(props) {
-  // const cartData=props.location.cartData;
+  // const cartData=props.location;
+  console.log(props.location);
   const cartData = useSelector((state) => state.cartGuest.carts);
-  const carts = data.cart();
   const methods = useForm();
   const shipping=25000;
   const {
@@ -114,7 +113,7 @@ function Payment(props) {
                   </tr>
                   <tr>
                     <th className="text-start">Tổng cộng:</th>
-                    <td className="text-end">{convertToVND(cartData?totalPrice(cartData):0+shipping)}</td>
+                    <td className="text-end">{convertToVND((cartData?totalPrice(cartData):0)+shipping)}</td>
                   </tr>
                 </tbody>
               </table>

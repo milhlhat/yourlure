@@ -36,7 +36,7 @@ function ManagerSort(props) {
               </div>
               <div className="col-8">
                 <select
-                  className="form-select select-sort pointer border-0 ms-2"
+                  className="form-select select-sort pointer ms-2"
                   onChange={(e) => handleSelectSort(e)}
                   
                 >

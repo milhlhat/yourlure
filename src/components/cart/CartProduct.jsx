@@ -1,45 +1,85 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import data from "assets/dumy-data/data-product.js";
 import CartRowProduct from "./CartRowProduct";
 import "assets/scss/scss-pages/card.scss";
 import { Link } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLButon from "components/custom-field/YLButton";
-import { Can } from "ability/can";
+import { AbilityContext, Can } from "ability/can";
 import { useSelector } from "react-redux";
 import YLButton from "components/custom-field/YLButton";
 import { convertToVND } from "utils/format-string";
+import CartAPI from "api/user-cart-api";
 function CartProduct(props) {
-  const cartData = useSelector((state) => state.cartGuest.carts);
-  console.log(cartData);
+  const ability = useContext(AbilityContext);
+  const isLoggedIn = ability.can("login", "website");
+  if (isLoggedIn) {
+  }
+  const state = useSelector((state) => state.cartGuest.carts);
+  const [cart, setCart] = useState({
+    data: null,
+    isSuccess: true,
+    isLoading: false,
+  });
+  const fetchCart = async () => {
+    setCart({ ...cart, isLoading: true });
+    try {
+      const response = await CartAPI.getCart();
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setCart({
+          data: response.cartItems,
+          isSuccess: true,
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      setCart({
+        ...cart,
+        isSuccess: false,
+        isLoading: false,
+      });
+      console.log("fail to fetch cart ");
+    }
+  };
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCart();
+    } else {
+      setCart({...cart,data:state});
+    }
+  }, [state]);
+  console.log(cart?.data);
   const shiping = 25000;
   const [listTotal, setListTotal] = useState({
-    data:[]
+    data: [],
   });
   console.log(listTotal);
-  const totalPrice=(data)=>{
+  const totalPrice = (data) => {
     let total = data.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
     return total;
-  }
+  };
   useEffect(() => {}, []);
   return (
     <div className="container">
-      {console.log(cartData)}
-      {cartData?.length ? (
+      {console.log(cart?.data)}
+      {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">
             <div className="cart-left col-lg-8  col-md-7 col-sm-12 bg-box bg-shadow  p-3">
               <span className="title">GIỎ HÀNG</span>
               <hr />
-              {cartData?.map((item, index) => (
+              {cart?.data?.map((item, index) => (
                 <CartRowProduct
                   item={item}
                   key={"cart-row" + index}
                   setListTotal={setListTotal}
                   listTotal={listTotal}
                   canChange={true}
+                  fetchCart={fetchCart}
                 />
               ))}
             </div>
@@ -50,7 +90,9 @@ function CartProduct(props) {
                   <tbody>
                     <tr>
                       <td className="text-bold">TỔNG PHỤ:</td>
-                      <td className="text-end">{convertToVND(totalPrice(cartData))}</td>
+                      <td className="text-end">
+                        {convertToVND(totalPrice(cart?.data))}
+                      </td>
                     </tr>
                     <tr>
                       <td className="text-bold">PHÍ VẬN CHUYỂN:</td>
@@ -58,17 +100,20 @@ function CartProduct(props) {
                     </tr>
                     <tr>
                       <td className="text-bold">TỔNG CỘNG:</td>
-                      <td className="text-end">{convertToVND(totalPrice(cartData)+shiping)}</td>
+                      <td className="text-end">
+                        {convertToVND(totalPrice(cart?.data) + shiping)}
+                      </td>
                     </tr>
                     <tr>
                       <td colSpan="2">
                         <YLButon
                           variant="primary"
-                          to={{pathname:"/cart/payment",cartData:cartData}}
+                          to={{ pathname: "/cart/payment", cart: cart?.data }}
                           width="100%"
                         >
                           Tiếp tục
                         </YLButon>
+                        {/* <Link to={`/cart/payment?stated=${cart}`}>Tiếp tục</Link> */}
                       </td>
                     </tr>
                     <tr>

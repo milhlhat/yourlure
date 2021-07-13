@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { AbilityContext } from "ability/can";
+import CartAPI from "api/user-cart-api";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,6 +9,8 @@ import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
 
 function ProductAction(props) {
+  const ability = useContext(AbilityContext);
+  const isLoggedIn = ability.can("login", "website");
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState();
   const [price, setPrice] = useState();
@@ -29,14 +33,15 @@ function ProductAction(props) {
     setPrice(value ? value : product.defaultPrice);
   }
   const dispatch = useDispatch();
-  const handleAddToCart = () => {
+  
+  const handleAddToCart = async () => {
     let data = {
       customModelId: null,
       productId: product.productId,
       quantity: quantity,
       variantId: color,
-      price:product.defaultPrice,
-      variantName:color,
+      price: product.defaultPrice,
+      variantName: color,
       weight: getValues("weight"),
     };
     if (data.weight > product.maxWeight || data.weight < product.minWeight) {
@@ -46,9 +51,24 @@ function ProductAction(props) {
       // console.log(data);
       // let fin=[data]
       // cartData.push(data);
-      const action = setCartGuest(data);
-      dispatch(action);
-      alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`)
+      if (isLoggedIn) {
+        try {
+          const response = await CartAPI.addVariant(data);
+          
+          if (response.error) {
+            throw new Error(response.error);
+          } else {
+            alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+          }
+        } catch (error) {
+          alert("Thêm sản phẩm thất bại");
+          console.log("fail to fetch add category");
+        }
+      } else {
+        const action = setCartGuest(data);
+        dispatch(action);
+      alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+      }
     }
   };
   useEffect(() => {
@@ -65,12 +85,8 @@ function ProductAction(props) {
       <span className="title">
         {product == null ? "name" : product.productName}
       </span>
-      <div className="">
-        {product == null
-          ? "price"
-          : convertToVND(price)}
-      </div>
-      <div className="tab p-3">
+      <div className="">{product == null ? "price" : convertToVND(price)}</div>
+      <div className="tab py-3">
         <div className="buy-tab p-1">
           <span>MUA HÀNG</span>
         </div>
@@ -78,15 +94,15 @@ function ProductAction(props) {
           <a href="#more-description">CHI TIẾT</a>
         </div>
       </div>
-      <div className="product-description mx-2 mx-md-4 ">
+      <div className="product-description">
         {product ? product.description : ""}
       </div>
-      <div className="product-parameter my-md-5 my-3 mx-2 mx-md-4">
+      <div className="product-parameter my-md-5 my-3">
         <h3>Thông số:</h3>
         <span>Chiều dài: {product ? product.length : ""} cm</span>
         <br />
         <span>
-          Trọng lượng:{" "}
+          Trọng lượng(g):{" "}
           <input
             {...register("weight")}
             type="number"
@@ -147,7 +163,7 @@ function ProductAction(props) {
         <h5>Số lượng:</h5>
         <div className="product-details-quantity d-flex">
           <button className="quantity-input" onClick={decrement}>
-            &mdash;
+            <i className="fal fa-minus"></i>
           </button>
           <input
             {...register("quantity")}
@@ -157,7 +173,7 @@ function ProductAction(props) {
             required
           />
           <button className="quantity-input" onClick={increment}>
-            &#xff0b;
+            <i className="fal fa-plus"></i>
           </button>
         </div>
       </div>

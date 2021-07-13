@@ -20,7 +20,7 @@ function ManagerStaff(props) {
     keyword: "",
     limit: totalItem,
     page: 0,
-    sortBy: "userId",
+    sortBy: "user_id",
     typeSearch: "",
   });
   const [staffList, setStaffList] = useState({

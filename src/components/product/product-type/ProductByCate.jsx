@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFilter, saveFilter } from "utils/product";
 import { useHistory } from "react-router-dom";
 import ErrorLoad from "components/error-notify/ErrorLoad";
+import Carosel from "components/card/Carosel";
 ProductByCate.propTypes = {};
 
 function ProductByCate(props) {
@@ -53,6 +54,13 @@ function ProductByCate(props) {
             </div>
             <div className="flex-card-row">
               <div className="product-card-row mx-xl-5">
+                
+            {/* {cate.productCollection.length > 0 && (
+              <Carosel
+                products={cate.productCollection}
+                caroselId="newproduct"
+              />
+            )} */}
                 {cate.productCollection.slice(0, 4).map((product, indexx) => (
                   <CardProduct product={product} key={indexx} />
                 ))}

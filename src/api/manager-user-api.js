@@ -18,6 +18,18 @@ const ManagerUserApi = {
     const url = `admin/user/staff/save`;
     return AxiosClient.post(url, param);
   },
+  getOrderByUserId:(param)=>{
+    const url = `admin/order/user-orders/{userId}`;
+    return AxiosClient.post(url, param);
+  },
+  getUserById:(param)=>{
+    const url = `admin/user/find-by-id?id=${param}`;
+    return AxiosClient.get(url);
+  },
+  getAddressByUserId:(param)=>{
+    const url = `/admin/user/get-address-user/${param}`;
+    return AxiosClient.get(url);
+  },
 };
 export const { getAll } = ManagerUserApi;
 export default ManagerUserApi;

@@ -18,7 +18,7 @@ function ChangeQuantity(props) {
   return (
     <div className="product-details-quantity d-flex">
       <button className="quantity-input" onClick={decrement}>
-        &mdash;
+      <i className="fal fa-minus"></i>
       </button>
       <input
         type="number"
@@ -27,7 +27,7 @@ function ChangeQuantity(props) {
         required
       />
       <button className="quantity-input" onClick={increment}>
-        &#xff0b;
+      <i className="fal fa-plus"></i>
       </button>
     </div>
   );
