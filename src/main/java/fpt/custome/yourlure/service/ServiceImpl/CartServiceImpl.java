@@ -29,6 +29,9 @@ public class CartServiceImpl implements CartService {
     private ProductJpaRepos productJpaRepos;
 
     @Autowired
+    private VariantRepos variantRepos;
+
+    @Autowired
     private CartItemRepos cartItemRepos;
 
     @Autowired
@@ -52,30 +55,59 @@ public class CartServiceImpl implements CartService {
     public Cart addItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
         User user = userService.whoami(req);
         // check custom model is belong to current user or not
+//        if (user.getCustomizeModels()
+//                .stream()
+//                .map(CustomizeModel::getCustomizeId)
+//                .filter(id -> id.equals(addToCartDto.getCustomModelId()))
+//                .findAny().orElse(null) != null) {
+//
+//            Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
+//
+//            CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
+//            cartItem.setCart(cart);
+//            cartItem = cartItemRepos.save(cartItem);
+//
+//            if (cart.getCartItemCollection() != null) {
+//                cart.getCartItemCollection().add(cartItem);
+//            } else {
+//                cart.setCartItemCollection(Collections.singletonList(cartItem));
+//            }
+//            return cart;
+//        }else{
+//
+//        }
         for (CustomizeModel customizeModel : user.getCustomizeModels()) {
-            if(customizeModel.getCustomizeId().equals(addToCartDto.getCustomModelId())){
+            if (customizeModel.getCustomizeId().equals(addToCartDto.getCustomModelId())) {
                 Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
 
                 CartItem cartItem = mapper.map(addToCartDto, CartItem.class);
                 cartItem.setCart(cart);
                 cartItem = cartItemRepos.save(cartItem);
 
-                if(cart.getCartItemCollection() != null){
+                if (cart.getCartItemCollection() != null) {
                     cart.getCartItemCollection().add(cartItem);
-                }else{
+                } else {
                     cart.setCartItemCollection(Collections.singletonList(cartItem));
                 }
                 return cart;
             }
         }
-        throw new Exception("this model doesn't belong to you");
+
+        // add a variant to cart
+//        Optional<Variant> variant = variantRepos.findById(addToCartDto.getVariantId());
+//        if (variant.isPresent()) {
+//            CartItem cartItem =
+//        }
+
+        return null;
+
     }
 
     @Override
     public Cart removeItem(HttpServletRequest req, Long cartItemId) {
         User user = userService.whoami(req);
         Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
-        if(cart.getCartItemCollection() == null){
+        if (cart.getCartItemCollection() == null) {
             return cart;
         }
         cart.getCartItemCollection().removeIf(cartItem -> cartItem.getCartItemId().equals(cartItemId));
@@ -89,7 +121,7 @@ public class CartServiceImpl implements CartService {
             User user = userService.whoami(rq);
             Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
             CartItem item = cart.getCartItemCollection().stream().filter(cartItem -> cartItem.getCartItemId().equals(cartItemId)).findFirst().orElse(null);
-            if(item != null){
+            if (item != null) {
                 item.setQuantity(quantity);
                 item = cartItemRepos.save(item);
                 return true;
