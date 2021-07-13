@@ -68,10 +68,6 @@ public interface UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req);
 
-    @GetMapping("/get-address-user/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<List<UserAddressDtoOut>> getAddressUser(@PathVariable Long id);
-
     @GetMapping(value = "/roles")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF') or hasRole('ROLE_CUSTOMER')")
     @ApiOperation(value = "${UserController.roles}", response = UserResponseDTO.class, authorizations = {@Authorization(value = "apiKey")})

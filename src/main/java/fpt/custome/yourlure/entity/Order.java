@@ -56,7 +56,7 @@ public class Order {
     private User user;
 
     // todo: discount by % lúc nhận request là discount code. tính toán để có discount số tiền.
-    private Integer discount;
+    private Float discount;
 
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)

@@ -5,7 +5,6 @@ import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -56,8 +55,8 @@ public interface AdminOrderController {
      * @param filter
      * @return
      */
-    @PostMapping("/user-order-detail/{userId}")
-    ResponseEntity<Optional<AdminOrderDtoOut>> getOrderByUserId(@RequestBody Filter filter);
+    @PostMapping("/user-orders")
+    ResponseEntity<Optional<AdminOrderDtoOut>> getListOrderByUserId(@RequestBody Filter filter);
 
     /**
      * xóa order chỉ dành cho amdin

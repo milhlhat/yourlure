@@ -21,4 +21,6 @@ public interface CampaignService {
 
     Optional<Boolean> save( AdminCampaignDtoInput adminCampaignDtoInput);
 
+    Optional<Boolean> delete(Long id);
+
 }
