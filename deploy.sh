@@ -1,12 +1,9 @@
-# Build reactjs app with production mode 
+#pull new code
+git pull
+# Build reactjs app with production mode
 npm run build
 
-# Move to build folder
-cd build
+# Run static file at port 5000
+npm install -g serve
+serve -s build
 
-# Clone index.html into 200.html
-cp index.html 200.html
-
-# Start deploying via Surge
-# The command means deploy current folder to domain 
-surge . yourlure.surge.sh

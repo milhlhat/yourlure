@@ -6,16 +6,16 @@ import DEFINELINK from "routes/define-link";
 const userUtils = {
   getToken: async () => {
     try {
-      let loginAt = localStorage.getItem(userConfig.LOCAL_STORE_LOGIN_AT);
-      if (loginAt) {
-        const subTime = subtractDates(loginAt);
-        if (
-          subTime > userConfig.REQUEST_REFRESH_TIME &&
-          subTime < userConfig.STAY_LOGIN_TIME
-        ) {
-          await refreshToken();
-        }
-      }
+      // let loginAt = localStorage.getItem(userConfig.LOCAL_STORE_LOGIN_AT);
+      // if (loginAt) {
+      //   const subTime = subtractDates(loginAt);
+      //   if (
+      //     subTime > userConfig.REQUEST_REFRESH_TIME &&
+      //     subTime < userConfig.STAY_LOGIN_TIME
+      //   ) {
+      //     await refreshToken();
+      //   }
+      // }
       let accessToken = localStorage.getItem(
         userConfig.LOCAL_STORE_ACCESS_TOKEN
       );
