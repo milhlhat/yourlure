@@ -12,7 +12,7 @@ function CustomerAddress(props) {
     let ward = address.userWardName;
     let distric = address.userDistrictName;
     let province = address.userProvinceName;
-    return des + ", " + ward + ", " + ", " + distric + ", " + province;
+    return des + ", " + ward + ", " + distric + ", " + province;
   }
 
   const [address, setAddress] = useState({
