@@ -15,15 +15,15 @@ const ManagerUserApi = {
     return AxiosClient.get(url);
   },
   createAdminAccount: (param) => {
-    const url = `admin/user/staff/save`;
+    const url = `/admin/user/staff/save`;
     return AxiosClient.post(url, param);
   },
   getOrderByUserId:(param)=>{
-    const url = `admin/order/user-orders/{userId}`;
+    const url = `/admin/order/user-orders/{userId}`;
     return AxiosClient.post(url, param);
   },
   getUserById:(param)=>{
-    const url = `admin/user/find-by-id?id=${param}`;
+    const url = `/admin/user/find-by-id?id=${param}`;
     return AxiosClient.get(url);
   },
   getAddressByUserId:(param)=>{

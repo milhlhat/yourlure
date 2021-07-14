@@ -3,11 +3,11 @@ import queryString from 'query-string';
 
 const CampaignAPI = {
 	getAll: () => {
-		const url = `api/campaign/all`;
+		const url = `/api/campaign/all`;
 		return AxiosClient.get(url);
 	},
 	getById: (id) => {
-		const url = `api/campaign/${id}`;
+		const url = `/api/campaign/${id}`;
 		return AxiosClient.get(url);
 	},
 };
