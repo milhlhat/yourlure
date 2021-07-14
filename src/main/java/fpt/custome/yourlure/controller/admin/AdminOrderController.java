@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ public interface AdminOrderController {
      * @return
      */
     @PostMapping("/all-by-phone-or-name")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody @Valid AdminFilterDtoInput adminFilterDtoInput);
 
 //    /**
@@ -38,6 +40,7 @@ public interface AdminOrderController {
      * @return
      */
     @GetMapping("/get-user-order-detail/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Optional<AdminOrderDetailDtoOut>> getUserOrder(@PathVariable("userId") Long userId);
 
     /**
@@ -47,6 +50,7 @@ public interface AdminOrderController {
      * @return
      */
     @GetMapping("/order-detail/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Optional<AdminOrderDetailDtoOut>> getOrderById(@PathVariable("id") Long id);
 
     /**
@@ -56,6 +60,7 @@ public interface AdminOrderController {
      * @return
      */
     @PostMapping("/user-orders")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Optional<AdminOrderDtoOut>> getListOrderByUserId(@RequestBody Filter filter);
 
     /**
@@ -65,6 +70,7 @@ public interface AdminOrderController {
      * @return
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id);
 
 }

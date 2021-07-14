@@ -7,6 +7,7 @@ import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,14 +19,15 @@ import java.util.Optional;
 public interface AdminUserController {
 
     @PostMapping(value = "/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<AdminUserDtoOut>> getAll(@RequestBody @Valid AdminFilterDtoInput filter);
 
     @GetMapping("/find-by-id")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<AdminUserDetailDtoOut>> getUser(@RequestParam Long id);
 
     @GetMapping("/get-address-user/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<List<UserAddressDtoOut>> getAddressUser(@PathVariable Long id);
 
 
@@ -38,19 +40,24 @@ public interface AdminUserController {
 //    ResponseEntity<Boolean> block(@ApiParam("phone") @PathVariable Long id);
 
     @GetMapping(value = "/switch-status/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Boolean> switchStatus(@PathVariable Long id);
 
     //staff-----------------------------------------------------
     @PostMapping(value = "/all-staff")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<AdminStaffDtoOut>> allStaff(@RequestBody @Valid AdminFilterDtoInput filter);
 
     @GetMapping(value = "/staff/get-by-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<AdminStaffDtoOut.StaffDtoOut>> staffGetById(@RequestParam Long id);
 
     @PostMapping(value = "/staff/update")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<Boolean>> staffUpdateById(@RequestBody AdminStaffDtoInput adminStaffDtoInput, @RequestParam Long id);
 
     @PostMapping(value = "/staff/save")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Optional<Boolean>> staffSave(@RequestBody AdminStaffDtoInput adminStaffDtoInput);
 
 }

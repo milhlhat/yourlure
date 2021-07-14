@@ -29,7 +29,7 @@ public interface OrderController {
     ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, @RequestBody @Valid OrderUserDtoInput order);
 
     @GetMapping("/user-order")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Optional<StoreUserOrderDtoOut>> getListUserOrder(HttpServletRequest rq,
                                                                     @RequestParam Integer page,
                                                                     @RequestParam @Min(1) Integer limit);
