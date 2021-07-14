@@ -138,13 +138,14 @@ public class CampaignServiceImpl implements CampaignService {
             //check id is present
             if (campaign.isPresent()) {
                 if (campaign.get().getStartDate() == null || campaign.get().getEndDate() == null ||
-                        (campaign.get().getStartDate().compareTo(new Date()) < 0 && campaign.get().getEndDate().compareTo(new Date()) > 0)
+                        (campaign.get().getStartDate().compareTo(new Date()) < 0 &&
+                                campaign.get().getEndDate().compareTo(new Date()) > 0)
                         ) {
+                    // the voucher is not start
+                    return Optional.of(false);
+                } else {
                     campaignRepos.deleteById(id);
                     return Optional.of(true);
-                } else {
-                    // the voucher is not start
-                    throw new Exception("chiến dịch đang thực hiện không thể xóa!");
                 }
             }
         } catch (Exception e) {

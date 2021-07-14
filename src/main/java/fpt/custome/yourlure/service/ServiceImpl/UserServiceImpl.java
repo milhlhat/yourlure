@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public String signin(String phone, String password) {
         try {
             User findUser = userRepos.findByPhone(phone);
-            if (findUser.getEnabled()) {
+            if (findUser!=null && findUser.getEnabled()) {
                 phone = verifyPhone(phone);
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
