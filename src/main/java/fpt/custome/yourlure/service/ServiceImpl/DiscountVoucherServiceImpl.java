@@ -32,7 +32,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
 
         List<AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut> adminDiscountVoucherDtoOuts = new ArrayList<>();
         try {
-            Page<DiscountVoucher> list = discountVoucherRepos.searchAll("%"+keyword+"%", pageable);
+            Page<DiscountVoucher> list = discountVoucherRepos.searchAll("%"+keyword.trim()+"%", pageable);
             for (DiscountVoucher item : list.getContent()) {
                 AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut dtoOut = mapper.map(item, AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut.class);
                 adminDiscountVoucherDtoOuts.add(dtoOut);
