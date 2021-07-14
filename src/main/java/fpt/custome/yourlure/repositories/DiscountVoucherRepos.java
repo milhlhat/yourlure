@@ -12,11 +12,12 @@ public interface DiscountVoucherRepos extends JpaRepository<DiscountVoucher, Lon
 
     Page<DiscountVoucher> findByNameContainsIgnoreCase(String keyword, Pageable pageable);
 
-    @Query(value = "\tv.* \n" +
+    @Query(value = "\tselect v.* \n" +
             "FROM\n" +
             "\ttbl_discount_voucher v \n" +
             "WHERE\n" +
-            "\tconcat ( LOWER ( unaccent ( v.NAME ) ), UPPER ( v.code ) ) LIKE UPPER ( unaccent ( '?1' ) )",nativeQuery = true)
+            "\tconcat ( LOWER ( unaccent ( v.name ) ), UPPER ( v.code ) ) LIKE UPPER ( unaccent ( ?1 ) )"
+            ,nativeQuery = true)
     Page<DiscountVoucher> searchAll(String keyword, Pageable pageable);
 
 }

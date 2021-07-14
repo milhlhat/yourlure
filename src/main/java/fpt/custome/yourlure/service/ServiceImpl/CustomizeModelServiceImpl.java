@@ -67,7 +67,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         // save model 3d file
         String model3dUrl = m3dIn.getUrl();
 
-        if(fileService.isFileExist(model3dUrl)){
+        if (fileService.isFileExist(model3dUrl)) {
             throw new FileNotFoundException("the 3d model wasn't uploaded yet!");
         }
 
@@ -86,27 +86,27 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
             List<Texture> textures = new ArrayList<>();
             int textureCount = 0;
-            for (Model3dDtoInput.TextureDtoInput textureDto : materialDtoInput.getTextures()) {
-                StringBuilder textureFileName = new StringBuilder()
-                        .append(defaultMaterial.getDefaultName())
-                        .append("_texture_")
-                        .append(textureCount++)
-                        .append(".")
-                        .append(textureDto.getFormat());
+            if (materialDtoInput.getTextures() != null && materialDtoInput.getCanAddImg())
+                for (Model3dDtoInput.TextureDtoInput textureDto : materialDtoInput.getTextures()) {
+                    StringBuilder textureFileName = new StringBuilder()
+                            .append(defaultMaterial.getDefaultName())
+                            .append("_texture_")
+                            .append(textureCount++)
+                            .append(".")
+                            .append(textureDto.getFormat());
 
-                String url = fileService.saveFileBase64(textureFileName.toString(), textureDto.getContentBase64(), FileService.TEXTURE_DIR);
-                if (textureDto.getIsDefault()) {
-                    defaultMaterial.setImg(url);
+                    String url = fileService.saveFileBase64(textureFileName.toString(), textureDto.getContentBase64(), FileService.TEXTURE_DIR);
+                    if (textureDto.getIsDefault()) {
+                        defaultMaterial.setImg(url);
+                    }
+                    Texture texture = Texture.builder()
+                            .material(defaultMaterial)
+                            .textureUrl(url)
+                            .isDefault(textureDto.getIsDefault())
+                            .build();
+                    textures.add(texture);
                 }
-                Texture texture = Texture.builder()
-                        .material(defaultMaterial)
-                        .textureUrl(url)
-                        .isDefault(textureDto.getIsDefault())
-                        .build();
-                textures.add(texture);
 
-
-            }
             defaultMaterial.setTextures(textures);
             defaultMaterial.setModel3d(m3d);
             materials.add(defaultMaterial);
@@ -125,7 +125,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Override
     public Boolean deleteModel3d(Long modelId) {
         Model3d m3d = model3dRepos.getById(modelId);
-        if(!m3d.getCustomizeModels().isEmpty()){
+        if (!m3d.getCustomizeModels().isEmpty()) {
             return false;
         }
         model3dRepos.delete(m3d);
@@ -231,7 +231,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public Boolean deleteCustomizeModel(HttpServletRequest rq, Long customizeModelId) {
         User user = userService.whoami(rq);
         for (CustomizeModel customizeModel : user.getCustomizeModels()) {
-            if(customizeModel.getCustomizeId().equals(customizeModelId)){
+            if (customizeModel.getCustomizeId().equals(customizeModelId)) {
                 customizeModelRepos.delete(customizeModel);
                 return true;
             }
