@@ -7,7 +7,7 @@ npm i
 # Build reactjs app with production mode
 npm run build
 
-# Run static file at port 5000
+# Run static file at port 80
 npm install -g serve
-nohup serve -s build -l -5620
+nohup serve -l 80 -s build &
 
