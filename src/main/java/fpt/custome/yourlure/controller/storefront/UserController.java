@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -97,7 +96,7 @@ public interface UserController {
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 422, message = "phone or email is already in use")})
-    String signup(@ApiParam("Signup User") @Valid @RequestBody  UserDataDTO user);
+    String signup(@ApiParam("Signup User") @RequestBody  UserDataDTO user);
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")

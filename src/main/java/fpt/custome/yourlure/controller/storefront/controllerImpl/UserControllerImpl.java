@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -126,7 +125,7 @@ public class UserControllerImpl implements UserController {
 
 
     @Override
-    public String signup(@Valid UserDataDTO user) {
+    public String signup(UserDataDTO user) {
         return userService.signup(modelMapper.map(user, User.class));
     }
 
