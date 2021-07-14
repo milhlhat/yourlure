@@ -351,17 +351,22 @@ public class UserServiceImpl implements UserService {
     public Boolean saveAddress(HttpServletRequest req, UserAddressInput userAddressInput) {
         try {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-            UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
-            userAddress.setUser(user);
-            if (user.getUserAddressCollection().isEmpty()) {
-                userAddress.setIsDefault(true);
+            Optional<Ward> ward = userWardRepos.findById(userAddressInput.getUserWardId());
+            if(ward.isPresent()){
+                UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
+                userAddress.setUser(user);
+                if (user.getUserAddressCollection().isEmpty()) {
+                    userAddress.setIsDefault(true);
+                }
+                userAddressRepos.save(userAddress);
+                return true;
             }
-            userAddressRepos.save(userAddress);
-            return true;
+
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+
         }
+        return false;
     }
 
     @Override
