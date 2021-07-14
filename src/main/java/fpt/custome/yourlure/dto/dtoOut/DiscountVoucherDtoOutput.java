@@ -13,4 +13,6 @@ public class DiscountVoucherDtoOutput {
 
     private String type;
     private Float discountValue;
+    private Float maxValue;
+    private Float minSpentAmount;
 }

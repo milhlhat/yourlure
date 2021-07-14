@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 import fpt.custome.yourlure.controller.storefront.OrderController;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.DiscountVoucherDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import fpt.custome.yourlure.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,11 @@ public class OrderControllerImpl implements OrderController {
     @Override
     public ResponseEntity<Object> verifyDiscount(String code) {
         try{
-            return new ResponseEntity<>(orderService.verifyDiscountCode(code), HttpStatus.OK);
+            DiscountVoucherDtoOutput result = orderService.verifyDiscountCode(code);
+            if (result == null){
+                return new ResponseEntity<>("Mã code không tồn tại", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

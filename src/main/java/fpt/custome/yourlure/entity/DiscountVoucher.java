@@ -60,6 +60,10 @@ public class DiscountVoucher {
     @Column(name = "discountValue")
     private Float discountValue;
 
+    @NotNull
+    @Column(name = "maxValue")
+    private Float maxValue;
+
     @Nullable
     @Column(name = "minSpentAmount")
     private Float minSpentAmount;

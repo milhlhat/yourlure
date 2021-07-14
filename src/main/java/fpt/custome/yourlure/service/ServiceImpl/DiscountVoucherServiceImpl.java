@@ -32,7 +32,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
 
         List<AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut> adminDiscountVoucherDtoOuts = new ArrayList<>();
         try {
-            Page<DiscountVoucher> list = discountVoucherRepos.findByNameContainsIgnoreCase(keyword, pageable);
+            Page<DiscountVoucher> list = discountVoucherRepos.searchAll("%"+keyword+"%", pageable);
             for (DiscountVoucher item : list.getContent()) {
                 AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut dtoOut = mapper.map(item, AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut.class);
                 adminDiscountVoucherDtoOuts.add(dtoOut);
@@ -70,7 +70,8 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
     public Boolean saveVoucher(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
         try {
             DiscountVoucher save = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
-            save.setCode(new RandomString(8, ThreadLocalRandom.current()).nextString());
+            String code = new RandomString(8, ThreadLocalRandom.current()).nextString();
+            save.setCode(code.toUpperCase());
             discountVoucherRepos.save(save);
         } catch (Exception e) {
             e.printStackTrace();

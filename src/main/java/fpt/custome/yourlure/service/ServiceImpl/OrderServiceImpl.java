@@ -78,11 +78,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public DiscountVoucherDtoOutput verifyDiscountCode(String discountCode) throws Exception {
         DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
-        DiscountVoucherDtoOutput result = DiscountVoucherDtoOutput.builder()
-                .type(voucher.getType())
-                .discountValue( verifyDiscountCode(voucher))
-                .build();
-        return result;
+        if(voucher !=null){
+            DiscountVoucherDtoOutput result = DiscountVoucherDtoOutput.builder()
+                    .type(voucher.getType())
+                    .discountValue( verifyDiscountCode(voucher))
+                    .maxValue(voucher.getMaxValue())
+                    .minSpentAmount(voucher.getMinSpentAmount())
+                    .build();
+            return result;
+        }
+        return null;
     }
     public float verifyDiscountCode(DiscountVoucher voucher) throws Exception {
         if (voucher != null) {
