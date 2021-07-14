@@ -1,4 +1,6 @@
-import ManagerCampaignAPI from "api/manager-campaign-api";
+import ManagerCampaignAPI from "api/campaign-api";
+import Editor from "assets/icon/editor.svg";
+import Trash from "assets/icon/trash.svg";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import YLButton from "components/custom-field/YLButton";
 import Loading from "components/Loading";
@@ -6,9 +8,9 @@ import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
-import "./scss/manager-staff.scss";
+import "./scss/manager-campaign.scss";
 
 function ManagerCampaign(props) {
     const totalItem = 10;
@@ -26,11 +28,44 @@ function ManagerCampaign(props) {
         isLoading: false,
         isSuccess: true,
     });
+    const location = useLocation();
+    const setBack = {
+        canBack: true,
+        path: location,
+        label: "Danh mục",
+    };
     const [activePage, setActivePage] = useState(1);
     function handlePageChange(newPage) {
         setActivePage(newPage);
         setFilterStaff({ ...filterStaff, page: newPage - 1 });
     }
+    //delete category
+    const handleDelete = async (id) => {
+        // try {
+        //   const response = await ManagerCampaignAPI.delete(id);
+        //   if (response.data != null && !response.data) {
+        //     throw new Error();
+        //   } else if (response.error) {
+        //     throw new Error(response.error);
+        //   } else {
+        //     fetchManagerCategory();
+        //   }
+        // } catch (error) {
+        //   alert("Xóa danh mục thất bại");
+        //   console.log("fail to fetch delete address");
+        // }
+    };
+    //format date
+    const formatDate = (date) => {
+        let formatDate = new Date(date);
+        return (
+            ` 0${(formatDate.getDate() + 1)}`.slice(-2) +
+            "-" +
+            ` 0${(formatDate.getMonth() + 1)}`.slice(-2) +
+            "-" +
+            formatDate.getFullYear()
+        );
+    };
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -58,6 +93,7 @@ function ManagerCampaign(props) {
     useEffect(() => {
         fetchManagerCampaign();
     }, []);
+
     if (campaignList.isLoading) {
         return <Loading />;
     } else
@@ -68,9 +104,11 @@ function ManagerCampaign(props) {
                     <div className="staff-add-new">
                         <YLButton
                             variant="primary"
-                            onClick={() => history.push("/manager/product/addnew")}
+                            to={{
+                                pathname: "/manager/campaign/addnew",
+                                canBack: setBack
+                            }}
                             value="Thêm"
-                            to={"/manager/staff/addNew"}
                         />
                     </div>
                 </div>
@@ -78,55 +116,47 @@ function ManagerCampaign(props) {
                     <span>Tất cả nhân viên</span>
                     <hr />
                     {/* <ManagerSort /> */}
-                    {campaignList?.data?.userDtoOutList?.length <= 0 && (
+                    {campaignList?.data?.length <= 0 && (
                         <p>Không có sản phẩm </p>
                     )}
                     <table className="table">
                         <tbody>
                             <tr>
                                 <th>#</th>
-                                <th>Tên</th>
-                                <th>Giới tính</th>
-                                <th onClick={() => setFilterStaff({ ...filterStaff, sortBy: "phone", isAsc: !filterStaff.isAsc })}>Số điện thoại</th>
-                                <th>Email</th>
-                                <th>Trạng thái</th>
-                                <th>Vị trí</th>
+                                <th>Tên chiến dịch (banner)</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
                                 <th></th>
                             </tr>
-                            {campaignList?.data?.userDtoOutList?.map((item, i) => (
-                                <tr key={"staff-" + i} className="hover-background">
+                            {campaignList?.data?.map((item, i) => (
+                                <tr key={"campaign-" + i} className="hover-background">
                                     <td>{(activePage - 1) * totalItem + i + 1}</td>
-                                    <td>{item?.username ? item?.username : "-"}</td>
+                                    <td>{item?.banner ? item?.banner : "-"}</td>
                                     <td>
-                                        {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
+                                        {item.startDate ? formatDate(item.startDate) : "-"}
                                     </td>
-                                    <td>{item.phone}</td>
-                                    <td>{item.userEmail ? item.userEmail : "-"}</td>
-                                    <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
-                                    <td>
-                                        {item.enabled ? (
-                                            <ConfirmPopup
-                                                variant="link"
-                                                width="70px"
-                                                height="25px"
-                                                btnText={
-                                                    <i className="far fa-user-slash text-danger"></i>
-                                                }
-                                                title="Chặn"
-                                                content={`Bạn chắc chắn muốn chặn ${item.username ? item.username : item.phone
-                                                    } ?`}
-                                            />
-                                        ) : (
-                                            <ConfirmPopup
-                                                variant="link"
-                                                width="70px"
-                                                height="25px"
-                                                title="Bỏ chặn"
-                                                btnText={<i className="far fa-user text-success"></i>}
-                                                content={`Bạn chắc chắn muốn bỏ chặn ${item.username ? item.username : item.phone
-                                                    } ?`}
-                                            />
-                                        )}
+                                    <td>{item.endDate ? formatDate(item.endDate) : "-"}</td>
+                                    <td className="d-flex float-end">
+                                        <img
+                                            src={Editor}
+                                            className="pointer"
+                                            onClick={() =>
+                                                history.push({
+                                                    pathname:
+                                                        "/manager/campaign/edit/" + item.campaignID,
+                                                    canBack: setBack,
+                                                })
+                                            }
+                                        />
+                                        <ConfirmPopup
+                                            variant="link"
+                                            width="70px"
+                                            height="25px"
+                                            btnText={<img src={Trash} />}
+                                            title="Xóa"
+                                            content="Bạn chắc chắn muốn xóa Danh mục?"
+                                            onConfirm={() => handleDelete(item.categoryID)}
+                                        />
                                     </td>
                                 </tr>
                             ))}

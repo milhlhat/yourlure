@@ -1,5 +1,4 @@
 import AxiosClient from './axios-client';
-import queryString from 'query-string';
 
 const CampaignAPI = {
 	getAll: () => {
@@ -11,5 +10,5 @@ const CampaignAPI = {
 		return AxiosClient.get(url);
 	},
 };
-export const {getAll,getById} = CampaignAPI;
+export const { getAll, getById } = CampaignAPI;
 export default CampaignAPI;

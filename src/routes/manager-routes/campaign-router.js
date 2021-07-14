@@ -5,9 +5,9 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import NotFound from "store-front-pages/Notfound";
-ManagerCategoryRoute.propTypes = {};
+ManagerCampaignRoute.propTypes = {};
 
-function ManagerCategoryRoute() {
+function ManagerCampaignRoute() {
     const match = useRouteMatch();
     const path = match.path === "/" ? "" : match.path;
     return (
@@ -26,4 +26,4 @@ function ManagerCategoryRoute() {
     );
 }
 
-export default ManagerCategoryRoute;
+export default ManagerCampaignRoute;

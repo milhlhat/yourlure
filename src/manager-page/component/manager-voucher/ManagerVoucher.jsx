@@ -104,11 +104,11 @@ function ManagerVoucher() {
     const formatDate = (date) => {
         let formatDate = new Date(date);
         return (
-            formatDate.getDate() +
-            "/" +
-            (formatDate.getMonth() + 1) +
-            "/" +
-            formatDate.getFullYear()
+            formatDate.getFullYear() +
+            "-" +
+            ` 0${(formatDate.getMonth() + 1)}`.slice(-2) +
+            "-" +
+            ` 0${(formatDate.getDate() + 1)}`.slice(-2)
         );
     };
 

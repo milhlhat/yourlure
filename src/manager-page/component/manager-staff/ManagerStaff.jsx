@@ -45,29 +45,29 @@ function ManagerStaff(props) {
   }, []);
 
   const detectRole = (role) => {
-    let rs='';
-    role.map((r)=>{
-      if (r === "ROLE_ADMIN") rs+= "Quản lý, ";
-      else if (r === "ROLE_STAFF") rs+= "Nhân viên, ";
-      else if (r === "ROLE_CUSTOMER") rs+= "Khách hàng, ";
+    let rs = '';
+    role.map((r) => {
+      if (r === "ROLE_ADMIN") rs += "Quản lý, ";
+      else if (r === "ROLE_STAFF") rs += "Nhân viên, ";
+      else if (r === "ROLE_CUSTOMER") rs += "Khách hàng, ";
 
     })
-    return rs!==''?rs:"-"
+    return rs !== '' ? rs : "-"
   };
   const handleSwitchStatus = async (data) => {
     try {
       const response = await ManagerUserApi.switchStatus(data.userId);
-      if (response.data!=null &&!response.data) {
+      if (response.data != null && !response.data) {
         throw new Error();
-      }else {
+      } else {
         fetchManagerStaff();
       }
     } catch (error) {
       data.enabled
         ? alert(`Chặn ${data.username ? data.username : data.phone} thất bại`)
         : alert(
-            `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
-          );
+          `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
+        );
       console.log("fail to switch status user");
     }
   };
@@ -115,7 +115,7 @@ function ManagerStaff(props) {
                 <th>#</th>
                 <th>Tên</th>
                 <th>Giới tính</th>
-                <th onClick={()=>setFilterStaff({...filterStaff,sortBy:"phone",isAsc:!filterStaff.isAsc})}>Số điện thoại</th>
+                <th onClick={() => setFilterStaff({ ...filterStaff, sortBy: "phone", isAsc: !filterStaff.isAsc })}>Số điện thoại</th>
                 <th>Email</th>
                 <th>Trạng thái</th>
                 <th>Vị trí</th>
@@ -142,9 +142,8 @@ function ManagerStaff(props) {
                           <i className="far fa-user-slash text-danger"></i>
                         }
                         title="Chặn"
-                        content={`Bạn chắc chắn muốn chặn ${
-                          item.username ? item.username : item.phone
-                        } ?`}
+                        content={`Bạn chắc chắn muốn chặn ${item.username ? item.username : item.phone
+                          } ?`}
                         onConfirm={() => handleSwitchStatus(item)}
                       />
                     ) : (
@@ -154,9 +153,8 @@ function ManagerStaff(props) {
                         height="25px"
                         title="Bỏ chặn"
                         btnText={<i className="far fa-user text-success"></i>}
-                        content={`Bạn chắc chắn muốn bỏ chặn ${
-                          item.username ? item.username : item.phone
-                        } ?`}
+                        content={`Bạn chắc chắn muốn bỏ chặn ${item.username ? item.username : item.phone
+                          } ?`}
                         onConfirm={() => handleSwitchStatus(item)}
                       />
                     )}
