@@ -79,6 +79,8 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+
+
     protected CartDtoOut cartToCartDto(Cart cart){
         Collection<CartItem> items = cart.getCartItemCollection();
         if(items == null){
@@ -121,9 +123,23 @@ public class CartServiceImpl implements CartService {
         return CartDtoOut.builder().cartItems(itemsDto).build();
     }
 
+    protected Cart myCart(HttpServletRequest req){
+        User user = userService.whoami(req);
+        Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(null);
+        if(cart == null){
+            cart = Cart.builder().user(user).build();
+            cart = cartRepos.save(cart);
+        }
+        if(cart.getCartItemCollection() == null){
+            cart.setCartItemCollection(new ArrayList<>());
+        }
+        return cart;
+    }
+
     @Override
     public Boolean addCustomizeItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
         User user = userService.whoami(req);
+        Cart cart = myCart(req);
 
         // check custom model is belong to current user or not. if not, this user can't add to cart
 
@@ -131,14 +147,9 @@ public class CartServiceImpl implements CartService {
         if(myCustom == null){
             throw new Exception("this custom model isn't yours!");
         }
-        Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
-        Collection<CartItem> cartItems = cart.getCartItemCollection();
-        if(cartItems == null){
-            cartItems = new ArrayList<>();
-        }
 
         // if exist -> just increase quantity
-        for (CartItem cartItem : cartItems) {
+        for (CartItem cartItem : cart.getCartItemCollection()) {
             if(cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
                 cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
                 cartItemRepos.save(cartItem);
@@ -157,18 +168,18 @@ public class CartServiceImpl implements CartService {
 
     }
 
+
+
     @Override
     public Boolean addVariantItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
-        User user = userService.whoami(req);
+
+        Cart cart = myCart(req);
+
         Optional<Variant> variant = variantRepos.findById(addToCartDto.getVariantId());
         if(variant.isPresent()){
-            Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(Cart.builder().user(user).build());
-            Collection<CartItem> cartItems = cart.getCartItemCollection();
-            if(cartItems == null){
-                cartItems = new ArrayList<>();
-            }
+
             // cart item exist
-            for (CartItem cartItem : cartItems) {
+            for (CartItem cartItem : cart.getCartItemCollection()) {
                 if(cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
 
                     cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
