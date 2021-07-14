@@ -24,7 +24,6 @@ function ManagerVoucherAddNew(props) {
     const history = useHistory();
     const schema = yup.object().shape({
         name: yup.string().required("Tên mã giảm giá không được để trống"),
-        code: yup.string().required("Mã giảm giá không được để trống"),
     });
     const {
         register,
@@ -113,16 +112,16 @@ function ManagerVoucherAddNew(props) {
                                     <tr>
                                         <td>
                                             <label for="code" className="form-label">
-                                                Mã giảm giá <span className="error-message">(*)</span>
+                                                Mã giảm giá
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 id="code"
+                                                disabled
                                                 placeholder="Mã giảm giá"
                                                 {...register("code")}
                                             />
-                                            <span>{errors.price?.message}</span>
                                         </td>
                                         <td>
                                             <label for="end-date" className="form-label">

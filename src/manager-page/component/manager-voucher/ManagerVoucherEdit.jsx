@@ -156,7 +156,7 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 id="code"
                                                 placeholder="Mã giảm giá"
-
+                                                disabled
                                                 {...register("code")}
                                             />
                                             <span className="error-message">

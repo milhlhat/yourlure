@@ -47,9 +47,9 @@ function ManagerStaff(props) {
   const detectRole = (role) => {
     let rs = '';
     role.map((r) => {
-      if (r === "ROLE_ADMIN") rs += "Quản lý, ";
-      else if (r === "ROLE_STAFF") rs += "Nhân viên, ";
-      else if (r === "ROLE_CUSTOMER") rs += "Khách hàng, ";
+      if (r === "ROLE_ADMIN") rs += "Quản lý ";
+      else if (r === "ROLE_STAFF") rs += ", Nhân viên, ";
+      else if (r === "ROLE_CUSTOMER") rs += ", Khách hàng ";
 
     })
     return rs !== '' ? rs : "-"

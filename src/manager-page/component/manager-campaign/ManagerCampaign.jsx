@@ -1,4 +1,4 @@
-import ManagerCampaignAPI from "api/campaign-api";
+import ManagerCampaignAPI from "api/manager-campaign-api";
 import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
@@ -15,12 +15,12 @@ import "./scss/manager-campaign.scss";
 function ManagerCampaign(props) {
     const totalItem = 10;
     const history = useHistory();
-    const [filterStaff, setFilterStaff] = useState({
-        isAsc: true,
+    const [filter, setFilter] = useState({
+        isAsc: true,    
         keyword: "",
         limit: totalItem,
         page: 0,
-        sortBy: "user_id",
+        sortBy: "campaignId",
         typeSearch: "",
     });
     const [campaignList, setCampaignList] = useState({
@@ -32,28 +32,33 @@ function ManagerCampaign(props) {
     const setBack = {
         canBack: true,
         path: location,
-        label: "Danh mục",
+        label: "Chiến dịch",
     };
     const [activePage, setActivePage] = useState(1);
     function handlePageChange(newPage) {
         setActivePage(newPage);
-        setFilterStaff({ ...filterStaff, page: newPage - 1 });
+        setFilter({ ...filter, page: newPage - 1 });
     }
     //delete category
     const handleDelete = async (id) => {
-        // try {
-        //   const response = await ManagerCampaignAPI.delete(id);
-        //   if (response.data != null && !response.data) {
-        //     throw new Error();
-        //   } else if (response.error) {
-        //     throw new Error(response.error);
-        //   } else {
-        //     fetchManagerCategory();
-        //   }
-        // } catch (error) {
-        //   alert("Xóa danh mục thất bại");
-        //   console.log("fail to fetch delete address");
-        // }
+        try {
+            const response = await ManagerCampaignAPI.delete(id);
+            console.log(response);
+            if (response === true) {
+                alert("Xóa chiến dịch thành công");
+            } else {
+                alert("Xóa chiến dịch thất bại! \nChiến dịch đang thực hiện không thể xóa!");
+            }
+            if (response.data != null && !response.data) {
+                throw new Error();
+            } else if (response.error) {
+                throw new Error(response.error);
+            } else {
+                fetchManagerCampaign();
+            }
+        } catch (error) {
+            console.log("fail to fetch delete campaign");
+        }
     };
     //format date
     const formatDate = (date) => {
@@ -82,7 +87,8 @@ function ManagerCampaign(props) {
             return { ...prevState, isLoading: true };
         });
         try {
-            const response = await ManagerCampaignAPI.getAll();
+            console.log(filter);
+            const response = await ManagerCampaignAPI.getAll(filter);
             console.log(response);
             setCampaignList({ data: response, isLoading: false, isSuccess: true });
         } catch (error) {
@@ -92,7 +98,7 @@ function ManagerCampaign(props) {
     };
     useEffect(() => {
         fetchManagerCampaign();
-    }, []);
+    }, [filter]);
 
     if (campaignList.isLoading) {
         return <Loading />;
@@ -100,7 +106,7 @@ function ManagerCampaign(props) {
         return (
             <>
                 <div className="staff-head-row d-flex justify-content-between">
-                    <h3>Nhân viên</h3>
+                    <h3>Chiến dịch</h3>
                     <div className="staff-add-new">
                         <YLButton
                             variant="primary"
@@ -113,7 +119,7 @@ function ManagerCampaign(props) {
                     </div>
                 </div>
                 <div className="manager-show mt-3 bg-white bg-shadow">
-                    <span>Tất cả nhân viên</span>
+                    <span>Tất cả chiến dịch</span>
                     <hr />
                     {/* <ManagerSort /> */}
                     {campaignList?.data?.length <= 0 && (
@@ -128,7 +134,7 @@ function ManagerCampaign(props) {
                                 <th>Ngày kết thúc</th>
                                 <th></th>
                             </tr>
-                            {campaignList?.data?.map((item, i) => (
+                            {campaignList?.data?.campaignDtoOuts?.map((item, i) => (
                                 <tr key={"campaign-" + i} className="hover-background">
                                     <td>{(activePage - 1) * totalItem + i + 1}</td>
                                     <td>{item?.banner ? item?.banner : "-"}</td>
@@ -143,7 +149,7 @@ function ManagerCampaign(props) {
                                             onClick={() =>
                                                 history.push({
                                                     pathname:
-                                                        "/manager/campaign/edit/" + item.campaignID,
+                                                        "/manager/campaign/edit/" + item.campaignId,
                                                     canBack: setBack,
                                                 })
                                             }
@@ -154,8 +160,8 @@ function ManagerCampaign(props) {
                                             height="25px"
                                             btnText={<img src={Trash} />}
                                             title="Xóa"
-                                            content="Bạn chắc chắn muốn xóa Danh mục?"
-                                            onConfirm={() => handleDelete(item.categoryID)}
+                                            content="Bạn chắc chắn muốn xóa chiến dịch?"
+                                            onConfirm={() => handleDelete(item.campaignId)}
                                         />
                                     </td>
                                 </tr>
@@ -163,13 +169,13 @@ function ManagerCampaign(props) {
                         </tbody>
                     </table>
                     <div className="m-auto p-4 d-flex justify-content-center">
-                        {campaignList?.data?.totalPage >= 1 && (
+                        {campaignList?.data?.campaignDtoOuts?.totalPage >= 1 && (
                             <Pagination
                                 itemClass="page-item"
                                 linkClass="page-link"
                                 activePage={activePage}
                                 itemsCountPerPage={totalItem}
-                                totalItemsCount={campaignList?.data?.totalUser}
+                                totalItemsCount={campaignList?.data?.campaignDtoOuts?.totalItem}
                                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                                 onChange={handlePageChange}
                             />
