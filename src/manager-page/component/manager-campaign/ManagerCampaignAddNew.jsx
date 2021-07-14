@@ -67,18 +67,6 @@ function ManagerVoucherAddNew(props) {
             file.map((file) => URL.revokeObjectURL(file));
         }
     };
-    const onSubmit = async (data) => {
-        // let fin = { ...data, imgList: fileImages };
-        // console.log(fin);
-        try {
-          const fileLinks = await uploadMultiFiles(fileImages);
-          console.log(fileLinks);
-        } catch (e) {
-          console.log("errors at upload product", e);
-        }
-    
-        //selectedImages
-      };
     const history = useHistory();
     const schema = yup.object().shape({
         banner: yup.string().required("Tên chiến dịch không được để trống"),
@@ -91,7 +79,7 @@ function ManagerVoucherAddNew(props) {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    
+
     const onsubmit = async (data) => {
         console.log(data)
         try {
@@ -100,6 +88,8 @@ function ManagerVoucherAddNew(props) {
             if (start_date.getTime() > end_date.getTime()) {
                 alert("Ngày kết thúc phải lớn hơn ngày bắt đầu");
             } else {
+                const fileLinks = await uploadMultiFiles(fileImages);
+                data.imageCollection = fileLinks;
                 const response = await ManagerCampaignAPI.add(data);
                 if (response.error) {
                     throw new Error(response.error);

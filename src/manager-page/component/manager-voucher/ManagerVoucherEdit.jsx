@@ -13,6 +13,8 @@ function ManagerVoucherEdit(props) {
     const dispatch = useDispatch();
     const voucherId = props.match.params.id;
     const history = useHistory();
+    const [disabled, setDisabled] = useState(false);
+
     const schema = yup.object().shape({
         // name: yup.string().required("Tên mã giảm giá không được để trống"),
         // code: yup.string().required("Mã giảm giá không được để trống"),
@@ -69,8 +71,16 @@ function ManagerVoucherEdit(props) {
         setValue("minCheckoutItemsQuantity", voucher?.data?.minCheckoutItemsQuantity);
         setValue("start_date", formatDate(voucher?.data?.start_date));
         setValue("end_date", formatDate(voucher?.data?.end_date));
+        setValue("type", voucher?.data?.type);
     }, [voucher]);
 
+    const handleChangeDisabled = (selectObject) => {
+        if (selectObject.target.value === "Free Ship") {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    };
     useEffect(() => {
         if (canBack) {
             const action = setIsBack({
@@ -209,13 +219,14 @@ function ManagerVoucherEdit(props) {
                                     <tr>
                                         <td>
                                             <label for="discount-value" className="form-label">
-                                                Giá trị
+                                                Giá trị {}
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 id="discount-value"
                                                 placeholder="Giá trị"
+                                                disabled={disabled}
                                                 {...register("discountValue")}
                                             />
                                         </td>

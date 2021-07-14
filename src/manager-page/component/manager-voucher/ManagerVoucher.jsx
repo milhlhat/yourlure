@@ -27,7 +27,7 @@ function ManagerVoucher() {
         listCateId: [],
         listFishId: [],
         page: filterConfig.PAGE_NUMBER_DEFAULT,
-        sortBy: "discountVoucherId"
+        sortBy: "discount_voucher_id"
     })
     const [voucherList, setVoucherList] = useState({
         data: [],
@@ -40,13 +40,13 @@ function ManagerVoucher() {
         {
             display: "Cũ nhất",
             isAsc: true,
-            sortBy: "discountVoucherId",
+            sortBy: "discount_voucher_id",
             value: "SORT_id_ASC",
         },
         {
             display: "Mới nhất",
             isAsc: false,
-            sortBy: "discountVoucherID",
+            sortBy: "discount_voucher_id",
             value: "SORT_id_DESC",
         },
         {
