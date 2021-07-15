@@ -7,9 +7,12 @@ import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
+import ManagerSort from "./ManagerSort";
 import "./scss/manager-fish.scss";
+
 
 
 
@@ -17,6 +20,7 @@ import "./scss/manager-fish.scss";
 ManagerFish.propTypes = {};
 
 function ManagerFish(props) {
+    const { register, handleSubmit } = useForm();
     const [activePage, setActivePage] = useState(1);
     const [fishList, setFishList] = useState({
         data: [],
@@ -36,6 +40,34 @@ function ManagerFish(props) {
         page: 0,
         sortBy: "fishId"
     });
+
+    //option sort
+    const options = [
+        {
+            display: "Cũ nhất",
+            isAsc: true,
+            sortBy: "fishId",
+            value: "SORT_id_ASC",
+        },
+        {
+            display: "Mới nhất",
+            isAsc: false,
+            sortBy: "fishId",
+            value: "SORT_id_DESC",
+        },
+        {
+            display: "Tên từ A-Z",
+            isAsc: true,
+            sortBy: "fishName",
+            value: "SORT_NAME_DESC",
+        },
+        {
+            display: "Tên từ Z-A",
+            isAsc: false,
+            sortBy: "fishName",
+            value: "SORT_NAME_DESC",
+        },
+    ];
     const location = useLocation();
     const setBack = {
         canBack: true,
@@ -93,6 +125,20 @@ function ManagerFish(props) {
         fetchManagerFish();
     }, [filter]);
 
+    const onsubmit = async (data) => {
+        let searchFilter = { ...filter, keyword: data.keyWord };
+        setFilter({ ...filter, keyword: data.keyWord });
+        setFishList((prevState) => {
+            return { ...prevState, isLoading: true };
+        });
+        try {
+            const response = await ManagerFishAPI.getAll(searchFilter);
+            setFishList({ data: response, isLoading: false, isSuccess: true });
+        } catch (error) {
+            setFishList({ data: null, isLoading: false, isSuccess: false });
+        }
+    };
+
     if (fishList.isLoading) {
         return <Loading />;
     } else if (!fishList.isSuccess) {
@@ -113,6 +159,11 @@ function ManagerFish(props) {
                 <div className="manager-fish-show mt-3 bg-white bg-shadow">
                     <span>tất cả loại cá</span>
                     <hr />
+                    <ManagerSort
+                        filter={filter}
+                        setFilter={setFilter}
+                        options={options}
+                    />
                     <table>
                         <tbody>
                             <tr>
@@ -124,7 +175,16 @@ function ManagerFish(props) {
                             {fishList.data?.fishDtoOuts?.map((item, i) => (
                                 <tr key={"fish-" + i} className="hover-background">
                                     <td>{i + 1}</td>
-                                    <td>{item.fishName}</td>
+                                    <td
+                                        className="pointer"
+                                        onClick={() =>
+                                            history.push({
+                                                pathname:
+                                                    "/manager/fish/detail/" + item.fishID,
+                                                canBack: setBack,
+                                            })
+                                        }
+                                    >{item.fishName}</td>
                                     <td className="d-flex float-end">
                                         <img src={Editor}
                                             className="pointer"

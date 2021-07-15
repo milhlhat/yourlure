@@ -5,6 +5,7 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 
+
 const ManagerUser = React.lazy(() => import("./manager-user-route.js"));
 const ManagerProduct = React.lazy(() => import("./manager-product-route.js"));
 const ManagerCategory = React.lazy(() => import("./manager-category-route.js"));
@@ -12,6 +13,9 @@ const ManagerFish = React.lazy(() => import("./manager-fish-router.js"));
 const ManagerStaff = React.lazy(() => import("./manager-staff-route"));
 const ManagerVoucher = React.lazy(() => import("./manager-voucher-route"));
 const ManagerOrder = React.lazy(() => import("./manager-order-route"));
+const CampainRoute = React.lazy(() => import("./manager-campaign-route"));
+const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+
 
 function ManagementRouter(props) {
   const match = useRouteMatch();
@@ -45,6 +49,9 @@ function ManagementRouter(props) {
               />
               <Route path={path + DEFINELINK.managementOrder}
                 component={ManagerOrder}
+              />
+              <Route path={path + DEFINELINK.managementCampaign}
+                component={CampainRoute}
               />
             </Switch>
           </ManagerLayout>

@@ -13,9 +13,13 @@ function ManagerVoucherEdit(props) {
     const dispatch = useDispatch();
     const voucherId = props.match.params.id;
     const history = useHistory();
+    const [disabled, setDisabled] = useState(false);
+
     const schema = yup.object().shape({
-        // name: yup.string().required("Tên mã giảm giá không được để trống"),
-        // code: yup.string().required("Mã giảm giá không được để trống"),
+        name: yup.string().required("Tên mã giảm giá không được để trống"),
+        discountValue: yup.mixed().test('discountErr', "Giá trị mã giảm giá không được để trống", () => {
+            return disabled;
+        })
     });
     const [voucher, setVoucher] = useState({
         data: [],
@@ -69,8 +73,16 @@ function ManagerVoucherEdit(props) {
         setValue("minCheckoutItemsQuantity", voucher?.data?.minCheckoutItemsQuantity);
         setValue("start_date", formatDate(voucher?.data?.start_date));
         setValue("end_date", formatDate(voucher?.data?.end_date));
+        setValue("type", voucher?.data?.type);
     }, [voucher]);
 
+    const handleChangeDisabled = (selectObject) => {
+        if (selectObject.target.value === "Free Ship") {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    };
     useEffect(() => {
         if (canBack) {
             const action = setIsBack({
@@ -149,19 +161,16 @@ function ManagerVoucherEdit(props) {
                                     <tr>
                                         <td>
                                             <label for="code" className="form-label">
-                                                Mã giảm giá <span className="error-message">(*)</span>
+                                                Mã giảm giá
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 id="code"
                                                 placeholder="Mã giảm giá"
-
+                                                disabled
                                                 {...register("code")}
                                             />
-                                            <span className="error-message">
-                                                {errors.code?.message}
-                                            </span>
                                         </td>
                                         <td>
                                             <label for="end-date" className="form-label">
@@ -187,6 +196,7 @@ function ManagerVoucherEdit(props) {
                                                 className="form-control"
                                                 defaultValue={voucher?.data?.type}
                                                 {...register("type")}
+                                                onChange={handleChangeDisabled}
                                             >
                                                 <option value="Phần trăm">Phần trăm</option>
                                                 <option value="Giá trị">Giá trị</option>
@@ -209,15 +219,19 @@ function ManagerVoucherEdit(props) {
                                     <tr>
                                         <td>
                                             <label for="discount-value" className="form-label">
-                                                Giá trị
+                                                Giá trị {!disabled && <span className="error-message">(*)</span>}
                                             </label>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 id="discount-value"
                                                 placeholder="Giá trị"
+                                                disabled={disabled}
                                                 {...register("discountValue")}
                                             />
+                                            <span className="error-message">
+                                                {errors.discountValue?.message}
+                                            </span>
                                         </td>
                                         <td>
                                             <label for="minCheckoutItemsQuantity" className="form-label">

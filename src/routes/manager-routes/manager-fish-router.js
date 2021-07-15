@@ -1,5 +1,6 @@
 import ManagerFishAddNew from "manager-page/component/manager-fish/ManagerFishAddNew";
 import ManagerFishEdit from "manager-page/component/manager-fish/ManagerFishEdit";
+import ManagerFishDetail from "manager-page/component/manager-fish/ManagerFishDetail";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
@@ -32,6 +33,7 @@ export default function OtherRoute() {
             <Route exact path={path} component={ManagerFish} />
             <Route exact path={path + DEFINELINK.managementFishAddNew} component={ManagerFishAddNew} />
             <Route exact path={path + DEFINELINK.managementFishEdit} component={ManagerFishEdit} />
+            <Route exact path={path + DEFINELINK.managementFishDetail} component={ManagerFishDetail} />
             <Route component={NotFound} />
         </Switch>
     );

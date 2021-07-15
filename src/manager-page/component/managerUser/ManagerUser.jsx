@@ -83,8 +83,8 @@ function ManagerUser(props) {
       data.enabled
         ? alert(`Chặn ${data.username ? data.username : data.phone} thất bại`)
         : alert(
-            `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
-          );
+          `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
+        );
       console.log("fail to switch status user");
     }
   };
