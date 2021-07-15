@@ -22,7 +22,7 @@ public class ProductReposImpl implements ProductRepos {
         query.append("left JOIN tbl_fish ON tbl_fish_product.fish_id = tbl_fish.fish_id \n");
         query.append("LEFT JOIN tbl_variants ON tbl_products.product_id = tbl_variants.product_id\n");
         query.append("LEFT JOIN tbl_order_line ON tbl_order_line.variant_id = tbl_variants.variant_id \n");
-        query.append("LEFT JOIN tbl_orders ON tbl_orders.order_id = tbl_order_line.oder_id \n");
+        query.append("LEFT JOIN tbl_orders ON tbl_orders.order_id = tbl_order_line.order_id \n");
         query.append("where 1 = 1 \n");
         if (!filter.getListCateId().isEmpty()) {
             query.append(" and tbl_category.category_id IN (:cateIds) \n");

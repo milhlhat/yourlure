@@ -26,9 +26,10 @@ public class AdminDiscountVoucherDtoOut {
         private Long discountVoucherId;
         private String name;
         private String type;
+        private String code;
         private Date start_date;
         private Date end_date;
-        private Integer discountValue;
+        private Float discountValue;
     }
 
 

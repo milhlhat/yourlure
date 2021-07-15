@@ -21,7 +21,7 @@ public interface AdminFishController {
 
     @GetMapping(value = "/getById")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Optional<FishDtoOut>> getbyId(@RequestParam Long id);
+    ResponseEntity<Optional<FishDtoOut>> getById(@RequestParam Long id);
 
     @PostMapping(value = "/save")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")

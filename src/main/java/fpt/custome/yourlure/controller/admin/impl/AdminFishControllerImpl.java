@@ -31,7 +31,7 @@ public class AdminFishControllerImpl implements AdminFishController {
     }
 
     @Override
-    public ResponseEntity<Optional<FishDtoOut>> getbyId(Long id) {
+    public ResponseEntity<Optional<FishDtoOut>> getById(Long id) {
         Optional<FishDtoOut> result = fishService.getById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

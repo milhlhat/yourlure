@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/find-by-district-id").permitAll()
                 .antMatchers("/user/find-by-ward-id").permitAll()
                 .antMatchers("/user/get-all-country").permitAll()
+                .antMatchers("/user/get-address-from-ward-id").permitAll()
                 .antMatchers("/user/get-all-province").permitAll()
                 .antMatchers("/user/get-address-user").permitAll()
                 .antMatchers("/user/forgot-password").permitAll()

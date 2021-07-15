@@ -3,6 +3,7 @@ package fpt.custome.yourlure.controller.storefront;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AddressFromWarDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
@@ -62,6 +63,9 @@ public interface UserController {
 
     @GetMapping("/find-by-ward-id")
     ResponseEntity<List<Ward>> findWardById(@RequestParam Long id);
+
+    @GetMapping("/get-address-from-ward-id")
+    ResponseEntity<Optional<AddressFromWarDtoOutput>> getAddressByWardId(@RequestParam Long id);
 
     @PostMapping("/get-address-user")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")

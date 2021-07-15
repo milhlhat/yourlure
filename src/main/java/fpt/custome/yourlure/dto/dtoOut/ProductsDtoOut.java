@@ -17,6 +17,7 @@ public class ProductsDtoOut {
     private Long productID;
     private String productName;
     private Collection<Image> imageCollection;
+    private Boolean visibleInStorefront;
     private Float defaultPrice;
 
 }

@@ -4,6 +4,7 @@ import fpt.custome.yourlure.controller.storefront.UserController;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
+import fpt.custome.yourlure.dto.dtoOut.AddressFromWarDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
@@ -103,6 +104,12 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    public ResponseEntity<Optional<AddressFromWarDtoOutput>> getAddressByWardId(Long id) {
+        Optional<AddressFromWarDtoOutput> result = userService.getAddressByWardId(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req) {
         List<UserAddressDtoOut> result = userService.getAddressUser(req);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -138,10 +145,10 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<Object> changePwd(HttpServletRequest rq, String oldPassword, String password) {
-        if(oldPassword.equals(password)){
+        if (oldPassword.equals(password)) {
             return new ResponseEntity<>("new password must be different old password!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userService.changePwd(rq,oldPassword, password), HttpStatus.OK);
+        return new ResponseEntity<>(userService.changePwd(rq, oldPassword, password), HttpStatus.OK);
     }
 
     @Override

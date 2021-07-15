@@ -3,11 +3,11 @@ package fpt.custome.yourlure.service.ServiceImpl;
 import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
-import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
-import fpt.custome.yourlure.entity.*;
+import fpt.custome.yourlure.dto.dtoOut.*;
+import fpt.custome.yourlure.entity.Provider;
+import fpt.custome.yourlure.entity.Role;
+import fpt.custome.yourlure.entity.User;
+import fpt.custome.yourlure.entity.UserAddress;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
@@ -447,6 +447,21 @@ public class UserServiceImpl implements UserService {
     public List<Ward> findWardById(Long id) {
         List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id);
         return result;
+    }
+
+    @Override
+    public Optional<AddressFromWarDtoOutput> getAddressByWardId(Long id) {
+        Ward ward = userWardRepos.getById(id);
+        AddressFromWarDtoOutput result;
+        if (ward != null){
+            result = AddressFromWarDtoOutput.builder()
+                    .userWardName(ward.getUserWardName())
+                    .userDistrictName(ward.getUserDistrict().getUserDistrictName())
+                    .userProvinceName(ward.getUserDistrict().getUserProvince().getUserProvinceName())
+                    .build();
+            return Optional.of(result);
+        }
+        return Optional.empty();
     }
 
     public List<UserAddressDtoOut> getAddressInUser(List<UserAddress> list) {

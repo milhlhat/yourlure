@@ -3,10 +3,7 @@ package fpt.custome.yourlure.service;
 import fpt.custome.yourlure.dto.dtoInp.AdminStaffDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
-import fpt.custome.yourlure.dto.dtoOut.AdminStaffDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminUserDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminUserDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
@@ -59,6 +56,8 @@ public interface UserService {
     List<District> findDistrictById(Long id);
 
     List<Ward> findWardById(Long id);
+
+    Optional<AddressFromWarDtoOutput> getAddressByWardId(Long id);
 
     //admin front -------------------------------------------
 

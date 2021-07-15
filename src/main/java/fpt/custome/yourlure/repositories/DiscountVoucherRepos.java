@@ -16,7 +16,7 @@ public interface DiscountVoucherRepos extends JpaRepository<DiscountVoucher, Lon
             "FROM\n" +
             "\ttbl_discount_voucher v \n" +
             "WHERE\n" +
-            "\tconcat ( LOWER ( unaccent ( v.name ) ), UPPER ( v.code ) ) LIKE UPPER ( unaccent ( ?1 ) )"
+            "\tconcat ( UPPER ( unaccent ( v.name ) ), UPPER ( v.code ) ) LIKE UPPER ( unaccent ( ?1 ) )"
             ,nativeQuery = true)
     Page<DiscountVoucher> searchAll(String keyword, Pageable pageable);
 
