@@ -28,6 +28,10 @@ public interface OrderController {
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, @RequestBody @Valid OrderUserDtoInput order);
 
+    @GetMapping("/my-orders")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Object> myOrders(HttpServletRequest rq,@RequestParam Integer page,@RequestParam @Min(1) Integer limit);
+
     /**
      * lấy tất cả các order của user
      *

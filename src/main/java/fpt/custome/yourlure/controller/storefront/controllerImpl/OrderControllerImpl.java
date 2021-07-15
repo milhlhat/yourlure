@@ -4,7 +4,9 @@ import fpt.custome.yourlure.controller.storefront.OrderController;
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.DiscountVoucherDtoOutput;
+import fpt.custome.yourlure.dto.dtoOut.OrderDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
+import fpt.custome.yourlure.entity.Order;
 import fpt.custome.yourlure.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +51,27 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, OrderUserDtoInput order) {
+    public ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderDtoIn) {
         try{
-            return new ResponseEntity<>(orderService.userProcessOrder(rq, order), HttpStatus.OK);
+            Order order = orderService.userProcessOrder(rq, orderDtoIn);
+            if(order != null){
+                return new ResponseEntity<>(order, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Không thể đặt hàng!", HttpStatus.BAD_REQUEST);
+
         }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public ResponseEntity<Object> myOrders(HttpServletRequest rq, Integer page, Integer limit) {
+        OrderDtoOut result = orderService.myOrders(rq,page, limit );
+        if(result!=null){
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy order", HttpStatus.BAD_REQUEST);
     }
 
     @Override

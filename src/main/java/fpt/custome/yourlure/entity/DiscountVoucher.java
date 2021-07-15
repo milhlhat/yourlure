@@ -48,11 +48,11 @@ public class DiscountVoucher {
     @Column(name = "used")
     private Integer used;
 
-    @Nullable
+    @NotNull
     @Column(name = "start_date")
     private Date start_date;
 
-    @Nullable
+    @NotNull
     @Column(name = "end_date")
     private Date end_date;
 
@@ -64,7 +64,7 @@ public class DiscountVoucher {
     @Column(name = "maxValue")
     private Float maxValue;
 
-    @Nullable
+    @NotNull
     @Column(name = "minSpentAmount")
     private Float minSpentAmount;
 

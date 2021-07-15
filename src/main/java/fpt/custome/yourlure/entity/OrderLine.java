@@ -57,7 +57,7 @@ public class OrderLine {
     @Nullable
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "oderId", nullable = false)
+    @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
 }
