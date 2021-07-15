@@ -32,7 +32,7 @@ public class StoreUserOrderDtoOut {
         private String note;
         private Date orderDate;
         private String activityName;
-        List<ProductDtoOut> productDtoOuts;
+        private List<ProductDtoOut> productDtoOuts;
 
         @Data
         @Builder

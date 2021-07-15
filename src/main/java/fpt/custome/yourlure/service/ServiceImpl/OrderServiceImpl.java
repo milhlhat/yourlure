@@ -2,18 +2,15 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.DiscountVoucherDtoOutput;
-import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
-import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
+import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private UserService userService;
 
     @Autowired
     private CartRepos cartRepos;
@@ -118,12 +115,15 @@ public class OrderServiceImpl implements OrderService {
 
     protected Payment verifyPayment(Long paymentId) {
         try {
-            return paymentRepos.getById(paymentId);
+            Optional<Payment> payment = paymentRepos.findById(paymentId);
+            if (payment.isPresent()) {
+                return payment.get();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            return paymentRepos.getByPayment("COD");
         }
-
+        return null;
     }
 
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
@@ -131,15 +131,19 @@ public class OrderServiceImpl implements OrderService {
 
         for (CartItem item : items) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
-            Product product = productJpaRepos.getById(item.getProductId());
-            if (item.getCustomModelId() != null && product.getCustomizable()) {
+
+
+            if (item.getCustomModelId() != null) {
                 // get default price of product
-                Float defaultPrice = product.getDefaultPrice();
                 // TODO: calculate price of model
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
+                Product product = customizeModel.getModel3d().getProduct();
+
+                Float defaultPrice = product.getDefaultPrice();
                 Float customAmount = calculateCustomizePrice(customizeModel);
                 Float totalPrice = defaultPrice + customAmount;
                 orderLine.setPrice(totalPrice);
+                orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
 
             } else {
                 // set price by variant
@@ -147,6 +151,8 @@ public class OrderServiceImpl implements OrderService {
                 if (variant.getQuantity() > 0) {
                     orderLine.setPrice(variant.getNewPrice());
                     orderLine.setImgThumbnail(variant.getImageUrl());
+
+                    // decrease variant when order variant
                     variant.setQuantity(variant.getQuantity() - 1);
                     variant = variantRepos.save(variant);
 
@@ -156,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
             orderLine.setOrder(order);
-
+            orderLine = orderLineRepos.save(orderLine);
             // save order below here
             orderLines.add(orderLine);
 
@@ -195,21 +201,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception {
-        User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
+        User user = userService.whoami(rq);
+
+        // check payment
+        Payment payment = verifyPayment(orderUserDtoInput.getPaymentId());
+        if (payment == null) {
+            throw new Exception("phương thức thanh toán không tồn tại!");
+        }
 
         Order order = Order.builder()
                 .address(orderUserDtoInput.getAddress())
                 .user(user)
                 .orderDate(new Date())
-                .phone(user.getPhone())
-                .discount(verifyDiscountCode(orderUserDtoInput.getDiscountCode()).getDiscountValue())
-                .payment(verifyPayment(orderUserDtoInput.getPaymentId()))
-                .receiverName(user.getUsername())
+                .phone(orderUserDtoInput.getPhone())
+                .payment(payment)
+                .receiverName(orderUserDtoInput.getReceiverName())
                 .note(orderUserDtoInput.getNote())
                 .build();
-
+        order = orderRepos.save(order);
         // TODO: create order line
-
         Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(null);
         if (cart == null) {
             throw new Exception("can't process order because cart is empty!");
@@ -222,29 +232,35 @@ public class OrderServiceImpl implements OrderService {
         List<OrderLine> orderLines = createOrderLines(order, items);
 
         // check condition and apply discount
-        float totalAmount = calculateItemPrices(items);
-        DiscountVoucherDtoOutput voucher = verifyDiscountCode(orderUserDtoInput.getDiscountCode());
-        float shippingFee = 25000;
-        float discount = 0;
-
-        switch (voucher.getType()) {
-            case "Free Ship":
-                discount = shippingFee;
-                break;
-            case "Giá Trị":
-                discount = voucher.getDiscountValue();
-                break;
-            default: {
-                if (voucher.getMaxValue() < voucher.getDiscountValue() * totalAmount) {
-                    discount = voucher.getMaxValue();
-                } else {
-                    discount = voucher.getDiscountValue() * totalAmount;
-                }
+        if (orderUserDtoInput.getDiscountCode() != null && !"".equals(orderUserDtoInput.getDiscountCode())) {
+            float totalAmount = calculateItemPrices(items);
+            DiscountVoucherDtoOutput voucher = verifyDiscountCode(orderUserDtoInput.getDiscountCode());
+            if (voucher == null) {
+                throw new Exception("voucher giảm giá không chính xác!");
             }
-            break;
-        }
+            float shippingFee = 25000;
+            float discount = 0;
 
-        if (totalAmount >= voucher.getMinSpentAmount()) {
+            switch (voucher.getType()) {
+                case "Free Ship":
+                    discount = shippingFee;
+                    break;
+                case "Giá Trị":
+                    discount = voucher.getDiscountValue();
+                    break;
+                default: {
+                    if (voucher.getMaxValue() < voucher.getDiscountValue() * totalAmount) {
+                        discount = voucher.getMaxValue();
+                    } else {
+                        discount = voucher.getDiscountValue() * totalAmount;
+                    }
+                }
+                break;
+            }
+
+            if (totalAmount >= voucher.getMinSpentAmount()) {
+                order.setDiscount(discount);
+            }
             order.setDiscount(discount);
         }
 
@@ -253,6 +269,63 @@ public class OrderServiceImpl implements OrderService {
 
         return order;
 
+    }
+
+    @Override
+    public OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit) {
+        User user = userService.whoami(rq);
+        Pageable pageable = PageRequest.of(page,
+                limit,
+                Sort.by("orderDate").descending());
+        Page<Order> result = orderRepos.findAllByUserUserId(user.getUserId(), pageable);
+        if (result.getTotalElements() > 0) {
+            List<OrderDtoOut.Order> orders = new ArrayList<>();
+
+            for (Order order : result.getContent()) {
+                List<OrderDtoOut.OrderItem> items = new ArrayList<>();
+                for (OrderLine orderLine : order.getOrderLineCollection()) {
+                    // get more information order line
+
+                    OrderDtoOut.OrderItem item = mapper.map(orderLine, OrderDtoOut.OrderItem.class);
+
+                    if(orderLine.getCustomModelId() != null){
+                        Optional<CustomizeModel> customizeModel = customizeModelRepos.findById(orderLine.getCustomModelId());
+                        customizeModel.ifPresent(model -> {
+                            item.setCustomizeName(model.getName());
+                            item.setThumbnailUrl(model.getThumbnailUrl());
+                        });
+                    }
+
+                    if(orderLine.getVariantId() != null){
+                        Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
+                        variant.ifPresent(var -> {
+                            item.setProductName(var.getProduct().getProductName());
+                            item.setVariantName(var.getVariantName());
+                            item.setThumbnailUrl(var.getImageUrl());
+                        });
+                    }
+
+                    items.add(item);
+                }
+
+                OrderDtoOut.Order orderDtoOut = mapper.map(order, OrderDtoOut.Order.class);
+                orderDtoOut.setItems(items);
+
+                // add to list order to show on FE
+                orders.add(orderDtoOut);
+
+            }
+
+
+            OrderDtoOut orderDtoOut = OrderDtoOut.builder()
+                    .totalItem(orders.size())
+                    .totalPage(result.getTotalPages())
+                    .orders(orders)
+                    .build();
+            return orderDtoOut;
+        }
+
+        return null;
     }
 
     @Override
@@ -282,8 +355,7 @@ public class OrderServiceImpl implements OrderService {
     public Float calculateItemPrices(List<CartItem> items) {
         float totalPrice = 0;
         for (CartItem item : items) {
-            Product product = productJpaRepos.getById(item.getProductId());
-            if (item.getCustomModelId() != null && product.getCustomizable()) {
+            if (item.getCustomModelId() != null) {
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
                 totalPrice += calculateCustomizePrice(customizeModel);
             } else {
@@ -297,11 +369,12 @@ public class OrderServiceImpl implements OrderService {
         return totalPrice;
     }
 
+
     @Override
     public Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
                                                            Integer limit) {
         try {
-            User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            User user = userService.whoami(req);
 
             List<StoreUserOrderDtoOut.OrderDtoOut> orderDtoOuts = new ArrayList<>();
             Pageable pageable = PageRequest.of(page,
@@ -354,15 +427,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<AdminOrderDetailDtoOut> getById(Long id) {
         try {
-            Optional<Order> optional = orderRepos.findById(id);
+            Optional<Order> order = orderRepos.findById(id);
             List<AdminOrderDetailDtoOut.ProductDtoOut> productDtoOutList = new ArrayList<>();
-            if (optional.isPresent()) {
-                AdminOrderDetailDtoOut result = mapper.map(optional.get(), AdminOrderDetailDtoOut.class);
-                List<OrderLine> orderLineList = (List<OrderLine>) optional.get().getOrderLineCollection();
+            if (order.isPresent()) {
+                AdminOrderDetailDtoOut result = mapper.map(order.get(), AdminOrderDetailDtoOut.class);
+                List<OrderLine> orderLineList = (List<OrderLine>) order.get().getOrderLineCollection();
                 for (OrderLine item : orderLineList) {
                     //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
-                    AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(
-                            productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
+                    AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
                     productDtoOut.setPrice(item.getPrice());
                     productDtoOut.setQuantity(item.getQuantity());
                     productDtoOut.setVariantId(item.getVariantId());

@@ -35,6 +35,5 @@ public class CartDtoOut {
         private Float weight;
         private Float price;
 
-
     }
 }

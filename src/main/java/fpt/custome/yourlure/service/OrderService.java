@@ -2,10 +2,7 @@ package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.DiscountVoucherDtoOutput;
-import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.Order;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +18,8 @@ public interface OrderService {
     DiscountVoucherDtoOutput verifyDiscountCode(String code) throws Exception;
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
+
+    OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit);
 
     Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
                                                     Integer limit);
