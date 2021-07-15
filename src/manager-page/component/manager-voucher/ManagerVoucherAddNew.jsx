@@ -24,7 +24,9 @@ function ManagerVoucherAddNew(props) {
     const history = useHistory();
     const schema = yup.object().shape({
         name: yup.string().required("Tên mã giảm giá không được để trống"),
-        discountValue: yup.string().required("Giá trị mã giảm giá không được để trống")
+        discountValue: yup.mixed().test('discountErr', "Giá trị mã giảm giá không được để trống", () => {
+            return disabled;
+        })
     });
     const {
         register,
@@ -149,7 +151,7 @@ function ManagerVoucherAddNew(props) {
                                                 onChange={handleChangeDisabled}
                                             >
                                                 <option value="Phần trăm">Phần trăm</option>
-                                                <option value="Giá trị">Giá trị</option>
+                                                <option value="Giá trị">Giá trị </option>
                                                 <option value="Free Ship">Free Ship</option>
                                             </select>
                                         </td>
@@ -169,7 +171,7 @@ function ManagerVoucherAddNew(props) {
                                     <tr>
                                         <td>
                                             <label for="discount-value" className="form-label">
-                                                Giá trị <span className="error-message">(*)</span>
+                                                Giá trị {!disabled && <span className="error-message">(*)</span>}
                                             </label>
                                             <input
                                                 type="text"

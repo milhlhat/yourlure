@@ -17,13 +17,14 @@ ManagerVoucher.propTypes = {};
 
 function ManagerVoucher() {
     const { register, handleSubmit } = useForm();
+    const totalItem = 10;
     const history = useHistory();
     const location = useLocation();
     const [activePage, setActivePage] = useState(1);
     const [filter, setFilter] = useState({
         isAsc: true,
         keyword: "",
-        limit: filterConfig.LIMIT_DATA_PER_PAGE,
+        limit: totalItem,
         listCateId: [],
         listFishId: [],
         page: filterConfig.PAGE_NUMBER_DEFAULT,
@@ -177,39 +178,11 @@ function ManagerVoucher() {
                 <div className="manager-voucher-show mt-3 bg-white bg-shadow">
                     <span>Tất cả mã giảm giá</span>
                     <hr />
-                    <div className="bg-white manager-sort p-2">
-                        <form onSubmit={handleSubmit(onsubmit)}>
-                            <div className="row">
-                                <div className="col-4">
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <YLButton
-                                                type="submit"
-                                                value="Tìm kiếm tên"
-                                                variant="primary"
-                                            ></YLButton>
-                                        </div>
-                                        <div className="col-8">
-                                            <ManagerSort
-                                                filter={filter}
-                                                setFilter={setFilter}
-                                                options={options}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="col-8">
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        {...register("keyWord")}
-                                        placeholder="Tìm kiếm"
-                                    />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <ManagerSort
+                        filter={filter}
+                        setFilter={setFilter}
+                        options={options}
+                    />
                     <table>
                         <tbody>
                             <tr>
@@ -217,6 +190,7 @@ function ManagerVoucher() {
                                 <th>Tên</th>
                                 <th>Loại giảm giá</th>
                                 <th>Giá trị</th>
+                                <th>Mã code</th>
                                 <th>Bắt đầu từ ngày</th>
                                 <th>Ngày kết thúc</th>
                                 <th></th>
@@ -234,7 +208,8 @@ function ManagerVoucher() {
                                     </td>
                                     <td>{item.type === "Free Ship" || !item.discountValue ?
                                         '-'
-                                        : item.type == "Phần trăm" ? item.discountValue + '%' : item.discountValue + '000đ'}</td>
+                                        : item.type == "Phần trăm" ? item.discountValue * 100 + '%' : item.discountValue + 'đ'}</td>
+                                    <td>{item.code ? item.code : '-'}</td>
                                     <td>{item.start_date ? formatDate(item.start_date) : '-'}</td>
                                     <td>{item.end_date ? formatDate(item.end_date) : '-'}</td>
                                     <td>
@@ -258,13 +233,13 @@ function ManagerVoucher() {
                         </tbody>
                     </table>
                     {voucherList?.data?.discountVouchers?.length <= 0 && <p>Không có mã giảm giá nào! </p>}
-                    <div className="m-auto p-4 m-auto p-4 d-flex justify-content-center">
-                        {voucherList?.data?.totalPage > 1 && (
+                    <div className="m-auto p-4 d-flex justify-content-center">
+                        {voucherList?.data?.totalPage >= 1 && (
                             <Pagination
                                 itemClass="page-item"
                                 linkClass="page-link"
                                 activePage={activePage}
-                                itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
+                                itemsCountPerPage={totalItem}
                                 totalItemsCount={voucherList?.data?.totalItem}
                                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                                 onChange={handlePageChange}

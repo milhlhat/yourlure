@@ -1,21 +1,21 @@
 import ManagerUserApi from "api/manager-user-api";
-import ErrorLoad from "components/error-notify/ErrorLoad";
+import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import YLButton from "components/custom-field/YLButton";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useDispatch } from "react-redux";
-import { setIsBack } from "redux/back-action/back-action";
-import YLButton from "components/custom-field/YLButton";
-import "./scss/manager-staff.scss";
 import { useHistory } from "react-router-dom";
-import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
-import { setFilter } from "redux/product-action/manager/fetch-manager-filter";
+import { setIsBack } from "redux/back-action/back-action";
+import ManagerSort from "./ManagerSort";
+import "./scss/manager-staff.scss";
+
 
 function ManagerStaff(props) {
   const totalItem = 10;
   const history = useHistory();
-  const [filterStaff, setFilterStaff] = useState({
+  const [filter, setFilter] = useState({
     isAsc: true,
     keyword: "",
     limit: totalItem,
@@ -28,10 +28,37 @@ function ManagerStaff(props) {
     isLoading: false,
     isSuccess: true,
   });
+  //option sort
+  const options = [
+    {
+      display: "Cũ nhất",
+      isAsc: true,
+      sortBy: "user_id",
+      value: "SORT_id_ASC",
+    },
+    {
+      display: "Mới nhất",
+      isAsc: false,
+      sortBy: "user_id",
+      value: "SORT_id_DESC",
+    },
+    {
+      display: "Tên từ A-Z",
+      isAsc: true,
+      sortBy: "username",
+      value: "SORT_NAME_DESC",
+    },
+    {
+      display: "Tên từ Z-A",
+      isAsc: false,
+      sortBy: "username",
+      value: "SORT_NAME_DESC",
+    },
+  ];
   const [activePage, setActivePage] = useState(1);
   function handlePageChange(newPage) {
     setActivePage(newPage);
-    setFilterStaff({ ...filterStaff, page: newPage - 1 });
+    setFilter({ ...filter, page: newPage - 1 });
   }
 
   const dispatch = useDispatch();
@@ -47,9 +74,15 @@ function ManagerStaff(props) {
   const detectRole = (role) => {
     let rs = '';
     role.map((r) => {
-      if (r === "ROLE_ADMIN") rs += "Quản lý ";
-      else if (r === "ROLE_STAFF") rs += ", Nhân viên, ";
-      else if (r === "ROLE_CUSTOMER") rs += ", Khách hàng ";
+      if (r === "ROLE_ADMIN") {
+        rs += "-Quản lý-";
+      }
+      else if (r === "ROLE_STAFF") {
+        rs += "-Nhân viên-";
+      }
+      else if (r === "ROLE_CUSTOMER") {
+        rs += "-Khách hàng-";
+      }
 
     })
     return rs !== '' ? rs : "-"
@@ -76,7 +109,7 @@ function ManagerStaff(props) {
       return { ...prevState, isLoading: true };
     });
     try {
-      const response = await ManagerUserApi.getStaffAll(filterStaff);
+      const response = await ManagerUserApi.getStaffAll(filter);
       setStaffList({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {
       setStaffList({ data: null, isLoading: false, isSuccess: false });
@@ -85,7 +118,7 @@ function ManagerStaff(props) {
   };
   useEffect(() => {
     fetchManagerStaff();
-  }, [filterStaff]);
+  }, [filter]);
   if (staffList.isLoading) {
     return <Loading />;
   } else
@@ -105,6 +138,11 @@ function ManagerStaff(props) {
         <div className="manager-staff-show mt-3 bg-white bg-shadow">
           <span>Tất cả nhân viên</span>
           <hr />
+          <ManagerSort
+            filter={filter}
+            setFilter={setFilter}
+            options={options}
+          />
           {/* <ManagerSort /> */}
           {staffList?.data?.userDtoOutList?.length <= 0 && (
             <p>Không có sản phẩm </p>
@@ -115,7 +153,7 @@ function ManagerStaff(props) {
                 <th>#</th>
                 <th>Tên</th>
                 <th>Giới tính</th>
-                <th onClick={() => setFilterStaff({ ...filterStaff, sortBy: "phone", isAsc: !filterStaff.isAsc })}>Số điện thoại</th>
+                <th onClick={() => setFilter({ ...filter, sortBy: "phone", isAsc: !filter.isAsc })}>Số điện thoại</th>
                 <th>Email</th>
                 <th>Trạng thái</th>
                 <th>Vị trí</th>
@@ -163,6 +201,7 @@ function ManagerStaff(props) {
               ))}
             </tbody>
           </table>
+          {staffList?.data?.discountVouchers?.length <= 0 && <p>Không có nhân viên nào! </p>}
           <div className="m-auto p-4 d-flex justify-content-center">
             {staffList?.data?.totalPage >= 1 && (
               <Pagination

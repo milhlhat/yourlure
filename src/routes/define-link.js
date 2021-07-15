@@ -49,6 +49,7 @@ const DEFINELINK = {
   managementFish: "/fish",
   managementFishAddNew: "/addnew",
   managementFishEdit: "/edit/:id",
+  managementFishDetail: "/detail/:id",
 
   //manager order route
   managementOrder: "/order",

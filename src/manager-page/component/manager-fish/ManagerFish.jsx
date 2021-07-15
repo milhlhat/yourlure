@@ -159,38 +159,11 @@ function ManagerFish(props) {
                 <div className="manager-fish-show mt-3 bg-white bg-shadow">
                     <span>tất cả loại cá</span>
                     <hr />
-                    <div className="bg-white manager-sort p-2">
-                        <form onSubmit={handleSubmit(onsubmit)}>
-                            <div className="row">
-                                <div className="col-4">
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <YLButton
-                                                type="submit"
-                                                value="tìm kiếm tên"
-                                                variant="primary"
-                                            ></YLButton>
-                                        </div>
-                                        <div className="col-8">
-                                            <ManagerSort
-                                                filter={filter}
-                                                setFilter={setFilter}
-                                                options={options}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-8">
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        {...register("keyWord")}
-                                        placeholder="Tìm kiếm"
-                                    />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <ManagerSort
+                        filter={filter}
+                        setFilter={setFilter}
+                        options={options}
+                    />
                     <table>
                         <tbody>
                             <tr>
@@ -202,7 +175,16 @@ function ManagerFish(props) {
                             {fishList.data?.fishDtoOuts?.map((item, i) => (
                                 <tr key={"fish-" + i} className="hover-background">
                                     <td>{i + 1}</td>
-                                    <td>{item.fishName}</td>
+                                    <td
+                                        className="pointer"
+                                        onClick={() =>
+                                            history.push({
+                                                pathname:
+                                                    "/manager/fish/detail/" + item.fishID,
+                                                canBack: setBack,
+                                            })
+                                        }
+                                    >{item.fishName}</td>
                                     <td className="d-flex float-end">
                                         <img src={Editor}
                                             className="pointer"

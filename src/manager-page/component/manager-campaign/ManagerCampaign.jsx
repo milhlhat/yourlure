@@ -8,6 +8,7 @@ import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useDispatch } from "react-redux";
+import ManagerSort from "./ManagerSort";
 import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import "./scss/manager-campaign.scss";
@@ -16,7 +17,7 @@ function ManagerCampaign(props) {
     const totalItem = 10;
     const history = useHistory();
     const [filter, setFilter] = useState({
-        isAsc: true,    
+        isAsc: true,
         keyword: "",
         limit: totalItem,
         page: 0,
@@ -34,6 +35,33 @@ function ManagerCampaign(props) {
         path: location,
         label: "Chiến dịch",
     };
+    //option sort
+    const options = [
+        {
+            display: "Cũ nhất",
+            isAsc: true,
+            sortBy: "campaignId",
+            value: "SORT_id_ASC",
+        },
+        {
+            display: "Mới nhất",
+            isAsc: false,
+            sortBy: "campaignId",
+            value: "SORT_id_DESC",
+        },
+        {
+            display: "Tên từ A-Z",
+            isAsc: true,
+            sortBy: "banner",
+            value: "SORT_NAME_DESC",
+        },
+        {
+            display: "Tên từ Z-A",
+            isAsc: false,
+            sortBy: "banner",
+            value: "SORT_NAME_DESC",
+        },
+    ];
     const [activePage, setActivePage] = useState(1);
     function handlePageChange(newPage) {
         setActivePage(newPage);
@@ -121,6 +149,11 @@ function ManagerCampaign(props) {
                 <div className="manager-show mt-3 bg-white bg-shadow">
                     <span>Tất cả chiến dịch</span>
                     <hr />
+                    <ManagerSort
+                        filter={filter}
+                        setFilter={setFilter}
+                        options={options}
+                    />
                     {/* <ManagerSort /> */}
                     {campaignList?.data?.length <= 0 && (
                         <p>Không có sản phẩm </p>
@@ -168,14 +201,15 @@ function ManagerCampaign(props) {
                             ))}
                         </tbody>
                     </table>
+                    {campaignList?.data?.discountVouchers?.length <= 0 && <p>Không có chiến dịch nào! </p>}
                     <div className="m-auto p-4 d-flex justify-content-center">
-                        {campaignList?.data?.campaignDtoOuts?.totalPage >= 1 && (
+                        {campaignList?.data?.totalPage >= 1 && (
                             <Pagination
                                 itemClass="page-item"
                                 linkClass="page-link"
                                 activePage={activePage}
                                 itemsCountPerPage={totalItem}
-                                totalItemsCount={campaignList?.data?.campaignDtoOuts?.totalItem}
+                                totalItemsCount={campaignList?.data?.totalItem}
                                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                                 onChange={handlePageChange}
                             />
