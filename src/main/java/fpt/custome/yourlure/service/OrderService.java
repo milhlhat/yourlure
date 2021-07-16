@@ -2,8 +2,12 @@ package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.*;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.OrderDtoOut;
+import fpt.custome.yourlure.entity.DiscountVoucher;
 import fpt.custome.yourlure.entity.Order;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import org.springframework.data.domain.Pageable;
 
@@ -15,18 +19,19 @@ import java.util.Optional;
 public interface OrderService {
 
     // store font -----------------------
-    DiscountVoucherDtoOutput verifyDiscountCode(String code) throws Exception;
-
+    DiscountVoucher verifyDiscountCode(String code) throws Exception;
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
-
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
-
     boolean cancelOrder(HttpServletRequest rq, Long orderId);
 
     OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit);
 
-    Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
-                                                    Integer limit);
+    OrderDtoOut getListUserOrder(Long userId, Integer page,
+                                 Integer limit);
+    OrderDtoOut getListUserOrder(User user, Integer page,
+                                 Integer limit);
+
+    Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn) throws Exception;
 
     //admin ------------------------------
     Optional<AdminOrderDtoOut> getAll(String keyword, String typeSearch, Pageable pageable);
@@ -43,5 +48,5 @@ public interface OrderService {
 
     Float calculateCustomizePrice(CustomizeModel customizeModel);
 
-    Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn);
+
 }

@@ -2,7 +2,9 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.*;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.OrderDtoOut;
 import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
@@ -78,59 +80,37 @@ public class OrderServiceImpl implements OrderService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public DiscountVoucherDtoOutput verifyDiscountCode(String discountCode) throws Exception {
+    public DiscountVoucher verifyDiscountCode(String discountCode) throws Exception {
+        if (discountCode == null) {
+            throw new Exception("vui lòng nhập discount code!");
+        }
         DiscountVoucher voucher = discountVoucherRepos.findByCode(discountCode);
-        if (voucher != null) {
-            DiscountVoucherDtoOutput result = DiscountVoucherDtoOutput.builder()
-                    .type(voucher.getType())
-                    .discountValue(verifyDiscountCode(voucher))
-                    .maxValue(voucher.getMaxValue())
-                    .minSpentAmount(voucher.getMinSpentAmount())
-                    .build();
-            return result;
+
+        if (voucher == null) {
+            throw new Exception("Mã giảm giá không đúng");
         }
-        return null;
+
+        if (voucher.getStart_date() == null || voucher.getStart_date().compareTo(new Date()) > 0) {
+            // the voucher is not start
+            throw new Exception("Mã giảm giá chưa bắt đầu!");
+        }
+        if (voucher.getEnd_date() == null || voucher.getEnd_date().compareTo(new Date()) < 0) {
+            // expire voucher
+            throw new Exception("Mã giảm giá đã hết hạn!");
+        }
+
+        return voucher;
     }
 
-    public float verifyDiscountCode(DiscountVoucher voucher) throws Exception {
-        if (voucher != null) {
-            if (voucher.getStart_date() == null || voucher.getStart_date().compareTo(new Date()) > 0) {
-                // the voucher is not start
-                throw new Exception("voucher is not start!");
-            }
-            if (voucher.getEnd_date() == null || voucher.getEnd_date().compareTo(new Date()) < 0) {
-                // expire voucher
-                throw new Exception("voucher is expired!");
-            }
-            if (voucher.getType().equals("Free Ship")) {
-                return 0;
-            } else {
-                if (voucher.getType().equals("Giá Trị")) {
-                    return voucher.getDiscountValue();
-                } else {
-                    if (voucher.getDiscountValue() != 0)
-                        return voucher.getDiscountValue() / 100;
-                    else
-                        throw new Exception("voucher must not zero(0)!");
-                }
-            }
+    protected Payment verifyPayment(Long paymentId) throws Exception {
+        Optional<Payment> payment = paymentRepos.findById(paymentId);
+        if (!payment.isPresent()) {
+            throw new Exception("Phương thức thanh toán không đúng!");
         }
-        return -1;
+        return payment.get();
     }
 
-    protected Payment verifyPayment(Long paymentId) {
-        try {
-            Optional<Payment> payment = paymentRepos.findById(paymentId);
-            if (payment.isPresent()) {
-                return payment.get();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    @Transactional
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         if (items.isEmpty()) {
             throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
@@ -211,10 +191,7 @@ public class OrderServiceImpl implements OrderService {
         List<CartItem> items = orderGuestDtoInput.getCartItems();
 
         // check condition and apply discount
-        DiscountVoucher voucher = discountVoucherRepos.findByCode(orderGuestDtoInput.getDiscountCode());
-        if (calculateItemPrices(items) >= voucher.getMinSpentAmount()) {
-            order.setDiscount(verifyDiscountCode(voucher));
-        }
+        order.setDiscount(calculateDiscount(orderGuestDtoInput.getDiscountCode(), calculateItemPrices(items)));
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
@@ -259,38 +236,8 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderLine> orderLines = createOrderLines(order, items);
 
-        // check condition and apply discount
-        if (orderUserDtoInput.getDiscountCode() != null && !"".equals(orderUserDtoInput.getDiscountCode())) {
-            float totalAmount = calculateItemPrices(items);
-            DiscountVoucherDtoOutput voucher = verifyDiscountCode(orderUserDtoInput.getDiscountCode());
-            if (voucher == null) {
-                throw new Exception("voucher giảm giá không chính xác!");
-            }
-            float shippingFee = 25000;
-            float discount = 0;
-
-            switch (voucher.getType()) {
-                case "Free Ship":
-                    discount = shippingFee;
-                    break;
-                case "Giá Trị":
-                    discount = voucher.getDiscountValue();
-                    break;
-                default: {
-                    if (voucher.getMaxValue() < voucher.getDiscountValue() * totalAmount) {
-                        discount = voucher.getMaxValue();
-                    } else {
-                        discount = voucher.getDiscountValue() * totalAmount;
-                    }
-                }
-                break;
-            }
-
-            if (totalAmount >= voucher.getMinSpentAmount()) {
-                order.setDiscount(discount);
-            }
-            order.setDiscount(discount);
-        }
+        // calculate discount
+        order.setDiscount(calculateDiscount(orderUserDtoInput.getDiscountCode(), calculateItemPrices(items)));
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
@@ -316,6 +263,126 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit) {
         User user = userService.whoami(rq);
+        if (user != null) {
+            return getListUserOrder(user, page, limit);
+
+        }
+        return null;
+    }
+
+    @Override
+    public OrderDtoOut getListUserOrder(Long userId, Integer page, Integer limit) {
+        if (userId != null) {
+            Optional<User> user = userRepos.findById(userId);
+            if (user.isPresent()) {
+                return getListUserOrder(user.get(), page, limit);
+            }
+        }
+
+        return null;
+    }
+
+    public float calculateDiscount(String code, float totalAmount) throws Exception {
+        // check condition and apply discount
+        if (code != null && !"".equals(code)) {
+            DiscountVoucher voucher = verifyDiscountCode(code);
+
+            if (totalAmount < voucher.getMinSpentAmount()) {
+                throw new Exception("tổng tiền của đơn hàng không đủ để áp dụng mã giảm giá");
+            }
+
+            float shippingFee = 25000;
+            float discount = 0;
+
+            switch (voucher.getType()) {
+                case "Free Ship":
+                    discount = shippingFee;
+                    break;
+                case "Giá Trị":
+                    discount = voucher.getDiscountValue();
+                    break;
+                default: { // Phần trăm
+                    if (voucher.getMaxValue() < voucher.getDiscountValue() * totalAmount) {
+                        discount = voucher.getMaxValue();
+                    } else {
+                        discount = voucher.getDiscountValue() * totalAmount;
+                    }
+                }
+                break;
+            }
+
+            return discount;
+        }
+        return 0;
+    }
+
+    @Override
+    public Float calculateCustomizePrice(CustomizeModel customizeModel) {
+        // TODO: calculate product price include custom model
+        // get customize price
+        List<CustomPrice> customPrices = customPriceRepos.findAll();
+        Map<String, Float> prices = customPrices.stream()
+                .collect(Collectors.toMap(CustomPrice::getName, CustomPrice::getPrice));
+
+        // calculate custom model price
+        float customAmount = 0;
+        for (CustomMaterial material : customizeModel.getCustomMaterials()) {
+            if (material.getColor() != null && !material.getColor().trim().equals("")) { // todo: you can validate for it
+                customAmount += prices.get("COLOR");
+            }
+            if (material.getText() != null && !material.getText().trim().equals("")) {
+                customAmount += prices.get("TEXT");
+            }
+            if (material.getImg() != null && !material.getImg().trim().equals("")) {
+                customAmount += prices.get("IMG");
+            }
+        }
+        return customAmount;
+    }
+
+    @Transactional
+    @Override
+    public Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderInput) throws Exception {
+        if (orderInput.getCartItems() == null || orderInput.getCartItems().size() == 0) {
+            throw new Exception("vui lòng chọn sản phẩm để đặt hàng!");
+        }
+        if (orderInput.getPaymentId() == null) {
+            throw new Exception("vui lòng chọn phương thức thanh toán!");
+        }
+
+        Order order = mapper.map(orderInput, Order.class);
+
+        order.setOrderDate(new Date());
+        order.setPayment(verifyPayment(orderInput.getPaymentId()));
+        order.setDiscount(calculateDiscount(orderInput.getDiscountCode(), calculateItemPrices(orderInput.getCartItems())));
+        order = orderRepos.save(order);
+
+        List<OrderLine> orderLines = createOrderLines(order, orderInput.getCartItems());
+        order.setOrderLineCollection(orderLines);
+        return order;
+    }
+
+    public Float calculateItemPrices(List<CartItem> items) {
+        float totalPrice = 0;
+        for (CartItem item : items) {
+            if (item.getCustomModelId() != null) {
+                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
+                totalPrice += calculateCustomizePrice(customizeModel);
+            } else {
+                // set price by variant
+                Variant variant = variantRepos.getById(item.getVariantId());
+                if (variant.getQuantity() > 0) {
+                    totalPrice += variant.getNewPrice();
+                }
+            }
+        }
+        return totalPrice;
+    }
+
+
+    @Override
+    public OrderDtoOut getListUserOrder(User user, Integer page,
+                                        Integer limit) {
         Pageable pageable = PageRequest.of(page,
                 limit,
                 Sort.by("orderDate").descending());
@@ -373,82 +440,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return null;
-    }
-
-    @Override
-    public Float calculateCustomizePrice(CustomizeModel customizeModel) {
-        // TODO: calculate product price include custom model
-        // get customize price
-        List<CustomPrice> customPrices = customPriceRepos.findAll();
-        Map<String, Float> prices = customPrices.stream()
-                .collect(Collectors.toMap(CustomPrice::getName, CustomPrice::getPrice));
-
-        // calculate custom model price
-        float customAmount = 0;
-        for (CustomMaterial material : customizeModel.getCustomMaterials()) {
-            if (material.getColor() != null && !material.getColor().trim().equals("")) { // todo: you can validate for it
-                customAmount += prices.get("COLOR");
-            }
-            if (material.getText() != null && !material.getText().trim().equals("")) {
-                customAmount += prices.get("TEXT");
-            }
-            if (material.getImg() != null && !material.getImg().trim().equals("")) {
-                customAmount += prices.get("IMG");
-            }
-        }
-        return customAmount;
-    }
-
-    @Override
-    public Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn) {
-
-        return null;
-    }
-
-    public Float calculateItemPrices(List<CartItem> items) {
-        float totalPrice = 0;
-        for (CartItem item : items) {
-            if (item.getCustomModelId() != null) {
-                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
-                totalPrice += calculateCustomizePrice(customizeModel);
-            } else {
-                // set price by variant
-                Variant variant = variantRepos.getById(item.getVariantId());
-                if (variant.getQuantity() > 0) {
-                    totalPrice += variant.getNewPrice();
-                }
-            }
-        }
-        return totalPrice;
-    }
-
-
-    @Override
-    public Optional<StoreUserOrderDtoOut> getListUserOrder(HttpServletRequest req, Integer page,
-                                                           Integer limit) {
-        try {
-            User user = userService.whoami(req);
-
-            List<StoreUserOrderDtoOut.OrderDtoOut> orderDtoOuts = new ArrayList<>();
-            Pageable pageable = PageRequest.of(page,
-                    limit,
-                    Sort.by("orderDate").descending());
-            Page<Order> orders = orderRepos.findAllByUserUserId(user.getUserId(), pageable);
-            for (Order item : orders) {
-                Optional<AdminOrderDetailDtoOut> adminOrderDetailDtoOut = getById(item.getOrderId());
-                StoreUserOrderDtoOut.OrderDtoOut dto = mapper.map(adminOrderDetailDtoOut.get(), StoreUserOrderDtoOut.OrderDtoOut.class);
-                orderDtoOuts.add(dto);
-            }
-            StoreUserOrderDtoOut result = StoreUserOrderDtoOut.builder()
-                    .totalItem((int) orders.getTotalElements())
-                    .totalPage(orders.getTotalPages())
-                    .orderDtoOuts(orderDtoOuts)
-                    .build();
-            return Optional.of(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
     }
 
 

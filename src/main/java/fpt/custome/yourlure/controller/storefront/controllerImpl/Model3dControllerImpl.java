@@ -66,7 +66,7 @@ public class Model3dControllerImpl implements Model3dController {
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Tạo customize thất bại", HttpStatus.OK);
+            return new ResponseEntity<>("Tạo tuỳ biến thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -76,7 +76,7 @@ public class Model3dControllerImpl implements Model3dController {
             return new ResponseEntity<>(customizeModelService.updateCustomizeModel(rq, customModelDtoInput), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("update thất bại", HttpStatus.OK);
+            return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -86,7 +86,7 @@ public class Model3dControllerImpl implements Model3dController {
         if(m3d != null){
             return new ResponseEntity<>(m3d, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @Override
