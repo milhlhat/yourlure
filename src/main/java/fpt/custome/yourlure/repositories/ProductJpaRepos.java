@@ -18,7 +18,7 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "        tbl_products pr\n" +
             "\t\t\t\t  LEFT JOIN tbl_variants v ON pr.product_id = v.product_id \n" +
             "    LEFT JOIN tbl_order_line ol ON  ol.variant_id = v.variant_id \n" +
-            "  \n" +
+            "  where pr.visible_in_storefront = true " +
             "    GROUP BY\n" +
             "        pr.product_name,\n" +
             "        pr.product_id \n" +
@@ -26,17 +26,24 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "        sumQuantity,product_id DESC LIMIT 10\n", nativeQuery = true)
     List<Product> bestSellerProduct();
 
-    @Query(value = "SELECT tbl_products.* , SUM(tbl_order_line.quantity)AS sumQuantity \n" +
-            "FROM  tbl_products,tbl_variants, tbl_order_line\n" +
-            "where  tbl_products.product_id = tbl_variants.product_id\n" +
-            "AND tbl_order_line.variant_id = tbl_variants.variant_id\n" +
-            "and tbl_products.category_id = ?1 \n" +
-            "GROUP BY tbl_products.product_name,tbl_products.product_id\n" +
-            "ORDER BY sumQuantity   DESC ", nativeQuery = true)
+    @Query(value = "SELECT\n" +
+            "pr.*,\n" +
+            "SUM(ol.quantity)AS sumQuantity  \n" +
+            "FROM tbl_products pr\n" +
+            "LEFT JOIN tbl_variants v ON pr.product_id = v.product_id \n" +
+            "LEFT JOIN tbl_order_line ol ON  ol.variant_id = v.variant_id \n" +
+            "WHERE pr.category_id = ?1\n" +
+            "and pr.visible_in_storefront = true\n" +
+            "GROUP BY\n" +
+            "pr.product_name,\n" +
+            "pr.product_id \n" +
+            "ORDER BY\n" +
+            "sumQuantity,product_id DESC  ", nativeQuery = true)
     List<Product> bestSellerProductByCategory(Long id);
 
 
     Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
 
+    Page<Product> findAllByVisibleInStorefront(Boolean visibleInStorefront, Pageable pageable);
 
 }

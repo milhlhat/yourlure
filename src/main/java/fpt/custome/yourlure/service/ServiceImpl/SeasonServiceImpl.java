@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.SeasonDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminSeasonDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.SeasonDtoOutput;
 import fpt.custome.yourlure.entity.Season;
 import fpt.custome.yourlure.repositories.SeasonRepos;
@@ -36,18 +37,24 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     @Override
-    public List<SeasonDtoOutput> adminGetAll(Pageable pageable) {
-        List<SeasonDtoOutput> results = new ArrayList<>();
+    public Optional<AdminSeasonDtoOutput> adminGetAll(String keyword, Pageable pageable) {
+        List<SeasonDtoOutput> seasonDtoOutputs = new ArrayList<>();
         try {
-            Page<Season> list = seasonRepos.findAll(pageable);
+            Page<Season> list = seasonRepos.findAllBySeasonName('%' + keyword + '%', pageable);
             for (Season item : list) {
                 SeasonDtoOutput dtoOut = mapper.map(item, SeasonDtoOutput.class);
-                results.add(dtoOut);
+                seasonDtoOutputs.add(dtoOut);
             }
+            AdminSeasonDtoOutput result = AdminSeasonDtoOutput.builder()
+                    .seasonDtoOutputs(seasonDtoOutputs)
+                    .totalItem((int) list.getTotalElements())
+                    .totalPage(list.getTotalPages())
+                    .build();
+            return Optional.of(result);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return results;
     }
 
     @Override
