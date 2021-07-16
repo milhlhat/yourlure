@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.SeasonDtoInput;
+import fpt.custome.yourlure.dto.dtoOut.AdminSeasonDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.SeasonDtoOutput;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface SeasonService {
     List<SeasonDtoOutput> getAll();
 
     //admin front --------------------------------------
-    List<SeasonDtoOutput> adminGetAll(Pageable pageable);
+    Optional<AdminSeasonDtoOutput> adminGetAll(String keyword,Pageable pageable);
 
     Optional<SeasonDtoOutput> getById(Long id);
 

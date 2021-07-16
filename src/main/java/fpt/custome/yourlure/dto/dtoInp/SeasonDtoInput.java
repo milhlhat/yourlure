@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 public class SeasonDtoInput {
 
-    private Long seasonId;
     private String seasonName;
 
 }
