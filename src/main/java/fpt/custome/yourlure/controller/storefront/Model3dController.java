@@ -3,7 +3,6 @@ package fpt.custome.yourlure.controller.storefront;
 
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +24,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<Model3d> createModel(@RequestBody Model3dDtoInput model3d);
+    ResponseEntity<Object> createModel(@RequestBody Model3dDtoInput model3d);
 
     @PostMapping(value = "/update-model")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -50,7 +49,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
+    ResponseEntity<Object> findCustomModel(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
 
 
     @PostMapping(value = "/create-custom")
@@ -60,7 +59,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<CustomModelDtoOut> createCustomModel(HttpServletRequest rq, @RequestBody CustomModelDtoInput customModelDtoInput);
+    ResponseEntity<Object> createCustomModel(HttpServletRequest rq, @RequestBody CustomModelDtoInput customModelDtoInput);
 
     @PostMapping(value = "/update-custom")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
@@ -68,7 +67,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<CustomModelDtoOut> updateCustomModel(HttpServletRequest rq, @RequestBody CustomModelDtoInput customModelDtoInput);
+    ResponseEntity<Object> updateCustomModel(HttpServletRequest rq, @RequestBody CustomModelDtoInput customModelDtoInput);
 
 
     @GetMapping(value = "/get-model-by-product-id/{productId}")

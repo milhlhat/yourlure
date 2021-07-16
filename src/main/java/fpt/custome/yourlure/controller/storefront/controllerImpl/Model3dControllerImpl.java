@@ -30,12 +30,12 @@ public class Model3dControllerImpl implements Model3dController {
     private ModelMapper mapper;
 
     @Override
-    public ResponseEntity<Model3d> createModel(Model3dDtoInput model3d) {
+    public ResponseEntity<Object> createModel(Model3dDtoInput model3d) {
         try {
             return new ResponseEntity<>(customizeModelService.createModel3d(model3d), HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Tạo model thất bại!", HttpStatus.OK);
         }
     }
 
@@ -51,32 +51,32 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<CustomModelDtoOut> findCustomModel(HttpServletRequest rq, Long customId) {
+    public ResponseEntity<Object> findCustomModel(HttpServletRequest rq, Long customId) {
         CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
         if (customizeModel == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
         }
         return new ResponseEntity<>(customizeModel, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<CustomModelDtoOut> createCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
+    public ResponseEntity<Object> createCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
         try {
             CustomModelDtoOut customizeModel = customizeModelService.createCustomizeModel(rq, customModelDtoInput);
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Tạo customize thất bại", HttpStatus.OK);
         }
     }
 
     @Override
-    public ResponseEntity<CustomModelDtoOut> updateCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
+    public ResponseEntity<Object> updateCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
         try {
             return new ResponseEntity<>(customizeModelService.updateCustomizeModel(rq, customModelDtoInput), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("update thất bại", HttpStatus.OK);
         }
     }
 
@@ -86,7 +86,7 @@ public class Model3dControllerImpl implements Model3dController {
         if(m3d != null){
             return new ResponseEntity<>(m3d, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
     }
 
     @Override
