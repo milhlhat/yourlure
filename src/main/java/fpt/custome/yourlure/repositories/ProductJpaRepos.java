@@ -18,7 +18,7 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "        tbl_products pr\n" +
             "\t\t\t\t  LEFT JOIN tbl_variants v ON pr.product_id = v.product_id \n" +
             "    LEFT JOIN tbl_order_line ol ON  ol.variant_id = v.variant_id \n" +
-            "  \n" +
+            "  where pr.visible_in_storefront = true " +
             "    GROUP BY\n" +
             "        pr.product_name,\n" +
             "        pr.product_id \n" +
@@ -33,6 +33,7 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "LEFT JOIN tbl_variants v ON pr.product_id = v.product_id \n" +
             "LEFT JOIN tbl_order_line ol ON  ol.variant_id = v.variant_id \n" +
             "WHERE pr.category_id = ?1\n" +
+            "and pr.visible_in_storefront = true\n" +
             "GROUP BY\n" +
             "pr.product_name,\n" +
             "pr.product_id \n" +
