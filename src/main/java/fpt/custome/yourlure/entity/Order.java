@@ -64,4 +64,13 @@ public class Order {
     //1 order có nhiều orderline
     private Collection<OrderLine> orderLineCollection;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến order ở trong orderline.
+    //1 order có nhiều orderline
+    private Collection<OrderActivity> activities;
+
+
+
+
+
 }

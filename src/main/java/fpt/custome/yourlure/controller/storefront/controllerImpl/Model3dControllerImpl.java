@@ -81,10 +81,12 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<Model3d> getModelByProductId(Long productId) {
+    public ResponseEntity<Object> getModelByProductId(Long productId) {
         Model3d m3d = customizeModelService.getModelByProductId(productId);
-
-        return new ResponseEntity<>(m3d, HttpStatus.OK);
+        if(m3d != null){
+            return new ResponseEntity<>(m3d, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.BAD_REQUEST);
     }
 
     @Override

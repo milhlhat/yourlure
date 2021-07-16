@@ -66,6 +66,21 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
+    public ResponseEntity<Object> userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn) {
+        try{
+            Order order = orderService.userBuyNow(rq, orderIn);
+            if(order != null){
+                return new ResponseEntity<>(order, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Không thể đặt hàng!", HttpStatus.BAD_REQUEST);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> myOrders(HttpServletRequest rq, Integer page, Integer limit) {
         OrderDtoOut result = orderService.myOrders(rq,page, limit );
         if(result!=null){

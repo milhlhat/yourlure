@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -127,6 +128,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
+        if (items.isEmpty()) {
+            throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
+        }
         List<OrderLine> orderLines = new ArrayList<>();
 
         for (CartItem item : items) {
@@ -145,11 +149,15 @@ public class OrderServiceImpl implements OrderService {
                 orderLine.setPrice(totalPrice);
                 orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
 
-            } else {
+            } else if (item.getVariantId() != null) {
                 // set price by variant
                 Variant variant = variantRepos.getById(item.getVariantId());
                 if (variant.getQuantity() > 0) {
-                    orderLine.setPrice(variant.getNewPrice());
+                    if (variant.getNewPrice() == null) {
+                        orderLine.setPrice(variant.getProduct().getDefaultPrice());
+                    } else {
+                        orderLine.setPrice(variant.getNewPrice());
+                    }
                     orderLine.setImgThumbnail(variant.getImageUrl());
 
                     // decrease variant when order variant
@@ -159,6 +167,8 @@ public class OrderServiceImpl implements OrderService {
                 } else {
                     throw new Exception("Variant out of stock!");
                 }
+            } else {
+                throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
             }
 
             orderLine.setOrder(order);
@@ -168,11 +178,21 @@ public class OrderServiceImpl implements OrderService {
 
             // delete cartItem after create orderline
             cartItemRepos.delete(item);
+
+            // add order activity
+            OrderActivity activity = OrderActivity.builder()
+                    .activityName(OrderActivityEnum.PENDING)
+                    .date(new Date())
+                    .order(order)
+                    .build();
+            activity = orderActivityRepos.save(activity);
+
         }
         return orderLines;
 
     }
 
+    @Transactional
     @Override
     public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
         Order order = mapper.map(orderGuestDtoInput, Order.class);
@@ -180,7 +200,6 @@ public class OrderServiceImpl implements OrderService {
 
         // check payment
         order.setPayment(verifyPayment(orderGuestDtoInput.getPaymentId()));
-
 
         // save order information
 
@@ -199,8 +218,13 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Transactional
     @Override
     public Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception {
+        if (orderUserDtoInput.getCartItemIds() == null || orderUserDtoInput.getCartItemIds().size() == 0) {
+            throw new Exception("vui lòng chọn sản phẩm để đặt hàng!");
+        }
+
         User user = userService.whoami(rq);
 
         // check payment
@@ -272,6 +296,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean cancelOrder(HttpServletRequest rq, Long orderId) {
+        User user = userService.whoami(rq);
+        Optional<Order> order = orderRepos.findById(orderId);
+        if(order.isPresent()){
+            List<Order> orders = orderRepos.findAllByUserUserId(user.getUserId());
+            if(orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))){
+                orderRepos.deleteById(orderId);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit) {
         User user = userService.whoami(rq);
         Pageable pageable = PageRequest.of(page,
@@ -288,7 +326,7 @@ public class OrderServiceImpl implements OrderService {
 
                     OrderDtoOut.OrderItem item = mapper.map(orderLine, OrderDtoOut.OrderItem.class);
 
-                    if(orderLine.getCustomModelId() != null){
+                    if (orderLine.getCustomModelId() != null) {
                         Optional<CustomizeModel> customizeModel = customizeModelRepos.findById(orderLine.getCustomModelId());
                         customizeModel.ifPresent(model -> {
                             item.setCustomizeName(model.getName());
@@ -296,7 +334,7 @@ public class OrderServiceImpl implements OrderService {
                         });
                     }
 
-                    if(orderLine.getVariantId() != null){
+                    if (orderLine.getVariantId() != null) {
                         Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
                         variant.ifPresent(var -> {
                             item.setProductName(var.getProduct().getProductName());
@@ -310,7 +348,12 @@ public class OrderServiceImpl implements OrderService {
 
                 OrderDtoOut.Order orderDtoOut = mapper.map(order, OrderDtoOut.Order.class);
                 orderDtoOut.setItems(items);
-
+                List<OrderActivity> activities = orderActivityRepos.findAllByOrderId(order.getOrderId());
+                if (!activities.isEmpty()) {
+                    orderDtoOut.setActivity(activities.stream().findFirst().get().getActivityName());
+                }else{
+                    orderDtoOut.setActivity(OrderActivityEnum.PENDING);
+                }
                 // add to list order to show on FE
                 orders.add(orderDtoOut);
 
@@ -350,6 +393,11 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return customAmount;
+    }
+
+    @Override
+    public Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn) {
+        return null;
     }
 
     public Float calculateItemPrices(List<CartItem> items) {

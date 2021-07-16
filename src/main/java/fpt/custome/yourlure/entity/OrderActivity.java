@@ -22,16 +22,15 @@ public class OrderActivity {
 
     @Nullable
     @Column(name = "activityName")
-    private String activityName;
+    private OrderActivityEnum activityName;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "assignerId", nullable = false)
+    @JoinColumn(name = "assignerId", nullable = true)
     private User assigner;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orderId")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Order order;
 
     private Date date;
