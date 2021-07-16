@@ -36,6 +36,7 @@ public class AdminProductDetailDtoOut {
     private Date dateCreate;
     private String imgUrlModel;
     private Category category;
+    private Collection<Long> listFishId;
     private Collection<Image> imageCollection;
     private Collection<Variant> variantCollection;
 

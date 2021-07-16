@@ -433,18 +433,19 @@ public class OrderServiceImpl implements OrderService {
                 AdminOrderDetailDtoOut result = mapper.map(order.get(), AdminOrderDetailDtoOut.class);
                 List<OrderLine> orderLineList = (List<OrderLine>) order.get().getOrderLineCollection();
                 for (OrderLine item : orderLineList) {
-                    //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
-                    AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
-                    productDtoOut.setPrice(item.getPrice());
-                    productDtoOut.setQuantity(item.getQuantity());
-                    productDtoOut.setVariantId(item.getVariantId());
+                    if (item.getProductId() != null){
+                        //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
+                        AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
+                        productDtoOut.setPrice(item.getPrice());
+                        productDtoOut.setQuantity(item.getQuantity());
+                        productDtoOut.setVariantId(item.getVariantId());
 
-                    // todo: vua sua lai db cua order. xong phai sua nay cho nay
+                        // todo: vua sua lai db cua order. xong phai sua nay cho nay
 //                    productDtoOut.setThumbnailUrl(item.getTextureImg());
-                    //TODO: truy van customize trong bang customize roi gan vao
+                        //TODO: truy van customize trong bang customize roi gan vao
 //                    productDtoOut.setCustomizeId(item.getCustomizeId());
-                    productDtoOutList.add(productDtoOut);
-
+                        productDtoOutList.add(productDtoOut);
+                    }
                 }
                 result.setProductDtoOuts(productDtoOutList);
                 return Optional.of(result);
@@ -481,11 +482,13 @@ public class OrderServiceImpl implements OrderService {
                 dtoOut.setStatusName(orderActivity.getActivityName());
             }
             List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(item.getOrderId());
-            float total = 0;
-            for (OrderLine orderLine : orderLineList) {
-                total += orderLine.getPrice() * orderLine.getQuantity();
+            if (orderLineList != null){
+                float total = 0;
+                for (OrderLine orderLine : orderLineList) {
+                    total += orderLine.getPrice() * orderLine.getQuantity();
+                }
+                dtoOut.setTotal(total);
             }
-            dtoOut.setTotal(total);
             result.add(dtoOut);
         }
         return result;

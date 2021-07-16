@@ -72,5 +72,19 @@ public class VariantServiceImpl implements VariantService {
             return false;
         }
     }
+
+    @Override
+    public Optional<Variant> getById(Long id) {
+        try {
+            Variant variant = variantRepos.getById(id);
+            if (variant != null){
+                return Optional.of(variant);
+            }
+            return Optional.empty();
+        }catch (Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
 }
 

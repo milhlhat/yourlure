@@ -219,7 +219,7 @@ public class ProductServiceImpl implements ProductService {
                     imageRepos.save(image);
                 }
                 // check fish list is empty
-                if (!productsDtoInp.getListFishId().isEmpty()){
+                if (!productsDtoInp.getListFishId().isEmpty()) {
                     //save fish_product
                     for (Long fishId : productsDtoInp.getListFishId()) {
                         Fish fishInput = fishRepos.getById(fishId);
@@ -227,7 +227,7 @@ public class ProductServiceImpl implements ProductService {
                         //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
 //                fishInput.getProducts().add(product);
                         fishRepos.save(fishInput);
-                }
+                    }
 
                 }
                 return idReturn;
@@ -244,7 +244,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AdminProductDetailDtoOut adminGetById(Long id) {
         Optional<Product> findProduct = productJPARepos.findById(id);
-        return findProduct.map(product -> mapper.map(product, AdminProductDetailDtoOut.class)).orElse(null);
+        List<Long> listFishId = new ArrayList<>();
+        if (findProduct.isPresent()) {
+            for (Fish fish : findProduct.get().getFishList()) {
+                listFishId.add(fish.getFishId());
+            }
+        }
+        AdminProductDetailDtoOut result = findProduct.map(product -> mapper.map(product, AdminProductDetailDtoOut.class)).orElse(null);
+        result.setListFishId(listFishId);
+        return result;
     }
 
     @Override

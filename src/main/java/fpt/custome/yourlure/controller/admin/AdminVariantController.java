@@ -1,9 +1,12 @@
 package fpt.custome.yourlure.controller.admin;
 
 import fpt.custome.yourlure.dto.dtoInp.VariantDtoInput;
+import fpt.custome.yourlure.entity.Variant;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RequestMapping("/admin/variant")
 public interface AdminVariantController {
@@ -19,6 +22,10 @@ public interface AdminVariantController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> delete(@PathVariable("id") Long id);
+
+    @DeleteMapping("/get-by-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
+    ResponseEntity<Optional<Variant>> getById(@RequestParam("id") Long id);
 
 
 }
