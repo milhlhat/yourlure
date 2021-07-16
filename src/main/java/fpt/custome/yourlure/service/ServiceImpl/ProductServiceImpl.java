@@ -7,6 +7,7 @@ import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductsDtoOut> getNewestProduct() {
         List<ProductsDtoOut> result = new ArrayList<>();
-        List<Product> list = productJPARepos.findAll(Sort.by(Sort.Direction.DESC, "dateCreate"));
+        Pageable pageable = PageRequest.of(0,
+                10,
+                 Sort.by("dateCreate").descending());
+        List<Product> list = productJPARepos.findAllByVisibleInStorefront(true,pageable).getContent();
         for (Product item : list) {
             ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
             result.add(dtoOut);
