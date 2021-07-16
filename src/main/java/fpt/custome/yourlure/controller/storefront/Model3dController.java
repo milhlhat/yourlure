@@ -77,7 +77,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<Model3d> getModelByProductId(@PathVariable(name = "productId") Long productId);
+    ResponseEntity<Object> getModelByProductId(@PathVariable(name = "productId") Long productId);
 
 
     @GetMapping(value = "/get-model-by-model-id/{modelId}")

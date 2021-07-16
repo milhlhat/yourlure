@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
+import fpt.custome.yourlure.entity.OrderActivityEnum;
 import fpt.custome.yourlure.entity.Payment;
 import fpt.custome.yourlure.entity.User;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class OrderDtoOut {
         private Payment payment;
         private User user;
         private Float discount;
+        private OrderActivityEnum activity;
         private List<OrderDtoOut.OrderItem> items;
     }
 

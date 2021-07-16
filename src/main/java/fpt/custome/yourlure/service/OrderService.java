@@ -18,6 +18,7 @@ public interface OrderService {
     DiscountVoucherDtoOutput verifyDiscountCode(String code) throws Exception;
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
+    boolean cancelOrder(HttpServletRequest rq, Long orderId);
 
     OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit);
 
@@ -36,4 +37,6 @@ public interface OrderService {
     Optional<AdminOrderDtoOut> getOrderByUserId(Long userId, Pageable pageable);
 
     Float calculateCustomizePrice(CustomizeModel customizeModel);
+
+    Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderIn);
 }

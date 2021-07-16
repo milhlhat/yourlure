@@ -135,7 +135,10 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Override
     public Model3d getModelByProductId(Long productId) {
         List<Model3d> model3d = model3dRepos.findAllByProductProductId(productId);
-        return model3d.get(model3d.size() - 1);
+        if(model3d.size() > 0){
+            return model3d.get(model3d.size() -1 );
+        }
+        return null;
     }
 
     @Override
