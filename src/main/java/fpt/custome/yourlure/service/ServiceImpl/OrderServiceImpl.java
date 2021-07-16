@@ -116,7 +116,6 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : items) {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
 
-
             if (item.getCustomModelId() != null) {
                 // get default price of product
                 // TODO: calculate price of model
@@ -182,7 +181,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPayment(verifyPayment(orderGuestDtoInput.getPaymentId()));
 
         // save order information
-
+        order = orderRepos.save(order);
         List<OrderLine> orderLines = createOrderLines(order, orderGuestDtoInput.getCartItems());
         List<CartItem> items = orderGuestDtoInput.getCartItems();
 
