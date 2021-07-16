@@ -167,23 +167,25 @@ public class ProductServiceImpl implements ProductService {
                     productToUpdate.update(productsDtoInp);
                     productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
                     //update properties product
+                    //add image
+                    if (!productsDtoInp.getImgListInput().isEmpty())
+                        for (String link : productsDtoInp.getImgListInput()) {
+                            Image image = Image.builder()
+                                    .product(Product.builder().productId(id).build())
+                                    .linkImage(link)
+                                    .build();
+                            productToUpdate.getImageCollection().add(image);
+                        }
 
                     //remove image
-                    if (productsDtoInp.getImgListRemove() != null) {
+                    if (!productsDtoInp.getImgListRemove().isEmpty()) {
                         for (String imgRemove : productsDtoInp.getImgListRemove()) {
-                            imageRepos.deleteByLinkImage(imgRemove.trim());
+                            imageRepos.deleteByLinkImage(imgRemove);
+//                            productToUpdate.getImageCollection().remove(Image.builder().linkImage(imgRemove).build());
                         }
                         adminProductController.deleteFiles(productsDtoInp.getImgListRemove());
                     }
-                    //add image
-                    if (!productsDtoInp.getImgListInput().isEmpty())
-                    for (String link : productsDtoInp.getImgListInput()) {
-                        Image image = Image.builder()
-                                .product(Product.builder().productId(id).build())
-                                .linkImage(link)
-                                .build();
-                        productToUpdate.getImageCollection().add(image);
-                    }
+
                     Product product = productJPARepos.save(productToUpdate);
 
                     //update fish

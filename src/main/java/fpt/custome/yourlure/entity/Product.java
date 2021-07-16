@@ -149,6 +149,7 @@ public class Product {
         this.deepDiving = productsDtoInp.getDeepDiving();
         this.defaultPrice = productsDtoInp.getDefaultPrice();
         this.defaultWeight = productsDtoInp.getDefaultWeight();
+        this.isCustomizeWeight = productsDtoInp.getIsCustomizeWeight();
         this.description = productsDtoInp.getDescription();
         this.hookSize = productsDtoInp.getHookSize();
         this.productName = productsDtoInp.getProductName();
