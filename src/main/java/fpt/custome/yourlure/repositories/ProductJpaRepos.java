@@ -23,8 +23,7 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "        pr.product_name,\n" +
             "        pr.product_id \n" +
             "    ORDER BY\n" +
-            "        sumQuantity,product_id DESC LIMIT 10\n" +
-            "LIMIT 10", nativeQuery = true)
+            "        sumQuantity,product_id DESC LIMIT 10\n", nativeQuery = true)
     List<Product> bestSellerProduct();
 
     @Query(value = "SELECT tbl_products.* , SUM(tbl_order_line.quantity)AS sumQuantity \n" +
