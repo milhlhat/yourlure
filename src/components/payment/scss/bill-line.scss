@@ -1,0 +1,15 @@
+@import 'assets/scss/base/_variable';
+.success-icon{
+    font-size: 30px;
+}
+.bill-detail{
+    border: 1px solid $border-line;
+}
+.back-to-home:hover{
+    color:$primary;
+    transform: scale(1.2);
+    text-decoration: none;
+}
+.dialog-content{
+    line-height: 20px;
+}

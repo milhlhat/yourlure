@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import YLButton from "components/custom-field/YLButton";
 import { convertToVND } from "utils/format-string";
 import CartAPI from "api/user-cart-api";
+import Loading from "components/Loading";
+import ErrorLoad from "components/error-notify/ErrorLoad";
 function CartProduct(props) {
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
@@ -21,6 +23,7 @@ function CartProduct(props) {
     isSuccess: true,
     isLoading: false,
   });
+  const [cartsSelected, setCartsSelected] = useState([]);
   const fetchCart = async () => {
     setCart({ ...cart, isLoading: true });
     try {
@@ -47,25 +50,44 @@ function CartProduct(props) {
     if (isLoggedIn) {
       fetchCart();
     } else {
-      setCart({...cart,data:state});
+      setCart({ ...cart, data: state });
     }
   }, [state]);
-  console.log(cart?.data);
+  // console.log(cart?.data);
   const shiping = 25000;
   const [listTotal, setListTotal] = useState({
     data: [],
   });
-  console.log(listTotal);
+  // console.log(listTotal);
   const totalPrice = (data) => {
     let total = data.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
     return total;
   };
+  const handleChangeSelected = (data) => {
+    // setCartsSelected
+    if (cartsSelected.includes(data)) {
+      for (let i in cartsSelected) {
+        if (cartsSelected[i] === data) {
+          cartsSelected.splice(i, 1);
+          break;
+        }
+      }
+      // setCartsSelected([term.push(data)]);
+    } else {
+      cartsSelected.push(data);
+    }
+  };
   useEffect(() => {}, []);
+  // if (isLoggedIn && cart.isLoading) {
+  //   return <Loading />;
+  // } else if (isLoggedIn && !cart.isSuccess) {
+  //   return <ErrorLoad />;
+  // } else
   return (
     <div className="container">
-      {console.log(cart?.data)}
+      {/* {console.log(cart?.data)} */}
       {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">
@@ -80,6 +102,7 @@ function CartProduct(props) {
                   listTotal={listTotal}
                   canChange={true}
                   fetchCart={fetchCart}
+                  handleChangeSelected={handleChangeSelected}
                 />
               ))}
             </div>
@@ -108,12 +131,12 @@ function CartProduct(props) {
                       <td colSpan="2">
                         <YLButon
                           variant="primary"
-                          to={{ pathname: "/cart/payment", cart: cart?.data }}
+                          to={{ pathname: "/cart/payment", cart: cartsSelected }}
                           width="100%"
                         >
                           Tiếp tục
                         </YLButon>
-                        {/* <Link to={`/cart/payment?stated=${cart}`}>Tiếp tục</Link> */}
+                        {cartsSelected.length===0&&<span >Bạn chưa chọn mặt hàng nào.</span>}
                       </td>
                     </tr>
                     <tr>

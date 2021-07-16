@@ -69,6 +69,7 @@ function ManagerOrder(props) {
   } else
     return (
       <>
+      {console.log(orderList)}
         <div className="user-head-row">
           <h3>Đơn hàng</h3>
           <div className="product-add-new"></div>

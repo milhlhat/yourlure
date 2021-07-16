@@ -3,20 +3,25 @@ import CartAPI from "api/user-cart-api";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { setCartGuest } from "redux/cart/cart-guest";
 import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
+import { toast } from "react-toastify";
 
 function ProductAction(props) {
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState();
+  const [variantName, setVariantName] = useState();
+  const [variantImg, setVariantImg] = useState();
   const [price, setPrice] = useState();
+  const [disount, setDiscount] = useState();
   let takeOut = 0;
   const { register, getValues, setValue } = useForm();
-  const { product } = props;
+  const { product,setBigImgLink } = props;
+  const history= useHistory();
   const decrement = () => {
     Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
   };
@@ -25,27 +30,48 @@ function ProductAction(props) {
       ? setQuantity(takeOut)
       : setQuantity(Number(quantity) + 1);
     // setQuantity(Number(quantity) + 1);
+    // alert(Number(quantity) >= Number(takeOut))
   };
-  function handleChooseColor(index) {
-    setColor(index);
-  }
+  // function handleChooseColor(index) {
+  //   setColor(index);
+  // }
   function handleChangePrice(value) {
     setPrice(value ? value : product.defaultPrice);
   }
   const dispatch = useDispatch();
-  
+
+  const handlePayNow = async () => {
+    let data = {
+      customModelId: null,
+      productId: product.productId,
+      quantity: quantity,
+      variantId: color,
+      price: price,
+      variantName: variantName,
+      weight: getValues("weight"),
+      variantImg: variantImg,
+    };
+    if (data.weight > product.maxWeight || data.weight < product.minWeight) {
+      toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
+      setValue("weight", product.defaultWeight);
+    } else {
+      //sent to payment
+      history.push({pathname:"/cart/payment",cart:[data]})
+    }
+  };
   const handleAddToCart = async () => {
     let data = {
       customModelId: null,
       productId: product.productId,
       quantity: quantity,
       variantId: color,
-      price: product.defaultPrice,
-      variantName: color,
+      price: price,
+      variantName: variantName,
       weight: getValues("weight"),
+      variantImg: variantImg,
     };
     if (data.weight > product.maxWeight || data.weight < product.minWeight) {
-      alert("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
+      toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
     } else {
       // console.log(data);
@@ -54,20 +80,21 @@ function ProductAction(props) {
       if (isLoggedIn) {
         try {
           const response = await CartAPI.addVariant(data);
-          
+
           if (response.error) {
             throw new Error(response.error);
           } else {
-            alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+            toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
           }
         } catch (error) {
-          alert("Thêm sản phẩm thất bại");
+          toast.error("Thêm sản phẩm thất bại");
           console.log("fail to fetch add category");
         }
       } else {
+        data={...data,productName:product.productName}
         const action = setCartGuest(data);
         dispatch(action);
-      alert(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+        toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
       }
     }
   };
@@ -78,7 +105,16 @@ function ProductAction(props) {
         : ""
     );
     setValue("weight", product?.defaultWeight);
-    setPrice(product ? product.defaultPrice : "");
+    setColor(product?.variantCollection[0]?.variantId);
+    setVariantImg(product?.variantCollection[0]?.imageUrl);
+    setVariantName(product?.variantCollection[0]?.variantName);
+    if (product) {
+      handleChangePrice(
+        product?.variantCollection[0]?.newPrice
+          ? product?.variantCollection[0]?.newPrice
+          : product?.defaultPrice
+      );
+    }
   }, [product]);
   return (
     <div className="bg-white bg-shadow product-action p-4">
@@ -115,19 +151,22 @@ function ProductAction(props) {
         <span>Lặn sâu: {product ? product.deepDiving : ""}</span>
       </div>
       <div className="product-choose-color">
-        <h5>Mã màu: {color}</h5>
+        <h5>Mã màu: {variantName}</h5>
         <div className="choose-color">
           {product?.variantCollection?.map((value, index) => (
             <div
               key={index}
               className={`box-choose `}
               onClick={() => {
-                handleChooseColor(product.variantCollection[index].variantId);
+                setColor(product?.variantCollection[index]?.variantId);
+                setVariantImg(product?.variantCollection[index]?.imageUrl);
+                setVariantName(product?.variantCollection[index]?.variantName);
                 handleChangePrice(
                   product.variantCollection[index].newPrice
                     ? product.variantCollection[index].newPrice
                     : null
                 );
+                setBigImgLink(product?.variantCollection[index]?.imageUrl);
               }}
             >
               <div
@@ -179,7 +218,7 @@ function ProductAction(props) {
       </div>
 
       <div className="product-buy mt-5">
-        <div onClick={() => handleAddToCart()}>
+        <div onClick={() => handlePayNow()}>
           <YLButton variant="light" value="Mua ngay"></YLButton>
         </div>
         <div className="ms-2" onClick={() => handleAddToCart()}>

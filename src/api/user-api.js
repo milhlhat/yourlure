@@ -64,6 +64,10 @@ const UserApi = {
     const url = `/user/delete-address?userAddressId=${id}`;
     return AxiosClient.delete(url);
   },
+  getAddressFromWardId:(param)=>{
+    const url = `/user/get-address-from-ward-id?id=${param}`;
+    return AxiosClient.get(url);
+  },
 };
 
 export default UserApi;

@@ -18,6 +18,8 @@ function ProductDetail(props) {
   const productByCateId = useSelector((state) => state.productFilter.data);
   const filter = useSelector((state) => state.productFilter.filter);
 
+
+  const [bigImgLink, setBigImgLink] = useState();
   const [productDetail, setProductDetail] = useState({
     list: null,
     isSuccess: true,
@@ -82,10 +84,10 @@ function ProductDetail(props) {
       <div className="container">
         <div className="d-flex m-2 row">
           <div className=" col-md-6 col-sm-12  mt-4">
-            <ProductImage product={productDetail.list} />
+            <ProductImage product={productDetail.list} bigImgLink={bigImgLink} setBigImgLink={setBigImgLink}/>
           </div>
           <div className=" col-md-6 col-sm-12  mt-4">
-            <ProductAction product={productDetail.list} />
+            <ProductAction product={productDetail.list} bigImgLink={bigImgLink} setBigImgLink={setBigImgLink}/>
           </div>
         </div>
         <div

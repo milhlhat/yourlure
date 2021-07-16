@@ -8,12 +8,12 @@ $grid-breakpoints: (
   xxl: 1400px,
 );
 input:-webkit-autofill {
-  -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+  -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
   -webkit-text-fill-color: #333;
 }
 
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 50px white inset;/*your box-shadow*/
+  -webkit-box-shadow: 0 0 0 50px white inset; /*your box-shadow*/
   -webkit-text-fill-color: #333;
 }
 input[type="search"]::-webkit-search-cancel-button {
@@ -21,93 +21,97 @@ input[type="search"]::-webkit-search-cancel-button {
   height: 1em;
   width: 1em;
   border-radius: 50em;
-  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg) no-repeat 50% 50%;
+  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg)
+    no-repeat 50% 50%;
   background-size: contain;
   opacity: 0;
   pointer-events: none;
 }
 
 input[type="search"]:focus::-webkit-search-cancel-button {
-  opacity: .3;
+  opacity: 0.3;
   pointer-events: all;
 }
-.nav-bar-light {
-  justify-content: flex-end !important;
-  & .search-form {
-    background: white;
-    border-radius: 50px;
-    padding-left: 5px;
-    display: flex;
-    align-items: center;
-    border: 1px solid $text-color;
-    justify-content: center;
-  }
-
-  & .search-form input {
-    border-radius: 50px;
-    width: 90%;
-    border: none;
-    background-color: #fff !important;
-  }
-
-  & .fa-search {
-    cursor: pointer;
-  }
-
-  & .search:focus-visible {
-    outline: none !important;
-  }
-
-  & .navbar-toggler :focus {
-    text-decoration: none;
-    outline: 0;
-    box-shadow: 0;
-  }
-  & .header-cart {
-    & .active {
-      color: $primary !important;
-      cursor: default;
+.header {
+  & .nav-bar-light {
+    justify-content: flex-end !important;
+    & .search-form {
+      background: white;
+      border-radius: 50px;
+      padding-left: 5px;
+      display: flex;
+      align-items: center;
+      border: 1px solid $text-color;
+      justify-content: center;
     }
-  }
-  & .header-user {
-    & .active {
-      color: $primary !important;
-      cursor: default;
-    }
-  }
 
-  & .item-hover {
-    &:hover {
+    & .search-form input {
+      border-radius: 50px;
+      width: 90%;
+      border: none;
+      background-color: #fff !important;
+    }
+
+    & .fa-search {
+      cursor: pointer;
+    }
+
+    & .search:focus-visible {
+      outline: none !important;
+    }
+
+    & .navbar-toggler :focus {
+      text-decoration: none;
+      outline: 0;
+      box-shadow: 0;
+    }
+    & .header-cart {
+      & .active {
+        color: $primary !important;
+        cursor: default;
+      }
+    }
+    & .header-user {
+      & .active {
+        color: $primary !important;
+        cursor: default;
+      }
+    }
+
+    & .item-hover {
+      &:hover {
+        font-weight: bold;
+      }
+    }
+    & .navbar-toggler {
+      border: none;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    & .navbar-nav {
+      width: 100%;
+      justify-content: space-evenly;
+    }
+    & .nav-link {
       font-weight: bold;
     }
   }
-  & .navbar-toggler {
-    border: none;
-    &:focus {
-      outline: none;
-      box-shadow: none;
+  & .logo {
+    margin-right: 20px;
+    width: 100px;
+    height: 30px;
+    object-fit: none;
+  }
+  & .active {
+    & a {
+      color: $primary !important;
+      cursor: default;
     }
   }
-  & .navbar-nav {
-    width: 100%;
-    justify-content: space-evenly;
-  }
-  & .nav-link {
-    font-weight: bold;
-  }
 }
-.logo {
-  margin-right: 20px;
-  width: 100px;
-  height: 30px;
-  object-fit: none;
-}
-.active {
-  & a {
-    color: $primary !important;
-    cursor: default;
-  }
-}
+
 @media screen and (min-width: $tablet-width+1) {
   .group-link {
     display: flex;

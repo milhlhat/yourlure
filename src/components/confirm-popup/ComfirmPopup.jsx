@@ -18,6 +18,7 @@ export default function ComfirmPopup(props) {
     variant,
     height,
     width,
+    disabled,
   } = props;
   const [open, setOpen] = React.useState(false);
 
@@ -39,6 +40,7 @@ export default function ComfirmPopup(props) {
         height={height}
         width={width}
         onClick={handleClickOpen}
+        disabled={disabled}
       >
         {btnText ? btnText : "Open"}
       </YLButton>

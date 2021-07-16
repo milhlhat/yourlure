@@ -1,5 +1,5 @@
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
-import React from "react";
+import React, { useState } from "react";
 
 function GusestAddressInput(props) {
   let methods = props;
@@ -15,15 +15,15 @@ function GusestAddressInput(props) {
       <input
         className="form-control mb-3"
         placeholder={"*Họ và Tên"}
-        {...register("userName", {
+        {...register("receiverName", {
           required: "Trường bắt buộc",
         })}
       />
-      {errors.userName && (
-        <span className="text-danger">(*){errors.userName.message}</span>
+      {errors.receiverName && (
+        <span className="text-danger">(*){errors.receiverName.message}</span>
       )}
 
-      <YLSelectAddress {...methods} />
+      <YLSelectAddress {...methods}  />
 
       <input
         className="form-control my-3"

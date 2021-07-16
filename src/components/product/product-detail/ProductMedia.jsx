@@ -4,7 +4,7 @@ import 'assets/scss/scss-components/product/product-detail.scss';
 import {useHistory} from 'react-router';
 
 function ProductImage(props) {
-    let {product} = props;
+    let {product,setBigImgLink,bigImgLink} = props;
     const isCustome = true;
     const [selectImg, setSelectImg] = useState(0);
     const history = useHistory();
@@ -13,6 +13,10 @@ function ProductImage(props) {
         history.push(`/product/customize/${product.productId}`);
     }
 
+    const handleChangeImg = (i)=>{
+        setSelectImg(i);
+        setBigImgLink(null);
+    }
     return (
         <div className="bg-white bg-shadow product-media d-flex flex-column">
             <div className="big-image object-fit p-md-3 p-1">
@@ -24,7 +28,7 @@ function ProductImage(props) {
                     <i className="fa fa-pencil"></i>
                 </button>
                 <img
-                    src={product ? product.imageCollection[selectImg]?.linkImage : ''}
+                    src={bigImgLink?bigImgLink:product ? product.imageCollection[selectImg]?.linkImage : ''}
                     height={350}
                     alt={`Ảnh sản phẩm ${product?.productName}`}
                 />
@@ -35,7 +39,7 @@ function ProductImage(props) {
                     <div
                         className={`me-1 small-images ' ${selectImg == i ? 'border-gallery' : ''} `}
                         key={i}
-                        onClick={() => setSelectImg(i)}
+                        onClick={() => handleChangeImg(i)}
                     >
                         <img width={60} src={item.linkImage}/>
                     </div>

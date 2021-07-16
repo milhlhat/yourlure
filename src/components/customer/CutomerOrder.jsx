@@ -6,17 +6,19 @@ import OrderAPI from "api/order-api";
 import { filterConfig } from "constant/filter-setting";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
+import { toast } from "react-toastify";
 
 import Pagination from "react-js-pagination";
+import { convertToVND, formatDate, getStatus } from "utils/format-string";
 function CutomerOrder(props) {
   const [page, setPage] = useState(0);
   const totalItemInPage = 12;
-
+  let [errorMesage, setErrorMessage] = useState();
   const [activePage, setActivePage] = useState(1);
   const [orderList, setOrderList] = useState({
     data: [],
     isLoading: false,
-    isSuccess: false,
+    isSuccess: true,
   });
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -27,10 +29,27 @@ function CutomerOrder(props) {
       return { ...prevState, isLoading: true };
     });
     try {
-      const response = await OrderAPI.getUserOrder(totalItemInPage, page);
+      // const response = await OrderAPI.getUserOrder(totalItemInPage,page);
+      const response = await OrderAPI.getOrder(totalItemInPage, page);
       setOrderList({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {
-      setOrderList({ data: null, isLoading: false, isSuccess: false });
+      if (error.response.status === 400) {
+        setErrorMessage(error.response.data);
+        setOrderList({ data: null, isLoading: false, isSuccess: true });
+      } else {
+        console.log("fail to fetch order");
+      }
+    }
+  };
+  const onConfirm = async (data) => {
+    try {
+      // const response = await OrderAPI.getUserOrder(totalItemInPage,page);
+      const response = await OrderAPI.userCancelOrder(data);
+
+      toast.success("Hủy đơn thành công");
+      fetchCustomOrder();
+    } catch (error) {
+      toast.success(error.response.data)
       console.log("fail to fetch order");
     }
   };
@@ -38,65 +57,56 @@ function CutomerOrder(props) {
   function totalPrice(list) {
     let total = list.reduce((sum, product) => {
       return sum + product.price * product.quantity;
-    }, 0);
+    }, 25000);
     return total;
   }
   useEffect(() => {
     fetchCustomOrder();
-    return fetchCustomOrder();
+    // return fetchCustomOrder();
   }, []);
   if (orderList.isLoading) {
     return <Loading />;
+  } else if (!orderList.isSuccess) {
+    return <ErrorLoad />;
   } else
     return (
       <div className="order">
+        {console.log(orderList?.data)}
         <div className="order-row">
-          {orderList?.data?.orderDtoOuts?.length <= 0 && (
+          {orderList?.data?.orders?.length <= 0 && (
             <div className="bg-box">
               <span>Bạn chưa có đơn hàng nào.</span>
             </div>
           )}
-          {orderList?.data?.orderDtoOuts?.map((order, i) => (
+          {orderList?.data === null && (
+            <div className="bg-box">
+              <span>{errorMesage}</span>
+            </div>
+          )}
+          {orderList?.data?.orders?.map((order, i) => (
             <div key={"order-" + i} className="mb-5 bg-box bg-shadow">
               <div className="order-info">
-                <span>Ngày đặt hàng 12/06/2021</span>
+                <span>Ngày đặt hàng {formatDate(order?.orderDate)}</span>
                 <span className="text-success">
-                  {order?.activityName == null
-                    ? "Trạng thái"
-                    : order?.activityName}
+                  {getStatus(order?.activities[0])}
                 </span>
               </div>
               <div className="order-product-list">
-                {order?.productDtoOuts?.map((product, i) => (
+                {order?.items?.map((product, i) => (
                   <div
                     className="order-row-item text-small p-2 pe-2 mb-2"
                     key={"order-product-" + i}
                   >
-                    <img
-                      className="order-img"
-                      src={product?.imageCollection[0]?.linkImage}
-                    />
+                    <img className="order-img" src={product?.thumbnailUrl} />
                     <div className="order-row-item-info">
                       <span className="order-title">
                         {product?.productName}
                       </span>
                       <span className="number-order">X{product?.quantity}</span>
-                      <span>
-                        {Number(product?.price).toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        {"\u20AB"}
-                      </span>
+                      <span>{convertToVND(product?.price)}</span>
                     </div>
                     <span className="ms-auto">
-                      {Number(
-                        product?.quantity * product?.price
-                      ).toLocaleString(undefined, {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      {"\u20AB"}
+                      {convertToVND(product?.quantity * product?.price)}
                     </span>
                   </div>
                 ))}
@@ -104,9 +114,9 @@ function CutomerOrder(props) {
               <hr />
               <div className="d-flex">
                 <div className="col-6">
-                  <div className="order-address">
-                    <b>Địa chỉ nhận hàng:</b> <br />
-                    {order.name} <br /> {order.phone}
+                  <div className="order-address bold">
+                    Địa chỉ nhận hàng: <br />
+                    {order.receiverName} <br /> {order.phone}
                     <br /> {order.address}
                   </div>
                 </div>
@@ -118,7 +128,7 @@ function CutomerOrder(props) {
                           <span className="order-title">Phí vận chuyển:</span>
                         </td>
                         <td className="text-end">
-                          <span>25,000</span>
+                          <span>{convertToVND(25000)}</span>
                         </td>
                       </tr>
                       <tr>
@@ -126,15 +136,7 @@ function CutomerOrder(props) {
                           <span className="order-title ">Tổng:</span>
                         </td>
                         <td className="text-end">
-                          <span>
-                            {Number(
-                              totalPrice(order.productDtoOuts)
-                            ).toLocaleString(undefined, {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 2,
-                            })}{" "}
-                            {"\u20AB"}
-                          </span>
+                          <span>{convertToVND(totalPrice(order?.items))}</span>
                         </td>
                       </tr>
                     </table>
@@ -145,7 +147,9 @@ function CutomerOrder(props) {
                         btnText="Hủy Đơn"
                         height="30px"
                         title="Hủy đơn"
+                        disabled={order?.activities[0]==="PENDING"}
                         content="Bạn chắc chắn hủy đơn hàng?"
+                        onConfirm={() => onConfirm(order.orderId)}
                       />
                     </div>
                   </div>
@@ -154,13 +158,13 @@ function CutomerOrder(props) {
             </div>
           ))}
           <div className="m-auto p-4">
-            {orderList?.data?.orderDtoOuts?.totalPage > 1 && (
+            {orderList?.data?.totalPage > 1 && (
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
                 activePage={activePage}
-                itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
-                totalItemsCount={orderList?.data?.orderDtoOuts?.totalItem}
+                itemsCountPerPage={totalItemInPage}
+                totalItemsCount={orderList?.data?.totalItem}
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                 onChange={handlePageChange}
               />

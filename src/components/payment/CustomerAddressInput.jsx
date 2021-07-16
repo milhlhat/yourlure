@@ -21,6 +21,7 @@ function CustomerAddressInput(props) {
   let {
     register,
     formState: { errors },
+    setValue,
   } = props;
 
   const [address, setAddress] = useState({
@@ -41,6 +42,10 @@ function CustomerAddressInput(props) {
       console.log("fail to fetch address");
     }
   };
+  const setInfo=(item)=>{
+    setValue("phone",item?.phone)
+    setValue("receiverName",item?.userName)
+  }
   useEffect(() => {
     fetchCustomAddress();
   }, []);
@@ -78,6 +83,8 @@ function CustomerAddressInput(props) {
         )}
         {address?.data?.map((item, i) => (
           <div className="form-check my-3" key={"address-item-" + i}>
+            <input type="text" value={item.isDefault?item.phone:''} hidden {...register("phone")} />
+            <input type="text" value={item.isDefault?item.userName:''} hidden {...register("receiverName")} />
             <input
               className="form-check-input"
               type="radio"
@@ -86,6 +93,7 @@ function CustomerAddressInput(props) {
               value={formatAddress(item)}
               {...register("address")}
               defaultChecked={item.isDefault}
+              onChange={()=>setInfo(item)}
             />
             <label
               className="form-check-label pointer"
@@ -97,7 +105,7 @@ function CustomerAddressInput(props) {
                 {item.phone}
                 {" - "}
               </b>{" "}
-              {formatAddress(item)}
+              {formatAddress(item)} {item?.isDefault&&<span className="primary-color">( Mặc định )</span> }
             </label>
           </div>
         ))}

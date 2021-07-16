@@ -103,7 +103,7 @@ function Header(props) {
   }
 
   return (
-    <div className="bg-white bg-shadow">
+    <div className="bg-white bg-shadow header">
       <div className="container">
         <Navbar light expand="md" className="p-2 nav-bar-light ">
           <div className="me-auto">

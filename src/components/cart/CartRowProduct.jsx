@@ -16,11 +16,19 @@ import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import { AbilityContext } from "ability/can";
 import CartAPI from "api/user-cart-api";
+import { toast } from "react-toastify";
 
 function CartRowProduct(props) {
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
-  const { item, canChange, setListTotal, listTotal, fetchCart } = props;
+  const {
+    item,
+    canChange,
+    setListTotal,
+    listTotal,
+    fetchCart,
+    handleChangeSelected,
+  } = props;
   const handleChangeQuantity = (quantity) => {};
   const handleCheckBox = (value, checked) => {};
   const [quantity, setQuantity] = useState(item?.quantity);
@@ -41,7 +49,7 @@ function CartRowProduct(props) {
           fetchCart();
         }
       } catch (error) {
-        alert("Xóa thất bại");
+        toast.error("Xóa thất bại");
         console.log("fail to fetch delete ");
       }
     } else {
@@ -68,7 +76,7 @@ function CartRowProduct(props) {
             fetchCart();
           }
         } catch (error) {
-          alert("thay đổi số lượng thất bại");
+          toast.error("thay đổi số lượng thất bại");
           console.log("fail to fetch update ");
         }
       } else {
@@ -101,11 +109,17 @@ function CartRowProduct(props) {
 
   return (
     <div className="bg-white row-cart text-small">
-      {/* {console.log(product.data)} */}
+      {/* {console.log(item)} */}
       <table>
         <tbody>
           <tr>
-            <td>{/* <input type="checkbox"  /> */}</td>
+            <td>
+              <input
+                type="checkbox"
+                value={item?.variantId}
+                onChange={() => handleChangeSelected(item)}
+              />
+            </td>
             <td className="d-flex align-items-center">
               <img
                 className="content-fit"
@@ -141,7 +155,7 @@ function CartRowProduct(props) {
                 </span>
                 <br />
                 <span className="text-x-small">
-                  Trọng lượng: {item?.weight}
+                  Trọng lượng: {item?.weight} (g)
                 </span>
                 <br />
                 {/* <a className="" href="/product">
