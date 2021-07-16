@@ -16,8 +16,11 @@ public interface OrderService {
 
     // store font -----------------------
     DiscountVoucherDtoOutput verifyDiscountCode(String code) throws Exception;
+
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
+
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
+
     boolean cancelOrder(HttpServletRequest rq, Long orderId);
 
     OrderDtoOut myOrders(HttpServletRequest rq, Integer page, Integer limit);
@@ -26,9 +29,11 @@ public interface OrderService {
                                                     Integer limit);
 
     //admin ------------------------------
-    Optional<AdminOrderDtoOut> getAll(String keyword,String typeSearch, Pageable pageable);
+    Optional<AdminOrderDtoOut> getAll(String keyword, String typeSearch, Pageable pageable);
 
     Optional<AdminOrderDetailDtoOut> getById(Long id);
+
+    Optional<Boolean> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId);
 
     Boolean remove(Long id);
 

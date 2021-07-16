@@ -8,6 +8,7 @@ import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
+import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.UserService;
@@ -72,6 +73,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public DiscountVoucherDtoOutput verifyDiscountCode(String discountCode) throws Exception {
@@ -299,9 +303,9 @@ public class OrderServiceImpl implements OrderService {
     public boolean cancelOrder(HttpServletRequest rq, Long orderId) {
         User user = userService.whoami(rq);
         Optional<Order> order = orderRepos.findById(orderId);
-        if(order.isPresent()){
+        if (order.isPresent()) {
             List<Order> orders = orderRepos.findAllByUserUserId(user.getUserId());
-            if(orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))){
+            if (orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))) {
                 orderRepos.deleteById(orderId);
                 return true;
             }
@@ -351,7 +355,7 @@ public class OrderServiceImpl implements OrderService {
                 List<OrderActivity> activities = orderActivityRepos.findAllByOrderId(order.getOrderId());
                 if (!activities.isEmpty()) {
                     orderDtoOut.setActivity(activities.stream().findFirst().get().getActivityName());
-                }else{
+                } else {
                     orderDtoOut.setActivity(OrderActivityEnum.PENDING);
                 }
                 // add to list order to show on FE
@@ -482,7 +486,7 @@ public class OrderServiceImpl implements OrderService {
                 AdminOrderDetailDtoOut result = mapper.map(order.get(), AdminOrderDetailDtoOut.class);
                 List<OrderLine> orderLineList = (List<OrderLine>) order.get().getOrderLineCollection();
                 for (OrderLine item : orderLineList) {
-                    if (item.getProductId() != null){
+                    if (item.getProductId() != null) {
                         //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
                         AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
                         productDtoOut.setPrice(item.getPrice());
@@ -503,6 +507,45 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Boolean> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId) {
+        try {
+            User staff = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+
+            OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(orderId);
+            if (orderActivity != null) {
+                switch (type) {
+                    case 1: {
+                        orderActivity.setActivityName(OrderActivityEnum.ACCEPT);
+                        break;
+                    }
+                    case 2: {
+                        orderActivity.setActivityName(OrderActivityEnum.CUSTOMER_REJECT);
+                        break;
+                    }
+                    case 3: {
+                        orderActivity.setActivityName(OrderActivityEnum.STAFF_REJECT);
+                        break;
+                    }
+                    case 4: {
+                        orderActivity.setActivityName(OrderActivityEnum.DONE);
+                        break;
+                    }
+                    default:{
+                        return Optional.of(false);
+                    }
+                }
+                orderActivity.setOrder(Order.builder().orderId(orderId).build());
+                orderActivity.setAssigner(staff);
+                orderActivityRepos.save(orderActivity);
+                return Optional.of(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.of(false);
     }
 
     @Override
@@ -531,7 +574,7 @@ public class OrderServiceImpl implements OrderService {
                 dtoOut.setStatusName(orderActivity.getActivityName());
             }
             List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(item.getOrderId());
-            if (orderLineList != null){
+            if (orderLineList != null) {
                 float total = 0;
                 for (OrderLine orderLine : orderLineList) {
                     total += orderLine.getPrice() * orderLine.getQuantity();

@@ -32,6 +32,7 @@ public class ProductsDtoInp {
     private String imgUrlModel;
     private Long categoryId;
     private List<Long> listFishId;
-    private List<String> imgList;
+    private List<String> imgListInput;
+    private List<String> imgListRemove;
 
 }

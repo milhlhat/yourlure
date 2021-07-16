@@ -9,4 +9,6 @@ public interface ImageRepos extends JpaRepository<Image, Long> {
 
     void deleteByCampaign_CampaignId(Long id);
 
+    void deleteByLinkImage(String linkImg);
+
 }

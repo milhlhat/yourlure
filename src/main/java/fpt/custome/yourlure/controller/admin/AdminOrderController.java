@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -72,5 +73,12 @@ public interface AdminOrderController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id);
+
+    @PostMapping("/switch-status-order")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
+    ResponseEntity<Object> updateStatusOrder(HttpServletRequest req,
+                                             @RequestParam Integer type,
+                                             @RequestParam Long orderId);
+
 
 }
