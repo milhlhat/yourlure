@@ -2,7 +2,6 @@ package fpt.custome.yourlure.controller.storefront;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.StoreUserOrderDtoOut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import java.util.Optional;
 
 
 @RequestMapping("/api/order")
@@ -26,30 +24,22 @@ public interface OrderController {
 
     @PostMapping("/user-process-order")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> userProcessOrder(HttpServletRequest rq, @RequestBody @Valid OrderUserDtoInput order);
+    ResponseEntity<Object> userProcessOrder(HttpServletRequest rq,
+                                            @RequestBody @Valid OrderUserDtoInput order);
 
     @PostMapping("/user-buy-now")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> userBuyNow(HttpServletRequest rq, @RequestBody @Valid OrderGuestDtoInput order);
+    ResponseEntity<Object> userBuyNow(HttpServletRequest rq,
+                                      @RequestBody @Valid OrderGuestDtoInput order);
 
 
     @GetMapping("/my-orders")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> myOrders(HttpServletRequest rq,@RequestParam Integer page,@RequestParam @Min(1) Integer limit);
+    ResponseEntity<Object> myOrders(HttpServletRequest rq,
+                                    @RequestParam Integer page,
+                                    @RequestParam @Min(1) Integer limit);
 
-    /**
-     * lấy tất cả các order của user
-     *
-     * @param rq
-     * @param page
-     * @param limit
-     * @return
-     */
-    @GetMapping("/user-order")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Optional<StoreUserOrderDtoOut>> getListUserOrder(HttpServletRequest rq,
-                                                                    @RequestParam Integer page,
-                                                                    @RequestParam @Min(1) Integer limit);
+//    @GetMapping("/{")
 
 
 }

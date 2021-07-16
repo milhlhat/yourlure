@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderGuestDtoInput {
 
     @NotNull
-    private String userName;
+    private String receiverName;
     @NotNull
     private String address;
     @NotNull

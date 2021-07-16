@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -30,7 +31,7 @@ public class Variant {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Nullable
+    @NotNull
     @Column(name = "newPrice")
     private Float newPrice;
 
