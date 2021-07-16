@@ -10,6 +10,7 @@ import fpt.custome.yourlure.entity.customizemodel.CustomMaterial;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
+import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.UserService;
@@ -74,6 +75,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public DiscountVoucher verifyDiscountCode(String discountCode) throws Exception {
@@ -493,6 +497,45 @@ public class OrderServiceImpl implements OrderService {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Boolean> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId) {
+        try {
+            User staff = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+
+            OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(orderId);
+            if (orderActivity != null) {
+                switch (type) {
+                    case 1: {
+                        orderActivity.setActivityName(OrderActivityEnum.ACCEPT);
+                        break;
+                    }
+                    case 2: {
+                        orderActivity.setActivityName(OrderActivityEnum.CUSTOMER_REJECT);
+                        break;
+                    }
+                    case 3: {
+                        orderActivity.setActivityName(OrderActivityEnum.STAFF_REJECT);
+                        break;
+                    }
+                    case 4: {
+                        orderActivity.setActivityName(OrderActivityEnum.DONE);
+                        break;
+                    }
+                    default:{
+                        return Optional.of(false);
+                    }
+                }
+                orderActivity.setOrder(Order.builder().orderId(orderId).build());
+                orderActivity.setAssigner(staff);
+                orderActivityRepos.save(orderActivity);
+                return Optional.of(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.of(false);
     }
 
     @Override

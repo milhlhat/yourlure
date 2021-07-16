@@ -5,6 +5,7 @@ import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.repositories.OrderActivityRepos;
 import fpt.custome.yourlure.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
@@ -21,9 +23,12 @@ public class AdminOrderControllerImpl implements AdminOrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderActivityRepos orderActivityRepos;
+
     @Override
     public ResponseEntity<Optional<AdminOrderDtoOut>> findAll(AdminFilterDtoInput filter) {
-        Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), filter.getTypeSearch(),PageRequest.of(filter.getPage(),
+        Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), filter.getTypeSearch(), PageRequest.of(filter.getPage(),
                 filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -52,4 +57,12 @@ public class AdminOrderControllerImpl implements AdminOrderController {
         Boolean result = orderService.remove(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Object> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId) {
+        Optional<Boolean> result = orderService.updateStatusOrder(req, type, orderId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
 }

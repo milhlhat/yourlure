@@ -40,6 +40,10 @@ public interface AdminProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> deleteProduct(@PathVariable("id") Long id);
 
+    @DeleteMapping("/block/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
+    ResponseEntity<Object> blockProduct(@PathVariable("id") Long id);
+
     @PostMapping(value = "/upload")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Object> uploadFile(@RequestParam("files") @Valid MultipartFile[] file) throws IOException;

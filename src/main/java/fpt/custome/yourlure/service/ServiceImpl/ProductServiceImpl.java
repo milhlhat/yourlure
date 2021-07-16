@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
+import fpt.custome.yourlure.controller.admin.AdminProductController;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.*;
@@ -21,6 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductJpaRepos productJPARepos;
+
+    @Autowired
+    AdminProductController adminProductController;
 
     @Autowired
     private ProductRepos productRepos;
@@ -107,8 +111,8 @@ public class ProductServiceImpl implements ProductService {
         List<ProductsDtoOut> result = new ArrayList<>();
         Pageable pageable = PageRequest.of(0,
                 10,
-                 Sort.by("dateCreate").descending());
-        List<Product> list = productJPARepos.findAllByVisibleInStorefront(true,pageable).getContent();
+                Sort.by("dateCreate").descending());
+        List<Product> list = productJPARepos.findAllByVisibleInStorefront(true, pageable).getContent();
         for (Product item : list) {
             ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
             result.add(dtoOut);
@@ -158,21 +162,32 @@ public class ProductServiceImpl implements ProductService {
     public Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id) {
         try {
             if (id != null && productsDtoInp != null) {
-                if (productJPARepos.findById(id).isPresent()) {
-                    Product productToUpdate = productJPARepos.getById(id);
+                Product productToUpdate = productJPARepos.getById(id);
+                if (productToUpdate != null) {
                     productToUpdate.update(productsDtoInp);
                     productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
                     //update properties product
-                    //update image
-                    imageRepos.deleteByProductProductId(id);
-                    for (String link : productsDtoInp.getImgList()) {
-                        Image image = Image.builder()
-                                .product(Product.builder().productId(id).build())
-                                .linkImage(link)
-                                .build();
-                        productToUpdate.getImageCollection().add(image);
+                    //add image
+                    if (!productsDtoInp.getImgListInput().isEmpty())
+                        for (String link : productsDtoInp.getImgListInput()) {
+                            Image image = Image.builder()
+                                    .product(Product.builder().productId(id).build())
+                                    .linkImage(link)
+                                    .build();
+                            productToUpdate.getImageCollection().add(image);
+                        }
+
+                    //remove image
+                    if (!productsDtoInp.getImgListRemove().isEmpty()) {
+                        for (String imgRemove : productsDtoInp.getImgListRemove()) {
+                            imageRepos.deleteByLinkImage(imgRemove);
+//                            productToUpdate.getImageCollection().remove(Image.builder().linkImage(imgRemove).build());
+                        }
+                        adminProductController.deleteFiles(productsDtoInp.getImgListRemove());
                     }
+
                     Product product = productJPARepos.save(productToUpdate);
+
                     //update fish
 
                     //clear product in fish_product
@@ -180,13 +195,15 @@ public class ProductServiceImpl implements ProductService {
                         fish.removeProduct(product);
                         fishRepos.save(fish);
                     }
-
                     //add to fish_product (update)
-                    for (Long fishId : productsDtoInp.getListFishId()) {
-                        Fish fishInput = fishRepos.getById(fishId);
-                        fishInput.addProduct(product);
-                        fishRepos.save(fishInput);
+                    if (productsDtoInp.getListFishId() != null) {
+                        for (Long fishId : productsDtoInp.getListFishId()) {
+                            Fish fishInput = fishRepos.getById(fishId);
+                            fishInput.addProduct(product);
+                            fishRepos.save(fishInput);
+                        }
                     }
+
                 } else {
                     return false;
                 }
@@ -214,7 +231,8 @@ public class ProductServiceImpl implements ProductService {
                 Product productToSaveImage = productJPARepos.save(product);
                 idReturn = productToSaveImage.getProductId();
                 //add list image product
-                List<String> imageLink = productsDtoInp.getImgList();
+                List<String> imageLink = productsDtoInp.getImgListInput();
+                if (imageLink != null)
                 for (String link : imageLink) {
                     Image image = Image.builder()
                             .product(productToSaveImage)
@@ -298,6 +316,22 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public Boolean block(Long id) {
+        try {
+            if (id != null) {
+                Product productToUpdate = productJPARepos.getById(id);
+                if (productToUpdate != null) {
+                productToUpdate.setVisibleInStorefront(!productToUpdate.getVisibleInStorefront());
+                return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

@@ -14,4 +14,5 @@ public interface OrderActivityRepos extends JpaRepository<OrderActivity, Long> {
     List<OrderActivity> findAllByOrderId(Long id);
 
     OrderActivity findByOrder_OrderId(Long id);
+
 }

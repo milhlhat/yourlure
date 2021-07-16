@@ -38,6 +38,8 @@ public interface OrderService {
 
     Optional<AdminOrderDetailDtoOut> getById(Long id);
 
+    Optional<Boolean> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId);
+
     Boolean remove(Long id);
 
     List<AdminOrderDtoOut.OrderDtoOut> mapCustomData(List<Order> list);

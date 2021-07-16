@@ -38,4 +38,6 @@ public interface ProductService {
 
     Boolean remove(Long id);
 
+    Boolean block(Long id);
+
 }

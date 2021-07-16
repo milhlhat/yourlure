@@ -70,8 +70,16 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Boolean> deleteProduct(Long id) {
-
         Boolean check = productService.remove(id);
+        return new ResponseEntity<>(check, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> blockProduct(Long id) {
+        Boolean check = productService.block(id);
+        if (!check){
+            return new ResponseEntity<>("Xóa ảnh không thành công", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
