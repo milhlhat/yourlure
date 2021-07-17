@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.Model3dController;
+import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -40,9 +42,8 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<Model3d> update(Model3d model3d) {
-        return new ResponseEntity<>(customizeModelService.updateModel3d(model3d), HttpStatus.OK);
-
+    public ResponseEntity<Object> update(AdminModel3dDtoInput adminModel3dDtoInput) {
+        return new ResponseEntity<>(customizeModelService.updateModel3d(adminModel3dDtoInput), HttpStatus.OK);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class Model3dControllerImpl implements Model3dController {
         if(m3d != null){
             return new ResponseEntity<>(m3d, HttpStatus.OK);
         }
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.OK);
     }
 
     @Override

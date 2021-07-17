@@ -35,4 +35,11 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "campaignId")
     private Campaign campaign;
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "linkImage='" + linkImage + '\'' +
+                '}';
+    }
 }

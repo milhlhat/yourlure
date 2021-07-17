@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
+import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
@@ -96,9 +97,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
                             .append(textureDto.getFormat());
 
                     String url = fileService.saveFileBase64(textureFileName.toString(), textureDto.getContentBase64(), FileService.TEXTURE_DIR);
-                    if (textureDto.getIsDefault()) {
-                        defaultMaterial.setImg(url);
-                    }
+//                    if (textureDto.getIsDefault()) {
+//                        defaultMaterial.setImg(url);
+//                    }
                     Texture texture = Texture.builder()
                             .material(defaultMaterial)
                             .textureUrl(url)
@@ -118,8 +119,49 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     }
 
     @Override
-    public Model3d updateModel3d(Model3d m3d) {
-        return model3dRepos.save(m3d);
+    public Boolean updateModel3d(AdminModel3dDtoInput adminModel3dDtoInput) {
+        try {
+//        Model3d model3d = model3dRepos.getById(adminModel3dDtoInput.getModelId());
+//
+//        List<DefaultMaterial> materials = new ArrayList<>();
+            for (AdminModel3dDtoInput.MaterialDtoInput1 materialDtoInput :
+                    adminModel3dDtoInput.getMaterialDtoInputs()) {
+
+                DefaultMaterial defaultMaterial = defaultMaterialRepos.getById(materialDtoInput.getMaterialId());
+                defaultMaterial.setVnName(materialDtoInput.getVnName());
+                defaultMaterial.setCanAddImg(materialDtoInput.getCanAddImg());
+                defaultMaterial.setCanAddText(materialDtoInput.getCanAddText());
+                defaultMaterial.setCanAddColor(materialDtoInput.getCanAddColor());
+
+                defaultMaterial.setModel3d(Model3d.builder().modelId(adminModel3dDtoInput.getModelId()).build());
+                defaultMaterial = defaultMaterialRepos.save(defaultMaterial);
+
+                // xoa texture
+                if (materialDtoInput.getListIdTexturesRemove() != null) {
+                    for (Long id : materialDtoInput.getListIdTexturesRemove()) {
+                        textureRepos.deleteById(id);
+                    }
+                }
+
+                //add new image texture
+                if (materialDtoInput.getLinkTextures() != null && materialDtoInput.getCanAddImg())
+                    for (String link : materialDtoInput.getLinkTextures()) {
+                        Texture texture = Texture.builder()
+                                .material(defaultMaterial)
+                                .textureUrl(link)
+                                .isDefault(false)
+                                .build();
+                        defaultMaterial.addTexture(texture);
+                        textureRepos.save(texture);
+                    }
+                return true;
+            }
+//        model3d.setMaterials(materials);
+//        model3dRepos.save(model3d);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -135,8 +177,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Override
     public Model3d getModelByProductId(Long productId) {
         List<Model3d> model3d = model3dRepos.findAllByProductProductId(productId);
-        if(model3d.size() > 0){
-            return model3d.get(model3d.size() -1 );
+        if (model3d.size() > 0) {
+            return model3d.get(model3d.size() - 1);
         }
         return null;
     }

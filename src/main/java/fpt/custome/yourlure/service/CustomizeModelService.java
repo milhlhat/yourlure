@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.service;
 
+import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
@@ -16,7 +17,7 @@ public interface CustomizeModelService {
     Model3d createModel3d(Model3dDtoInput m3d) throws IOException;
 
     @Transactional
-    Model3d updateModel3d(Model3d m3d);
+    Boolean updateModel3d(AdminModel3dDtoInput adminModel3dDtoInput);
 
     Boolean deleteModel3d(Long modelId);
 
