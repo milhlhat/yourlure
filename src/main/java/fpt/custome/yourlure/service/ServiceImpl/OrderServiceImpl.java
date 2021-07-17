@@ -521,16 +521,30 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderActivity addOrderActivity(Order order, OrderActivityEnum activityIn, User assigner) {
         List<OrderActivity> activities = getOrderActivities(order);
-        if(!activities.isEmpty() && activities.stream().noneMatch(act -> act.getActivityName().equals(activityIn))){
-            OrderActivity activity = OrderActivity.builder()
-                    .order(order)
-                    .date(new Date())
-                    .activityName(activityIn)
-                    .assigner(assigner)
-                    .build();
-            return orderActivityRepos.save(activity);
+
+        if(!activities.isEmpty()){
+            // Can't add when last activity is CUSTOMER_REJECT OR STAFF_REJECT OR ACCEPT
+            switch (activities.get(0).getActivityName()){
+                case ACCEPT:
+                    throw new ValidationException("Không thể thay đổi trạng thái đơn hàng sau khi chấp thuận đơn hàng!");
+                case CUSTOMER_REJECT:
+                    throw new ValidationException("Không thể thay đổi trạng thái đơn hàng sau khi đã huỷ!");
+                case STAFF_REJECT:
+                    throw new ValidationException("Đơn hàng đã bị từ chối bởi shop!");
+            }
+            // Can't add when new activity is same last activity
+            if(activities.stream().noneMatch(act -> act.getActivityName().equals(activityIn))){
+                throw new ValidationException("Trạng thái order phải khác trạng thái trước!");
+            }
         }
-        throw new ValidationException("Trạng thái order phải khác trạng thái trước!");
+
+        OrderActivity activity = OrderActivity.builder()
+                .order(order)
+                .date(new Date())
+                .activityName(activityIn)
+                .assigner(assigner)
+                .build();
+        return orderActivityRepos.save(activity);
     }
 
     @Override
