@@ -533,7 +533,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new ValidationException("Đơn hàng đã bị từ chối bởi shop!");
             }
             // Can't add when new activity is same last activity
-            if(activities.stream().noneMatch(act -> act.getActivityName().equals(activityIn))){
+            if(activities.stream().anyMatch(act -> act.getActivityName().equals(activityIn))){
                 throw new ValidationException("Trạng thái order phải khác trạng thái trước!");
             }
         }
