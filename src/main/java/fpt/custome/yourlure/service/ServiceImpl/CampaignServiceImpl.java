@@ -16,10 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -85,26 +82,31 @@ public class CampaignServiceImpl implements CampaignService {
                 objUpdate.setDescription(adminCampaignDtoInput.getDescription());
                 objUpdate.setStartDate(adminCampaignDtoInput.getStartDate());
                 objUpdate.setEndDate(adminCampaignDtoInput.getEndDate());
-                imageRepos.deleteByCampaign_CampaignId(idInput);
-                fileService.deleteFiles((List<String>) adminCampaignDtoInput.getImageCollection());
+
+                //add new image
                 for (String link : adminCampaignDtoInput.getImageCollection()) {
                     Image image = Image.builder()
                             .campaign(Campaign.builder().campaignId(idInput).build())
                             .linkImage(link)
                             .build();
                     objUpdate.getImageCollection().add(image);
-                    campaignRepos.save(objUpdate);
-                    return Optional.of(true);
                 }
+                fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
+                campaignRepos.save(objUpdate);
+                //delete image
+                for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
+                    imageRepos.deleteByLinkImage(link.trim());
+                }
+                return Optional.of(true);
             } else {
                 return Optional.of(false);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return Optional.of(false);
         }
-        return Optional.of(true);
+        return Optional.of(false);
     }
+
 
     @Transactional
     @Override
@@ -140,7 +142,7 @@ public class CampaignServiceImpl implements CampaignService {
                 if (campaign.get().getStartDate() == null || campaign.get().getEndDate() == null ||
                         (campaign.get().getStartDate().compareTo(new Date()) < 0 &&
                                 campaign.get().getEndDate().compareTo(new Date()) > 0)
-                        ) {
+                ) {
                     // the voucher is not start
                     return Optional.of(false);
                 } else {

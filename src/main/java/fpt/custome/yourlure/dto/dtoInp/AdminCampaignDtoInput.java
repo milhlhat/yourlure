@@ -20,5 +20,6 @@ public class AdminCampaignDtoInput {
     private String banner;
     private String content;
     private List<String> imageCollection;
+    private List<String> imageCollectionRemove;
 
 }

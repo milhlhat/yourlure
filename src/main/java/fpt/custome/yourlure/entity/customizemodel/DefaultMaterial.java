@@ -50,4 +50,24 @@ public class DefaultMaterial {
     @JsonIgnore
     @OneToMany(mappedBy = "defaultMaterial", cascade = CascadeType.ALL)
     private Collection<CustomMaterial> customMaterials;
+
+    /**
+     * add product to fish
+     *
+     * @param p
+     */
+    public void addTexture(Texture p) {
+        this.textures.add(p);
+        p.setMaterial(this);
+    }
+
+    /**
+     * remove product on fish
+     *
+     * @param p
+     */
+    public void removeTexture(Texture p) {
+        this.textures.remove(p);
+        p.setMaterial(this);
+    }
 }

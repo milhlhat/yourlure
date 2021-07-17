@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront;
 
 
+import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
@@ -32,7 +33,7 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<Model3d> update(@RequestBody Model3d model3d);
+    ResponseEntity<Object> update(@RequestBody AdminModel3dDtoInput adminModel3dDtoInput);
 
     @DeleteMapping(value = "/delete-model")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
