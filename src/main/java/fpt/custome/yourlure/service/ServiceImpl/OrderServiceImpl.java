@@ -148,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
                     orderLine.setProductName(variant.getProduct().getProductName());
 
                     // decrease variant when order variant
-                    variant.setQuantity(variant.getQuantity() - 1);
+                    variant.setQuantity(variant.getQuantity() - item.getQuantity());
                     variant = variantRepos.save(variant);
 
                 } else {
