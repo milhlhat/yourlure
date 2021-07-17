@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 const ManagerOrderAPI = {
 	getAllOrder: (param) => {
-		const url = `/admin/order/all-by-phone-or-name`;
+		const url = `/admin/order/all`;
 		return AxiosClient.post(url,param);
 	},
 	getOrderById: (param) => {

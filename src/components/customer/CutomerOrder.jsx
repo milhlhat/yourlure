@@ -33,12 +33,12 @@ function CutomerOrder(props) {
       const response = await OrderAPI.getOrder(totalItemInPage, page);
       setOrderList({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {
-      if (error.response.status === 400) {
-        setErrorMessage(error.response.data);
         setOrderList({ data: null, isLoading: false, isSuccess: true });
-      } else {
-        console.log("fail to fetch order");
-      }
+      // if (error.response.status === 400) {
+      //   // setErrorMessage(error.response.data);
+      // } else {
+      //   console.log("fail to fetch order");
+      // }
     }
   };
   const onConfirm = async (data) => {
@@ -88,7 +88,7 @@ function CutomerOrder(props) {
               <div className="order-info">
                 <span>Ngày đặt hàng {formatDate(order?.orderDate)}</span>
                 <span className="text-success">
-                  {getStatus(order?.activities[0])}
+                  {getStatus(order?.activities[0]?.activityName,"CUSTOMER")}
                 </span>
               </div>
               <div className="order-product-list">
@@ -147,7 +147,7 @@ function CutomerOrder(props) {
                         btnText="Hủy Đơn"
                         height="30px"
                         title="Hủy đơn"
-                        disabled={order?.activities[0]==="PENDING"}
+                        disabled={order?.activities[0]?.activityName!=="PENDING"}
                         content="Bạn chắc chắn hủy đơn hàng?"
                         onConfirm={() => onConfirm(order.orderId)}
                       />

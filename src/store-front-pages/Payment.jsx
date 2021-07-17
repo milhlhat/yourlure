@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import YLButton from "../components/custom-field/YLButton";
 import DEFINELINK from "../routes/define-link";
-import { convertToVND, totalPrice } from "../utils/format-string";
+import { convertToVND, getShipping, totalPrice } from "../utils/format-string";
 import { useTheme } from "@material-ui/core/styles";
 import DialogContent from "@material-ui/core/DialogContent";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -29,7 +29,7 @@ function Payment(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const methods = useForm();
-  const [shipping, setShipping] = useState(25000);
+  const [shipping, setShipping] = useState(getShipping());
   const {
     register,
     handleSubmit,
@@ -57,7 +57,9 @@ function Payment(props) {
   const calculateDiscount = (code) => {
     if (code?.minSpentAmount && totalPrice(cartData) < code?.minSpentAmount) {
       toast.warning(
-        `Mã giảm giá chỉ áp dụng cho đơn hàng trên ${convertToVND(code.minSpentAmount)}`
+        `Mã giảm giá chỉ áp dụng cho đơn hàng trên ${convertToVND(
+          code.minSpentAmount
+        )}`
       );
       return 0;
     }
@@ -96,7 +98,7 @@ function Payment(props) {
         calculateDiscount(response);
       }
     } catch (error) {
-      toast.warning(error.response.data)
+      toast.warning(error.response.data);
       console.log("fail to fetch voucher");
     }
     setDiscountLoad(false);
@@ -227,7 +229,10 @@ function Payment(props) {
             <div className="total-order bg-box bg-shadow px-3">
               <div>
                 <span>Giỏ hàng</span>
-                <Link to={DEFINELINK.cart} className="float-end login-link">
+                <Link
+                  to={{ pathname: DEFINELINK.cart, cart: cartData }}
+                  className="float-end login-link"
+                >
                   Trở về giỏ hàng
                 </Link>
               </div>

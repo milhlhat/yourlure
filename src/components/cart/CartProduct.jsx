@@ -8,11 +8,12 @@ import YLButon from "components/custom-field/YLButton";
 import { AbilityContext, Can } from "ability/can";
 import { useSelector } from "react-redux";
 import YLButton from "components/custom-field/YLButton";
-import { convertToVND } from "utils/format-string";
+import { convertToVND, getShipping } from "utils/format-string";
 import CartAPI from "api/user-cart-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 function CartProduct(props) {
+  const cartData = props.location.cart;
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
   if (isLoggedIn) {
@@ -36,6 +37,7 @@ function CartProduct(props) {
           isSuccess: true,
           isLoading: false,
         });
+        setCartsSelected([...response.cartItems]);
       }
     } catch (error) {
       setCart({
@@ -51,10 +53,12 @@ function CartProduct(props) {
       fetchCart();
     } else {
       setCart({ ...cart, data: state });
+      setCartsSelected([...state]);
     }
   }, [state]);
+
   // console.log(cart?.data);
-  const shiping = 25000;
+  const shiping = getShipping();
   const [listTotal, setListTotal] = useState({
     data: [],
   });
@@ -66,20 +70,20 @@ function CartProduct(props) {
     return total;
   };
   const handleChangeSelected = (data) => {
-    // setCartsSelected
-    if (cartsSelected.includes(data)) {
-      for (let i in cartsSelected) {
-        if (cartsSelected[i] === data) {
-          cartsSelected.splice(i, 1);
+    let array = cartsSelected;
+    if (array.includes(data)) {
+      for (let i in array) {
+        if (array[i] === data) {
+          array.splice(i, 1);
           break;
         }
       }
-      // setCartsSelected([term.push(data)]);
+      // setarray([term.push(data)]);
     } else {
-      cartsSelected.push(data);
+      array.push(data);
     }
+    setCartsSelected([...array]);
   };
-  useEffect(() => {}, []);
   // if (isLoggedIn && cart.isLoading) {
   //   return <Loading />;
   // } else if (isLoggedIn && !cart.isSuccess) {
@@ -87,7 +91,7 @@ function CartProduct(props) {
   // } else
   return (
     <div className="container">
-      {/* {console.log(cart?.data)} */}
+      {console.log(cartData)}
       {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">
@@ -114,7 +118,7 @@ function CartProduct(props) {
                     <tr>
                       <td className="text-bold">TỔNG PHỤ:</td>
                       <td className="text-end">
-                        {convertToVND(totalPrice(cart?.data))}
+                        {convertToVND(totalPrice(cartsSelected))}
                       </td>
                     </tr>
                     <tr>
@@ -124,19 +128,25 @@ function CartProduct(props) {
                     <tr>
                       <td className="text-bold">TỔNG CỘNG:</td>
                       <td className="text-end">
-                        {convertToVND(totalPrice(cart?.data) + shiping)}
+                        {convertToVND(totalPrice(cartsSelected) + shiping)}
                       </td>
                     </tr>
                     <tr>
                       <td colSpan="2">
                         <YLButon
                           variant="primary"
-                          to={{ pathname: "/cart/payment", cart: cartsSelected }}
+                          to={{
+                            pathname: "/cart/payment",
+                            cart: cartsSelected,
+                          }}
                           width="100%"
+                          disabled={cartsSelected.length === 0}
                         >
                           Tiếp tục
                         </YLButon>
-                        {cartsSelected.length===0&&<span >Bạn chưa chọn mặt hàng nào.</span>}
+                        {cartsSelected.length === 0 && (
+                          <span className="text-danger">Bạn chưa chọn mặt hàng nào(*)</span>
+                        )}
                       </td>
                     </tr>
                     <tr>

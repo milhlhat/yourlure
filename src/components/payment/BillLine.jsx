@@ -36,7 +36,6 @@ function BillLine(props) {
         <DialogContent>
           <DialogContentText>
             <div className="text-small dialog-content d-flex justify-content-center flex-column align-items-center">
-              {console.log(billLine)}
               <div className="primary-color d-flex flex-column align-items-center">
                 <span className="primary-color" onClick={() => setOpen(false)}>
                   Cảm ơn quý khách {billLine?.receiverName} đã đặt hàng

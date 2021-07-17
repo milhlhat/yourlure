@@ -7,6 +7,8 @@ import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-order-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import { convertToVND } from "utils/format-string";
+import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
 
 function ManagerOrderDetail(props) {
   const canBack = props.location.canBack;
@@ -14,9 +16,9 @@ function ManagerOrderDetail(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [order, setOrder] = useState({
-    data:null,
-    isLoading:false,
-    isSuccess:true,
+    data: null,
+    isLoading: false,
+    isSuccess: true,
   });
 
   function totalPrice(list) {
@@ -24,6 +26,9 @@ function ManagerOrderDetail(props) {
       return sum + product.price * product.quantity;
     }, 0);
     return total;
+  }
+  const onConfirm=()=>{
+
   }
 
   const fetchOrder = async () => {
@@ -60,6 +65,7 @@ function ManagerOrderDetail(props) {
   } else
     return (
       <div className="manager-order-detail">
+        {console.log(order)}
         <div className="d-flex">
           <div className="col-12 col-md-9 p-2">
             <div className="bg-box bg-shadow">
@@ -101,28 +107,30 @@ function ManagerOrderDetail(props) {
                         <td className="text-center">{item.quantity}</td>
                         <td className="text-center">-</td>
                         <td className="text-end">
-                          {!item
-                            ? "N/A"
-                            : Number(item.price).toLocaleString(undefined, {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 2,
-                              })}
-                          {"\u20AB"}
+                          {!item ? "N/A" : convertToVND(item.price)}
                         </td>
                         <td className="text-end">
                           {!item
                             ? "N/A"
-                            : Number(item.price * item.quantity).toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 0,
-                                  maximumFractionDigits: 2,
-                                }
-                              )}
-                          {"\u20AB"}
+                            : convertToVND(item.price * item.quantity)}
                         </td>
                       </tr>
                     ))}
+                    <tr>
+                      <td className="text-end" colSpan="9">
+                        hủy đơn
+                        {/* <div className="float-end">
+                        <ComfirmPopup
+                        btnText="Hủy Đơn"
+                        height="30px"
+                        title="Hủy đơn"
+                        disabled={order?.data?.productDtoOuts.activities[0]?.activityName!=="PENDING"}
+                        content="Bạn chắc chắn hủy đơn hàng?"
+                        onConfirm={() => onConfirm()}
+                      />
+                        </div> */}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -178,14 +186,7 @@ function ManagerOrderDetail(props) {
             <div className="bg-box bg-shadow mt-5 py-3">
               <b>Tổng tiền:</b>{" "}
               {order?.data?.productDtoOuts &&
-                Number(totalPrice(order?.data?.productDtoOuts)).toLocaleString(
-                  undefined,
-                  {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2,
-                  }
-                )}
-              {"\u20AB"}
+                convertToVND(totalPrice(order?.data?.productDtoOuts))}
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-order.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import { convertToVND, getStatus } from "utils/format-string";
 
 function ManagerOrder(props) {
   const totalItem = 10;
@@ -69,7 +70,7 @@ function ManagerOrder(props) {
   } else
     return (
       <>
-      {console.log(orderList)}
+        {console.log(orderList)}
         <div className="user-head-row">
           <h3>Đơn hàng</h3>
           <div className="product-add-new"></div>
@@ -78,7 +79,7 @@ function ManagerOrder(props) {
           <span>Tất cả đơn hàng</span>
           <hr />
           {/* <ManagerSort /> */}
-          {orderList?.data?.orderDtoOutList?.length <= 0 && (
+          {orderList?.data?.orders?.length <= 0 && (
             <p>Không có đơn hàng</p>
           )}
           <table className="table">
@@ -91,7 +92,7 @@ function ManagerOrder(props) {
                 <th>Tình trạng thực hiện</th>
                 <th className="text-center">Tổng</th>
               </tr>
-              {orderList?.data?.orderDtoOutList?.map((item, i) => (
+              {orderList?.data?.orders?.map((item, i) => (
                 <tr
                   key={"manager-order-" + i}
                   className="pointer hover-background"
@@ -107,16 +108,14 @@ function ManagerOrder(props) {
                   <td>{item.receiverName ? item.receiverName : "-"}</td>
                   <td>{item.phone}</td>
                   <td className="text-center">
-                    {item.statusName ? item.statusName : "-"}
+                    {item?.activities[0]?.activityName
+                      ? getStatus(item?.activities[0]?.activityName)
+                      : "-"}
                   </td>
                   <td className="text-end">
                     {!item
                       ? "N/A"
-                      : Number(item.total).toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,
-                        })}
-                    {"\u20AB"}
+                      : convertToVND(item?.total)}
                   </td>
                 </tr>
               ))}

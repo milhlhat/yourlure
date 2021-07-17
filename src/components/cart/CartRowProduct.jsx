@@ -28,6 +28,7 @@ function CartRowProduct(props) {
     listTotal,
     fetchCart,
     handleChangeSelected,
+    cartData,
   } = props;
   const handleChangeQuantity = (quantity) => {};
   const handleCheckBox = (value, checked) => {};
@@ -109,16 +110,17 @@ function CartRowProduct(props) {
 
   return (
     <div className="bg-white row-cart text-small">
-      {/* {console.log(item)} */}
+      {console.log(item)}
       <table>
         <tbody>
           <tr>
             <td>
-              <input
+              {canChange&&<input
                 type="checkbox"
                 value={item?.variantId}
                 onChange={() => handleChangeSelected(item)}
-              />
+                defaultChecked={true}
+              />}
             </td>
             <td className="d-flex align-items-center">
               <img
