@@ -520,14 +520,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderActivity addOrderActivity(Order order, OrderActivityEnum activityIn, User assigner) {
-        OrderActivity activity = OrderActivity.builder()
-                .order(order)
-                .date(new Date())
-                .activityName(activityIn)
-                .assigner(assigner)
-                .build();
-        return orderActivityRepos.save(activity);
-
+        List<OrderActivity> activities = getOrderActivities(order);
+        if(!activities.isEmpty() && activities.stream().noneMatch(act -> act.getActivityName().equals(activityIn))){
+            OrderActivity activity = OrderActivity.builder()
+                    .order(order)
+                    .date(new Date())
+                    .activityName(activityIn)
+                    .assigner(assigner)
+                    .build();
+            return orderActivityRepos.save(activity);
+        }
+        throw new ValidationException("Trạng thái order phải khác trạng thái trước!");
     }
 
     @Override
