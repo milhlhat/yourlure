@@ -26,12 +26,14 @@ public class OrderActivity {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "assignerId", nullable = true)
+    @JoinColumn(name = "assignerId")
     private User assigner;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
     private Date date;
+    private String note;
 }

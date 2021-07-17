@@ -70,7 +70,4 @@ public class Order {
     private Collection<OrderActivity> activities;
 
 
-
-
-
 }

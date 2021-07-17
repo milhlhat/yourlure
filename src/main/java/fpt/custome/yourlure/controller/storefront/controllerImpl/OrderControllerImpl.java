@@ -85,4 +85,9 @@ public class OrderControllerImpl implements OrderController {
         }
         return new ResponseEntity<>("Không tìm thấy order", HttpStatus.BAD_REQUEST);
     }
+
+    @Override
+    public ResponseEntity<Object> userCancelOrder(HttpServletRequest rq, Long orderId) {
+        return new ResponseEntity<>(orderService.cancelOrder(rq, orderId), HttpStatus.OK);
+    }
 }

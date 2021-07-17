@@ -1,13 +1,12 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
-import fpt.custome.yourlure.entity.OrderActivityEnum;
-import fpt.custome.yourlure.entity.Payment;
-import fpt.custome.yourlure.entity.User;
+import fpt.custome.yourlure.entity.OrderActivity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDtoOut {
 
-    private Integer totalItem;
+    private long totalItem;
     private Integer totalPage;
     private List<OrderDtoOut.Order> orders;
 
@@ -32,10 +31,9 @@ public class OrderDtoOut {
         private String phone;
         private String receiverName;
         private String note;
-        private Payment payment;
-        private User user;
+        private String paymentName;
         private Float discount;
-        private OrderActivityEnum activity;
+        private Collection<OrderActivity> activities;
         private List<OrderDtoOut.OrderItem> items;
     }
 
@@ -48,6 +46,7 @@ public class OrderDtoOut {
         private String thumbnailUrl;
         private String customizeName;
         private String productName;
+        private String categoryName;
         private Integer quantity;
         private String variantName;
         private Float weight;

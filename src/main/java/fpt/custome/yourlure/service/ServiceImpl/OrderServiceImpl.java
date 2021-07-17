@@ -2,7 +2,6 @@ package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.OrderGuestDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.OrderUserDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.OrderDtoOut;
 import fpt.custome.yourlure.entity.*;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,6 +131,8 @@ public class OrderServiceImpl implements OrderService {
                 Float totalPrice = defaultPrice + customAmount;
                 orderLine.setPrice(totalPrice);
                 orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
+                orderLine.setCustomModelName(customizeModel.getName());
+                orderLine.setProductName(product.getProductName());
 
             } else if (item.getVariantId() != null) {
                 // set price by variant
@@ -142,6 +144,8 @@ public class OrderServiceImpl implements OrderService {
                         orderLine.setPrice(variant.getNewPrice());
                     }
                     orderLine.setImgThumbnail(variant.getImageUrl());
+                    orderLine.setVariantName(variant.getVariantName());
+                    orderLine.setProductName(variant.getProduct().getProductName());
 
                     // decrease variant when order variant
                     variant.setQuantity(variant.getQuantity() - 1);
@@ -161,14 +165,6 @@ public class OrderServiceImpl implements OrderService {
 
             // delete cartItem after create orderline
             cartItemRepos.delete(item);
-
-            // add order activity
-            OrderActivity activity = OrderActivity.builder()
-                    .activityName(OrderActivityEnum.PENDING)
-                    .date(new Date())
-                    .order(order)
-                    .build();
-            activity = orderActivityRepos.save(activity);
 
         }
         return orderLines;
@@ -195,6 +191,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
 
+        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, null);
+        order.setActivities(Collections.singleton(activity));
         return order;
     }
 
@@ -240,11 +238,14 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
+        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, user);
+        order.setActivities(Collections.singleton(activity));
 
         return order;
 
     }
 
+    @Transactional
     @Override
     public boolean cancelOrder(HttpServletRequest rq, Long orderId) {
         User user = userService.whoami(rq);
@@ -252,11 +253,29 @@ public class OrderServiceImpl implements OrderService {
         if (order.isPresent()) {
             List<Order> orders = orderRepos.findAllByUserUserId(user.getUserId());
             if (orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))) {
-                orderRepos.deleteById(orderId);
-                return true;
+                OrderActivity activity = addOrderActivity(order.get(), OrderActivityEnum.CUSTOMER_REJECT, user);
+                if(activity != null){
+                    returnQuantityCancelOrder(order.get());
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    @Transactional
+    @Override
+    public void returnQuantityCancelOrder(Order order) {
+        Collection<OrderLine> orderLines = order.getOrderLineCollection();
+        for (OrderLine orderLine : orderLines) {
+            if(orderLine.getVariantId() != null){
+                Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
+                variant.ifPresent(value ->{
+                    value.setQuantity(value.getQuantity() + orderLine.getQuantity());
+                    variantRepos.save(value);
+                });
+            }
+        }
     }
 
     @Override
@@ -266,6 +285,48 @@ public class OrderServiceImpl implements OrderService {
             return getListUserOrder(user, page, limit);
 
         }
+        return null;
+    }
+
+    @Override
+    public List<OrderDtoOut.OrderItem> getOrderItemsDto(Order order) {
+        List<OrderDtoOut.OrderItem> items = new ArrayList<>();
+        for (OrderLine orderLine : order.getOrderLineCollection()) {
+            // get more information order line
+
+            OrderDtoOut.OrderItem item = mapper.map(orderLine, OrderDtoOut.OrderItem.class);
+
+            if (orderLine.getCustomModelId() != null) {
+                Optional<CustomizeModel> customizeModel = customizeModelRepos.findById(orderLine.getCustomModelId());
+                customizeModel.ifPresent(model -> {
+//                    item.setCustomizeName(model.getName());
+                    item.setThumbnailUrl(model.getThumbnailUrl());
+                    item.setCategoryName(model.getModel3d().getProduct().getCategory().getCategoryName());
+                });
+            }
+
+            if (orderLine.getVariantId() != null) {
+                Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
+                variant.ifPresent(var -> {
+                    item.setCategoryName(var.getProduct().getCategory().getCategoryName());
+//                    item.setProductName(var.getProduct().getProductName());
+//                    item.setVariantName(var.getVariantName());
+                    item.setThumbnailUrl(var.getImageUrl());
+                });
+            }
+
+            items.add(item);
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<OrderActivity> getOrderActivities(Order order) {
+        if (order != null) {
+            return orderActivityRepos.findAllByOrderId(order.getOrderId());
+        }
+
         return null;
     }
 
@@ -342,6 +403,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderInput) throws Exception {
+        User user = userService.whoami(rq);
         if (orderInput.getCartItems() == null || orderInput.getCartItems().size() == 0) {
             throw new Exception("vui lòng chọn sản phẩm để đặt hàng!");
         }
@@ -350,7 +412,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = mapper.map(orderInput, Order.class);
-
+        order.setUser(user);
         order.setOrderDate(new Date());
         order.setPayment(verifyPayment(orderInput.getPaymentId()));
         order.setDiscount(calculateDiscount(orderInput.getDiscountCode(), calculateItemPrices(orderInput.getCartItems())));
@@ -358,6 +420,8 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderLine> orderLines = createOrderLines(order, orderInput.getCartItems());
         order.setOrderLineCollection(orderLines);
+        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, user);
+        order.setActivities(Collections.singleton(activity));
         return order;
     }
 
@@ -390,48 +454,17 @@ public class OrderServiceImpl implements OrderService {
             List<OrderDtoOut.Order> orders = new ArrayList<>();
 
             for (Order order : result.getContent()) {
-                List<OrderDtoOut.OrderItem> items = new ArrayList<>();
-                for (OrderLine orderLine : order.getOrderLineCollection()) {
-                    // get more information order line
-
-                    OrderDtoOut.OrderItem item = mapper.map(orderLine, OrderDtoOut.OrderItem.class);
-
-                    if (orderLine.getCustomModelId() != null) {
-                        Optional<CustomizeModel> customizeModel = customizeModelRepos.findById(orderLine.getCustomModelId());
-                        customizeModel.ifPresent(model -> {
-                            item.setCustomizeName(model.getName());
-                            item.setThumbnailUrl(model.getThumbnailUrl());
-                        });
-                    }
-
-                    if (orderLine.getVariantId() != null) {
-                        Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
-                        variant.ifPresent(var -> {
-                            item.setProductName(var.getProduct().getProductName());
-                            item.setVariantName(var.getVariantName());
-                            item.setThumbnailUrl(var.getImageUrl());
-                        });
-                    }
-
-                    items.add(item);
-                }
-
                 OrderDtoOut.Order orderDtoOut = mapper.map(order, OrderDtoOut.Order.class);
-                orderDtoOut.setItems(items);
-                List<OrderActivity> activities = orderActivityRepos.findAllByOrderId(order.getOrderId());
-                if (!activities.isEmpty()) {
-                    orderDtoOut.setActivity(activities.stream().findFirst().get().getActivityName());
-                } else {
-                    orderDtoOut.setActivity(OrderActivityEnum.PENDING);
-                }
+                orderDtoOut.setPaymentName(order.getPayment().getPayment());
+                orderDtoOut.setItems(getOrderItemsDto(order));
+                orderDtoOut.setActivities(getOrderActivities(order));
                 // add to list order to show on FE
                 orders.add(orderDtoOut);
 
             }
 
-
             OrderDtoOut orderDtoOut = OrderDtoOut.builder()
-                    .totalItem(orders.size())
+                    .totalItem(result.getTotalElements())
                     .totalPage(result.getTotalPages())
                     .orders(orders)
                     .build();
@@ -453,7 +486,7 @@ public class OrderServiceImpl implements OrderService {
                 // map data vao AdminOrderDtoOut.OrderDtoOut
                 List<AdminOrderDtoOut.OrderDtoOut> orderDtoOuts = mapCustomData(list.getContent());
                 AdminOrderDtoOut result = AdminOrderDtoOut.builder()
-                        .orderDtoOutList(orderDtoOuts)
+                        .orders(orderDtoOuts)
                         .totalPage(list.getTotalPages())
                         .totalOrder((int) list.getTotalElements())
                         .build();
@@ -468,74 +501,56 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<AdminOrderDetailDtoOut> getById(Long id) {
-        try {
-            Optional<Order> order = orderRepos.findById(id);
-            List<AdminOrderDetailDtoOut.ProductDtoOut> productDtoOutList = new ArrayList<>();
-            if (order.isPresent()) {
-                AdminOrderDetailDtoOut result = mapper.map(order.get(), AdminOrderDetailDtoOut.class);
-                List<OrderLine> orderLineList = (List<OrderLine>) order.get().getOrderLineCollection();
-                for (OrderLine item : orderLineList) {
-                    if (item.getProductId() != null) {
-                        //todo: hiện tại data đang lỗi vì không có lưu productId. sau khi có sẽ check lại
-                        AdminOrderDetailDtoOut.ProductDtoOut productDtoOut = mapper.map(productJpaRepos.findById(item.getProductId()).get(), AdminOrderDetailDtoOut.ProductDtoOut.class);
-                        productDtoOut.setPrice(item.getPrice());
-                        productDtoOut.setQuantity(item.getQuantity());
-                        productDtoOut.setVariantId(item.getVariantId());
+    public OrderDtoOut.Order orderDetail(Long id) {
 
-                        // todo: vua sua lai db cua order. xong phai sua nay cho nay
-//                    productDtoOut.setThumbnailUrl(item.getTextureImg());
-                        //TODO: truy van customize trong bang customize roi gan vao
-//                    productDtoOut.setCustomizeId(item.getCustomizeId());
-                        productDtoOutList.add(productDtoOut);
-                    }
-                }
-                result.setProductDtoOuts(productDtoOutList);
-                return Optional.of(result);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (id == null) {
+            throw new ValidationException("Vui lòng chọn đúng order!");
         }
-        return Optional.empty();
+        Optional<Order> order = orderRepos.findById(id);
+        if (!order.isPresent()) {
+            throw new ValidationException("Không tìm thấy order đã yêu cầu!");
+        }
+
+        OrderDtoOut.Order orderDtoOut = mapper.map(order.get(), OrderDtoOut.Order.class);
+        orderDtoOut.setPaymentName(order.get().getPayment().getPayment());
+        orderDtoOut.setItems(getOrderItemsDto(order.get()));
+        orderDtoOut.setActivities(getOrderActivities(order.get()));
+
+        return orderDtoOut;
+    }
+
+    public OrderActivity addOrderActivity(Order order, OrderActivityEnum activityIn, User assigner) {
+        OrderActivity activity = OrderActivity.builder()
+                .order(order)
+                .date(new Date())
+                .activityName(activityIn)
+                .assigner(assigner)
+                .build();
+        return orderActivityRepos.save(activity);
+
     }
 
     @Override
-    public Optional<Boolean> updateStatusOrder(HttpServletRequest req, Integer type, Long orderId) {
-        try {
-            User staff = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-
-            OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(orderId);
-            if (orderActivity != null) {
-                switch (type) {
-                    case 1: {
-                        orderActivity.setActivityName(OrderActivityEnum.ACCEPT);
-                        break;
-                    }
-                    case 2: {
-                        orderActivity.setActivityName(OrderActivityEnum.CUSTOMER_REJECT);
-                        break;
-                    }
-                    case 3: {
-                        orderActivity.setActivityName(OrderActivityEnum.STAFF_REJECT);
-                        break;
-                    }
-                    case 4: {
-                        orderActivity.setActivityName(OrderActivityEnum.DONE);
-                        break;
-                    }
-                    default:{
-                        return Optional.of(false);
-                    }
-                }
-                orderActivity.setOrder(Order.builder().orderId(orderId).build());
-                orderActivity.setAssigner(staff);
-                orderActivityRepos.save(orderActivity);
-                return Optional.of(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public boolean updateOrderActivity(HttpServletRequest req, OrderActivityEnum activityEnum, Long orderId) {
+        if (orderId == null) {
+            throw new ValidationException("Vui lòng chọn đơn hàng!");
         }
-        return Optional.of(false);
+        if (activityEnum == null) {
+            throw new ValidationException("Vui lòng chọn trạng thái");
+        }
+        User staff = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+        Optional<Order> order = orderRepos.findById(orderId);
+        if (!order.isPresent()) {
+            throw new ValidationException("Không tìm thấy đơn hàng này!");
+        }
+        OrderActivity activity = addOrderActivity(order.get(), activityEnum, staff);
+        if (activity != null) {
+            if(activityEnum.equals(OrderActivityEnum.STAFF_REJECT)){
+                returnQuantityCancelOrder(order.get());
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -557,13 +572,10 @@ public class OrderServiceImpl implements OrderService {
      */
     public List<AdminOrderDtoOut.OrderDtoOut> mapCustomData(List<Order> list) {
         List<AdminOrderDtoOut.OrderDtoOut> result = new ArrayList<>();
-        for (Order item : list) {
-            AdminOrderDtoOut.OrderDtoOut dtoOut = mapper.map(item, AdminOrderDtoOut.OrderDtoOut.class);
-            OrderActivity orderActivity = orderActivityRepos.findByOrder_OrderId(item.getOrderId());
-            if (orderActivity != null) {
-                dtoOut.setStatusName(orderActivity.getActivityName());
-            }
-            List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(item.getOrderId());
+        for (Order order : list) {
+            AdminOrderDtoOut.OrderDtoOut dtoOut = mapper.map(order, AdminOrderDtoOut.OrderDtoOut.class);
+            dtoOut.setActivities(getOrderActivities(order));
+            List<OrderLine> orderLineList = orderLineRepos.findByOrder_OrderId(order.getOrderId());
             if (orderLineList != null) {
                 float total = 0;
                 for (OrderLine orderLine : orderLineList) {
@@ -586,7 +598,7 @@ public class OrderServiceImpl implements OrderService {
                     .totalOrder((int) list.getTotalElements())
                     .totalPage(list.getTotalPages())
                     // map data vào dto
-                    .orderDtoOutList(mapCustomData(list.getContent()))
+                    .orders(mapCustomData(list.getContent()))
                     .build();
             //trả về kết quả
             return Optional.of(result);

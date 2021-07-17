@@ -10,7 +10,7 @@ public interface OrderActivityRepos extends JpaRepository<OrderActivity, Long> {
 
     @Query(value = "SELECT * from tbl_order_activities\n" +
             "WHERE order_id = ?1\n" +
-            "ORDER BY \"date\"", nativeQuery = true)
+            "ORDER BY \"date\" DESC", nativeQuery = true)
     List<OrderActivity> findAllByOrderId(Long id);
 
     OrderActivity findByOrder_OrderId(Long id);

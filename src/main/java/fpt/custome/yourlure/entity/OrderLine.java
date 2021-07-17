@@ -44,15 +44,27 @@ public class OrderLine {
     @Column(name = "productId")
     private Long productId;
 
+    @NotNull
+    @Column(name = "productName")
+    private String productName;
+
     @Nullable
     @JsonIgnore
     @Column(name = "variantId")
     private Long variantId;
 
+    @NotNull
+    @Column(name = "variantName")
+    private String variantName;
+
     @Nullable
     @JsonIgnore
     @Column(name = "customModelId")
     private Long customModelId;
+
+    @NotNull
+    @Column(name = "customModelName")
+    private String customModelName;
 
     @Nullable
     @JsonIgnore

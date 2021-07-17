@@ -39,7 +39,9 @@ public interface OrderController {
                                     @RequestParam Integer page,
                                     @RequestParam @Min(1) Integer limit);
 
-//    @GetMapping("/{")
+    @GetMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Object> userCancelOrder(HttpServletRequest rq, @PathVariable("id") Long orderId);
 
 
 }

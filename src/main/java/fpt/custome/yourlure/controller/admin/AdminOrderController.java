@@ -1,16 +1,14 @@
 package fpt.custome.yourlure.controller.admin;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminFilterDtoInput;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminOrderDtoOut;
 import fpt.custome.yourlure.entity.Filter;
+import fpt.custome.yourlure.entity.OrderActivityEnum;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RequestMapping("/admin/order")
 
@@ -22,9 +20,9 @@ public interface AdminOrderController {
      * @param adminFilterDtoInput
      * @return
      */
-    @PostMapping("/all-by-phone-or-name")
+    @PostMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Optional<AdminOrderDtoOut>> findAll(@RequestBody @Valid AdminFilterDtoInput adminFilterDtoInput);
+    ResponseEntity<Object> findAll(@RequestBody @Valid AdminFilterDtoInput adminFilterDtoInput);
 
 //    /**
 //     * tìm kiếm order theo điện thoại
@@ -42,7 +40,7 @@ public interface AdminOrderController {
      */
     @GetMapping("/get-user-order-detail/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Optional<AdminOrderDetailDtoOut>> getUserOrder(@PathVariable("userId") Long userId);
+    ResponseEntity<Object> getUserOrder(@PathVariable("userId") Long userId);
 
     /**
      * xem chi tiết order
@@ -52,7 +50,7 @@ public interface AdminOrderController {
      */
     @GetMapping("/order-detail/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Optional<AdminOrderDetailDtoOut>> getOrderById(@PathVariable("id") Long id);
+    ResponseEntity<Object> getOrderById(@PathVariable("id") Long id);
 
     /**
      * danh sach order cua user
@@ -62,7 +60,7 @@ public interface AdminOrderController {
      */
     @PostMapping("/user-orders")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Optional<AdminOrderDtoOut>> getListOrderByUserId(@RequestBody Filter filter);
+    ResponseEntity<Object> getListOrderByUserId(@RequestBody Filter filter);
 
     /**
      * xóa order chỉ dành cho amdin
@@ -74,10 +72,10 @@ public interface AdminOrderController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> deleteOrder(@PathVariable("id") Long id);
 
-    @PostMapping("/switch-status-order")
+    @PostMapping("/change-status-order")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Object> updateStatusOrder(HttpServletRequest req,
-                                             @RequestParam Integer type,
+                                             @RequestParam OrderActivityEnum type,
                                              @RequestParam Long orderId);
 
 

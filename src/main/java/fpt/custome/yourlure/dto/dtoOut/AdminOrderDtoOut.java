@@ -1,6 +1,6 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
-import fpt.custome.yourlure.entity.OrderActivityEnum;
+import fpt.custome.yourlure.entity.OrderActivity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class AdminOrderDtoOut {
 
     private Integer totalOrder;
     private Integer totalPage;
-    private List<OrderDtoOut> orderDtoOutList;
+    private List<OrderDtoOut> orders;
 
     @Data
     @Builder
@@ -28,7 +28,7 @@ public class AdminOrderDtoOut {
         private Date orderDate;
         private String phone;
         private String receiverName;
-        private OrderActivityEnum statusName;
+        private List<OrderActivity> activities;
         private Float total;
     }
 
