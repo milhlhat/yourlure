@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Data
 @Entity
@@ -33,6 +34,7 @@ public class CartItem {
 
     @Nullable
     @Column(name = "quantity")
+    @Min(1)
     private Integer quantity;
 
     @Nullable

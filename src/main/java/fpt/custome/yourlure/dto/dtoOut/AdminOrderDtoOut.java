@@ -24,7 +24,7 @@ public class AdminOrderDtoOut {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class OrderDtoOut {
-        private Long orderID;
+        private Long orderId;
         private Date orderDate;
         private String phone;
         private String receiverName;

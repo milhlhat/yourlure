@@ -32,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     } catch (CustomException ex) {
       //this is very important, since it guarantees the user is not authenticated at all
       ex.printStackTrace();
-//      SecurityContextHolder.clearContext();
+      SecurityContextHolder.clearContext(); // logout
 //      httpServletResponse.sendError(ex.getHttpStatus().value(), ex.getMessage());
 //      return;
     }

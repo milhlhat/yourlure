@@ -110,7 +110,6 @@ public class OrderServiceImpl implements OrderService {
         return payment.get();
     }
 
-    @Transactional
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         if (items.isEmpty()) {
             throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
@@ -171,7 +170,6 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    @Transactional
     @Override
     public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
         Order order = mapper.map(orderGuestDtoInput, Order.class);
@@ -191,12 +189,12 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
 
-        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, null);
+        OrderActivity activity = switchActivity(order, OrderActivityEnum.PENDING, null);
         order.setActivities(Collections.singleton(activity));
+
         return order;
     }
 
-    @Transactional
     @Override
     public Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception {
         if (orderUserDtoInput.getCartItemIds() == null || orderUserDtoInput.getCartItemIds().size() == 0) {
@@ -238,7 +236,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
-        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, user);
+        OrderActivity activity = switchActivity(order, OrderActivityEnum.PENDING, user);
         order.setActivities(Collections.singleton(activity));
 
         return order;
@@ -253,7 +251,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.isPresent()) {
             List<Order> orders = orderRepos.findAllByUserUserId(user.getUserId());
             if (orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))) {
-                OrderActivity activity = addOrderActivity(order.get(), OrderActivityEnum.CUSTOMER_REJECT, user);
+                OrderActivity activity = switchActivity(order.get(), OrderActivityEnum.CUSTOMER_REJECT, user);
                 if(activity != null){
                     returnQuantityCancelOrder(order.get());
                     return true;
@@ -323,11 +321,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderActivity> getOrderActivities(Order order) {
-        if (order != null) {
+        if (order != null && order.getOrderId() != null) {
             return orderActivityRepos.findAllByOrderId(order.getOrderId());
         }
 
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -400,7 +398,6 @@ public class OrderServiceImpl implements OrderService {
         return customAmount;
     }
 
-    @Transactional
     @Override
     public Order userBuyNow(HttpServletRequest rq, OrderGuestDtoInput orderInput) throws Exception {
         User user = userService.whoami(rq);
@@ -420,7 +417,7 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderLine> orderLines = createOrderLines(order, orderInput.getCartItems());
         order.setOrderLineCollection(orderLines);
-        OrderActivity activity = addOrderActivity(order, OrderActivityEnum.PENDING, user);
+        OrderActivity activity = switchActivity(order, OrderActivityEnum.PENDING, user);
         order.setActivities(Collections.singleton(activity));
         return order;
     }
@@ -433,9 +430,12 @@ public class OrderServiceImpl implements OrderService {
                 totalPrice += calculateCustomizePrice(customizeModel);
             } else {
                 // set price by variant
-                Variant variant = variantRepos.getById(item.getVariantId());
-                if (variant.getQuantity() > 0) {
-                    totalPrice += variant.getNewPrice();
+                Optional<Variant> variant = variantRepos.findById(item.getVariantId());
+                if(!variant.isPresent()){
+                    throw new ValidationException("Vui lòng chọn sản phẩm trước khi thanh toán!");
+                }
+                if (variant.get().getQuantity() > 0) {
+                    totalPrice += variant.get().getNewPrice();
                 }
             }
         }
@@ -511,15 +511,19 @@ public class OrderServiceImpl implements OrderService {
             throw new ValidationException("Không tìm thấy order đã yêu cầu!");
         }
 
-        OrderDtoOut.Order orderDtoOut = mapper.map(order.get(), OrderDtoOut.Order.class);
-        orderDtoOut.setPaymentName(order.get().getPayment().getPayment());
-        orderDtoOut.setItems(getOrderItemsDto(order.get()));
-        orderDtoOut.setActivities(getOrderActivities(order.get()));
+        return orderDetail(order.get());
+    }
 
+    public OrderDtoOut.Order orderDetail(Order order){
+        OrderDtoOut.Order orderDtoOut = mapper.map(order, OrderDtoOut.Order.class);
+        orderDtoOut.setPaymentName(order.getPayment().getPayment());
+        orderDtoOut.setItems(getOrderItemsDto(order));
+        orderDtoOut.setActivities(getOrderActivities(order));
         return orderDtoOut;
     }
 
-    public OrderActivity addOrderActivity(Order order, OrderActivityEnum activityIn, User assigner) {
+
+    public OrderActivity switchActivity(Order order, OrderActivityEnum activityIn, User assigner) {
         List<OrderActivity> activities = getOrderActivities(order);
 
         if(!activities.isEmpty()){
@@ -560,7 +564,7 @@ public class OrderServiceImpl implements OrderService {
         if (!order.isPresent()) {
             throw new ValidationException("Không tìm thấy đơn hàng này!");
         }
-        OrderActivity activity = addOrderActivity(order.get(), activityEnum, staff);
+        OrderActivity activity = switchActivity(order.get(), activityEnum, staff);
         if (activity != null) {
             if(activityEnum.equals(OrderActivityEnum.STAFF_REJECT)){
                 returnQuantityCancelOrder(order.get());

@@ -68,7 +68,7 @@ public class OrderLine {
 
     @Nullable
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 

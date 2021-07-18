@@ -50,21 +50,21 @@ public class Order {
     private Payment payment;
 
     @JsonIgnore
-    @ManyToOne
-    @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @Nullable
     private User user;
 
     // todo: discount by % lúc nhận request là discount code. tính toán để có discount số tiền.
     private Float discount;
 
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // MapopedBy trỏ tới tên biến order ở trong orderline.
     //1 order có nhiều orderline
     private Collection<OrderLine> orderLineCollection;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // MapopedBy trỏ tới tên biến order ở trong orderline.
     //1 order có nhiều orderline
     private Collection<OrderActivity> activities;

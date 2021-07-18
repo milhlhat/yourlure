@@ -18,6 +18,7 @@ public class OrderActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "activityId")
+    @JsonIgnore
     private Long activityId;
 
     @Nullable
@@ -25,12 +26,12 @@ public class OrderActivity {
     private OrderActivityEnum activityName;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignerId")
     private User assigner;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 

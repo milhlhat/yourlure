@@ -44,7 +44,7 @@ public class OrderDtoOut {
     public static class OrderItem{
 
         private String thumbnailUrl;
-        private String customizeName;
+        private String customModelName;
         private String productName;
         private String categoryName;
         private Integer quantity;
