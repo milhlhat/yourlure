@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CustomizeModelServiceImpl implements CustomizeModelService {
@@ -201,7 +198,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public CustomModelDtoOut createCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws IOException {
 
         // store thumbnail img
-        String thumbnailUrl = fileService.saveFileBase64(customModelDtoInput.getThumbnail().getName(), customModelDtoInput.getThumbnail().getContent(), FileService.CUSTOMS_DIR);
+        String thumbnailUrl = fileService.saveFileBase64(new Date().getTime() + ".jpg", customModelDtoInput.getThumbnail().getContent(), FileService.CUSTOMS_DIR);
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
