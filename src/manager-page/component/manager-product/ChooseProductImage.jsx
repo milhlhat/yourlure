@@ -1,66 +1,95 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { getUniqueFiles } from "../../../utils/prototype";
+import { useFieldArray, useWatch } from "react-hook-form";
+import ManagerProductAPI from "../../../api/manager-product-api";
+import { createImageUrlByLinkOrFile } from "../../../utils/manager-product";
 
 function ChooseProductImage(props) {
-  const { methods, name, imgList } = props;
-  // const [fileImages, setFileImage] = useState();
+  const { name, productId, methods } = props;
+  const { setValue, control } = methods;
+  const { fields, append, remove } = useFieldArray({ control, name: name });
+
+  const [newImages, setnewImages] = useState([]);
+  const [removeImages, setRemoveImages] = useState([]);
 
   const BE_SERVER = process.env.REACT_APP_API_URL;
   const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
-  const imagesRef = useRef([]);
-  const imageHandleChange = (e) => {
-    let file = Array.from(e.target.files);
+  const imageHandleChange = async (e) => {
+    let files = Array.from(e.target.files);
 
-    if (file) {
+    if (files) {
       document.getElementById(e.target.id).value = [];
-      let display = imagesRef.current;
-      imagesRef.current = getUniqueFiles(display.concat(imgList));
+      let temp = [...newImages];
+      const newFiles = getUniqueFiles(temp.concat(files));
+      setnewImages(newFiles);
+      setValue("newImages", newFiles);
     }
   };
-
-  const handleDeleteImage = (e) => {
-    let files = [];
-    for (let i = 0; i < imagesRef.current.length; i++) {
-      if (e.target.id !== "imgUpload" + i) {
-        files.push(imagesRef.current[i]);
+  const handleDeleteOldImage = (e) => {
+    let removelist = [...removeImages];
+    fields.forEach((item, index) => {
+      if (e.target.id === "imgUploadOld" + index) {
+        removelist.push(fields[index].linkImage);
+        setRemoveImages(removelist);
+        remove(index);
+        setValue("imgListRemove", removelist);
       }
-    }
-    imagesRef.current = files;
-  };
-  const createImageUrl = (file) => {
-    if (typeof file === "string") {
-      if (file.startsWith("http")) {
-        return file;
-      }
-      return BE_SERVER + BE_FOLDER + file;
-    } else {
-      return URL.createObjectURL(file);
-    }
-  };
-  const RenderPhotos = (files, display, setDisplay) => {
-    if (files?.length <= 0) return <span>Chưa có hình ảnh</span>;
-    return files?.map((file, i) => {
-      return (
-        <div className="img-item" key={name + i}>
-          <img
-            id={"imgUpload" + i}
-            src={createImageUrl(file)}
-            key={i}
-            className="pointer"
-            onClick={(e) => handleDeleteImage(e)}
-            alt={"Mồi câu"}
-          />
-          <button className="btn btn-light">Xóa</button>
-        </div>
-      );
     });
   };
+  const handleDeletenewImages = (e) => {
+    let temp = [...newImages];
+    const newFiles = temp.filter((item, index) => {
+      return e.target.id !== "imgUploadNew" + index;
+    });
+    setValue("newImages", newFiles);
+    setnewImages(newFiles);
+  };
 
-  useEffect(() => {
-    let display = imagesRef.current;
-    imagesRef.current = getUniqueFiles(display.concat(imgList));
-  }, [imgList]);
+  const RenderPhotos = ({ newImages }) => {
+    return (
+      <>
+        {fields?.map((field, index) => (
+          <div className="img-item" key={field.id}>
+            <img
+              id={"imgUploadOld" + index}
+              src={createImageUrlByLinkOrFile(field.linkImage)}
+              className="pointer"
+              onClick={(e) => handleDeleteOldImage(e)}
+              alt={"Mồi câu"}
+            />
+            <button className="btn btn-light">Xóa</button>
+          </div>
+        ))}
+
+        {newImages?.length > 0 &&
+          newImages?.map((field, index) => (
+            <div className="img-item" key={index + "imgUploadNew"}>
+              <img
+                id={"imgUploadNew" + index}
+                src={createImageUrlByLinkOrFile(field)}
+                className="pointer"
+                onClick={(e) => handleDeletenewImages(e)}
+                alt={"Mới"}
+              />
+              <button className="btn btn-light">Xóa</button>
+            </div>
+          ))}
+      </>
+    );
+  };
+
+  const fetchImgByProductId = async (productId) => {
+    try {
+      remove();
+      const response = await ManagerProductAPI.getProductByID(productId);
+      append(response.imageCollection);
+    } catch (error) {}
+  };
+
+  useEffect(async () => {
+    await fetchImgByProductId(productId);
+  }, [productId]);
 
   const {
     formState: { errors },
@@ -86,7 +115,7 @@ function ChooseProductImage(props) {
       </div>
       <hr />
       <div className="px-3 manager-product-imgList">
-        {RenderPhotos(imagesRef.current)}
+        <RenderPhotos newImages={newImages} />
       </div>
       <br />
       <span className="error-message">{errors[name]?.message}</span>
@@ -94,4 +123,6 @@ function ChooseProductImage(props) {
   );
 }
 
-export default ChooseProductImage;
+export default memo(ChooseProductImage, (preProps, nextProps) => {
+  return preProps.productId === nextProps.productId;
+});

@@ -47,10 +47,7 @@ function RenderModel(props) {
 
   //Load 3d model
   // console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
-  const { nodes, materials } = useGLTF(
-    `${BE_SERVER}${BE_FOLDER}${model3d}`,
-    true
-  );
+  const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`);
 
   const [meshs, setMeshs] = useState([]);
 
@@ -87,15 +84,18 @@ function RenderModel(props) {
               });
               ref.current.children[i].material = material;
             });
-          } else if (customizeInfo[i].color !== "") {
+          }
+          // else
+          if (customizeInfo[i].color && customizeInfo[i].color !== "") {
             const material = new THREE.MeshPhysicalMaterial({
               color: customizeInfo[i].color,
             });
             ref.current.children[i].material = material;
-          } else {
-            const material = new THREE.MeshPhysicalMaterial({ map: null });
-            ref.current.children[i].material = material;
           }
+          // else {
+          //   const material = new THREE.MeshPhysicalMaterial({ map: null });
+          //   ref.current.children[i].material = material;
+          // }
         }
       })
       .catch((err) => console.log(err));

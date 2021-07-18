@@ -110,3 +110,31 @@
     height: 30px;
   }
 }
+
+.table-variant{
+  width: 100%;
+  text-align: center;
+  border-spacing: 15px;
+  border-collapse: collapse;
+  & thead {
+    font-weight: 500;
+  }
+  & .img-item {
+    & img {
+      width: 35px;
+      height: 35px;
+      margin-left: 10px;
+    }
+
+    & button {
+      margin-left: -35px;
+      width: 35px;
+      padding: 0;
+      font-size: smaller;
+      visibility: hidden;
+    }
+  }
+  .file-variant-icon{
+    font-size: 25px;
+  }
+}

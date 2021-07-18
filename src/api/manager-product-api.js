@@ -11,6 +11,7 @@ const ManagerProductAPI = {
     return AxiosClient.post(url, param);
   },
   uploadMultiFiles: (files) => {
+    console.log(files);
     const url = "/admin/product/upload";
     const config = {
       headers: {
@@ -25,9 +26,44 @@ const ManagerProductAPI = {
 
     return AxiosClient.post(url, formData, config);
   },
+  uploadMultiTexture: async (files, materialId) => {
+    console.log(files);
+    const url = "/admin/product/upload";
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const formData = new FormData();
+
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    const response = await AxiosClient.post(url, formData, config);
+    return {
+      linkTextures: response,
+      materialId: materialId,
+    };
+  },
   creatProduct: (param) => {
     const url = "/admin/product/save";
     return AxiosClient.post(url, param);
+  },
+  creatModel: (param) => {
+    const url = "/model3d/create";
+    return AxiosClient.post(url, param);
+  },
+  getModelByProductId: (productId) => {
+    const url = `/model3d/get-model-by-product-id/${productId}`;
+    return AxiosClient.get(url);
+  },
+  updateProductById: (productId, params) => {
+    const url = `/admin/product/${productId}`;
+    return AxiosClient.post(url, params);
+  },
+  updateModelById: (params) => {
+    const url = `/model3d/update-model`;
+    return AxiosClient.post(url, params);
   },
 };
 export const {
@@ -35,5 +71,10 @@ export const {
   getProductByFilter,
   uploadMultiFiles,
   creatProduct,
+  creatModel,
+  updateProductById,
+  getModelByProductId,
+  updateModelById,
+  uploadMultiTexture,
 } = ManagerProductAPI;
 export default ManagerProductAPI;

@@ -1,28 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
 import { useDispatch } from "react-redux";
-import { useFieldArray, useForm } from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "./scss/add-new-product.scss";
-import ManagerCategoryAPI from "api/manager-category-api";
-import ManagerFishAPI from "api/manager-fish-api";
-import ManagerProductAPI from "api/manager-product-api";
+import ManagerProductAPI, {
+  creatModel,
+  updateModelById,
+  updateProductById,
+  uploadMultiFiles,
+} from "api/manager-product-api";
 import CategorySelectFormHook from "./CategorySelectFormHook";
 import FishCheckBoxFormHook from "./FishCheckBoxFormHook";
 import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
-import ChooseProductImage, { ChooseTextures } from "./ChooseProductImage";
+import ChooseProductImage from "./ChooseProductImage";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import ChooseTextureImage from "./ChooseTextureImage";
 import { Tooltip } from "@material-ui/core";
-
-ManagerProductEdit.propTypes = {};
+import CreateAndUpdateVariant from "./CreateAndUpdateVariant";
+import ProductAPI from "../../../api/product-api";
+import { promiseTexturesFiles } from "../../../utils/manager-product";
+import * as Yup from "yup";
 
 function ManagerProductEdit(props) {
   const canBack = props.location.canBack;
@@ -36,23 +37,49 @@ function ManagerProductEdit(props) {
     success: false,
   });
 
-  const [isCustomWeight, setIsCustomWeight] = useState(false);
-  const [isCustomModel, setIsCustomModel] = useState(false);
-  // const [material3d, setMaterial3d] = useState([]);
-
   //validate form
+
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+
   const schema = yup.object().shape({
     productName: yup.string().required("Tên sản phẩm không được để trống"),
     categoryId: yup.number().typeError("Danh mục không được để trống"),
+    defaultPrice: yup.number().typeError("Giá là số dương"),
+    length: yup.number().typeError("Chiều dài là số dương"),
+    hookSize: yup.number().typeError("Cỡ lưỡi là số dương"),
+    deepDiving: yup.string().required("Lặn sâu không được để trống"),
+    material: yup.string().required("Chất không được để trống"),
+    defaultWeight: yup.number().typeError("Trọng lượng là số dương"),
+    description: yup.string().required("Chất không được để trống"),
+    // imgList: yup
+    //   .mixed().when('newImages',(newImages, schema)=>{
+    //
+    //     }).
+    //   .test(
+    //     "requiredProdImage",
+    //     "Vui lòng chọn ảnh .png, .jpg, .jpeg",
+    //     (imgList) => {
+    //       const watchNewProductImage = Yup.ref("newImages");
+    //       console.log("watchNewProductImage", watchNewProductImage.getValue());
+    //       if (watchNewProductImage.length + imgList.length < 1) return false;
+    //
+    //       for (const v of watchNewProductImage) {
+    //         if (!SUPPORTED_FORMATS.includes(v.type)) {
+    //           return false;
+    //         }
+    //       }
+    //
+    //       return true;
+    //     }
+    //   ),
   });
   const methods = useForm({
     resolver: yupResolver(schema),
   });
   const {
     register,
-    unregister,
-    reset,
-    getValues,
+
+    watch,
     control,
     formState: { errors },
     handleSubmit,
@@ -65,6 +92,18 @@ function ManagerProductEdit(props) {
       // keyName: "id", default to "id", you can change the key name
     }
   );
+  const watchDefaultMaterials = useWatch({
+    control,
+    name: "defaultMaterials",
+    defaultValue: [],
+  });
+  const watchCustomizable = useWatch({
+    control,
+    name: "customizable",
+    defaultValue: false,
+  });
+  const isCustomizeWeight = watch("isCustomizeWeight");
+
   const setFormValues = (product) => {
     const defauValues = [
       { name: "brand", value: product.brand },
@@ -79,80 +118,73 @@ function ManagerProductEdit(props) {
       { name: "imgUrlModel", value: product.imgUrlModel },
       { name: "isCustomizeWeight", value: product.isCustomizeWeight },
       { name: "length", value: product.length },
+      // { name: "listFishId", value: product.listFishId },
       { name: "material", value: product.material },
       { name: "minWeight", value: product.minWeight },
       { name: "maxWeight", value: product.maxWeight },
       { name: "productName", value: product.productName },
-      { name: "visibleInStorefront", value: product.visibleInStorefront },
+      { name: "imgList", value: product.imageCollection },
+      { name: "variantCollection", value: product.variantCollection },
+      { name: "imgListRemove", value: [] },
+      { name: "imgListInput", value: [] },
+      { name: "newImages", value: [] },
     ];
     defauValues.forEach(({ name, value }) => setValue(name, value));
-    setIsCustomWeight(product.isCustomizeWeight);
-    setIsCustomModel(product.customizable);
   };
 
-  const getLinkImageByImgCollection = useCallback(
-    (imgCollection) => {
-      let imgs = [];
-      if (imgCollection?.length > 0)
-        for (const imgCollectionElement of imgCollection) {
-          imgs.push(imgCollectionElement.linkImage);
+  const [hasModel, setHasModel] = useState(false);
+  useEffect(() => {
+    const fetchDataByProductId = async (productId) => {
+      console.log(productId);
+      try {
+        const responseFish = await ProductAPI.getAllFish();
+
+        const response = await ManagerProductAPI.getProductByID(productId);
+        //set initial form value
+        setFormValues(response);
+        //check to fish list
+        responseFish.forEach((item, index) => {
+          if (response.listFishId.includes(item.fishID)) {
+            setValue(`listFishId[${index}]`, item.fishID);
+          }
+        });
+        //fill value to model fields
+        let currentModel = null;
+        try {
+          currentModel = await ManagerProductAPI.getModelByProductId(productId);
+          console.log(currentModel);
+        } catch (e) {
+          console.log(e);
         }
 
-      return imgs;
-    },
-    [product?.data?.imageCollection]
-  );
-  useEffect(() => {
-    console.log("render effect");
-    const fetchProduct = async () => {
-      try {
-        const response = await ManagerProductAPI.getProductByID(productId);
-        if (response.error) {
-          throw new Error(response.error);
-        } else {
-          setProduct({
-            data: response,
-            loading: false,
-            success: true,
-          });
-          setFormValues(response);
-        }
+        setProduct({
+          data: response,
+          loading: false,
+          success: true,
+          currentModel: currentModel,
+        });
+        //check already has model 3d => can't add new, just update information of model
+        setHasModel(currentModel?.modelId);
+        //fill value to material field
+        setValue(
+          "defaultMaterials",
+          currentModel?.materials ? currentModel.materials : []
+        );
       } catch (error) {
-        console.log("fail to fetch customer list");
+        console.log(error);
       }
     };
 
-    fetchProduct();
+    if (productId) fetchDataByProductId(productId);
   }, [productId]);
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
-
   //===========handle form
-  const onSubmit = (data) => {
-    console.log(data);
-  };
 
-  const handleChangeCustomWeight = (e) => {
-    console.log(e.target.checked);
-    setIsCustomWeight(e.target.checked);
-  };
-  const handleChangeCustomModel = (e) => {
-    setIsCustomModel(e.target.checked);
-  };
-  const [canAddImgs, setCanAddImgs] = useState([]);
   const onChangeInputFileModel = (e) => {
     const file = e.target.files[0];
+    setValue("file3dUpload", [...e.target.files]);
+    remove();
     if (file) {
-      remove();
       let url = URL.createObjectURL(file);
       let loader = new GLTFLoader();
       const dracoLoader = new DRACOLoader();
@@ -168,21 +200,85 @@ function ManagerProductEdit(props) {
         });
 
         append(materials);
-        setCanAddImgs(materials);
       });
     }
   };
 
-  const handleChangeCanAddImg = (e, index) => {
-    let can = [...canAddImgs];
-    if (can[index]) can[index].canAddImg = e.target.checked;
-    console.log(can, index);
-    setCanAddImgs(can);
+  const getFishIds = (fishChecked) => {
+    if (fishChecked.length > 0) {
+      let temp = [];
+      fishChecked.forEach((item) => {
+        if (item) temp.push(item);
+      });
+
+      return temp;
+    } else {
+      return [];
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      //====product======
+
+      //update product images : upload files to get image links
+      let linkImgProdUploaded = [];
+      if (data?.newImages?.length > 0) {
+        linkImgProdUploaded = await uploadMultiFiles(data.newImages);
+        data.imgListInput = linkImgProdUploaded;
+      }
+
+      //update list fish
+      let fishTemp = data.listFishId;
+      data.listFishId = getFishIds(fishTemp);
+
+      await updateProductById(productId, data);
+
+      //========model==========
+      // create: model
+      if (data.customizable && !hasModel) {
+        let modelUrl = await uploadMultiFiles(data.file3dUpload);
+        const createModelParams = {
+          defaultMaterials: data.defaultMaterials,
+          name: product.data.productName,
+          productId: product.data.productId,
+          url: modelUrl[0],
+        };
+        await creatModel(createModelParams);
+      }
+
+      //update: model
+      if (data.customizable && hasModel) {
+        //update texture
+        let materialDtoInputs = data.defaultMaterials;
+        const newTextures = data.newTextureFiles;
+        const textureUploaded = await promiseTexturesFiles(newTextures);
+        console.log("textureUploaded", textureUploaded);
+
+        //map material with link upload
+        if (textureUploaded) {
+          materialDtoInputs.forEach((old, i, thisArray) => {
+            textureUploaded.forEach((news) => {
+              if (old.materialId === news.materialId) {
+                thisArray[i].linkTextures = news.linkTextures;
+              }
+            });
+          });
+        }
+
+        const updateModelParams = {
+          materialDtoInputs: materialDtoInputs,
+          modelId: hasModel,
+        };
+        await updateModelById(updateModelParams);
+      }
+      console.log(data);
+    } catch (e) {}
   };
   //============
+
   return (
     <div>
-      <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" product-add-new-form row">
           <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
@@ -278,8 +374,10 @@ function ManagerProductEdit(props) {
                         className="form-check-input pointer"
                         type="checkbox"
                         id="customize-weight"
+                        name={"isCustomizeWeight"}
                         {...register("isCustomizeWeight")}
-                        onChange={handleChangeCustomWeight}
+                        // onChange={handleChangeCustomWeight}
+                        defaultChecked={product.data.customizable}
                       />
                       <label
                         htmlFor="customize-weight"
@@ -290,9 +388,9 @@ function ManagerProductEdit(props) {
                       <span>{errors.isCustomizeWeight?.message}</span>
                     </td>
                     <td>
-                      {isCustomWeight && (
-                        <div className="d-flex">
-                          <div className="col-6">
+                      {isCustomizeWeight && (
+                        <div className="d-flex flex-wrap">
+                          <div>
                             <YlInputFormHook
                               name={"minWeight"}
                               methods={methods}
@@ -301,7 +399,7 @@ function ManagerProductEdit(props) {
                               isRequired
                             />
                           </div>
-                          <div className="col-6">
+                          <div>
                             <YlInputFormHook
                               name={"maxWeight"}
                               methods={methods}
@@ -346,13 +444,11 @@ function ManagerProductEdit(props) {
                   <tr>
                     <td>
                       <div>
-                        {" "}
                         <input
                           className="form-check-input pointer"
                           type="checkbox"
                           id="customizable"
                           {...register("customizable")}
-                          onChange={handleChangeCustomModel}
                         />
                         <label
                           className="form-check-label pointer ps-1"
@@ -361,12 +457,9 @@ function ManagerProductEdit(props) {
                           Tuỳ biến 3D
                         </label>
                       </div>
-                      {/*{isCustomModel && (*/}
-                      {/*  <h6 className={"mt-2"}>Tên sản phẩm</h6>*/}
-                      {/*)}*/}
                     </td>
                     <td>
-                      {isCustomModel && (
+                      {watchCustomizable && !hasModel && (
                         <div>
                           <label htmlFor="model" className="form-label">
                             Model 3D
@@ -376,7 +469,6 @@ function ManagerProductEdit(props) {
                             className="form-control"
                             accept={".glb"}
                             id="model"
-                            placeholder="Link model 3D"
                             {...register("model")}
                             onChange={(e) => onChangeInputFileModel(e)}
                           />
@@ -388,12 +480,15 @@ function ManagerProductEdit(props) {
                 </tbody>
               </table>
               <div className={"px-2 pt-3"}>
-                {fields?.length > 0 && isCustomModel && (
+                {fields?.length > 0 && watchCustomizable && (
                   <table className={"table-material mb-3"}>
                     <thead>
                       <tr>
                         <td className={"text-start"}>Thành phần</td>
-                        <td>Tên hiển thị</td>
+                        <td>
+                          Tên hiển thị{" "}
+                          <span className="error-message"> (*)</span>
+                        </td>
                         <td className={"p-1"}>Thêm ảnh</td>
                         <td className={"p-1"}>Thêm chữ</td>
                         <td className={"p-1"}>Thêm màu</td>
@@ -406,85 +501,107 @@ function ManagerProductEdit(props) {
                     </thead>
 
                     <tbody>
-                      {fields.map(({ id, defaultName }, index) => (
-                        <React.Fragment key={id}>
-                          <tr>
-                            <td className={"text-start"}>
-                              <span className={" text-ellipsis"}>
-                                {defaultName}
-                              </span>
-                            </td>
-                            <td className={"d-flex justify-content-center"}>
-                              <input
-                                className={
-                                  "form-control w-75 mate-name mb-1 mt-3"
-                                }
-                                required
-                                {...register(
-                                  `defaultMaterials[${index}].vnName`
-                                )}
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type={"checkbox"}
-                                {...register(
-                                  `defaultMaterials[${index}].canAddImg`
-                                )}
-                                onChange={(e) =>
-                                  handleChangeCanAddImg(e, index)
-                                }
-                              />
-                            </td>
-                            <td>
-                              <>
+                      {fields?.map(
+                        (
+                          {
+                            id,
+                            defaultName,
+                            vnName,
+                            canAddImg,
+                            canAddText,
+                            canAddColor,
+                            materialId,
+                          },
+                          index
+                        ) => (
+                          <React.Fragment key={id}>
+                            <tr>
+                              <td className={"text-start"}>
+                                <span className={" text-ellipsis"}>
+                                  {defaultName}
+                                </span>
+                              </td>
+                              <td className={"d-flex justify-content-center"}>
                                 <input
+                                  className={
+                                    "form-control w-75 mate-name mb-1 mt-3"
+                                  }
+                                  required
+                                  {...register(
+                                    `defaultMaterials[${index}].vnName`
+                                  )}
+                                  defaultValue={vnName}
+                                />
+                              </td>
+                              <td>
+                                <input
+                                  className="form-check-input pointer"
                                   type={"checkbox"}
                                   {...register(
-                                    `defaultMaterials[${index}].canAddText`
+                                    `defaultMaterials[${index}].canAddImg`
                                   )}
-                                  className={`${
-                                    canAddImgs[index]?.canAddImg ? "d-none" : ""
-                                  }`}
+                                  defaultChecked={canAddImg}
                                 />
-                                <Tooltip
-                                  title="Hoạt động khi cho phép thêm ảnh"
-                                  placement="right"
-                                >
+                              </td>
+                              <td>
+                                <>
                                   <input
                                     type={"checkbox"}
-                                    disabled
-                                    className={`${
-                                      canAddImgs[index]?.canAddImg
+                                    {...register(
+                                      `defaultMaterials[${index}].canAddText`
+                                    )}
+                                    className={`form-check-input pointer ${
+                                      watchDefaultMaterials &&
+                                      watchDefaultMaterials[index]?.canAddImg
                                         ? ""
                                         : "d-none"
                                     }`}
+                                    defaultChecked={canAddText && canAddImg}
                                   />
-                                </Tooltip>
-                              </>
-                            </td>
-                            <td>
-                              <input
-                                type={"checkbox"}
-                                {...register(
-                                  `defaultMaterials[${index}].canAddColor`
-                                )}
-                              />
-                            </td>
-                          </tr>
-                          {canAddImgs[index]?.canAddImg && (
-                            <tr>
-                              <td colSpan={5}>
-                                <ChooseTextureImage
-                                  methods={methods}
-                                  name={`defaultMaterials[${index}].textures`}
-                                  imgList={[]}
+                                  <Tooltip
+                                    title="Hoạt động khi cho phép thêm ảnh"
+                                    placement="right"
+                                  >
+                                    <input
+                                      type={"checkbox"}
+                                      disabled
+                                      className={`${
+                                        watchDefaultMaterials &&
+                                        watchDefaultMaterials[index]?.canAddImg
+                                          ? "d-none"
+                                          : ""
+                                      }`}
+                                    />
+                                  </Tooltip>
+                                </>
+                              </td>
+                              <td>
+                                <input
+                                  className="form-check-input pointer"
+                                  type={"checkbox"}
+                                  {...register(
+                                    `defaultMaterials[${index}].canAddColor`
+                                  )}
+                                  defaultChecked={canAddColor}
                                 />
                               </td>
                             </tr>
-                          )}
-                        </React.Fragment>
-                      ))}
+                            {watchDefaultMaterials &&
+                              watchDefaultMaterials[index]?.canAddImg && (
+                                <tr>
+                                  <td colSpan={5}>
+                                    <ChooseTextureImage
+                                      methods={methods}
+                                      name={`defaultMaterials[${index}]`}
+                                      nestedFieldIndex={index}
+                                      materialId={materialId}
+                                    />
+                                  </td>
+                                </tr>
+                              )}
+                          </React.Fragment>
+                        )
+                      )}
                     </tbody>
                   </table>
                 )}
@@ -493,6 +610,7 @@ function ManagerProductEdit(props) {
           </div>
           {/*right side bar*/}
           <div className="side-bar-right bg-white bg-shadow col-12 col-md-3 mb-md-5 mb-2 pb-md-4 pb-2">
+            {/*<div className={"sticky-bar-top"}>*/}
             <h5 className="px-3 pt-3">Danh mục</h5>
             <hr />
             <div className="px-3">
@@ -506,6 +624,7 @@ function ManagerProductEdit(props) {
             <h5 className="px-3 pt-3">Loại cá</h5>
             <div className="px-3  ">
               <FishCheckBoxFormHook methods={methods} name={"listFishId"} />
+              {/*</div>*/}
             </div>
           </div>
           {/*end right side bar*/}
@@ -513,31 +632,20 @@ function ManagerProductEdit(props) {
           <ChooseProductImage
             methods={methods}
             name={"imgList"}
-            imgList={getLinkImageByImgCollection(
-              product?.data?.imageCollection
-            )}
+            productId={product.data.productId}
           />
           {/*end product image*/}
           {/*variants*/}
-          <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
-            <div className="px-3 pt-3 product-images-add">
-              <h5>Variant</h5>
-              <input
-                hidden
-                multiple
-                id="variant"
-                // onChange={imageHandleChange}
-              />
-              <label htmlFor="variant" className="pointer">
-                Tạo biến thể
-              </label>
-            </div>
-            <hr />
-          </div>
+          <CreateAndUpdateVariant
+            methods={methods}
+            name={"variantCollection"}
+          />
           {/*end variants*/}
-          <div className="col-12 bg-white bg-shadow submit-button-form">
-            <YLButton variant="danger" type="submit" value="Hủy" />
-            <YLButton variant="primary" type="submit" value="Xong" />
+          <div className={"sticky-bar-bottom"}>
+            <div className="col-12 bg-white bg-shadow submit-button-form">
+              <YLButton variant="danger" type="submit" value="Hủy" />
+              <YLButton variant="primary" type="submit" value="Xong" />
+            </div>
           </div>
         </div>
       </form>

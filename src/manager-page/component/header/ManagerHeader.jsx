@@ -65,14 +65,14 @@ function ManagerHeader(props) {
   useEffect(() => {
     fetchCustomAccount();
   }, []);
-  useEffect(() => {
-    const action = setIsBack({
-      canBack: false,
-      path: null,
-      label: null,
-    });
-    dispatch(action);
-  }, [location]);
+  // useEffect(() => {
+  //   const action = setIsBack({
+  //     canBack: false,
+  //     path: null,
+  //     label: null,
+  //   });
+  //   dispatch(action);
+  // }, [location]);
 
   if (account.isLoading) {
     return <Loading />;

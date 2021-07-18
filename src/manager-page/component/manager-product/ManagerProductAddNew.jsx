@@ -194,7 +194,9 @@ function ManagerProductAddNew(props) {
         isSuccess: true,
       });
       history.push(
-        `${DEFINELINK.manager + DEFINELINK.managementProduct}/edit/${response}`
+        `${
+          DEFINELINK.manager + DEFINELINK.managementProduct
+        }/edit/${response}#customizable`
       );
     } catch (e) {
       setSubmitStatus({

@@ -1,67 +1,72 @@
-import React, { useEffect, useState, useMemo, memo } from "react";
+import React, { memo, useState } from "react";
 import { getUniqueFiles } from "../../../utils/prototype";
+import { createImageUrlByLinkOrFile } from "../../../utils/manager-product";
+import { useFieldArray } from "react-hook-form";
 
 function ChooseTextureImage(props) {
-  console.log("render ChooseTextureImage");
-  const { name, imgList, methods } = props;
+  const { name, methods, nestedFieldIndex, materialId } = props;
+  const fieldNewTextures = `newTextureFiles[${nestedFieldIndex}]`;
   const { setValue } = methods;
-  const [fileImages, setFileImage] = useState([]);
 
-  const BE_SERVER = process.env.REACT_APP_API_URL;
-  const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
+  const [newTextures, setNewTextures] = useState([]);
 
   const imageHandleChange = async (e) => {
-    let file = Array.from(e.target.files);
+    let files = Array.from(e.target.files);
 
-    if (file) {
-      try {
-        // for (const fileElement of file) {
-        //
-        // }
-        document.getElementById(e.target.id).value = [];
-        const newFiles = getUniqueFiles(fileImages.concat(file));
-        setFileImage(newFiles);
-        setValue(name, newFiles);
-      } catch (e) {
-        console.log(e);
-      }
+    if (files) {
+      document.getElementById(e.target.id).value = [];
+      let temp = [...newTextures];
+      const newFiles = getUniqueFiles(temp.concat(files));
+      setNewTextures(newFiles);
+      setValue(fieldNewTextures, { materialId: materialId, files: newFiles });
     }
   };
 
-  const handleDeleteImage = (e) => {
-    let newFiles = [];
-    for (let i = 0; i < fileImages.length; i++) {
-      if (e.target.id !== "imgUpload" + i) {
-        newFiles.push(fileImages[i]);
+  const handleDeleteImageNew = (e) => {
+    let temp = [...newTextures];
+    temp.forEach((item, index, thisFields) => {
+      if (e.target.id === "textureNew" + index) {
+        thisFields.splice(index, 1);
       }
-    }
-    setFileImage(newFiles);
-    setValue(name, newFiles);
+    });
+    setNewTextures(temp);
+    setValue(fieldNewTextures, { materialId: materialId, files: temp });
   };
-  const createImageUrl = (file) => {
-    if (typeof file === "string") {
-      if (file.startsWith("http")) {
-        return file;
-      }
-      return BE_SERVER + BE_FOLDER + file;
-    } else {
-      return URL.createObjectURL(file);
-    }
-  };
-  const RenderPhotos = ({ fileImages }) => {
-    console.log(fileImages);
 
+  const RenderPhotoOld = (props) => {
+    const { name, methods } = props;
+    const { setValue, control } = methods;
+    const fieldTextures = `${name}.textures`;
+
+    const { fields, remove } = useFieldArray({
+      control,
+      name: fieldTextures,
+    });
+
+    const [remoteTextures, setRemoveTextures] = useState([]);
+    const handleDeleteImageOld = (e) => {
+      let deletedFiles = [...remoteTextures];
+      fields.forEach((field, index, thisFields) => {
+        if (e.target.id === "textureOld" + index) {
+          deletedFiles.push(thisFields[index].textureId);
+          remove(index);
+        }
+      });
+      setRemoveTextures(deletedFiles);
+      setValue(`${name}.listIdTexturesRemove`, deletedFiles);
+    };
     return (
       <>
-        {fileImages?.length > 0 &&
-          fileImages.map((file, i) => (
-            <div className="img-item" key={name + i}>
+        {fields?.length > 0 &&
+          fields.map((field, i) => (
+            // <span>{JSON.stringify(field)}</span>
+            <div className="img-item" key={field.id}>
               <img
-                id={"imgUpload" + i}
-                src={createImageUrl(file)}
+                id={"textureOld" + i}
+                src={createImageUrlByLinkOrFile(field.textureUrl)}
                 key={i}
                 className="pointer"
-                onClick={(e) => handleDeleteImage(e)}
+                onClick={(e) => handleDeleteImageOld(e)}
                 alt={"Mồi câu"}
               />
               <button className="btn btn-light">Xóa</button>
@@ -71,16 +76,34 @@ function ChooseTextureImage(props) {
     );
   };
 
-  useEffect(() => {
-    setFileImage(getUniqueFiles(fileImages.concat(imgList)));
-  }, [imgList]);
+  const RenderPhotos = ({ newFiles }) => {
+    return (
+      <>
+        {newFiles?.length > 0 &&
+          newFiles.map((file, i) => (
+            <div className="img-item" key={"textureNew" + i}>
+              <img
+                id={"textureNew" + i}
+                src={createImageUrlByLinkOrFile(file)}
+                key={i}
+                className="pointer"
+                onClick={(e) => handleDeleteImageNew(e)}
+                alt={"Mồi"}
+              />
+              <button className="btn btn-light">Xóa</button>
+            </div>
+          ))}
+      </>
+    );
+  };
 
   return (
     <div
       className={"product-images-add align-items-center boder-choose-texture "}
     >
       <div className="px-3 d-flex flex-wrap w-75">
-        <RenderPhotos fileImages={fileImages} />
+        <RenderPhotoOld {...props} />
+        <RenderPhotos newFiles={newTextures} />
       </div>
       <div className={"ms-auto"}>
         <input
@@ -99,8 +122,6 @@ function ChooseTextureImage(props) {
   );
 }
 
-export default memo(ChooseTextureImage, (pre, nex) => {
-  console.log(pre.imgList);
-  console.log(nex.imgList);
-  return pre.imgList === nex.imgList;
+export default memo(ChooseTextureImage, (prevProps, nextProps) => {
+  return prevProps.name === nextProps.name;
 });

@@ -5,7 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 function Generate3DMaterial(props) {
-  const [read, setRead] = useState({ isRead: false, data: null });
+  const [read, setRead] = useState({});
   const { register, handleSubmit } = useForm();
 
   function readFile(data) {

@@ -34,7 +34,14 @@ body {
 .container {
   justify-content: center;
 }
-
+.sticky-bar-bottom{
+  position: sticky;
+  bottom: 0;
+}
+.sticky-bar-top{
+  position: sticky;
+  top: 0;
+}
 .bg-body {
   background-color: #f5f5f5;
 }

@@ -123,12 +123,12 @@ function AddTextToModelTab(props) {
             ))}
           </div>
           <div className="d-flex flex-column mt-3 align-items-center">
-            <YLButton
-              variant="negative"
-              type="button"
-              value="Không dùng ảnh"
-              onClick={() => removeImg()}
-            />
+            {/*<YLButton*/}
+            {/*  variant="negative"*/}
+            {/*  type="button"*/}
+            {/*  value="Không dùng ảnh"*/}
+            {/*  onClick={() => removeImg()}*/}
+            {/*/>*/}
 
             {/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
           </div>
