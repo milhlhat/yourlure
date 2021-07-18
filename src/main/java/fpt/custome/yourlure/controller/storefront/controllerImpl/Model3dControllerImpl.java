@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -53,11 +54,19 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<Object> findCustomModel(HttpServletRequest rq, Long customId) {
-        CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
-        if (customizeModel == null) {
-        return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
+        try {
+            CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
+            if (customizeModel == null) {
+                return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
+            }
+            return new ResponseEntity<>(customizeModel, HttpStatus.OK);
+        } catch (ValidationException validationException) {
+            System.out.println(validationException.getMessage());
+            return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseEntity<>(customizeModel, HttpStatus.OK);
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -84,7 +93,7 @@ public class Model3dControllerImpl implements Model3dController {
     @Override
     public ResponseEntity<Object> getModelByProductId(Long productId) {
         Model3d m3d = customizeModelService.getModelByProductId(productId);
-        if(m3d != null){
+        if (m3d != null) {
             return new ResponseEntity<>(m3d, HttpStatus.OK);
         }
         return new ResponseEntity<>(Optional.empty(), HttpStatus.OK);

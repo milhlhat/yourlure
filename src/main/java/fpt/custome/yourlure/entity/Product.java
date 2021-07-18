@@ -119,6 +119,7 @@ public class Product {
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
+    @OrderBy("fishId asc")
     @ManyToMany(mappedBy = "products")
     private Collection<Fish> fishList = new ArrayList<>();
 

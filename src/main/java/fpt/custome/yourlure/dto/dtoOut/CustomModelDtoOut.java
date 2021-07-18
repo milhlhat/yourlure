@@ -22,15 +22,19 @@ public class CustomModelDtoOut {
     private String thumbnailUrl;
     private String url;
 
+
     private Collection<MaterialDtoOut> materials;
 
     public CustomModelDtoOut(CustomizeModel customizeModel){
         List<MaterialDtoOut> materialDtoOuts = new ArrayList<>();
 
-        // convert custom material to material dto
-        for (CustomMaterial material : customizeModel.getCustomMaterials()) {
-           materialDtoOuts.add(new MaterialDtoOut(material));
+        if (customizeModel.getCustomMaterials() != null){
+            // convert custom material to material dto
+            for (CustomMaterial material : customizeModel.getCustomMaterials()) {
+                materialDtoOuts.add(new MaterialDtoOut(material));
+            }
         }
+
         this.customizeId = customizeModel.getCustomizeId();
         this.name = customizeModel.getName();
         this.thumbnailUrl = customizeModel.getThumbnailUrl();
