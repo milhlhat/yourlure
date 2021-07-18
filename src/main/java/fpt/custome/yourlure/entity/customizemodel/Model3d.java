@@ -30,6 +30,7 @@ public class Model3d {
     private String name;
     private String url;
 
+    @OrderBy("materialId ASC")
     @OneToMany(mappedBy = "model3d", cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize

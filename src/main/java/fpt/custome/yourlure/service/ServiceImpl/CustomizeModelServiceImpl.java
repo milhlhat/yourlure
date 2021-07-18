@@ -154,9 +154,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
                         defaultMaterial.addTexture(texture);
                         textureRepos.save(texture);
                     }
-                return true;
             }
-//        model3d.setMaterials(materials);
+            return true;
+            //        model3d.setMaterials(materials);
 //        model3dRepos.save(model3d);
         } catch (Exception e) {
             e.printStackTrace();
