@@ -8,6 +8,7 @@ let FormatUtils = {
     return result;
   },
   totalPrice: (data) => {
+    if(!data||data.length===0) return 0;
     let total = data.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
@@ -38,13 +39,14 @@ let FormatUtils = {
       if (reject === "CUSTOMER") {
         return "Đã hủy bởi cửa hàng";
       }
-      return "Đã hủy bởi " + reject;
+      return "Đã hủy bởi cửa hàng";
     }
     if (status === "DONE") return "Hoàn thành";
   },
   getShipping(){
     return 25000;
   }
+  
 };
 export const { convertToVND, totalPrice, formatDate, getStatus,getShipping } = FormatUtils;
 export default FormatUtils;

@@ -81,8 +81,8 @@ function ProductDetail(props) {
     return <ErrorLoad hasLayout/>;
   } else
     return (
-      <div className="container">
-        <div className="d-flex m-2 row">
+      <div className="container-lg .container-fluid">
+        <div className="d-flex my-2 mx-md-2  row">
           <div className=" col-md-6 col-sm-12  mt-4">
             <ProductImage product={productDetail.list} bigImgLink={bigImgLink} setBigImgLink={setBigImgLink}/>
           </div>
@@ -91,7 +91,7 @@ function ProductDetail(props) {
           </div>
         </div>
         <div
-          className="product-info-detail bg-white bg-shadow m-2 my-3 p-3 p-md-4"
+          className="product-info-detail bg-white bg-shadow m-md-2 my-3 py-3 p-md-4"
           id="more-description"
         >
           <div className="title-detail-description bg-body">
@@ -103,7 +103,7 @@ function ProductDetail(props) {
               : "description null"}
           </div>
         </div>
-        <div className="owl-policy my-md-4 my-3 bg-white bg-shadow row mx-2 p-md-4 p-2">
+        <div className="owl-policy my-md-4 my-3 bg-white bg-shadow row mx-md-2 p-md-4 py-2">
           <div className="col-md-3 col-6 item">
             <i className="fa fa-truck"></i>
             <p>Vận chuyển toàn quốc</p>
@@ -135,7 +135,7 @@ function ProductDetail(props) {
             <span>Mọi thông tin khách hàng đều được bảo mật.</span>
           </div>
         </div>
-        <div className="row bg-white bg-shadow product-similar d-flex m-2">
+        <div className="row bg-white bg-shadow product-similar d-flex m-md-2 my-2">
           <h3 className="col-12 -ms-md-4 ms-2">Sản phẩm tương tự </h3>
 
           <div className="top-product-show mt-5 mb-3">
@@ -147,7 +147,7 @@ function ProductDetail(props) {
             )}
           </div>
         </div>
-        <div className="row bg-white bg-shadow product-similar d-flex m-2 mt-5">
+        <div className="row bg-white bg-shadow product-similar d-flex m-md-2 my-2 mt-5">
           <h3 className="col-12 ms-md-4 ms-2">Sản phẩm phổ biến </h3>
 
           <div className="top-product-show mt-5 mb-3">

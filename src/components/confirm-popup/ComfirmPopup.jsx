@@ -45,7 +45,7 @@ export default function ComfirmPopup(props) {
         {btnText ? btnText : "Open"}
       </YLButton>
       <Dialog
-        open={open}
+        open={open&&!disabled}
         onClose={handleClose}
         aria-labelledby="draggable-dialog-title"
       >

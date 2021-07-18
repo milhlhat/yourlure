@@ -1,4 +1,4 @@
-@import 'assets/scss/base/_variable.scss';
+@import "assets/scss/base/_variable.scss";
 .manager-user-show {
   padding: 20px;
   & table {
@@ -17,11 +17,26 @@
     font-weight: 500;
     color: $primary;
   }
-  & .page-item.active .page-link{
+  & .page-item.active .page-link {
     background-color: $primary;
     border-color: $primary;
   }
-  & .page-link{
+  & .page-link {
     color: $primary;
+  }
+}
+.manager-user-detail {
+  & .default-address {
+    background-color: $hover-color;
+    color: white;
+    border-radius: 5px;
+    text-align: left;
+    vertical-align: center;
+    margin-left: 5px;
+    padding-right: 5px;
+  }
+  & .manager-user-address{
+    max-height: 400px;
+    overflow-y: auto;
   }
 }

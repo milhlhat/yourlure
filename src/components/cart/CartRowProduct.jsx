@@ -110,7 +110,7 @@ function CartRowProduct(props) {
 
   return (
     <div className="bg-white row-cart text-small">
-      {console.log(item)}
+      {/* {console.log(item)} */}
       <table>
         <tbody>
           <tr>

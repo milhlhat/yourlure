@@ -8,7 +8,7 @@ import YLButon from "components/custom-field/YLButton";
 import { AbilityContext, Can } from "ability/can";
 import { useSelector } from "react-redux";
 import YLButton from "components/custom-field/YLButton";
-import { convertToVND, getShipping } from "utils/format-string";
+import { convertToVND, getShipping, totalPrice } from "utils/format-string";
 import CartAPI from "api/user-cart-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
@@ -62,13 +62,6 @@ function CartProduct(props) {
   const [listTotal, setListTotal] = useState({
     data: [],
   });
-  // console.log(listTotal);
-  const totalPrice = (data) => {
-    let total = data.reduce((sum, product) => {
-      return sum + product.price * product.quantity;
-    }, 0);
-    return total;
-  };
   const handleChangeSelected = (data) => {
     let array = cartsSelected;
     if (array.includes(data)) {
@@ -91,7 +84,7 @@ function CartProduct(props) {
   // } else
   return (
     <div className="container">
-      {console.log(cartData)}
+      {/* {console.log(cartsSelected)} */}
       {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">

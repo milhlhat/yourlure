@@ -82,7 +82,7 @@ function ManagerHeader(props) {
     return (
       <div className="bg-white manager-header">
         <div
-          className={`back-button ${canBack ? " ms-3 " : "d-none"}`}
+          className={`back-button ${canBack ? " ms-5 " : "d-none"}`}
           onClick={handleBackOnclick}
         >
           <i className="far fa-arrow-left"></i>

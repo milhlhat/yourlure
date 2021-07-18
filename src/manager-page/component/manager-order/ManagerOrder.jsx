@@ -98,7 +98,7 @@ function ManagerOrder(props) {
                   className="pointer hover-background"
                   onClick={() =>
                     history.push({
-                      pathname: "/manager/order/detail/" + item.orderID,
+                      pathname: "/manager/order/detail/" + item.orderId,
                       canBack: setBack,
                     })
                   }

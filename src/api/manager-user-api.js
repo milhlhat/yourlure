@@ -19,7 +19,7 @@ const ManagerUserApi = {
     return AxiosClient.post(url, param);
   },
   getOrderByUserId:(param)=>{
-    const url = `/admin/order/user-orders/{userId}`;
+    const url = `/admin/order/user-orders`;
     return AxiosClient.post(url, param);
   },
   getUserById:(param)=>{

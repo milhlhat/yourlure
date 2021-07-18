@@ -20,15 +20,27 @@ function ProductAction(props) {
   const [disount, setDiscount] = useState();
   let takeOut = 0;
   const { register, getValues, setValue } = useForm();
-  const { product,setBigImgLink } = props;
-  const history= useHistory();
+  const { product, setBigImgLink } = props;
+  const history = useHistory();
   const decrement = () => {
-    Number(quantity) <= 1 ? setQuantity(1) : setQuantity(Number(quantity) - 1);
+    if (takeOut === 0) {
+      setQuantity(1);
+      toast.error("Sản phẩm đang hết hàng");
+    } else {
+      Number(quantity) <= 1
+        ? setQuantity(1)
+        : setQuantity(Number(quantity) - 1);
+    }
   };
   const increment = () => {
-    Number(quantity) >= takeOut
-      ? setQuantity(takeOut)
-      : setQuantity(Number(quantity) + 1);
+    if (takeOut === 0) {
+      setQuantity(1);
+      toast.error("Sản phẩm đang hết hàng");
+    } else {
+      Number(quantity) >= takeOut
+        ? setQuantity(takeOut)
+        : setQuantity(Number(quantity) + 1);
+    }
     // setQuantity(Number(quantity) + 1);
     // alert(Number(quantity) >= Number(takeOut))
   };
@@ -56,7 +68,7 @@ function ProductAction(props) {
       setValue("weight", product.defaultWeight);
     } else {
       //sent to payment
-      history.push({pathname:"/cart/payment",cart:[data]})
+      history.push({ pathname: "/cart/payment", cart: [data] });
     }
   };
   const handleAddToCart = async () => {
@@ -91,7 +103,7 @@ function ProductAction(props) {
           console.log("fail to fetch add category");
         }
       } else {
-        data={...data,productName:product.productName}
+        data = { ...data, productName: product.productName };
         const action = setCartGuest(data);
         dispatch(action);
         toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
@@ -195,7 +207,11 @@ function ProductAction(props) {
           ))}
         </div>
         <span>
-          {takeOut <= 0 ? "Hết hàng" : "còn " + takeOut + " sản phẩm"}
+          {takeOut <= 0 ? (
+            <span className="text-danger bold">Hết hàng</span>
+          ) : (
+            "còn " + takeOut + " sản phẩm"
+          )}
         </span>
       </div>
       <div className="product-quantity mt-4 row">
@@ -219,10 +235,20 @@ function ProductAction(props) {
 
       <div className="product-buy mt-5">
         <div onClick={() => handlePayNow()}>
-          <YLButton variant="light" value="Mua ngay"></YLButton>
+          <YLButton
+            variant="light"
+            type="button"
+            disabled={takeOut <= 0}
+            value="Mua ngay"
+          ></YLButton>
         </div>
         <div className="ms-2" onClick={() => handleAddToCart()}>
-          <YLButton variant="primary" value="Thêm vào giỏ hàng"></YLButton>
+          <YLButton
+            variant="primary"
+            type="button"
+            disabled={takeOut <= 0}
+            value="Thêm vào giỏ hàng"
+          ></YLButton>
         </div>
       </div>
     </div>

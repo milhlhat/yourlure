@@ -7,7 +7,7 @@ import "assets/scss/scss-pages/payment.scss";
 import CartRowProduct from "components/cart/CartRowProduct";
 import BillLine from "components/payment/BillLine";
 import CustomerAddressInput from "components/payment/CustomerAddressInput";
-import GusestAddressInput from "components/payment/GusestAddressInput";
+import GusestAddressInput from "components/payment/GuestAddressInput";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { toast } from "react-toastify";
 import CartProduct from "components/cart/CartProduct";
-import { setCartGuest } from "redux/cart/cart-guest";
+import { setCartGuest, updateAfterBuy } from "redux/cart/cart-guest";
 
 function Payment(props) {
   const cartData = props.location.cart;
@@ -66,7 +66,6 @@ function Payment(props) {
     if (code.type === "Phần trăm") {
       let disCost = Number(code.discountValue * totalPrice(cartData));
       if (disCost > code.maxValue) disCost = code.maxValue;
-      console.log(code.discountValue * totalPrice(cartData));
       setDiscount(code.discountValue * totalPrice(cartData));
     }
     if (code.type === "Free Ship") {
@@ -74,7 +73,6 @@ function Payment(props) {
       toast.success(`Mã giảm giá hợp lệ`);
     }
     if (code.type === "Giá trị") {
-      console.log(code);
       setDiscount(code.discountValue);
       toast.success(`Mã giảm giá hợp lệ`);
     }
@@ -84,17 +82,13 @@ function Payment(props) {
   const [discountLoad, setDiscountLoad] = useState(false);
   const [completeLoad, setCompleteLoad] = useState(false);
   const onDiscountSubmit = async () => {
-    console.log(discountValue);
-    console.log("e.target.value");
     let data = discountValue?.toString().trim();
     setDiscountLoad(true);
     try {
       const response = await OrderAPI.checkDiscount(data);
-      console.log(response);
       if (response.error) {
         throw new Error(response.error);
       } else {
-        // alert("");
         calculateDiscount(response);
       }
     } catch (error) {
@@ -109,8 +103,6 @@ function Payment(props) {
 
   const listCartItemId = (cart) => {
     let arr = [];
-    // console.log("cart");
-    // console.log(cart);
     if (!cart) return null;
     cart && cart.map((item) => arr.push(item?.cartItemId));
     return arr;
@@ -127,13 +119,7 @@ function Payment(props) {
   const onSubmit = async (data) => {
     //user payment
     if (isLoggedIn) {
-      console.log("đăng nhập");
-      if (discount != 0) {
-        data = { ...data, discountCode: discountValue };
-      }
       let cartItemIds = listCartItemId(cartData);
-      console.log("cartItemIds");
-      console.log(cartItemIds);
       data = { ...data, paymentId: 1 };
       if (cartItemIds[0]) {
         data = { ...data, cartItemIds: listCartItemId(cartData) };
@@ -166,7 +152,7 @@ function Payment(props) {
           }
         } catch (error) {
           toast.warning(error.response.data);
-          console.log("fail to fetch guest payment, ");
+          console.log("fail to fetch user payment, ");
         }
         setCompleteLoad(false);
       }
@@ -174,9 +160,6 @@ function Payment(props) {
     }
     // guest payment
     else {
-      console.log("chưa đăng nhập");
-      console.log(cartData);
-
       let x = await fetchAddress(data.userWardId);
       data.address += ", " + getAddress(x);
       data = {
@@ -185,7 +168,6 @@ function Payment(props) {
         discountCode: discount === 0 ? "" : discountValue,
         cartItems: cartData,
       };
-      console.log(data);
       setCompleteLoad(true);
       try {
         const response = await OrderAPI.guestProcessOrder(data);
@@ -193,16 +175,17 @@ function Payment(props) {
           throw new Error(response.error);
         } else {
           setBillLine(response);
-          toast.success("Mua hàng thành công");
           setOpen(true);
-          const action = setCartGuest([]);
+          const action = updateAfterBuy(cartData);
           dispatch(action);
+          toast.success("Mua hàng thành công");
         }
       } catch (error) {
-        toast.warning(error.response.data);
+        toast.warning("error.response.data");
         console.log("fail to fetch guest payment");
       }
       setCompleteLoad(false);
+      console.log(data);
     }
   };
 
@@ -212,7 +195,6 @@ function Payment(props) {
   } else
     return (
       <form className="container mt-4" onSubmit={handleSubmit(onSubmit)}>
-        {/* {console.log(cartData)} */}
         <div className="d-flex flex-wrap justify-content-between">
           <div className="deliver-address p-4 bg-box bg-shadow mb-4 col-12 col-md-7">
             <Can do="read-write" on="customer" passThrough>

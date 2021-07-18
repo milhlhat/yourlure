@@ -9,7 +9,7 @@ import ErrorLoad from "components/error-notify/ErrorLoad";
 import { toast } from "react-toastify";
 
 import Pagination from "react-js-pagination";
-import { convertToVND, formatDate, getStatus } from "utils/format-string";
+import { convertToVND, formatDate, getShipping, getStatus, totalPrice } from "utils/format-string";
 function CutomerOrder(props) {
   const [page, setPage] = useState(0);
   const totalItemInPage = 12;
@@ -54,12 +54,6 @@ function CutomerOrder(props) {
     }
   };
 
-  function totalPrice(list) {
-    let total = list.reduce((sum, product) => {
-      return sum + product.price * product.quantity;
-    }, 25000);
-    return total;
-  }
   useEffect(() => {
     fetchCustomOrder();
     // return fetchCustomOrder();
@@ -80,7 +74,7 @@ function CutomerOrder(props) {
           )}
           {orderList?.data === null && (
             <div className="bg-box">
-              <span>{errorMesage}</span>
+              <span>Không tim thấy order</span>
             </div>
           )}
           {orderList?.data?.orders?.map((order, i) => (
@@ -136,7 +130,7 @@ function CutomerOrder(props) {
                           <span className="order-title ">Tổng:</span>
                         </td>
                         <td className="text-end">
-                          <span>{convertToVND(totalPrice(order?.items))}</span>
+                          <span>{convertToVND((totalPrice(order?.items)+getShipping()))}</span>
                         </td>
                       </tr>
                     </table>

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 
 import 'assets/scss/scss-components/product/product-detail.scss';
 import {useHistory} from 'react-router';
+import { createImageUrlByLinkOrFile } from 'utils/manager-product';
 
 function ProductImage(props) {
     let {product,setBigImgLink,bigImgLink} = props;
@@ -28,7 +29,7 @@ function ProductImage(props) {
                     <i className="fa fa-pencil"></i>
                 </button>
                 <img
-                    src={bigImgLink?bigImgLink:product ? product.imageCollection[selectImg]?.linkImage : ''}
+                    src={createImageUrlByLinkOrFile(bigImgLink?bigImgLink:product ? product.imageCollection[selectImg]?.linkImage : '')}
                     height={350}
                     alt={`Ảnh sản phẩm ${product?.productName}`}
                 />
@@ -41,7 +42,7 @@ function ProductImage(props) {
                         key={i}
                         onClick={() => handleChangeImg(i)}
                     >
-                        <img width={60} src={item.linkImage}/>
+                        <img width={60} src={createImageUrlByLinkOrFile(item.linkImage)}/>
                     </div>
                 ))}
             </div>

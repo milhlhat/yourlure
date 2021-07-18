@@ -185,7 +185,7 @@ function Sidebar(props) {
       </div>
 
       <span onClick={openNav}>
-        <button className="btn btn-outline-dark">
+        <button className="btn open-button btn-outline-dark">
           <i className="fal fa-bars"></i>
         </button>
       </span>
