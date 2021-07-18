@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
@@ -190,7 +191,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public CustomModelDtoOut getCustomModelById(HttpServletRequest rq, Long customModelId) {
         User user = userService.whoami(rq);
         CustomizeModel customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
-        CustomModelDtoOut output = new CustomModelDtoOut(customizeModel);
+        CustomModelDtoOut output ;
+        if (customizeModel != null) {
+            output  = new CustomModelDtoOut(customizeModel);
+        }else{
+            throw new ValidationException("Người dùng không có tùy biến nào");
+        }
         return output;
     }
 
