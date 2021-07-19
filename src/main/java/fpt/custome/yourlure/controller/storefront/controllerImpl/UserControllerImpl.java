@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -68,9 +69,17 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Boolean> removeUserAddress(Long userAddressId) {
-        Boolean delete = userService.removeUserAddress(userAddressId);
-        return new ResponseEntity<>(delete, HttpStatus.OK);
+    public ResponseEntity<Object> removeUserAddress(Long userAddressId) {
+        try {
+            Boolean delete = userService.removeUserAddress(userAddressId);
+            return new ResponseEntity<>(delete, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

@@ -114,7 +114,7 @@ public class Product {
     private Collection<Image> imageCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;

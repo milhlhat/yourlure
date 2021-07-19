@@ -47,7 +47,7 @@ public interface UserController {
 
     @DeleteMapping("/delete-address")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Boolean> removeUserAddress(@RequestParam Long userAddressId);
+    ResponseEntity<Object> removeUserAddress(@RequestParam Long userAddressId);
 
     @GetMapping("/get-all-country")
     ResponseEntity<List<Country>> getAllCountry();

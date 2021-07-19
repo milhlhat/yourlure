@@ -16,9 +16,10 @@ public interface AdminVariantController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> update(@RequestBody VariantDtoInput variantDtoInput, @RequestParam Long id);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> delete(@PathVariable("id") Long id);
+    ResponseEntity<Object> delete(@RequestParam("variantId") Long variantId,
+                                   @RequestParam("productId") Long productId);
 
     @GetMapping("/get-by-id/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")

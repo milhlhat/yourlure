@@ -8,7 +8,7 @@ public interface VariantService {
 
     Boolean update(VariantDtoInput variantDtoInput, Long variantId);
 
-    Boolean remove(Long id);
+    Boolean remove(Long variantId,Long productId);
 
     Variant getById(Long id);
 

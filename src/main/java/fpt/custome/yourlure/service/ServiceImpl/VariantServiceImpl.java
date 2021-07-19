@@ -60,25 +60,26 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public Boolean remove(Long id) {
-        try {
-            //check variant is exist in order_line
-            if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
-                variantRepos.deleteById(id);
+    public Boolean remove(Long variantId, Long productId) {
+
+        //check variant is exist in order_line
+        if (orderLineRepos.findByProductIdOrVariantId(variantId) == null) {
+            if (productJPARepos.getById(productId).getVariantCollection().size() > 1) {
+                variantRepos.deleteById(variantId);
                 return true;
+            } else {
+                throw new ValidationException("Phải tồn tại ít nhất một biến thể!");
             }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
+        throw new ValidationException("Biến thể có trong đơn thanh toán nên không thể xóa!");
+
     }
 
     @Override
     public Variant getById(Long id) {
 
         Optional<Variant> variant = variantRepos.findById(id);
-        if(variant.isPresent()){
+        if (variant.isPresent()) {
             return variant.get();
         }
         throw new ValidationException("Không tìm thấy biến thể!");

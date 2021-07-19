@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
@@ -357,6 +358,8 @@ public class UserServiceImpl implements UserService {
                 userAddress.setUser(user);
                 if (user.getUserAddressCollection().isEmpty()) {
                     userAddress.setIsDefault(true);
+                }else{
+                    userAddress.setIsDefault(false);
                 }
                 userAddressRepos.save(userAddress);
                 return true;
@@ -405,17 +408,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean removeUserAddress(Long userAddressId) {
-        try {
             UserAddress userAddress = userAddressRepos.getById(userAddressId);
-            if (!userAddress.getIsDefault()){
-                userAddressRepos.deleteById(userAddressId);
-                return true;
+            if (userAddress != null){
+                if (!userAddress.getIsDefault()){
+                    userAddressRepos.deleteById(userAddressId);
+                    return true;
+                }else {
+                    throw new ValidationException("Không thể xóa địa chỉ mặc định");
+                }
             }
-           return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        throw new ValidationException("Xóa địa chỉ bị lỗi!");
     }
 
 

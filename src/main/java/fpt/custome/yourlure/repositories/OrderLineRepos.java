@@ -15,5 +15,5 @@ public interface OrderLineRepos extends JpaRepository<OrderLine, Long> {
             "where product_id = ?1\n" +
             "OR variant_id = ?1\n" +
             "LIMIT 1", nativeQuery = true)
-    Boolean findByProductIdOrVariantId(Long id);
+    Long findByProductIdOrVariantId(Long id);
 }

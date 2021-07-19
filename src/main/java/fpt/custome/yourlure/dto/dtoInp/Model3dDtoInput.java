@@ -37,17 +37,7 @@ public class Model3dDtoInput {
         private Integer textSize;
         private String color;
 
-        private List<TextureDtoInput> textures;
-    }
-
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class TextureDtoInput{
-        private String format;
-        private String contentBase64;
-        private Boolean isDefault;
+        private List<String> linkTextures;
     }
 
 }

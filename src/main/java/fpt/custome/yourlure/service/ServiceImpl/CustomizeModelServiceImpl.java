@@ -83,24 +83,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             DefaultMaterial defaultMaterial = mapper.map(materialDtoInput, DefaultMaterial.class);
 
             List<Texture> textures = new ArrayList<>();
-            int textureCount = 0;
-            if (materialDtoInput.getTextures() != null && materialDtoInput.getCanAddImg())
-                for (Model3dDtoInput.TextureDtoInput textureDto : materialDtoInput.getTextures()) {
-                    StringBuilder textureFileName = new StringBuilder()
-                            .append(defaultMaterial.getDefaultName())
-                            .append("_texture_")
-                            .append(textureCount++)
-                            .append(".")
-                            .append(textureDto.getFormat());
-
-                    String url = fileService.saveFileBase64(textureFileName.toString(), textureDto.getContentBase64(), FileService.TEXTURE_DIR);
-//                    if (textureDto.getIsDefault()) {
-//                        defaultMaterial.setImg(url);
-//                    }
+            if (materialDtoInput.getLinkTextures() != null && materialDtoInput.getCanAddImg())
+                for (String textureDto : materialDtoInput.getLinkTextures()) {
                     Texture texture = Texture.builder()
                             .material(defaultMaterial)
-                            .textureUrl(url)
-                            .isDefault(textureDto.getIsDefault())
+                            .textureUrl(textureDto)
+                            .isDefault(false)
                             .build();
                     textures.add(texture);
                 }
