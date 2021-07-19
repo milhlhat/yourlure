@@ -31,7 +31,6 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Autowired
     private CustomizeModelRepos customizeModelRepos;
 
-
     @Autowired
     private Model3dRepos model3dRepos;
 
@@ -191,12 +190,29 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     public CustomModelDtoOut getCustomModelById(HttpServletRequest rq, Long customModelId) {
         User user = userService.whoami(rq);
         CustomizeModel customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
-        CustomModelDtoOut output ;
+        CustomModelDtoOut output;
         if (customizeModel != null) {
-            output  = new CustomModelDtoOut(customizeModel);
-        }else{
+            output = new CustomModelDtoOut(customizeModel);
+        } else {
             throw new ValidationException("Người dùng không có tùy biến nào");
         }
+        return output;
+    }
+
+    @Override
+    public List<CustomModelDtoOut> getCustomModelsByProductId(HttpServletRequest rq, Long productId) {
+        User user = userService.whoami(rq);
+        List<CustomizeModel> customizeModels = customizeModelRepos.findAllByUserUserIdAndModel3dProductProductId(user.getUserId(), productId);
+        List<CustomModelDtoOut> output = new ArrayList<>();
+
+        if (customizeModels.isEmpty()) {
+            throw new ValidationException("Người dùng không có tùy biến nào");
+        }
+
+        for (CustomizeModel customizeModel : customizeModels) {
+            output.add(new CustomModelDtoOut(customizeModel));
+        }
+
         return output;
     }
 
