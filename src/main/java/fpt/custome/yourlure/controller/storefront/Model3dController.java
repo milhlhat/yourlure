@@ -50,7 +50,15 @@ public interface Model3dController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    ResponseEntity<Object> findCustomModel(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
+    ResponseEntity<Object> findCustomModelByCustomId(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
+
+    @GetMapping(value = "/find-custom-by-product-id/{productId}")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+    ResponseEntity<Object> findCustomModelByProductId(HttpServletRequest rq, @PathVariable(name = "productId") Long productId);
 
 
     @PostMapping(value = "/create-custom")

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 public interface CustomizeModelService {
 
@@ -26,6 +27,8 @@ public interface CustomizeModelService {
     Model3d getModelByModelId(Long modelId);
 
     CustomModelDtoOut getCustomModelById(HttpServletRequest rq, Long customModelId);
+
+    List<CustomModelDtoOut> getCustomModelsByProductId(HttpServletRequest rq, Long productId);
 
     CustomModelDtoOut createCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws IOException;
 

@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.Optional;
 
 @Service
@@ -74,17 +75,15 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
-    public Optional<Variant> getById(Long id) {
-        try {
-            Variant variant = variantRepos.getById(id);
-            if (variant != null){
-                return Optional.of(variant);
-            }
-            return Optional.empty();
-        }catch (Exception e){
-            e.printStackTrace();
-            return Optional.empty();
+    public Variant getById(Long id) {
+
+        Optional<Variant> variant = variantRepos.findById(id);
+        if(variant.isPresent()){
+            return variant.get();
         }
+        throw new ValidationException("Không tìm thấy biến thể!");
+
+
     }
 }
 

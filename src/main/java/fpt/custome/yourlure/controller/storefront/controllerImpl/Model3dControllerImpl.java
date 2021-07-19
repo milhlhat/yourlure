@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -53,13 +54,30 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<Object> findCustomModel(HttpServletRequest rq, Long customId) {
+    public ResponseEntity<Object> findCustomModelByCustomId(HttpServletRequest rq, Long customId) {
         try {
             CustomModelDtoOut customizeModel = customizeModelService.getCustomModelById(rq, customId);
             if (customizeModel == null) {
                 return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
             }
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
+        } catch (ValidationException validationException) {
+            System.out.println(validationException.getMessage());
+            return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<Object> findCustomModelByProductId(HttpServletRequest rq, Long productId) {
+        try {
+            List<CustomModelDtoOut> customizeModels = customizeModelService.getCustomModelsByProductId(rq, productId);
+            if (customizeModels == null || customizeModels.isEmpty()) {
+                return new ResponseEntity<>("Không tìm thấy model 3d!", HttpStatus.OK);
+            }
+            return new ResponseEntity<>(customizeModels, HttpStatus.OK);
         } catch (ValidationException validationException) {
             System.out.println(validationException.getMessage());
             return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
