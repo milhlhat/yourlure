@@ -104,15 +104,6 @@ function ManagerStaffAddNew(props) {
             </span>
           )}
 
-          {/* <label htmlFor="email">Email</label>
-          <input
-            className="form-control"
-            {...register("email")}
-            type="text"
-            id="email"
-            placeholder="Nhập email "
-          />
-          <span className="error-message">{errors?.email?.message}</span> */}
 
           <label htmlFor="role">Giới tính</label>
           <select className="form-select" {...register("role")} id="role">

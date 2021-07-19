@@ -132,7 +132,6 @@ function ManagerUser(props) {
                   <th>Tên</th>
                   <th>Giới tính</th>
                   <th>Số điện thoại</th>
-                  <th>Email</th>
                   <th>Trạng thái</th>
                   <th>Số đơn hàng</th>
                   <th></th>
@@ -152,7 +151,6 @@ function ManagerUser(props) {
                       {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
                     </td>
                     <td>{item.phone}</td>
-                    <td>{item.userEmail ? item.userEmail : "-"}</td>
                     <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
                     <td>{item.numberOfOrder}</td>
                     <td>

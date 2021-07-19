@@ -100,7 +100,6 @@ function ManagerInformation(props) {
   const setInitialValue = () => {
     setValue("username", account?.data?.username);
     setValue("gender", account?.data?.gender);
-    setValue("userEmail", account?.data?.userEmail);
   };
   useEffect(() => {
     setInitialValue();
@@ -168,19 +167,6 @@ function ManagerInformation(props) {
                     <span className="error-message">
                       {errors?.gender?.message}
                     </span>
-                    <label htmlFor="userEmail">Email</label>
-                    <input
-                      id="userEmail"
-                      className="form-control"
-                      {...register("userEmail", {})}
-                      type="email"
-                      placeholder="Email"
-                    ></input>
-                    {errors.userEmail && (
-                      <span className="text-danger">
-                        (*){errors.userEmail.message}
-                      </span>
-                    )}
                   </>
                 ) : (
                   <>
@@ -209,10 +195,6 @@ function ManagerInformation(props) {
                           <td className="ps-3">
                             {displayRole(account?.data?.roles[0])}
                           </td>
-                        </tr>
-                        <tr>
-                          <th className="text-end">Email:</th>
-                          <td className="ps-3">{account?.data?.userEmail}</td>
                         </tr>
                       </tbody>
                     </table>

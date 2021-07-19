@@ -62,10 +62,6 @@ function CustomerAccount(props) {
                 <td>{account?.data?.phone}</td>
               </tr>
               <tr>
-                <td className="text-end">Email:</td>
-                <td>{account?.data?.userEmail}</td>
-              </tr>
-              <tr>
                 <td className="d-flex justify-content-end">
                   <YLButton
                     variant="primary"

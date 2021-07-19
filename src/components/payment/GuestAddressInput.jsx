@@ -45,10 +45,6 @@ function GusestAddressInput(props) {
       {errors.phone && (
         <span className="text-danger">(*){errors.phone.message}</span>
       )}
-      <input className="form-control my-3" placeholder={"Email"} />
-      {errors.email && (
-        <span className="text-danger">{errors.email.message}</span>
-      )}
       <input className="form-control my-3" placeholder={"Lưu ý"} />
       {errors.note && (
         <span className="text-danger">{errors.note.message}</span>

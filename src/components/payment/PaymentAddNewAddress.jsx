@@ -58,7 +58,7 @@ function Alert(props) {
 }
 
 function ManagerChangePassWord(props) {
-  const { fetchCustomAddress, noAddress } = props;
+  const { fetchCustomAddress, noAddress,setNewAddress } = props;
   const [openAlert, setOpenAlert] = useState({
     isOpen: false,
     content: "",
@@ -110,6 +110,7 @@ function ManagerChangePassWord(props) {
       } else {
         fetchCustomAddress();
         handleClose();
+        setNewAddress(data);
       }
     } catch (error) {
       alert("Thêm địa chỉ thất bại");

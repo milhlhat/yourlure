@@ -76,21 +76,21 @@ function ChangePassword(props) {
                 name="oldPassword"
                 type="password"
                 component={InputField}
-                label="Mật khẩu hiện tại"
+                label="Mật khẩu hiện tại (*)"
                 placeholder="Nhập mật khẩu hiện tại"
               ></FastField>
               <FastField
                 name="password"
                 type="password"
                 component={InputField}
-                label="Mật khẩu mới"
+                label="Mật khẩu mới (*)"
                 placeholder="Nhập mật khẩu mới"
               ></FastField>
               <FastField
                 name="rePassword"
                 type="password"
                 component={InputField}
-                label="Nhập lại mật khẩu"
+                label="Nhập lại mật khẩu (*)"
                 placeholder="Nhập lại mật khẩu"
               ></FastField>
               <div className="my-2">

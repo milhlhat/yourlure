@@ -37,7 +37,6 @@ function EditCustomerAccount(props) {
   const initialData = () => {
     setValue("username", account?.data?.username);
     setValue("gender", account?.data?.gender);
-    setValue("userEmail", account?.data?.userEmail);
   };
   useEffect(() => {
     initialData();
@@ -90,21 +89,6 @@ function EditCustomerAccount(props) {
                   <span className="text-danger">(*){errors.phone.message}</span>
                 )} */}
                 {account?.data?.phone}
-              </td>
-            </tr>
-            <tr>
-              <td className="text-end title-table">Email:</td>
-              <td>
-                <input
-                  className="form-control"
-                  {...register("userEmail", {})}
-                  type="email"
-                ></input>
-                {errors.userEmail && (
-                  <span className="text-danger">
-                    (*){errors.userEmail.message}
-                  </span>
-                )}
               </td>
             </tr>
             <tr>

@@ -154,7 +154,6 @@ function ManagerStaff(props) {
                 <th>Tên</th>
                 <th>Giới tính</th>
                 <th onClick={() => setFilter({ ...filter, sortBy: "phone", isAsc: !filter.isAsc })}>Số điện thoại</th>
-                <th>Email</th>
                 <th>Trạng thái</th>
                 <th>Vị trí</th>
                 <th></th>
@@ -167,7 +166,6 @@ function ManagerStaff(props) {
                     {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
                   </td>
                   <td>{item.phone}</td>
-                  <td>{item.userEmail ? item.userEmail : "-"}</td>
                   <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
                   <td>{detectRole(item.roles)}</td>
                   <td>

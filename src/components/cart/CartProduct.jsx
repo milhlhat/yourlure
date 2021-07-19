@@ -13,7 +13,7 @@ import CartAPI from "api/user-cart-api";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 function CartProduct(props) {
-  const cartData = props.location.cart;
+  const cartData = props?.location?.cart;
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
   if (isLoggedIn) {
