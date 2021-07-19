@@ -37,6 +37,7 @@ body {
 .sticky-bar-bottom{
   position: sticky;
   bottom: 0;
+  padding: 0;
 }
 .sticky-bar-top{
   position: sticky;
@@ -79,7 +80,9 @@ body {
 .primary-color {
   color: $primary;
 }
-
+.link-color {
+  color: $link-color;
+}
 .underline {
   text-decoration: underline;
 }

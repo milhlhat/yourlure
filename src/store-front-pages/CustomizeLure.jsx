@@ -161,7 +161,7 @@ function RenderModel(props) {
 
       // Without 'preserveDrawingBuffer' set to true, we must render now
       rerender.render(scene, camera);
-      let imgCapture = rerender.domElement.toDataURL();
+      let imgCapture = rerender.domElement.toDataURL("image/jpg", 0.5);
 
       // w.document.body.appendChild(img);
 
@@ -172,7 +172,7 @@ function RenderModel(props) {
         materials: customizeInfo,
         thumbnail: {
           content: imgCapture,
-          name: "capture.png",
+          name: "capture.jpg",
         },
       };
 

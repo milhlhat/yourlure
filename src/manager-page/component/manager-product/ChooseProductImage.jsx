@@ -6,14 +6,16 @@ import { createImageUrlByLinkOrFile } from "../../../utils/manager-product";
 
 function ChooseProductImage(props) {
   const { name, productId, methods } = props;
-  const { setValue, control } = methods;
+  const {
+    setValue,
+    control,
+    formState: { errors },
+  } = methods;
+
   const { fields, append, remove } = useFieldArray({ control, name: name });
 
   const [newImages, setnewImages] = useState([]);
   const [removeImages, setRemoveImages] = useState([]);
-
-  const BE_SERVER = process.env.REACT_APP_API_URL;
-  const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
   const imageHandleChange = async (e) => {
     let files = Array.from(e.target.files);
@@ -91,12 +93,8 @@ function ChooseProductImage(props) {
     await fetchImgByProductId(productId);
   }, [productId]);
 
-  const {
-    formState: { errors },
-  } = methods;
-
   return (
-    <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
+    <div className="product-info bg-white bg-shadow col-12 col-md-8  pb-2">
       <div className="px-3 pt-3 product-images-add">
         <h5>
           Hình ảnh <span className="error-message">(*)</span>
@@ -109,16 +107,16 @@ function ChooseProductImage(props) {
           accept={"image/*"}
           onChange={(e) => imageHandleChange(e)}
         />
-        <label htmlFor={name} className="pointer">
-          <i className="fal fa-images" /> Thêm hình ảnh
+        <label htmlFor={name} className="pointer link-color">
+          <h6>
+            <i className="fal fa-images" /> Thêm hình ảnh
+          </h6>
         </label>
       </div>
       <hr />
       <div className="px-3 manager-product-imgList">
         <RenderPhotos newImages={newImages} />
       </div>
-      <br />
-      <span className="error-message">{errors[name]?.message}</span>
     </div>
   );
 }

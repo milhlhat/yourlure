@@ -10,11 +10,13 @@ function YlInputFormHook(props) {
     isRequired,
     type,
     defaultValue,
+    onChange,
   } = props;
   const {
     register,
     formState: { errors },
   } = methods;
+
   return (
     <>
       {label && (

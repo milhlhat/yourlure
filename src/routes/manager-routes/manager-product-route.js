@@ -1,7 +1,7 @@
 import React from "react";
 import DEFINELINK from "routes/define-link";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-ManagerProductRoute.propTypes = {};
+
 const ManagerProduct = React.lazy(() =>
   import("manager-page/component/manager-product/ManagerProduct")
 );
@@ -15,6 +15,12 @@ const ManagerProductDetail = React.lazy(() =>
 );
 const ManagerProductEdit = React.lazy(() =>
   import("manager-page/component/manager-product/ManagerProductEdit")
+);
+const AddVariant = React.lazy(() =>
+  import("manager-page/component/manager-product/variant/AddVariant")
+);
+const EditVariant = React.lazy(() =>
+  import("manager-page/component/manager-product/variant/EditVariant")
 );
 
 function ManagerProductRoute() {
@@ -34,6 +40,14 @@ function ManagerProductRoute() {
       <Route
         path={path + DEFINELINK.managerProductEdit}
         component={ManagerProductEdit}
+      />
+      <Route
+        path={path + DEFINELINK.managerVariantAddNew}
+        component={AddVariant}
+      />{" "}
+      <Route
+        path={path + DEFINELINK.managerVariantEdit}
+        component={EditVariant}
       />
       <Route component={NotFound} />
     </Switch>

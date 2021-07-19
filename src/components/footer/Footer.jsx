@@ -40,7 +40,9 @@ function Footer(props) {
             <a className="link-footer" href="tel:0999999999">
               Hotline : 09999999
             </a>
-            <span className="p">Email: supportsupports@lure.com</span>
+            <a className="link-footer" href={"mailto:cskh@yourlure.shop"}>
+              Email: cskh@yourlure.shop
+            </a>
           </div>
         </div>
       </footer>

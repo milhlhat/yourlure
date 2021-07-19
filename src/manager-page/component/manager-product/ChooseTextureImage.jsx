@@ -18,7 +18,10 @@ function ChooseTextureImage(props) {
       let temp = [...newTextures];
       const newFiles = getUniqueFiles(temp.concat(files));
       setNewTextures(newFiles);
-      setValue(fieldNewTextures, { materialId: materialId, files: newFiles });
+      setValue(fieldNewTextures, {
+        materialId: materialId || nestedFieldIndex,
+        files: newFiles,
+      });
     }
   };
 

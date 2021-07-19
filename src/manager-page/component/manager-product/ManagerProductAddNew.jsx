@@ -8,14 +8,16 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
-import * as Yup from "yup";
-import "./scss/add-new-product.scss";
+
+import "./scss/manage-product-and-variant.scss";
 import {
   creatProduct,
   uploadMultiFiles,
 } from "../../../api/manager-product-api";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DEFINELINK from "../../../routes/define-link";
+import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
+import { VALIADATE_SCHEMA_PRODUCT_BASE } from "./ManagerProductEdit";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -125,23 +127,7 @@ function ManagerProductAddNew(props) {
   const [changeWeight, setChangeWeight] = useState(false);
   const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
   const schema = yup.object().shape({
-    productName: yup.string().required("Tên sản phẩm không được để trống"),
-    defaultPrice: yup.number().positive().required(),
-    length: yup.number().positive().required(),
-    hookSize: yup.number().typeError("Cỡ lưỡi là số dương"),
-    deepDiving: yup.number().positive().required(),
-    material: yup.string().required("Chất liệu không được để trống"),
-    defaultWeight: yup.number().positive().required(),
-    isCustomizeWeight: yup.boolean().required(),
-    minWeight: yup
-      .number()
-      .typeError("Trọng lượng là số dương")
-      .max(Yup.ref("defaultWeight"), `Nhỏ hơn hoặc bằng trọng lượng mặc định`),
-    maxWeight: yup
-      .number()
-      .typeError("Trọng lượng là số dương")
-      .min(Yup.ref("defaultWeight"), `Lớn hơn hoặc bằng trọng lượng mặc định`),
-
+    ...VALIADATE_SCHEMA_PRODUCT_BASE,
     description: yup.string().required("Mô tả không được để trống"),
     imgList: yup
       .mixed()
@@ -153,12 +139,14 @@ function ManagerProductAddNew(props) {
         }
         return true;
       })
-      .test("fileRequired", "Ảnh không được để trống", () => {
+      .test("fileRequired", "Vui lòng chọn ảnh .png, .jpg, .jpeg", () => {
         return fileImages.length > 0;
       }),
-    categoryId: yup.number().typeError("Danh mục không được để trống"),
   });
 
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  });
   const {
     register,
     unregister,
@@ -166,29 +154,28 @@ function ManagerProductAddNew(props) {
     getValues,
     handleSubmit,
     trigger,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
+  } = methods;
   console.log(errors);
   const onSubmit = async (data) => {
     if (data.listFishId === false) {
       data.listFishId = [];
     }
-
+    // load status
     setSubmitStatus({
       isLoading: true,
       isSuccess: false,
     });
     try {
+      //upload product image
       const fileLinks = await uploadMultiFiles(fileImages);
       console.log(fileLinks);
       const submitParam = {
         ...data,
         customizable: false,
-        imgList: fileLinks,
+        imgListInput: fileLinks,
       };
       const response = await creatProduct(submitParam);
+      // load status
       setSubmitStatus({
         isLoading: false,
         isSuccess: true,
@@ -249,28 +236,15 @@ function ManagerProductAddNew(props) {
     )
   );
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
-  useEffect(() => {
-    fetchCategory();
-    fetchFish();
+  useEffect(async () => {
+    await fetchCategory();
+    await fetchFish();
   }, []);
-  // trigger validate imgList
-  useEffect(() => {
-    trigger("imgList");
-  }, [fileImages]);
+
   return (
     <div>
       <h3>Tạo sản phẩm mới</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} autocomplete="off">
         <div className=" product-add-new-form row">
           <div
             className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2"
@@ -285,150 +259,85 @@ function ManagerProductAddNew(props) {
                 <tbody>
                   <tr>
                     <td>
-                      <label htmlFor="productName " className="form-label">
-                        Tên sản phẩm <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${
-                          errors.productName ? "outline-red" : ""
-                        }`}
-                        id="productName "
-                        placeholder="Tên sản phẩm"
-                        {...register("productName")}
+                      <YlInputFormHook
+                        name={"productName"}
+                        methods={methods}
+                        label={"Tên sản phẩm"}
+                        placeholder={"Tên sản phẩm"}
+                        isRequired
                       />
-                      <span className="error-message">
-                        {errors.productName?.message}
-                      </span>
                     </td>
                     <td>
-                      <label htmlFor="brand" className="form-label">
-                        Thương hiệu
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="brand"
-                        placeholder="Thương hiệu"
-                        {...register("brand")}
+                      <YlInputFormHook
+                        name={"brand"}
+                        methods={methods}
+                        label={"Thương hiệu"}
+                        placeholder={"Thương hiệu"}
                       />
-                      <span>{errors.brand?.message}</span>
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label htmlFor="price" className="form-label">
-                        Giá <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="number"
-                        className={`form-control ${
-                          errors.defaultPrice ? "outline-red" : ""
-                        }`}
-                        id="price"
+                      <YlInputFormHook
+                        name={"defaultPrice"}
+                        methods={methods}
+                        label={"Giá"}
+                        type={"number"}
                         placeholder={"\u20AB"}
-                        {...register("defaultPrice")}
+                        isRequired
                       />
-                      {errors.defaultPrice && (
-                        <span className="error-message">Giá là số dương</span>
-                      )}
                     </td>
                     <td>
-                      <label htmlFor="length" className="form-label">
-                        Chiều dài <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="number"
-                        className={`form-control ${
-                          errors.length ? "outline-red" : ""
-                        }`}
-                        id="length"
-                        placeholder="(cm)"
-                        {...register("length")}
+                      <YlInputFormHook
+                        name={"length"}
+                        methods={methods}
+                        label={"Chiều dài"}
+                        type={"number"}
+                        placeholder={"(cm)"}
+                        isRequired
                       />
-                      {errors.length && (
-                        <span className="error-message">
-                          Chiều dài là số dương
-                        </span>
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label htmlFor="hook" className="form-label">
-                        Cỡ lưỡi <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${
-                          errors.hookSize ? "outline-red" : ""
-                        }`}
-                        id="hook"
-                        placeholder="Cỡ lưỡi"
-                        {...register("hookSize")}
+                      <YlInputFormHook
+                        name={"hookSize"}
+                        methods={methods}
+                        label={"Cỡ lưỡi"}
+                        placeholder={"Cỡ lưỡi"}
+                        isRequired
                       />
-
-                      <span className="error-message">
-                        {errors.hookSize?.message}
-                      </span>
                     </td>
                     <td>
-                      <label htmlFor="deepDiving" className="form-label">
-                        Lặn sâu <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="number"
-                        className={`form-control ${
-                          errors.deepDiving ? "outline-red" : ""
-                        }`}
-                        id="deepDiving"
-                        placeholder="(m)"
-                        {...register("deepDiving")}
+                      <YlInputFormHook
+                        name={"deepDiving"}
+                        methods={methods}
+                        label={"Lặn sâu"}
+                        type={"number"}
+                        placeholder={"1m-4m ..."}
+                        isRequired
                       />
-                      {errors.deepDiving && (
-                        <span className="error-message">
-                          Lặn sâu là số dương
-                        </span>
-                      )}
                     </td>
                   </tr>
                   <tr>
                     <td>
-                      <label htmlFor="material" className="form-label">
-                        Chất liệu <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${
-                          errors.material ? "outline-red" : ""
-                        }`}
-                        id="material"
-                        placeholder="Nhựa, cao su..."
-                        {...register("material")}
+                      <YlInputFormHook
+                        name={"material"}
+                        methods={methods}
+                        label={"Chất liệu"}
+                        placeholder={"Nhựa, cao su"}
+                        isRequired
                       />
-                      <span className="error-message">
-                        {errors.material?.message}
-                      </span>
                     </td>
 
                     <td>
-                      <label htmlFor="weight-default" className="form-label">
-                        Trọng lượng <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="number"
-                        className={`form-control ${
-                          errors.defaultWeight ? "outline-red" : ""
-                        }`}
-                        id="weight-default"
-                        placeholder="(g)"
-                        {...register("defaultWeight")}
+                      <YlInputFormHook
+                        name={"defaultWeight"}
+                        methods={methods}
+                        label={"Trọng lượng"}
+                        placeholder={"(g)"}
+                        isRequired
                       />
-                      {errors.defaultWeight && (
-                        <span className="error-message">
-                          Trọng lượng là số dương
-                        </span>
-                      )}
                     </td>
                   </tr>
                   <tr>
@@ -451,42 +360,26 @@ function ManagerProductAddNew(props) {
                     </td>
                     <td>
                       {changeWeight && (
-                        <div className="d-flex">
-                          <div className="col-6">
-                            <label htmlFor="weight-min" className="form-label">
-                              Tối thiểu
-                            </label>
-                            <input
-                              type="number"
-                              className={`form-control input-customize-weight ${
-                                errors.minWeight ? "outline-red" : ""
-                              }`}
-                              id="weight-min"
-                              placeholder="(g)"
-                              {...register("minWeight")}
+                        <div className="d-flex flex-wrap justify-content-between">
+                          <div>
+                            <YlInputFormHook
+                              name={"minWeight"}
+                              methods={methods}
+                              label={"Tối thiểu"}
+                              placeholder={"(g)"}
+                              type={"number"}
+                              isRequired
                             />
-
-                            <span className="error-message">
-                              {errors.minWeight?.message}
-                            </span>
                           </div>
-                          <div className="col-6">
-                            <label htmlFor="weight-max" className="form-label">
-                              Tối đa
-                            </label>
-                            <input
-                              type="number"
-                              className={`form-control input-customize-weight ${
-                                errors.maxWeight ? "outline-red" : ""
-                              }`}
-                              id="weight-max"
-                              placeholder="(g)"
-                              {...register("maxWeight")}
+                          <div>
+                            <YlInputFormHook
+                              name={"maxWeight"}
+                              methods={methods}
+                              label={"Tối đa"}
+                              placeholder={"(g)"}
+                              type={"number"}
+                              isRequired
                             />
-
-                            <span className="error-message">
-                              {errors.maxWeight?.message}
-                            </span>
                           </div>
                         </div>
                       )}
@@ -498,7 +391,6 @@ function ManagerProductAddNew(props) {
                         Mô tả <span className="error-message">(*)</span>
                       </label>
                       <textarea
-                        type="text"
                         className={`form-control ${
                           errors.description ? "outline-red" : ""
                         }`}
@@ -517,7 +409,6 @@ function ManagerProductAddNew(props) {
                         Mô tả chi tiết
                       </label>
                       <textarea
-                        type="text"
                         className="form-control"
                         id="content"
                         placeholder="Mô tả chi tiết "
@@ -581,20 +472,21 @@ function ManagerProductAddNew(props) {
               {errors.imgList?.message}
             </span>
           </div>
-
-          <div className="col-12 bg-white bg-shadow submit-button-form">
-            <YLButton variant="danger" type="submit" value="Hủy" />
-            <YLButton
-              variant="primary"
-              type="submit"
-              disabled={submitStatus.isLoading}
-            >
-              {submitStatus.isLoading ? (
-                <CircularProgress size={20} className="circle-progress" />
-              ) : (
-                "Thêm"
-              )}
-            </YLButton>
+          <div className={"sticky-bar-bottom"}>
+            <div className="col-12 bg-white bg-shadow submit-button-form">
+              <YLButton variant="danger" type="submit" value="Hủy" />
+              <YLButton
+                variant="primary"
+                type="submit"
+                disabled={submitStatus.isLoading}
+              >
+                {submitStatus.isLoading ? (
+                  <CircularProgress size={20} className="circle-progress" />
+                ) : (
+                  "Thêm"
+                )}
+              </YLButton>
+            </div>
           </div>
         </div>
       </form>

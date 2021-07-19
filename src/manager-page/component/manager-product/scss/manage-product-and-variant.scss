@@ -1,5 +1,16 @@
 @import "src/assets/scss/base/variable";
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 .product-add-new-form {
   display: flex;
   justify-content: space-between;
@@ -43,6 +54,7 @@
     padding: 5px 25px 5px 0;
     border-radius: 2px;
     display: flex;
+
     & .img-item {
 
       & img {
@@ -111,30 +123,60 @@
   }
 }
 
-.table-variant{
+.table-variant {
   width: 100%;
   text-align: center;
   border-spacing: 15px;
   border-collapse: collapse;
+
   & thead {
     font-weight: 500;
   }
-  & .img-item {
+
+  & td {
     & img {
-      width: 35px;
-      height: 35px;
-      margin-left: 10px;
+      width: 50px;
+      height: 50px;
+
+    }
+  }
+
+
+}
+
+.shadow-bottom {
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.06);
+}
+
+.table-variant-add-new {
+  width: 70%;
+  border-collapse: collapse;
+  border-spacing: 20px;
+  margin: 0 auto 50px auto;
+
+  & td {
+    padding: 5px 20px;
+  }
+
+  & .file-variant-width {
+    max-width: 200px;
+  }
+
+  & .thumbnail-variant {
+    position: relative;
+    width: fit-content;
+
+    & .variant-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 5px;
+      object-fit: cover;
     }
 
-    & button {
-      margin-left: -35px;
-      width: 35px;
-      padding: 0;
-      font-size: smaller;
-      visibility: hidden;
+    & .delete-img {
+      position: absolute;
+      right: 0;
     }
   }
-  .file-variant-icon{
-    font-size: 25px;
-  }
+
 }

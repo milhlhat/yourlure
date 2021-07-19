@@ -6,6 +6,7 @@ import ManagerProductAPI, {
   uploadMultiFiles,
   uploadMultiTexture,
 } from "../api/manager-product-api";
+
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 let managerProductUtils = {
@@ -17,15 +18,43 @@ let managerProductUtils = {
     const action = findByManagerFilter({ ...value });
     dispatch(action);
   },
-  toBase64: (file) =>
+  toBase64: (file) => {
     new Promise((resolve, reject) => {
-      let extension = file.name.split(".").pop().toLowerCase();
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
-    }),
+    });
+  },
+  toBase64WithMaterialId: (texture) => {
+    const file = texture.file;
+    new Promise((resolve, reject) => {
+      let extension = file.name.split(".").pop().toLowerCase();
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () =>
+        resolve({
+          contenBase64: reader.result,
+          materialId: texture.materialId,
+          format: "jpg",
+          isDefault: false,
+        });
+      reader.onerror = (error) => reject(error);
+    });
+  },
+  promiseTextureBase64: (newTextureFiles) => {
+    let promise = [];
+    if (newTextureFiles?.length > 0) {
+      newTextureFiles.forEach((item) => {
+        promise.push(toBase64WithMaterialId(item));
+      });
+      return Promise.all(promise);
+    } else {
+      return [];
+    }
+  },
   createImageUrlByLinkOrFile: (file) => {
+    if (!file) return "";
     if (typeof file === "string") {
       if (file.startsWith("http")) {
         return file;
@@ -53,7 +82,8 @@ export const {
   fetchFilter,
   toBase64,
   createImageUrlByLinkOrFile,
-
+  toBase64WithMaterialId,
   promiseTexturesFiles,
+  promiseTextureBase64,
 } = managerProductUtils;
 export default managerProductUtils;

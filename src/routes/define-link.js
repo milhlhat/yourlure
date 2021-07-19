@@ -38,7 +38,8 @@ const DEFINELINK = {
   managerProductAddNew: "/addnew",
   managerProductDetail: "/detail/:id",
   managerProductEdit: "/edit/:id",
-
+  managerVariantAddNew: "/add-variant-by-product-id/:productId",
+  managerVariantEdit: "/variant/edit/",
   //manager category route
   managementCategory: "/category",
   managerCategoryAddNew: "/addnew",
