@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import DEFINELINK from "../../../routes/define-link";
 import Loading from "../../../components/Loading";
 import ErrorLoad from "../../../components/error-notify/ErrorLoad";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export const VALIADATE_SCHEMA_PRODUCT_BASE = {
   productName: yup
@@ -102,28 +103,28 @@ function ManagerProductEdit(props) {
       then: yup.array().min(1, "Vui lòng chọn ảnh .png, .jpg, .jpeg"),
       otherwise: yup.array().min(0),
     }),
-    defaultMaterials: yup
-      .mixed()
-      .when(["customizable"], {
-        is: true,
-        then: yup.array().min(1, "Vui lòng chọn model"),
-        otherwise: yup.array().min(0),
-      })
-      .test(
-        "requiredVnName",
-        "Tên hiển thị không được để trống",
-        (materials) => {
-          console.log(materials);
-          if (materials.length > 0) {
-            materials.forEach((item) => {
-              if (!item.vnName) return false;
-            });
-            return true;
-          } else {
-            return false;
-          }
-        }
-      ),
+    // defaultMaterials: yup
+    //   .mixed()
+    //   .when(["customizable"], {
+    //     is: true,
+    //     then: yup.array().min(1, "Vui lòng chọn model"),
+    //     otherwise: yup.array().min(0),
+    //   })
+    //   .test(
+    //     "requiredVnName",
+    //     "Tên hiển thị không được để trống",
+    //     (materials) => {
+    //       console.log(materials);
+    //       if (materials.length > 0) {
+    //         materials.forEach((item) => {
+    //           if (!item.vnName) return false;
+    //         });
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     }
+    //   ),
   });
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -133,7 +134,7 @@ function ManagerProductEdit(props) {
     unregister,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     setValue,
   } = methods;
@@ -178,6 +179,7 @@ function ManagerProductEdit(props) {
       { name: "productName", value: product.productName },
       { name: "imgList", value: product.imageCollection },
       { name: "variantCollection", value: product.variantCollection },
+      { name: "visibleInStorefront", value: product.visibleInStorefront },
       { name: "imgListRemove", value: [] },
       { name: "imgListInput", value: [] },
       { name: "newImages", value: [] },
@@ -270,7 +272,6 @@ function ManagerProductEdit(props) {
       return [];
     }
   };
-
   const onSubmit = async (data) => {
     try {
       //====product======
@@ -359,7 +360,7 @@ function ManagerProductEdit(props) {
   } else
     return (
       <div>
-        <form onSubmit={handleSubmit(onSubmit)} autocomplete="off">
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <div className=" product-add-new-form row">
             <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
               <div className="px-3 pt-3">
@@ -454,22 +455,24 @@ function ManagerProductEdit(props) {
                     </tr>
                     <tr>
                       <td>
-                        <input
-                          className="form-check-input pointer"
-                          type="checkbox"
-                          id="customize-weight"
-                          name={"isCustomizeWeight"}
-                          {...register("isCustomizeWeight")}
-                          // onChange={handleChangeCustomWeight}
-                          defaultChecked={product.data.customizable}
-                        />
-                        <label
-                          htmlFor="customize-weight"
-                          className="form-label ms-1"
-                        >
-                          Tuỳ chỉnh trọng lượng
-                        </label>
-                        <span>{errors.isCustomizeWeight?.message}</span>
+                        <div className={"my-2"}>
+                          <input
+                            className="form-check-input pointer"
+                            type="checkbox"
+                            id="customize-weight"
+                            name={"isCustomizeWeight"}
+                            {...register("isCustomizeWeight")}
+                            // onChange={handleChangeCustomWeight}
+                            defaultChecked={product.data.customizable}
+                          />
+                          <label
+                            htmlFor="customize-weight"
+                            className="form-label ms-1"
+                          >
+                            Tuỳ chỉnh trọng lượng
+                          </label>
+                          <span>{errors.isCustomizeWeight?.message}</span>
+                        </div>
                       </td>
                       <td>
                         {isCustomizeWeight && (
@@ -525,6 +528,24 @@ function ManagerProductEdit(props) {
                           {...register("content")}
                         />
                         <span>{errors.content?.message}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={2}>
+                        <div className={"my-2"}>
+                          <input
+                            className="form-check-input pointer "
+                            type="checkbox"
+                            id="visibleInStorefront"
+                            {...register("visibleInStorefront")}
+                          />
+                          <label
+                            className="form-check-label pointer ps-1"
+                            htmlFor="visibleInStorefront"
+                          >
+                            Cho phép kinh doanh
+                          </label>
+                        </div>
                       </td>
                     </tr>
                     <tr>
@@ -735,7 +756,17 @@ function ManagerProductEdit(props) {
             <div className={"sticky-bar-bottom"}>
               <div className="col-12 bg-white bg-shadow submit-button-form">
                 <YLButton variant="danger" type="submit" value="Hủy" />
-                <YLButton variant="primary" type="submit" value="Xong" />
+                <YLButton
+                  variant="primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <CircularProgress size={20} className="circle-progress" />
+                  ) : (
+                    "Xong"
+                  )}
+                </YLButton>
               </div>
             </div>
           </div>

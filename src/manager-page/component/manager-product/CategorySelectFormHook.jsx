@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ManagerCategoryAPI from "../../../api/manager-category-api";
-import { useWatch } from "react-hook-form";
 
 function CategorySelectFormHook(props) {
-  const { methods, name, label, message, isRequired, type } = props;
+  const { methods, name, message } = props;
   const {
     register,
-    control,
+    watch,
     formState: { errors },
   } = methods;
 
@@ -30,18 +29,17 @@ function CategorySelectFormHook(props) {
     };
     fetchCategory();
   }, []);
-  const watchCateId = useWatch({
-    control,
-    name: name,
-    defaultValue: null,
-  });
+
+  const watchCateId = watch(name);
+
   return (
     <>
       <select
-        {...register(name)}
+        name={name}
+        {...register("categoryId")}
         className="form-select"
         id={name}
-        defaultValue={watchCateId}
+        value={watchCateId}
       >
         <option>Chọn danh mục</option>
         {categoryList?.list.map((cate, i) => (

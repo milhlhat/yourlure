@@ -18,6 +18,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import DEFINELINK from "../../../routes/define-link";
 import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
 import { VALIADATE_SCHEMA_PRODUCT_BASE } from "./ManagerProductEdit";
+import { createVariant } from "../../../api/manager-variant-api";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -173,8 +174,18 @@ function ManagerProductAddNew(props) {
         ...data,
         customizable: false,
         imgListInput: fileLinks,
+        visibleInStorefront: true,
       };
       const response = await creatProduct(submitParam);
+      //create default variant
+      const variantParam = {
+        imageUrl: fileLinks[0],
+        newPrice: data.defaultPrice,
+        productId: response,
+        quantity: 1,
+        variantName: "Mặc định",
+      };
+      await createVariant(variantParam);
       // load status
       setSubmitStatus({
         isLoading: false,
@@ -313,7 +324,6 @@ function ManagerProductAddNew(props) {
                         name={"deepDiving"}
                         methods={methods}
                         label={"Lặn sâu"}
-                        type={"number"}
                         placeholder={"1m-4m ..."}
                         isRequired
                       />

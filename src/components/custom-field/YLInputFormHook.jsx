@@ -32,6 +32,7 @@ function YlInputFormHook(props) {
         placeholder={placeholder}
         {...register(name)}
         defaultValue={defaultValue}
+        step="any"
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}
