@@ -20,7 +20,7 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    public static String parentPath = System.getProperty("user.dir") + "/target/classes/";
+    public static String parentPath = System.getProperty("user.dir") + "/classes/";
     public static final String CUSTOMS_DIR = "customs";
     public static final String IMAGES_DIR = "uploads";
     public static final String MODELS_DIR = "models";
