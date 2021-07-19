@@ -40,7 +40,7 @@ public interface AdminOrderController {
      */
     @GetMapping("/get-user-order-detail/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Object> getUserOrder(@PathVariable("userId") Long userId);
+    ResponseEntity<Object> getUserOrder(@PathVariable("orderId") Long orderId);
 
     /**
      * xem chi tiết order

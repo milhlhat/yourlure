@@ -23,7 +23,7 @@ public interface AdminVariantController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Boolean> delete(@PathVariable("id") Long id);
 
-    @DeleteMapping("/get-by-id")
+    @GetMapping("/get-by-id")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Optional<Variant>> getById(@RequestParam("id") Long id);
 

@@ -32,8 +32,8 @@ public class AdminOrderControllerImpl implements AdminOrderController {
     }
 
     @Override
-    public ResponseEntity<Object> getUserOrder(Long userId) {
-        OrderDtoOut.Order result = orderService.orderDetail(userId);
+    public ResponseEntity<Object> getUserOrder(Long orderId) {
+        OrderDtoOut.Order result = orderService.orderDetail(orderId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
