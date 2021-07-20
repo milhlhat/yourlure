@@ -19,6 +19,7 @@ public class ProductsDtoInp {
     private String description;
     private String content;
     private Boolean isCustomizeWeight;
+    private Boolean visibleInStorefront;
     private Float minWeight;
     private Float defaultWeight;
     private Float maxWeight;

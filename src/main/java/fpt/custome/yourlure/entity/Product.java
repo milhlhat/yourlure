@@ -79,7 +79,7 @@ public class Product {
     private String deepDiving;
 
     @NotNull
-    @Column(name = "customizable", columnDefinition = "bool default false" )
+    @Column(name = "customizable", columnDefinition = "bool default false")
     private Boolean customizable;
 
     @Nullable
@@ -114,13 +114,13 @@ public class Product {
     private Collection<Image> imageCollection;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
     @OrderBy("fishId asc")
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products",cascade = CascadeType.ALL)
     private Collection<Fish> fishList = new ArrayList<>();
 
     /**
@@ -151,13 +151,13 @@ public class Product {
         this.defaultPrice = productsDtoInp.getDefaultPrice();
         this.defaultWeight = productsDtoInp.getDefaultWeight();
         this.isCustomizeWeight = productsDtoInp.getIsCustomizeWeight();
+        this.visibleInStorefront = productsDtoInp.getVisibleInStorefront();
         this.description = productsDtoInp.getDescription();
         this.hookSize = productsDtoInp.getHookSize();
         this.productName = productsDtoInp.getProductName();
         this.imgUrlModel = productsDtoInp.getImgUrlModel();
         this.length = productsDtoInp.getLength();
         this.material = productsDtoInp.getMaterial();
-        this.dateCreate = productsDtoInp.getDateCreate();
         this.maxWeight = productsDtoInp.getMaxWeight();
         this.minWeight = productsDtoInp.getMinWeight();
     }

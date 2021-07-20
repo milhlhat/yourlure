@@ -36,7 +36,7 @@ public interface ProductService {
 
     Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
 
-    Boolean remove(Long id);
+    Object remove(Long id);
 
     Boolean block(Long id);
 

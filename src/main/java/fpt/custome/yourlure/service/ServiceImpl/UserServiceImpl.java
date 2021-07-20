@@ -20,6 +20,7 @@ import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -86,7 +87,7 @@ public class UserServiceImpl implements UserService {
     public String signin(String phone, String password) {
         try {
             User findUser = userRepos.findByPhone(phone);
-            if (findUser!=null && findUser.getEnabled()) {
+            if (findUser != null && findUser.getEnabled()) {
                 phone = verifyPhone(phone);
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
@@ -178,7 +179,7 @@ public class UserServiceImpl implements UserService {
         List<AdminUserDtoOut.UserDtoOut> listResult = new ArrayList<>();
         try {
             Page<User> list;
-            list = userRepos.findAllUser("%"+keyword.trim()+"%",pageable);
+            list = userRepos.findAllUser("%" + keyword.trim() + "%", pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
@@ -209,7 +210,7 @@ public class UserServiceImpl implements UserService {
         List<AdminStaffDtoOut.StaffDtoOut> listResult = new ArrayList<>();
         try {
             Page<User> list;
-            list = userRepos.findAllStaff("%"+keyword.trim()+"%",pageable);
+            list = userRepos.findAllStaff("%" + keyword.trim() + "%", pageable);
             if (list.getContent().isEmpty()) {
                 throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
             } else {
@@ -353,12 +354,12 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
             Optional<Ward> ward = userWardRepos.findById(userAddressInput.getUserWardId());
-            if(ward.isPresent()){
+            if (ward.isPresent()) {
                 UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
                 userAddress.setUser(user);
                 if (user.getUserAddressCollection().isEmpty()) {
                     userAddress.setIsDefault(true);
-                }else{
+                } else {
                     userAddress.setIsDefault(false);
                 }
                 userAddressRepos.save(userAddress);
@@ -408,15 +409,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean removeUserAddress(Long userAddressId) {
-            UserAddress userAddress = userAddressRepos.getById(userAddressId);
-            if (userAddress != null){
-                if (!userAddress.getIsDefault()){
-                    userAddressRepos.deleteById(userAddressId);
-                    return true;
-                }else {
-                    throw new ValidationException("Không thể xóa địa chỉ mặc định");
-                }
+        UserAddress userAddress = userAddressRepos.getById(userAddressId);
+        if (userAddress != null) {
+            if (!userAddress.getIsDefault()) {
+                userAddressRepos.deleteById(userAddressId);
+                return true;
+            } else {
+                throw new ValidationException("Không thể xóa địa chỉ mặc định");
             }
+        }
         throw new ValidationException("Xóa địa chỉ bị lỗi!");
     }
 
@@ -441,13 +442,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<District> findDistrictById(Long id) {
-        List<District> result = userDistrictRepos.findDistrictByUserProvinceUserProvinceID(id);
+        Pageable pageable = PageRequest.of(0,
+                100000000,
+                Sort.by("userDistrictName").ascending());
+        List<District> result = userDistrictRepos.findDistrictByUserProvinceUserProvinceID(id, pageable);
         return result;
     }
 
     @Override
     public List<Ward> findWardById(Long id) {
-        List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id);
+        Pageable pageable = PageRequest.of(0,
+                100000000,
+                Sort.by("userWardName").ascending());
+        List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id,pageable);
         return result;
     }
 
@@ -455,7 +462,7 @@ public class UserServiceImpl implements UserService {
     public Optional<AddressFromWarDtoOutput> getAddressByWardId(Long id) {
         Ward ward = userWardRepos.getById(id);
         AddressFromWarDtoOutput result;
-        if (ward != null){
+        if (ward != null) {
             result = AddressFromWarDtoOutput.builder()
                     .userWardName(ward.getUserWardName())
                     .userDistrictName(ward.getUserDistrict().getUserDistrictName())

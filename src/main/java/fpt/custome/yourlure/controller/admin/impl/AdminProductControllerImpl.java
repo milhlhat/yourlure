@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class AdminProductControllerImpl implements AdminProductController {
     private FileService fileService;
 
     @Override
-    public ResponseEntity<Optional<AdminProductDtoOut>> findAll(Filter filter) {
+    public ResponseEntity<Object> findAll(Filter filter) {
         Pageable pageable = PageRequest.of(filter.getPage(),
                 filter.getLimit(),
                 filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending());
@@ -41,16 +42,22 @@ public class AdminProductControllerImpl implements AdminProductController {
     }
 
     @Override
-    public ResponseEntity<Long> saveProduct(ProductsDtoInp productsDtoInp) {
-        Long result = productService.save(productsDtoInp);
-        if (result == null) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> saveProduct(ProductsDtoInp productsDtoInp) {
+        try {
+            Long result = productService.save(productsDtoInp);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
-    public ResponseEntity<Optional<AdminProductDetailDtoOut>> getProductById(Long id) {
+    public ResponseEntity<Object> getProductById(Long id) {
         AdminProductDetailDtoOut dtoOut = productService.adminGetById(id);
         return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
     }
@@ -63,21 +70,30 @@ public class AdminProductControllerImpl implements AdminProductController {
 //    }
 
     @Override
-    public ResponseEntity<Boolean> editProduct(Long id, ProductsDtoInp productsDtoInp) {
+    public ResponseEntity<Object> editProduct(Long id, ProductsDtoInp productsDtoInp) {
         Boolean check = productService.updateProduct(productsDtoInp, id);
         return new ResponseEntity<>(check, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Boolean> deleteProduct(Long id) {
-        Boolean check = productService.remove(id);
-        return new ResponseEntity<>(check, HttpStatus.OK);
+    public ResponseEntity<Object> deleteProduct(Long id) {
+        try {
+            Object check = productService.remove(id);
+            return new ResponseEntity<>(check, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
     public ResponseEntity<Object> blockProduct(Long id) {
         Boolean check = productService.block(id);
-        if (!check){
+        if (!check) {
             return new ResponseEntity<>("Xóa ảnh không thành công", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(check, HttpStatus.OK);

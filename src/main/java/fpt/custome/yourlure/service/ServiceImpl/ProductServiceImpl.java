@@ -15,7 +15,11 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.util.*;
+import javax.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -218,21 +222,20 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Long save(ProductsDtoInp productsDtoInp) {
-        try {
-            Product product;
-            Long idReturn = null;
+        Product product;
+        Long idReturn;
 
-            if (productsDtoInp != null) {
-                //save product
-                product = mapper.map(productsDtoInp, Product.class);
-                Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
-                product.setCategory(categoryInput.get());
-                product.setDateCreate(new Date());
-                Product productToSaveImage = productJPARepos.save(product);
-                idReturn = productToSaveImage.getProductId();
-                //add list image product
-                List<String> imageLink = productsDtoInp.getImgListInput();
-                if (imageLink != null)
+        if (productsDtoInp != null) {
+            //save product
+            product = mapper.map(productsDtoInp, Product.class);
+            Optional<Category> categoryInput = categoryRepos.findById(productsDtoInp.getCategoryId());
+            product.setCategory(categoryInput.get());
+            product.setDateCreate(new Date());
+            Product productToSaveImage = productJPARepos.save(product);
+            idReturn = productToSaveImage.getProductId();
+            //add list image product
+            List<String> imageLink = productsDtoInp.getImgListInput();
+            if (imageLink != null)
                 for (String link : imageLink) {
                     Image image = Image.builder()
                             .product(productToSaveImage)
@@ -240,26 +243,21 @@ public class ProductServiceImpl implements ProductService {
                             .build();
                     imageRepos.save(image);
                 }
-                // check fish list is empty
-                if (!productsDtoInp.getListFishId().isEmpty()) {
-                    //save fish_product
-                    for (Long fishId : productsDtoInp.getListFishId()) {
-                        Fish fishInput = fishRepos.getById(fishId);
-                        fishInput.addProduct(product);
-                        //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
+            // check fish list is empty
+            if (!productsDtoInp.getListFishId().isEmpty()) {
+                //save fish_product
+                for (Long fishId : productsDtoInp.getListFishId()) {
+                    Fish fishInput = fishRepos.getById(fishId);
+                    fishInput.addProduct(product);
+                    //todo: co the se sai. neu sai thi xoa dong tren va nhung thu lien quan ve no
 //                fishInput.getProducts().add(product);
-                        fishRepos.save(fishInput);
-                    }
-
+                    fishRepos.save(fishInput);
                 }
-                return idReturn;
-            } else {
-                return null;
+
             }
-        } catch (
-                Exception e) {
-            e.printStackTrace();
-            return null;
+            return idReturn;
+        } else {
+            throw new ValidationException("Data input không được null!");
         }
     }
 
@@ -297,25 +295,20 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Transactional
     @Override
-    public Boolean remove(Long id) {
-        try {
-            if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
-                Optional<Product> productOptional = productJPARepos.findById(id);
-                List<Fish> productList = (List<Fish>) productOptional.get().getFishList();
-                for (ListIterator<Fish> iter = productList.listIterator(); iter.hasNext(); ) {
-                    iter.remove();
-                }
-                productRepos.remove(productOptional.get());
-                return true;
-            }
-            return false;
-        } catch (
-                Exception e) {
-            e.printStackTrace();
-            return false;
+    public Object remove(Long id) {
+        if (id == null) {
+            throw new ValidationException("Mã sản phẩm không tồn tại!");
         }
+        if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
+            Optional<Product> productOptional = productJPARepos.findById(id);
+            if (!productOptional.isPresent()) {
+                throw new ValidationException("Không có sản phẩm nào có ID này!");
+            }
+            productJPARepos.deleteById(id);
+            throw new ValidationException("Xóa sản phẩm thành công!");
+        } else
+            throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
     }
 
     @Override
@@ -324,11 +317,11 @@ public class ProductServiceImpl implements ProductService {
             if (id != null) {
                 Product productToUpdate = productJPARepos.getById(id);
                 if (productToUpdate != null) {
-                productToUpdate.setVisibleInStorefront(!productToUpdate.getVisibleInStorefront());
-                return true;
+                    productToUpdate.setVisibleInStorefront(!productToUpdate.getVisibleInStorefront());
+                    return true;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

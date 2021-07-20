@@ -36,7 +36,7 @@ public class ProductReposImpl implements ProductRepos {
         }
         if (!filter.getKeyword().trim().isEmpty()) {
             query.append("and to_tsvector('simple',COALESCE(lower(unaccent(tbl_products.product_name)),'')\n" +
-                    " || COALESCE(lower(unaccent(tbl_products.description)),'')) @@ \n" +
+                    " ) @@ \n" +
                     "to_tsquery('simple',lower(unaccent('''" + filter.getKeyword().trim()+" '':*'))) \n");
         }
         query.append(" GROUP BY tbl_products.product_id,tbl_products.product_name \n");
