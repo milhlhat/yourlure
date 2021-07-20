@@ -18,14 +18,18 @@ function ProductDetail(props) {
   const productByCateId = useSelector((state) => state.productFilter.data);
   const filter = useSelector((state) => state.productFilter.filter);
 
-
   const [bigImgLink, setBigImgLink] = useState();
   const [productDetail, setProductDetail] = useState({
     list: null,
     isSuccess: true,
     isLoading: false,
   });
-  const [productSameList, setProductSameList] = useState({
+  const [productSame, setProductSame] = useState({
+    list: null,
+    isLoading: false,
+    isSuccess: true,
+  });
+  const [productCustomize, setProductCustomize] = useState({
     list: null,
     isLoading: false,
     isSuccess: true,
@@ -42,6 +46,9 @@ function ProductDetail(props) {
           isSuccess: true,
           isLoading: false,
         });
+        if (response.customizable) {
+          fetchProductCustomize();
+        }
       }
     } catch (error) {
       setProductDetail({
@@ -53,18 +60,41 @@ function ProductDetail(props) {
     }
   };
   const fetchProductSame = async () => {
+    setProductSame({ ...productSame, isLoading: true });
     try {
       const response = await ProductAPI.getBestSeller();
       if (response.error) {
         throw new Error(response.error);
       } else {
-        setProductSameList({
+        setProductSame({
           list: response,
           isLoading: false,
           isSuccess: true,
         });
       }
     } catch (error) {
+      console.log("fail to fetch customer list");
+    }
+  };
+  const fetchProductCustomize = async () => {
+    setProductCustomize({ ...productCustomize, isLoading: true });
+    try {
+      const response = await ProductAPI.getCustomizebyProductId(productId);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setProductCustomize({
+          list: response,
+          isLoading: false,
+          isSuccess: true,
+        });
+      }
+    } catch (error) {
+      setProductCustomize({
+        list: null,
+        isLoading: false,
+        isSuccess: false,
+      });
       console.log("fail to fetch customer list");
     }
   };
@@ -78,16 +108,26 @@ function ProductDetail(props) {
   if (productDetail.isLoading) {
     return <Loading hasLayout />;
   } else if (!productDetail.isSuccess) {
-    return <ErrorLoad hasLayout/>;
+    return <ErrorLoad hasLayout />;
   } else
     return (
       <div className="container-lg .container-fluid">
         <div className="d-flex my-2 mx-md-2  row">
           <div className=" col-md-6 col-sm-12  mt-4">
-            <ProductImage product={productDetail.list} bigImgLink={bigImgLink} setBigImgLink={setBigImgLink}/>
+            <ProductImage
+              product={productDetail.list}
+              bigImgLink={bigImgLink}
+              setBigImgLink={setBigImgLink}
+              productCustomize={productCustomize}
+            />
           </div>
           <div className=" col-md-6 col-sm-12  mt-4">
-            <ProductAction product={productDetail.list} bigImgLink={bigImgLink} setBigImgLink={setBigImgLink}/>
+            <ProductAction
+              product={productDetail.list}
+              bigImgLink={bigImgLink}
+              setBigImgLink={setBigImgLink}
+              productCustomize={productCustomize}
+            />
           </div>
         </div>
         <div
@@ -151,9 +191,9 @@ function ProductDetail(props) {
           <h3 className="col-12 ms-md-4 ms-2">Sản phẩm phổ biến </h3>
 
           <div className="top-product-show mt-5 mb-3">
-            {productSameList.list && (
+            {productSame.list && (
               <Carosel
-                products={productSameList.list}
+                products={productSame.list}
                 caroselId="bestsaleproduct"
               />
             )}

@@ -15,13 +15,14 @@ function ProductAction(props) {
   const isLoggedIn = ability.can("login", "website");
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState();
+  const [customize, setcustomize] = useState();
   const [variantName, setVariantName] = useState();
   const [variantImg, setVariantImg] = useState();
   const [price, setPrice] = useState();
   const [disount, setDiscount] = useState();
   let takeOut = 0;
   const { register, getValues, setValue } = useForm();
-  const { product, setBigImgLink } = props;
+  const { product, setBigImgLink, productCustomize } = props;
   const history = useHistory();
   const decrement = () => {
     if (takeOut === 0) {
@@ -65,7 +66,10 @@ function ProductAction(props) {
       weight: getValues("weight"),
       variantImg: variantImg,
     };
-    if (data.weight > product.maxWeight || data.weight < product.minWeight) {
+    if (
+      (product.maxWeight && data.weight > product.maxWeight) ||
+      (product.minWeight && data.weight < product.minWeight)
+    ) {
       toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
     } else {
@@ -75,7 +79,7 @@ function ProductAction(props) {
   };
   const handleAddToCart = async () => {
     let data = {
-      customModelId: null,
+      customModelId: customize ? customize.customizeId : null,
       productId: product.productId,
       quantity: quantity,
       variantId: color,
@@ -84,7 +88,11 @@ function ProductAction(props) {
       weight: getValues("weight"),
       variantImg: variantImg,
     };
-    if (data.weight > product.maxWeight || data.weight < product.minWeight) {
+    console.log(data);
+    if (
+      (product.maxWeight && data.weight > product.maxWeight) ||
+      (product.minWeight && data.weight < product.minWeight)
+    ) {
       toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
     } else {
@@ -92,17 +100,35 @@ function ProductAction(props) {
       // let fin=[data]
       // cartData.push(data);
       if (isLoggedIn) {
-        try {
-          const response = await CartAPI.addVariant(data);
+        //add customize product to cart
+        if (data.customModelId) {
+          try {
+            const response = await CartAPI.addCustomize(data);
 
-          if (response.error) {
-            throw new Error(response.error);
-          } else {
-            toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+            if (response.error) {
+              throw new Error(response.error);
+            } else {
+              toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+            }
+          } catch (error) {
+            toast.error("Thêm sản phẩm thất bại");
+            console.log("fail to fetch add category");
           }
-        } catch (error) {
-          toast.error("Thêm sản phẩm thất bại");
-          console.log("fail to fetch add category");
+        }
+        //add variant to cart
+        else {
+          try {
+            const response = await CartAPI.addVariant(data);
+
+            if (response.error) {
+              throw new Error(response.error);
+            } else {
+              toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+            }
+          } catch (error) {
+            toast.error("Thêm sản phẩm thất bại");
+            console.log("fail to fetch add category");
+          }
         }
       } else {
         data = { ...data, productName: product.productName };
@@ -113,6 +139,7 @@ function ProductAction(props) {
       setQuantity(1);
     }
   };
+
   useEffect(() => {
     setColor(
       product?.variantCollection[0]
@@ -154,13 +181,17 @@ function ProductAction(props) {
         <br />
         <span>
           Trọng lượng(g):{" "}
-          <input
-            {...register("weight")}
-            type="number"
-            defaultValue={product ? product.defaultWeight : ""}
-            min={product ? product.minWeight : ""}
-            max={product ? product.maxWeight : ""}
-          />
+          {!product?.maxWeight || !product?.minWeight ? (
+            product?.defaultWeight + "(g)"
+          ) : (
+            <input
+              {...register("weight")}
+              type="number"
+              defaultValue={product ? product.defaultWeight : ""}
+              min={product ? product.minWeight : ""}
+              max={product ? product.maxWeight : ""}
+            />
+          )}
         </span>
         <br />
         <span>Lặn sâu: {product ? product.deepDiving : ""}</span>
@@ -182,6 +213,7 @@ function ProductAction(props) {
                     : null
                 );
                 setBigImgLink(product?.variantCollection[index]?.imageUrl);
+                setcustomize(null);
               }}
             >
               <div
@@ -192,29 +224,60 @@ function ProductAction(props) {
                 }`}
               >
                 <img
-                  src={
-                    createImageUrlByLinkOrFile(
+                  src={createImageUrlByLinkOrFile(
                     product.variantCollection[index].imageUrl
                       ? product.variantCollection[index].imageUrl
-                      : product.imageCollection[0].linkImage)
-                  }
+                      : product.imageCollection[0].linkImage
+                  )}
                   alt="ảnh sản phẩm"
                 />
               </div>
               <span className="d-none">
-                {" "}
                 {product.variantCollection[index].variantId == color
                   ? (takeOut = product.variantCollection[index].quantity)
                   : ""}
               </span>
             </div>
           ))}
+          {console.log("productCustomize?.list")}
+          {console.log(productCustomize?.list)}
+          {productCustomize?.list?.map((item, i) => (
+            <div
+              key={i}
+              className={`box-choose `}
+              onClick={() => {
+                handleChangePrice(item.customPrice + product?.defaultPrice);
+                setColor(null);
+                setcustomize(item);
+                setBigImgLink(item?.thumbnailUrl);
+                setPrice(item.customPrice + product?.defaultPrice);
+              }}
+            >
+              <span className="d-none">{(takeOut = 100)}</span>
+              <div
+                className={`box-color m-1 ${
+                  item.customizeId === customize?.customizeId
+                    ? "clicked-color"
+                    : ""
+                }`}
+              >
+                <img
+                  src={createImageUrlByLinkOrFile(item?.thumbnailUrl)}
+                  alt="ảnh sản phẩm"
+                />
+              </div>
+            </div>
+          ))}
         </div>
         <span>
-          {takeOut <= 0 ? (
-            <span className="text-danger bold">Hết hàng</span>
+          {!customize ? (
+            takeOut <= 0 ? (
+              <span className="text-danger bold">Hết hàng</span>
+            ) : (
+              "còn " + takeOut + " sản phẩm"
+            )
           ) : (
-            "còn " + takeOut + " sản phẩm"
+            "Sản phẩm tùy biến của bạn"
           )}
         </span>
       </div>

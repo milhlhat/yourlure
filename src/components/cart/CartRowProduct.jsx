@@ -126,7 +126,7 @@ function CartRowProduct(props) {
             <td className="d-flex align-items-center">
               <img
                 className="content-fit pointer"
-                src={createImageUrlByLinkOrFile(item?.variantImg)}
+                src={createImageUrlByLinkOrFile(item?.variantImg?item?.variantImg:item?.thumbnailUrl)}
                 width={canChange ? 100 : 50}
                 height={canChange ? 100 : 50}
                 alt="ảnh sản phẩm"

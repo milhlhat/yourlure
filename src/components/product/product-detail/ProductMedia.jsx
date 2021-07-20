@@ -5,13 +5,13 @@ import {useHistory} from 'react-router';
 import { createImageUrlByLinkOrFile } from 'utils/manager-product';
 
 function ProductImage(props) {
-    let {product,setBigImgLink,bigImgLink} = props;
+    let {product,setBigImgLink,bigImgLink, productCustomize} = props;
     const isCustome = true;
     const [selectImg, setSelectImg] = useState(0);
     const history = useHistory();
 
     function goToCustomize() {
-        history.push(`/product/customize/${product.productId}`);
+        history.push(`/product/customize?productId=${product.productId}&isEdit=false`);
     }
 
     const handleChangeImg = (i)=>{

@@ -6,6 +6,10 @@ const CartAPI = {
 		const url = `/cart/add-variant`;
 		return AxiosClient.post(url,param);
 	},
+	addCustomize: (param) => {
+		const url = `/cart/add-customize`;
+		return AxiosClient.post(url,param);
+	},
 	updateQuantity: (id,quantity) => {
 		const url = `/cart/save-quantity?itemId=${id}&quantity=${quantity}`;
 		return AxiosClient.post(url);

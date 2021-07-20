@@ -58,12 +58,6 @@ function ManagerUser(props) {
       value: "SORT_NAME_DESC",
     },
     {
-      display: "Số điện thoại",
-      isAsc: false,
-      sortBy: "phone",
-      value: "SORT_PHONE_ASC",
-    },
-    {
       display: "Số đơn hàng",
       isAsc: true,
       sortBy: "numberOfOrder",
