@@ -37,6 +37,7 @@ function CustomerAddressInput(props) {
     try {
       const response = await UserApi.getAddress();
       setAddress({ data: response, isLoading: false, isSuccess: true });
+      setInfo(response?.find((e)=>e.isDefault===true));
     } catch (error) {
       console.log(error);
       setAddress({ data: null, isLoading: false, isSuccess: false });
@@ -46,6 +47,7 @@ function CustomerAddressInput(props) {
   const setInfo = (item) => {
     setValue("phone", item?.phone);
     setValue("receiverName", item?.userName);
+    console.log(item);
   };
   useEffect(() => {
     fetchCustomAddress();
@@ -83,20 +85,10 @@ function CustomerAddressInput(props) {
             />
           </div>
         )}
+        <input type="text" hidden {...register("phone")} />
+        <input type="text" hidden {...register("receiverName")} />
         {address?.data?.map((item, i) => (
           <div className="form-check my-3" key={"address-item-" + i}>
-            <input
-              type="text"
-              value={item.isDefault ? item.phone : ""}
-              hidden
-              {...register("phone")}
-            />
-            <input
-              type="text"
-              value={item.isDefault ? item.userName : ""}
-              hidden
-              {...register("receiverName")}
-            />
             <input
               className="form-check-input"
               type="radio"
@@ -104,7 +96,8 @@ function CustomerAddressInput(props) {
               id={`addressRadios${i}`}
               value={formatAddress(item)}
               {...register("address")}
-              defaultChecked={newAddress===null?item.isDefault:item?.phone==newAddress?.phone}
+              defaultChecked={item.isDefault}
+              // defaultChecked={newAddress===null?item.isDefault:item?.phone==newAddress?.phone}
               onChange={() => setInfo(item)}
             />
             <label

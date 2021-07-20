@@ -8,6 +8,7 @@ import { setCartGuest } from "redux/cart/cart-guest";
 import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
 import { toast } from "react-toastify";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 function ProductAction(props) {
   const ability = useContext(AbilityContext);
@@ -56,6 +57,7 @@ function ProductAction(props) {
     let data = {
       customModelId: null,
       productId: product.productId,
+      productName: product.productName,
       quantity: quantity,
       variantId: color,
       price: price,
@@ -108,6 +110,7 @@ function ProductAction(props) {
         dispatch(action);
         toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
       }
+      setQuantity(1);
     }
   };
   useEffect(() => {
@@ -190,9 +193,10 @@ function ProductAction(props) {
               >
                 <img
                   src={
+                    createImageUrlByLinkOrFile(
                     product.variantCollection[index].imageUrl
                       ? product.variantCollection[index].imageUrl
-                      : product.imageCollection[0].linkImage
+                      : product.imageCollection[0].linkImage)
                   }
                   alt="ảnh sản phẩm"
                 />

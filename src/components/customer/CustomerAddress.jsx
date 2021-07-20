@@ -5,6 +5,7 @@ import "assets/scss/scss-components/customer/manage-address.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import DEFINELINK from "routes/define-link";
 import { events } from "@react-three/fiber";
+import { toast } from "react-toastify";
 
 function CustomerAddress(props) {
   function formatAddress(address) {
@@ -27,10 +28,10 @@ function CustomerAddress(props) {
       if (response.error) {
         throw new Error(response.error);
       } else {
-        alert("Xóa chỉ thành công");
+        toast.success("Xóa địa chỉ thành công")
       }
     } catch (error) {
-      alert("Xóa chỉ thất bại");
+      toast.warning(error.response.data)
       console.log("fail to fetch delete address");
     }
     fetchCustomAddress();
