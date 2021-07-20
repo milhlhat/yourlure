@@ -13,7 +13,6 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import fpt.custome.yourlure.utils.RandomString;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -23,7 +22,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class DriveService {
@@ -40,6 +38,7 @@ public class DriveService {
 
     /**
      * Creates an authorized Credential object.
+     *
      * @param HTTP_TRANSPORT The network HTTP Transport.
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
@@ -91,7 +90,7 @@ public class DriveService {
     public static List<String> uploadFileToFolder(Drive driveService, String folderId, List<String> filePaths) throws IOException {
         List<String> uploadFileIds = new ArrayList<>();
 
-        for(String path : filePaths){
+        for (String path : filePaths) {
             File fileMetadata = new File();
             fileMetadata.setName(path.substring(path.lastIndexOf("/") + 1));
             fileMetadata.setParents(Collections.singletonList(folderId));
@@ -103,7 +102,7 @@ public class DriveService {
                     .execute();
             System.out.println("File ID: " + file.getId());
         }
-       return uploadFileIds;
+        return uploadFileIds;
     }
 
 
@@ -125,7 +124,47 @@ public class DriveService {
 //        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 //        System.out.println(resource);
 
-        RandomString gen = new RandomString(8, ThreadLocalRandom.current());
-        System.out.println(gen.nextString());
+//        RandomString gen = new RandomString(8, ThreadLocalRandom.current());
+//        System.out.println(gen.nextString());
+        int[] A = {0, 1, 1, 0};
+        System.out.println(q1(A));
+
+        System.out.println(q2(9729));
     }
+
+
+    static int q1(int[] A) {
+        int case1 = 0;
+        int case2 = 0;
+        int n = A.length;
+        if (n == 1) {
+            return 0;
+        }
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0 && A[i] == 0 || i % 2 != 0 && A[i] == 1) {
+                case1++;
+            }
+            if (i % 2 == 0 && A[i] == 1 || i % 2 != 0 && A[i] == 0) {
+                case2++;
+            }
+        }
+        return Math.min(case1, case2);
+    }
+
+    static int q2(int n) {
+        int max = 0;
+        int unit = 10;
+        String nStr = String.valueOf(n);
+
+        while (n != 0) {
+            int r = n % 10;
+            max = Math.max(r, max);
+            n = n / 10;
+        }
+        int maxPos = nStr.indexOf(String.valueOf(max)) + 1;
+        System.out.println("position: " + maxPos);
+        return Integer.parseInt(nStr.substring(0, maxPos) + "5" + nStr.substring(maxPos));
+    }
+
+
 }
