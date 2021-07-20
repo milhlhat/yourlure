@@ -85,7 +85,7 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Object> uploadFile(MultipartFile[] files) {
-        List<String> result = fileService.saveMultipartFiles(files, FileService.IMAGES_DIR);
+        List<String> result = fileService.saveMultipartFiles(files, FileService.UPLOADS);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

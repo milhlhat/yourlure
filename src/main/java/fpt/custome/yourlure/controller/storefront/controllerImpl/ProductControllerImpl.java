@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,9 +83,9 @@ public class ProductControllerImpl implements ProductController {
     @Override
     public ResponseEntity<Resource> download(String path) {
         try{
-            java.io.File file = ResourceUtils.getFile("classpath:" + path);
+            java.io.File file = fileService.getFile(path);
+            System.out.println("file: " + file.getAbsolutePath());
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
             return ResponseEntity.ok()
 //                    .headers(headers)
 //                    .contentLength(file.length())
@@ -94,11 +93,9 @@ public class ProductControllerImpl implements ProductController {
                     .body(resource);
         }catch (FileNotFoundException e) {
             e.printStackTrace();
-            return ResponseEntity.notFound()
-                    .build();
         }
-
-
+        return ResponseEntity.notFound()
+                .build();
     }
 
     Resource loadFileAsResource(String fileName) {
