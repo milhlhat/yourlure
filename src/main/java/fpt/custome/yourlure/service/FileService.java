@@ -20,16 +20,16 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    public static String parentPath = System.getProperty("user.dir") + "/target/classes/";
-    public static final String CUSTOMS_DIR = "customs";
-    public static final String IMAGES_DIR = "uploads";
-    public static final String MODELS_DIR = "models";
-    public static final String TEXTURE_DIR = "textures";
+    public static String parentPath = System.getProperty("user.dir") + "/classes/";
+    public static final String CUSTOMS_DIR = "static/customs";
+    public static final String UPLOADS = "static/uploads";
+    public static final String MODELS_DIR = "static/models";
+    public static final String TEXTURE_DIR = "static/textures";
 
     static {
         new File(parentPath + CUSTOMS_DIR).mkdir();
         new File(parentPath + MODELS_DIR).mkdir();
-        new File(parentPath + IMAGES_DIR).mkdir();
+        new File(parentPath + UPLOADS).mkdir();
         new File(parentPath + TEXTURE_DIR).mkdir();
     }
 
@@ -41,6 +41,7 @@ public class FileService {
 
     public String saveMultipartFile(MultipartFile file, String path, String fileName) {
         Path filePath = Paths.get(parentPath, path, fileName);
+        System.out.println(filePath);
         try {
             Files.write(filePath, file.getBytes());
         } catch (IOException e) {
@@ -99,6 +100,10 @@ public class FileService {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public File getFile(String relativePath){
+        return new File(String.valueOf(Paths.get(parentPath, relativePath)));
     }
 
 }
