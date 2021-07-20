@@ -11,6 +11,7 @@ import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.service.CustomizeModelService;
 import fpt.custome.yourlure.service.FileService;
+import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private ModelMapper mapper;
@@ -180,7 +184,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         CustomizeModel customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
         CustomModelDtoOut output;
         if (customizeModel != null) {
-            output = new CustomModelDtoOut(customizeModel);
+            Float customPrice = orderService.calculateCustomizePrice(customizeModel);
+            output = new CustomModelDtoOut(customizeModel, customPrice);
         } else {
             throw new ValidationException("Người dùng không có tùy biến nào");
         }
@@ -190,7 +195,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Override
     public List<CustomModelDtoOut> getCustomModelsByProductId(HttpServletRequest rq, Long productId) {
         User user = userService.whoami(rq);
-        List<CustomizeModel> customizeModels = customizeModelRepos.findAllByUserUserIdAndModel3dProductProductId(user.getUserId(), productId);
+        List<CustomizeModel> customizeModels = customizeModelRepos.findAllByUserIdAndProductId(user.getUserId(), productId);
         List<CustomModelDtoOut> output = new ArrayList<>();
 
         if (customizeModels.isEmpty()) {
@@ -198,7 +203,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
 
         for (CustomizeModel customizeModel : customizeModels) {
-            output.add(new CustomModelDtoOut(customizeModel));
+            Float customPrice = orderService.calculateCustomizePrice(customizeModel);
+            output.add(new CustomModelDtoOut(customizeModel, customPrice));
         }
 
         return output;
@@ -233,8 +239,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
         customizeModel.setCustomMaterials(materials);
         customizeModel = customizeModelRepos.save(customizeModel);
-
-        CustomModelDtoOut output = new CustomModelDtoOut(customizeModel);
+        Float customPrice = orderService.calculateCustomizePrice(customizeModel);
+        CustomModelDtoOut output = new CustomModelDtoOut(customizeModel, customPrice);
         return output;
     }
 
@@ -274,8 +280,8 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
         customizeModel.setCustomMaterials(materials);
         customizeModel = customizeModelRepos.save(customizeModel);
-
-        CustomModelDtoOut output = new CustomModelDtoOut(customizeModel);
+        Float customPrice = orderService.calculateCustomizePrice(customizeModel);
+        CustomModelDtoOut output = new CustomModelDtoOut(customizeModel, customPrice);
         return output;
     }
 

@@ -21,11 +21,12 @@ public class CustomModelDtoOut {
     private String name;
     private String thumbnailUrl;
     private String url;
+    private Float customPrice;
 
 
     private Collection<MaterialDtoOut> materials;
 
-    public CustomModelDtoOut(CustomizeModel customizeModel){
+    public CustomModelDtoOut(CustomizeModel customizeModel, Float customPrice){
         List<MaterialDtoOut> materialDtoOuts = new ArrayList<>();
 
         if (customizeModel.getCustomMaterials() != null){
@@ -40,6 +41,8 @@ public class CustomModelDtoOut {
         this.thumbnailUrl = customizeModel.getThumbnailUrl();
         this.url = customizeModel.getModel3d().getUrl();
         this.materials = materialDtoOuts;
+        this.customPrice = customPrice;
+
 
 
     }

@@ -2,6 +2,7 @@ package fpt.custome.yourlure.service;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,7 +54,7 @@ public class FileService {
     public List<String> saveMultipartFiles(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileName = new Date().getTime() + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = new Date() + RandomStringUtils.randomAlphabetic(6) + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
             result.add(saveMultipartFile(file, path, fileName));
         }
         return result;
