@@ -321,7 +321,6 @@ function ManagerProductAddNew(props) {
                         methods={methods}
                         label={"Cỡ lưỡi"}
                         placeholder={"Cỡ lưỡi"}
-                        step={"any"}
                         type={"number"}
                         isRequired
                       />
