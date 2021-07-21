@@ -2,10 +2,13 @@ import React from "react";
 import "assets/scss/scss-components/card-product.scss";
 import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
+import { convertToVND } from "utils/format-string";
+import YLButton from "components/custom-field/YLButton";
+import DEFINELINK from "routes/define-link";
 CardProduct.propTypes = {};
 
 function CardProduct(props) {
-  const { product } = props;
+  const { product, canCustom } = props;
   const history = useHistory();
   const handleClick = (id) => {
     history.push(`/product/detail/${id}`);
@@ -40,14 +43,18 @@ function CardProduct(props) {
               {product.productName ? product.productName : ""}
             </span>
             <span className="text-color-primary">
-              {!product
-                ? "N/A"
-                : Number(product.defaultPrice).toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-              {"\u20AB"}
+              {!product ? "N/A" : convertToVND(product.defaultPrice)}
             </span>
+            {canCustom && (
+              <div onClick={(e) => e.stopPropagation()}>
+                <YLButton
+                  variant="primary"
+                  to={`/product/customize?productId=${product.productID}&isEdit=false`}
+                >
+                  Tùy biến ngay
+                </YLButton>
+              </div>
+            )}
           </div>
         </div>
       )}
