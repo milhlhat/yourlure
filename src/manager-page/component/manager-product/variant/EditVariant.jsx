@@ -22,12 +22,13 @@ import { SUPPORTED_IMAGE_FORMATS } from "../../../../constant/product-config";
 
 function EditVariant(props) {
   const productId =
-    new URLSearchParams(props.location.pathname).get("productId") ||
+    props.location.state.productId ||
     new URLSearchParams(props.location.search).get("productId");
   const variantId =
-    new URLSearchParams(props.location.pathname).get("variantId") ||
+    props.location.state.variantId ||
     new URLSearchParams(props.location.search).get("variantId");
 
+  console.log(props, variantId);
   const parentRedirect = props.location?.state?.parentPath;
   const parent =
     DEFINELINK.manager + DEFINELINK.managementProduct + "/edit/" + productId;

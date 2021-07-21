@@ -63,7 +63,7 @@ function ShowVariant(props) {
           variant={"link"}
           to={{
             pathname: addVariantPath,
-            state: { parentPath: currentLocation },
+            state: { parentPath: currentLocation, productId: productId },
           }}
         >
           <h6>
@@ -108,7 +108,11 @@ function ShowVariant(props) {
                   <Link
                     to={{
                       pathname: editVariantPath + variantId,
-                      state: { parentPath: currentLocation },
+                      state: {
+                        parentPath: currentLocation,
+                        productId: productId,
+                        variantId: variantId,
+                      },
                     }}
                   >
                     <i className="fad fa-pencil-alt text-success pointer" />
