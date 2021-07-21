@@ -129,7 +129,45 @@ public class DriveService {
         int[] A = {0, 1, 1, 0};
         System.out.println(q1(A));
 
-        System.out.println(q2(9729));
+        System.out.println(q2(123491));
+    }
+
+    static int solution1(int[] A) {
+
+        // remove negative
+        A = removeNegative(A);
+        // sort
+        for (int i = 0; i < A.length - 1; i++) {
+            if (A[i] > A[i + 1]) {
+                int tempt = A[i];
+                A[i] = A[i + 1];
+                A[i + 1] = tempt;
+            }
+        }
+
+        int run = A[0];
+        if(run > 1){
+            return 1;
+        }
+        for(int i=0; i<A.length; i++){
+            if(A[i] != run){
+                return A[i];
+            }
+            run++;
+        }
+        return A[A.length-1];
+
+    }
+
+
+    static int[] removeNegative(int[] A){
+        List<Integer> result = new ArrayList<>();
+        for (int j : A) {
+            if (j > 0) {
+                result.add(j);
+            }
+        }
+        return result.stream().mapToInt(i->i).toArray();
     }
 
 
@@ -153,17 +191,14 @@ public class DriveService {
 
     static int q2(int n) {
         int max = 0;
-        int unit = 10;
         String nStr = String.valueOf(n);
-
         while (n != 0) {
             int r = n % 10;
             max = Math.max(r, max);
             n = n / 10;
         }
-        int maxPos = nStr.indexOf(String.valueOf(max)) + 1;
-        System.out.println("position: " + maxPos);
-        return Integer.parseInt(nStr.substring(0, maxPos) + "5" + nStr.substring(maxPos));
+        nStr = nStr.replaceAll(max + "", max + "5");
+        return Integer.parseInt(nStr);
     }
 
 

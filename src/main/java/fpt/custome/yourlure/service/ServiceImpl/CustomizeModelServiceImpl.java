@@ -298,8 +298,18 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     }
 
     @Override
-    public Collection<CustomizeModel> findAllCustomizeModelByUser(HttpServletRequest rq) {
-        return userService.whoami(rq).getCustomizeModels();
+    public Collection<CustomModelDtoOut> findAllCustomizeModelByUser(HttpServletRequest rq) {
+        Collection<CustomizeModel> customizeModels = userService.whoami(rq).getCustomizeModels();
+        List<CustomModelDtoOut> results = new ArrayList<>();
+        for (CustomizeModel customizeModel : customizeModels) {
+            Float customPrice = orderService.calculateCustomizePrice(customizeModel);
+            CustomModelDtoOut output = new CustomModelDtoOut(customizeModel, customPrice);
+
+            results.add(output);
+
+        }
+
+        return results;
     }
 
 }

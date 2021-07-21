@@ -22,6 +22,9 @@ public class CustomModelDtoOut {
     private String thumbnailUrl;
     private String url;
     private Float customPrice;
+    private Long productId;
+    private String productName;
+    private Float defaultPrice;
 
 
     private Collection<MaterialDtoOut> materials;
@@ -42,6 +45,9 @@ public class CustomModelDtoOut {
         this.url = customizeModel.getModel3d().getUrl();
         this.materials = materialDtoOuts;
         this.customPrice = customPrice;
+        this.productId = customizeModel.getModel3d().getProduct().getProductId();
+        this.productName = customizeModel.getModel3d().getProduct().getProductName();
+        this.defaultPrice = customizeModel.getModel3d().getProduct().getDefaultPrice();
 
 
 

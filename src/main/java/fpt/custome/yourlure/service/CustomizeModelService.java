@@ -4,7 +4,6 @@ import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
-import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,7 @@ public interface CustomizeModelService {
 
     Boolean deleteCustomizeModel(HttpServletRequest rq, Long customizeModelId);
 
-    Collection<CustomizeModel> findAllCustomizeModelByUser(HttpServletRequest rq);
+    Collection<CustomModelDtoOut> findAllCustomizeModelByUser(HttpServletRequest rq);
 
 
 }
