@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,9 +51,18 @@ public class ProductControllerImpl implements ProductController {
 //    }
 
     @Override
-    public ResponseEntity<Optional<ProductsDetailDtoOut>> getById(Long id) {
-        ProductsDetailDtoOut dtoOut = productService.getById(id);
-        return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
+    public ResponseEntity<Object> getById(Long id) {
+        try {
+            ProductsDetailDtoOut dtoOut = productService.getById(id);
+            return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
@@ -82,7 +92,7 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     public ResponseEntity<Resource> download(String path) {
-        try{
+        try {
             java.io.File file = fileService.getFile(path);
             System.out.println("file: " + file.getAbsolutePath());
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
@@ -91,7 +101,7 @@ public class ProductControllerImpl implements ProductController {
 //                    .contentLength(file.length())
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(resource);
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return ResponseEntity.notFound()
@@ -103,7 +113,7 @@ public class ProductControllerImpl implements ProductController {
             Path fileStorageLocation = null;
             Path filePath = fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 System.out.println("File not found " + fileName);
@@ -128,7 +138,7 @@ public class ProductControllerImpl implements ProductController {
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 

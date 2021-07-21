@@ -17,15 +17,33 @@ public class AdminVariantControllerImpl implements AdminVariantController {
     private VariantService variantService;
 
     @Override
-    public ResponseEntity<Boolean> save(VariantDtoInput variantDtoInput) {
-        Boolean result = variantService.save(variantDtoInput);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> save(VariantDtoInput variantDtoInput) {
+        try {
+            Boolean result = variantService.save(variantDtoInput);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
-    public ResponseEntity<Boolean> update(VariantDtoInput variantDtoInput, Long id) {
-        Boolean result = variantService.update(variantDtoInput, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> update(VariantDtoInput variantDtoInput, Long id) {
+        try {
+            Boolean result = variantService.update(variantDtoInput, id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override

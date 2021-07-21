@@ -89,14 +89,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductsDetailDtoOut getById(Long id) {
-        try {
-            Optional<Product> findProduct = productJPARepos.findById(id);
-            return findProduct.map(product -> mapper.map(product, ProductsDetailDtoOut.class)).orElse(null);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        Optional<Product> findProduct = productJPARepos.findById(id);
+        if (findProduct == null) {
+            throw new ValidationException("Mã sản phẩm không tồn tại");
         }
-        return null;
+        return findProduct.map(product -> mapper.map(product, ProductsDetailDtoOut.class)).orElse(null);
+
     }
 
     @Override

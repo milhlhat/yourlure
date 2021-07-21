@@ -1,6 +1,5 @@
 package fpt.custome.yourlure.controller.storefront;
 
-import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
@@ -20,7 +19,7 @@ public interface ProductController {
 //    ResponseEntity<ProductOutPageable> getAll(@RequestParam(value = "page") Filter filter);
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<ProductsDetailDtoOut>> getById(@PathVariable Long id);
+    ResponseEntity<Object> getById(@PathVariable Long id);
 
     @GetMapping("/best-seller")
     ResponseEntity<List<ProductsDtoOut>> getBestSeller();

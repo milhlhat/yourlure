@@ -10,11 +10,11 @@ public interface AdminVariantController {
 
     @PostMapping("/save")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> save(@RequestBody VariantDtoInput variantDtoInput);
+    ResponseEntity<Object> save(@RequestBody VariantDtoInput variantDtoInput);
 
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> update(@RequestBody VariantDtoInput variantDtoInput, @RequestParam Long id);
+    ResponseEntity<Object> update(@RequestBody VariantDtoInput variantDtoInput, @RequestParam Long id);
 
     @DeleteMapping("/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
