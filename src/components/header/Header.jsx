@@ -1,13 +1,11 @@
+import { Can } from "ability/can";
 import logo from "assets/images/logo/logo-social.png";
 import "assets/scss/scss-components/header.scss";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import {
-  Collapse, Nav, Navbar,
-  NavbarToggler, NavItem
-} from "reactstrap";
+import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from "reactstrap";
 import { setFilter } from "redux/product-action/fetch-filter";
 import DEFINELINK from "routes/define-link";
 
@@ -119,20 +117,29 @@ function Header(props) {
               <div className="group-link">
                 <div
                   className={`group-link-item ${
-                    path.indexOf(DEFINELINK.product) > -1 ? "active" : ""
+                    path === DEFINELINK.product ? "active" : ""
                   }`}
                 >
-                  <Link className="nav-link item-hover" to="/product">
+                  <Link className="nav-link item-hover" to={DEFINELINK.product}>
                     Sản phẩm
                   </Link>
                 </div>
                 <div>
-                  <Link
-                    className="nav-link item-hover"
-                    to="/product/customize?productId=14&isEdit=false"
+                  <div
+                    className={`group-link-item ${
+                      path ===
+                      DEFINELINK.product + DEFINELINK.productShowCustomizes
+                        ? "active"
+                        : ""
+                    }`}
                   >
-                    Tùy biến
-                  </Link>
+                    <Link
+                      className="nav-link item-hover"
+                      to={DEFINELINK.product + DEFINELINK.productShowCustomizes}
+                    >
+                      Tùy biến
+                    </Link>
+                  </div>
                 </div>
                 <div
                   className={`group-link-item ${
@@ -152,6 +159,17 @@ function Header(props) {
                     About
                   </Link>
                 </div>
+                <Can do="read-write" on="admin-staff" passThrough>
+                  {(allowed) =>
+                    allowed && (
+                      <div>
+                        <Link className="nav-link item-hover" to="/manager">
+                          Quản lý
+                        </Link>
+                      </div>
+                    )
+                  }
+                </Can>
               </div>
               <div className="group-icon">
                 <div className="pt-1" ref={wrapperRef}>

@@ -32,19 +32,10 @@ function Sidebar(props) {
               href="#"
               className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
             >
-              <span className="fs-4">Sidebar</span>
+              <span className="fs-4">YourLure</span>
             </a>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-              <li className="nav-item">
-                <Link
-                  to="/manager/home"
-                  className={`nav-link ${path.indexOf("manager/home") > -1 ? "active" : "link-dark"
-                    }`}
-                >
-                  <span className="text-side-bar"> Home</span>
-                </Link>
-              </li>
               <Can do="read-write" on="admin" passThrough>
                 {(allowed) =>
                   allowed ? (
@@ -153,7 +144,7 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Campaign</span>
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/manager/about"
                   className={`nav-link ${path.indexOf("manager/about") > -1
@@ -164,7 +155,7 @@ function Sidebar(props) {
                   <i className="fal fa-box-heart"></i>
                   <span className="text-side-bar"> About</span>
                 </Link>
-              </li>
+              </li> */}
               {/* <li>
                 <Link
                 onClick={handleLogout}

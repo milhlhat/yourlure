@@ -2,9 +2,8 @@ import { Can } from "ability/can";
 import NoPermistion from "components/error-notify/NoPermistion";
 import ManagerLayout from "layout/ManagerLayout";
 import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
-
 
 const ManagerUser = React.lazy(() => import("./manager-user-route.js"));
 const ManagerProduct = React.lazy(() => import("./manager-product-route.js"));
@@ -16,7 +15,6 @@ const ManagerOrder = React.lazy(() => import("./manager-order-route"));
 const CampainRoute = React.lazy(() => import("./manager-campaign-route"));
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 
-
 function ManagementRouter(props) {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;
@@ -26,6 +24,7 @@ function ManagementRouter(props) {
         allowed ? (
           <ManagerLayout>
             <Switch>
+              <Redirect exact from="/manager" to={path + DEFINELINK.managementUser} />
               <Route
                 path={path + DEFINELINK.managementUser}
                 component={ManagerUser}
@@ -38,19 +37,24 @@ function ManagementRouter(props) {
                 path={path + DEFINELINK.managementCategory}
                 component={ManagerCategory}
               />
-              <Route path={path + DEFINELINK.managementFish}
+              <Route
+                path={path + DEFINELINK.managementFish}
                 component={ManagerFish}
               />
-              <Route path={path + DEFINELINK.managementStaff}
+              <Route
+                path={path + DEFINELINK.managementStaff}
                 component={ManagerStaff}
               />
-              <Route path={path + DEFINELINK.managementVoucher}
+              <Route
+                path={path + DEFINELINK.managementVoucher}
                 component={ManagerVoucher}
               />
-              <Route path={path + DEFINELINK.managementOrder}
+              <Route
+                path={path + DEFINELINK.managementOrder}
                 component={ManagerOrder}
               />
-              <Route path={path + DEFINELINK.managementCampaign}
+              <Route
+                path={path + DEFINELINK.managementCampaign}
                 component={CampainRoute}
               />
             </Switch>

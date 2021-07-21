@@ -7,6 +7,7 @@ const Product = React.lazy(() => import('store-front-pages/Product'));
 const ProductDetail = React.lazy(() => import('store-front-pages/ProductDetail'));
 const ProductCustomize = React.lazy(() => import('store-front-pages/CustomizeLure'));
 const SearchProduct = React.lazy(() => import('store-front-pages/Search'));
+const ShowCustomizes = React.lazy(() => import('store-front-pages/ShowCustomizes'));
 const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
 function ProductRoute() {
 	const match = useRouteMatch();
@@ -17,6 +18,7 @@ function ProductRoute() {
 			<Route path={path + DEFINELINK.productDetail} component={ProductDetail} />
 			<Route path={path + DEFINELINK.productCustomize} component={ProductCustomize} />
 			<Route path={path + DEFINELINK.productSearch} component={SearchProduct} />
+			<Route path={path + DEFINELINK.productShowCustomizes} component={ShowCustomizes} />
 			<Route component={NotFound} />
 		</Switch>
 	);

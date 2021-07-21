@@ -31,6 +31,7 @@ import { setCaptureModel } from "redux/customize-action/capture-model";
 import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DEFINELINK from "../routes/define-link";
+import AddNameCustomize from "components/orther/AddNameCustomize";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -168,7 +169,7 @@ function RenderModel(props) {
       let submitParams = {
         model3dId: captureModel.modelId,
         customizeId: captureModel.customizeId,
-        name: "your-custom",
+        name: captureModel.name,
         materials: customizeInfo,
         thumbnail: {
           content: imgCapture,
@@ -321,9 +322,9 @@ function ExportCustomInformation(props) {
   const dispatch = props.dispatch;
   const exportStt = props.exportStt;
 
+  const [openDialog, setOpenDialog] = useState(false);
   const onCapture = () => {
-    const action = setCaptureModel({ isCapture: true });
-    dispatch(action);
+    setOpenDialog(true)
   };
   return (
     <div className="export">
@@ -341,6 +342,10 @@ function ExportCustomInformation(props) {
           "Xong"
         )}
       </YLButton>
+      <AddNameCustomize
+        open={openDialog}
+        setOpen={setOpenDialog}
+      />
     </div>
   );
 }
@@ -403,6 +408,7 @@ export default function Customize(props) {
       console.log("fail to fetch data");
     }
   };
+
   useEffect(async () => {
     await fetchMaterialInfo(productId, isEdit);
     // await fetchProduct();

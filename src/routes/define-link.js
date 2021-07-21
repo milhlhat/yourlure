@@ -21,10 +21,13 @@ const DEFINELINK = {
   cart: "/cart",
   payment: "/payment", // /cart/payment
 
+
+  //product
   product: "/product",
   productDetail: "/detail/:id", // /product/detail/:id
   productCustomize: "/customize", // /product/customize/:id
   productSearch: "/search", // /product/search
+  productShowCustomizes: "/show-customizes", // /product/search
 
   //path for manager page
   manager: "/manager",
