@@ -51,6 +51,10 @@ const ProductAPI = {
     const url = `/model3d/find-custom-by-product-id/${params}`;
     return AxiosClient.get(url);
   },
+  getAllCustomize: () => {
+    const url = `/model3d/all-customize`;
+    return AxiosClient.get(url);
+  },
 };
 export const {
   getBestSeller,
