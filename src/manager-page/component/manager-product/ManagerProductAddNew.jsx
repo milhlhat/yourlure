@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 
 import "./scss/manage-product-and-variant.scss";
@@ -19,6 +18,11 @@ import DEFINELINK from "../../../routes/define-link";
 import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
 import { VALIADATE_SCHEMA_PRODUCT_BASE } from "./ManagerProductEdit";
 import { createVariant } from "../../../api/manager-variant-api";
+import {
+  ADD_PRODUCT_STEPS,
+  SUPPORTED_IMAGE_FORMATS,
+} from "../../../constant/product-config";
+import Stepper from "./stepper/Stepper";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -126,7 +130,7 @@ function ManagerProductAddNew(props) {
   };
 
   const [changeWeight, setChangeWeight] = useState(false);
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+
   const schema = yup.object().shape({
     ...VALIADATE_SCHEMA_PRODUCT_BASE,
     description: yup.string().required("Mô tả không được để trống"),
@@ -134,19 +138,20 @@ function ManagerProductAddNew(props) {
       .mixed()
       .test("fileType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", () => {
         for (const file of fileImages) {
-          if (!SUPPORTED_FORMATS.includes(file.type)) {
+          if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
             return false;
           }
         }
         return true;
       })
-      .test("fileRequired", "Vui lòng chọn ảnh .png, .jpg, .jpeg", () => {
+      .test("fileRequired", "Vui lòng chọn ảnh sản phẩm", () => {
         return fileImages.length > 0;
       }),
   });
 
   const methods = useForm({
     resolver: yupResolver(schema),
+    mode: "onSubmit",
   });
   const {
     register,
@@ -194,7 +199,7 @@ function ManagerProductAddNew(props) {
       history.push(
         `${
           DEFINELINK.manager + DEFINELINK.managementProduct
-        }/edit/${response}#customizable`
+        }/edit/${response}?continuesAdd=true#imgList`
       );
     } catch (e) {
       setSubmitStatus({
@@ -316,6 +321,8 @@ function ManagerProductAddNew(props) {
                         methods={methods}
                         label={"Cỡ lưỡi"}
                         placeholder={"Cỡ lưỡi"}
+                        step={"any"}
+                        type={"number"}
                         isRequired
                       />
                     </td>
@@ -345,6 +352,7 @@ function ManagerProductAddNew(props) {
                         name={"defaultWeight"}
                         methods={methods}
                         label={"Trọng lượng"}
+                        type={"number"}
                         placeholder={"(g)"}
                         isRequired
                       />
@@ -371,7 +379,7 @@ function ManagerProductAddNew(props) {
                     <td>
                       {changeWeight && (
                         <div className="d-flex flex-wrap justify-content-between">
-                          <div>
+                          <div className={"w-100"}>
                             <YlInputFormHook
                               name={"minWeight"}
                               methods={methods}
@@ -381,7 +389,7 @@ function ManagerProductAddNew(props) {
                               isRequired
                             />
                           </div>
-                          <div>
+                          <div className={"w-100"}>
                             <YlInputFormHook
                               name={"maxWeight"}
                               methods={methods}
@@ -485,6 +493,7 @@ function ManagerProductAddNew(props) {
           <div className={"sticky-bar-bottom"}>
             <div className="col-12 bg-white bg-shadow submit-button-form">
               <YLButton variant="danger" type="submit" value="Hủy" />
+              <Stepper steps={ADD_PRODUCT_STEPS} />
               <YLButton
                 variant="primary"
                 type="submit"

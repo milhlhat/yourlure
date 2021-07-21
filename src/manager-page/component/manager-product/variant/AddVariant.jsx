@@ -14,12 +14,15 @@ import { createVariant } from "../../../../api/manager-variant-api";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SUPPORTED_IMAGE_FORMATS } from "../../../../constant/product-config";
 
 function AddVariant(props) {
   const productId = props.match.params.productId;
+
+  const parentRedirect = props.location?.state?.parentPath;
   const parent =
     DEFINELINK.manager + DEFINELINK.managementProduct + "/edit/" + productId;
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+
   const schema = yup.object().shape({
     variantName: yup
       .string()
@@ -31,7 +34,7 @@ function AddVariant(props) {
       .mixed()
       .test("fileType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
         if (value) {
-          return SUPPORTED_FORMATS.includes(value[0].type);
+          return SUPPORTED_IMAGE_FORMATS.includes(value[0].type);
         } else {
           return false;
         }
@@ -47,7 +50,6 @@ function AddVariant(props) {
 
   const history = useHistory();
   const watchFile = useWatch({ control, name: "file", defaultValue: null });
-  console.log(watchFile);
   const [product, setProduct] = useState({});
   const handleDeleteFile = () => {
     setValue("file", null);
@@ -59,7 +61,7 @@ function AddVariant(props) {
     data.imageUrl = fileUpload[0];
     await createVariant(data);
     toast.success("Thêm biến biến thể thành công");
-    history.push(parent);
+    history.push(parentRedirect || parent);
   };
   useEffect(async () => {
     try {
@@ -97,8 +99,10 @@ function AddVariant(props) {
                 <YlInputFormHook
                   name={"newPrice"}
                   methods={methods}
-                  label={"Giá"}
-                  placeholder={""}
+                  label={"Giá (\u20AB)"}
+                  placeholder={"\u20AB"}
+                  type={"number"}
+                  step={"any"}
                   isRequired
                 />
               </td>
@@ -145,7 +149,11 @@ function AddVariant(props) {
           </tbody>
         </table>
         <div className={"d-flex justify-content-center gap-3"}>
-          <YLButton variant={"danger"} to={parent} width={"70px"}>
+          <YLButton
+            variant={"danger"}
+            to={parentRedirect || parent}
+            width={"70px"}
+          >
             Huỷ
           </YLButton>
 

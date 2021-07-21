@@ -9,6 +9,7 @@ function ChooseProductImage(props) {
   const {
     setValue,
     control,
+
     formState: { errors },
   } = methods;
 

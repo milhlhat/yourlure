@@ -15,30 +15,45 @@ import {
   getVariant,
   updateVariant,
 } from "../../../../api/manager-variant-api";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { SUPPORTED_IMAGE_FORMATS } from "../../../../constant/product-config";
 
 function EditVariant(props) {
-  const productId = new URLSearchParams(props.location.search).get("productId");
-  const variantId = new URLSearchParams(props.location.search).get("variantId");
+  const productId =
+    new URLSearchParams(props.location.pathname).get("productId") ||
+    new URLSearchParams(props.location.search).get("productId");
+  const variantId =
+    new URLSearchParams(props.location.pathname).get("variantId") ||
+    new URLSearchParams(props.location.search).get("variantId");
 
+  const parentRedirect = props.location?.state?.parentPath;
   const parent =
     DEFINELINK.manager + DEFINELINK.managementProduct + "/edit/" + productId;
 
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
   const schema = yup.object().shape({
     variantName: yup
       .string()
       .typeError("Tên không được để trống")
       .required("Tên sản phẩm không được để trống"),
-    newPrice: yup.number().typeError("Giá là số dương"),
-    quantity: yup.number().typeError("Số lượng là số dương"),
-    file: yup
+    newPrice: yup
+      .number()
+      .typeError("Giá không được để trống")
+      .min(1, "Giá phải lớn hơn 0"),
+    quantity: yup
+      .number()
+      .typeError("Số lượng không được để trống")
+      .min(1, "Số lượng phải lớn hơn 0"),
+    fileUpload: yup
       .mixed()
+      .test("fileType", "Vui lòng chọn 1 ảnh", (value) => {
+        return value;
+      })
       .test("fileType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
+        if (typeof value === "string") return true;
         if (value) {
-          return SUPPORTED_FORMATS.includes(value[0].type);
+          return SUPPORTED_IMAGE_FORMATS.includes(value?.type);
         } else {
           return false;
         }
@@ -60,17 +75,19 @@ function EditVariant(props) {
     defaultValue: null,
   });
 
-  const [product, setProduct] = useState({});
   const handleDeleteFile = () => {
     setValue("file", null);
     setValue("fileUpload", null);
   };
 
   const submitVariant = async (data) => {
-    const fileUpload = await uploadMultiFiles([data.fileUpload]);
-    data.imageUrl = fileUpload[0];
+    if (typeof data.fileUpload !== "string") {
+      const fileUpload = await uploadMultiFiles([data.fileUpload]);
+      data.imageUrl = fileUpload[0];
+    }
+
     await updateVariant(variantId, data);
-    history.push(parent);
+    history.push(parentRedirect || parent);
   };
 
   const handleChangeFile = (e) => {
@@ -81,7 +98,7 @@ function EditVariant(props) {
     try {
       const response = await getVariant(id);
       console.log(response);
-      setProduct(response);
+
       setValue("productId", productId);
       setValue("variantId", id);
       setValue("newPrice", response.newPrice);
@@ -120,8 +137,10 @@ function EditVariant(props) {
                 <YlInputFormHook
                   name={"newPrice"}
                   methods={methods}
-                  label={"Giá"}
-                  placeholder={""}
+                  label={"Giá (\u20AB)"}
+                  placeholder={"\u20AB"}
+                  type={"number"}
+                  step={"any"}
                   isRequired
                 />
               </td>
@@ -155,7 +174,9 @@ function EditVariant(props) {
                     {...register("file")}
                     onChange={handleChangeFile}
                   />
-                  <span className="error-message">{errors?.file?.message}</span>
+                  <span className="error-message">
+                    {errors?.fileUpload?.message}
+                  </span>
                 </div>
               </td>
               <td>
@@ -176,12 +197,16 @@ function EditVariant(props) {
           </tbody>
         </table>
         <div className={"d-flex justify-content-center gap-3"}>
-          <YLButton variant={"danger"} to={parent} width={"70px"}>
+          <YLButton
+            variant={"danger"}
+            to={parentRedirect || parent}
+            width={"70px"}
+          >
             Huỷ
           </YLButton>
 
           <YLButton type={"submit"} variant={"primary"} width={"150px"}>
-            Tạo biến thể
+            Cập nhật
           </YLButton>
         </div>
       </form>

@@ -6,11 +6,21 @@ import DEFINELINK from "../../../../routes/define-link";
 import { deleteVariant } from "../../../../api/manager-variant-api";
 import { getProductByID } from "../../../../api/manager-product-api";
 import ConfirmPopupV2 from "../../../../components/confirm-popup/ConfirmPopupV2";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function ShowVariant(props) {
   const { productId } = props;
+  const location = useLocation();
+  const currentLocation = location.pathname + location.search + location.hash;
+  const editVariantPath = `${
+    DEFINELINK.manager + DEFINELINK.product + DEFINELINK.managerVariantEdit
+  }?productId=${productId}&variantId=`;
+  const addVariantPath =
+    DEFINELINK.manager +
+    DEFINELINK.product +
+    "/add-variant-by-product-id/" +
+    productId;
   const methods = useForm();
   const { control } = methods;
   const { fields, append, remove } = useFieldArray({
@@ -51,12 +61,10 @@ function ShowVariant(props) {
         </h5>
         <YLButton
           variant={"link"}
-          to={
-            DEFINELINK.manager +
-            DEFINELINK.product +
-            "/add-variant-by-product-id/" +
-            productId
-          }
+          to={{
+            pathname: addVariantPath,
+            state: { parentPath: currentLocation },
+          }}
         >
           <h6>
             <i className="fas fa-tasks-alt" /> Thêm biến thể
@@ -98,11 +106,10 @@ function ShowVariant(props) {
                 <td>{quantity}</td>
                 <td>
                   <Link
-                    to={`${
-                      DEFINELINK.manager +
-                      DEFINELINK.product +
-                      DEFINELINK.managerVariantEdit
-                    }?productId=${productId}&variantId=${variantId}`}
+                    to={{
+                      pathname: editVariantPath + variantId,
+                      state: { parentPath: currentLocation },
+                    }}
                   >
                     <i className="fad fa-pencil-alt text-success pointer" />
                   </Link>

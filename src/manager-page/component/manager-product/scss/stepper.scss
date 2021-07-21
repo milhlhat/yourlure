@@ -1,0 +1,11 @@
+@import "src/assets/scss/base/variable";
+.stepper {
+  width: 70%;
+}
+.MuiStepper-root { padding: 0}
+.MuiStepIcon-active ,.MuiStepIcon-completed,.MuiStepLabel-completed {
+  color: $primary !important;
+}
+.button-step {
+  cursor: default !important;
+}

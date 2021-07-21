@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { getUniqueFiles } from "../../../utils/prototype";
 import { createImageUrlByLinkOrFile } from "../../../utils/manager-product";
 import { useFieldArray } from "react-hook-form";
@@ -6,6 +6,7 @@ import { useFieldArray } from "react-hook-form";
 function ChooseTextureImage(props) {
   const { name, methods, nestedFieldIndex, materialId } = props;
   const fieldNewTextures = `newTextureFiles[${nestedFieldIndex}]`;
+  const fieldTextureBeforeUpload = `${name}.textureBeforeUpload`;
   const { setValue } = methods;
 
   const [newTextures, setNewTextures] = useState([]);
@@ -22,6 +23,7 @@ function ChooseTextureImage(props) {
         materialId: materialId || nestedFieldIndex,
         files: newFiles,
       });
+      setValue(fieldTextureBeforeUpload, newFiles);
     }
   };
 
@@ -34,6 +36,7 @@ function ChooseTextureImage(props) {
     });
     setNewTextures(temp);
     setValue(fieldNewTextures, { materialId: materialId, files: temp });
+    setValue(fieldTextureBeforeUpload, temp);
   };
 
   const RenderPhotoOld = (props) => {

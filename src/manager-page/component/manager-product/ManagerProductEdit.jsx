@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import * as Yup from "yup";
+
 import "./scss/manage-product-and-variant.scss";
 import ManagerProductAPI, {
   creatModel,
@@ -23,15 +22,18 @@ import ChooseTextureImage from "./ChooseTextureImage";
 import { Tooltip } from "@material-ui/core";
 import ShowVariant from "./variant/ShowVariant";
 import ProductAPI from "../../../api/product-api";
-import {
-  promiseTextureBase64,
-  promiseTexturesFiles,
-} from "../../../utils/manager-product";
+import { promiseTexturesFiles } from "../../../utils/manager-product";
 import { toast } from "react-toastify";
 import DEFINELINK from "../../../routes/define-link";
 import Loading from "../../../components/Loading";
 import ErrorLoad from "../../../components/error-notify/ErrorLoad";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {
+  ADD_PRODUCT_STEPS,
+  SUPPORTED_IMAGE_FORMATS,
+} from "../../../constant/product-config";
+
+import HorizontalStepper from "./stepper/Stepper";
 
 export const VALIADATE_SCHEMA_PRODUCT_BASE = {
   productName: yup
@@ -63,8 +65,8 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     otherwise: yup
       .number()
       .typeError("Trọng lượng không được để trống")
-      .max(Yup.ref("defaultWeight"), "Nhỏ hơn hoặc bằng trọng lượng mặc định")
-      .lessThan(Yup.ref("maxWeight"), `Nhỏ hơn trọng lượng tối đa`),
+      .max(yup.ref("defaultWeight"), "Nhỏ hơn hoặc bằng trọng lượng mặc định")
+      .lessThan(yup.ref("maxWeight"), `Nhỏ hơn trọng lượng tối đa`),
   }),
   maxWeight: yup.mixed().when("isCustomizeWeight", {
     is: false,
@@ -72,8 +74,8 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     otherwise: yup
       .number()
       .typeError("Trọng lượng không được để trống")
-      .min(Yup.ref("defaultWeight"), "Lớn hơn hoặc bằng trọng lượng mặc định")
-      .moreThan(Yup.ref("minWeight"), `Lớn hơn trọng lượng tối thiểu`),
+      .min(yup.ref("defaultWeight"), "Lớn hơn hoặc bằng trọng lượng mặc định")
+      .moreThan(yup.ref("minWeight"), `Lớn hơn trọng lượng tối thiểu`),
   }),
   description: yup.string().required("Mô tả không được để trống"),
 };
@@ -82,6 +84,10 @@ function ManagerProductEdit(props) {
   const history = useHistory();
 
   const productId = props.match.params.id;
+  const continuesAdd = new URLSearchParams(props.location.search).get(
+    "continuesAdd"
+  );
+
   const [product, setProduct] = useState({
     data: {},
     loading: true,
@@ -89,49 +95,99 @@ function ManagerProductEdit(props) {
   });
 
   //validate form
-  const MODEL_ERROR_MESSAGES = `
--Tên hiển thị không được để trống.
--Những thành phần cho phép thêm ảnh phải có ảnh`;
+
   const schema = yup.object().shape({
     ...VALIADATE_SCHEMA_PRODUCT_BASE,
 
-    imgList: yup.mixed().when(["newImages"], {
-      is: (newImages) => {
-        console.log(newImages);
-        return newImages.length < 1;
-      },
-      then: yup.array().min(1, "Vui lòng chọn ảnh .png, .jpg, .jpeg"),
-      otherwise: yup.array().min(0),
+    imgList: yup
+      .mixed()
+      .when(["newImages"], {
+        is: (newImages) => {
+          console.log(newImages);
+          return newImages.length < 1;
+        },
+        then: yup.array().min(1, "Vui lòng chọn ảnh sản phẩm"),
+        otherwise: yup.array().min(0),
+      })
+      .test(
+        "prodImgType",
+        "Vui lòng chọn ảnh .png, .jpg, .jpeg",
+        (value, context) => {
+          const newImgs = context.parent.newImages;
+          for (const file of newImgs) {
+            if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
+              return false;
+            }
+          }
+          return true;
+        }
+      ),
+    model: yup.mixed().when("customizable", {
+      is: true,
+      then: yup
+        .mixed()
+        .test("modelRq", "Vui lòng chọn 1 file model", (value, context) => {
+          console.log(value);
+          if (hasModel) return true;
+          else {
+            if (!value) return false;
+            else {
+              const v = value[0] && value[0]?.name ? value[0].name : false;
+              return v;
+            }
+          }
+        })
+        .test(
+          "modelType",
+          "Vui lòng chọn 1 file model định dạng .glb",
+          (value) => {
+            if (value) {
+              const v = value[0] && value[0]?.name ? value[0].name : "";
+              if (v.endsWith(".glb")) return true;
+            } else return false;
+          }
+        ),
+      otherwise: yup.mixed().nullable(),
     }),
-    // defaultMaterials: yup
-    //   .mixed()
-    //   .when(["customizable"], {
-    //     is: true,
-    //     then: yup.array().min(1, "Vui lòng chọn model"),
-    //     otherwise: yup.array().min(0),
-    //   })
-    //   .test(
-    //     "requiredVnName",
-    //     "Tên hiển thị không được để trống",
-    //     (materials) => {
-    //       console.log(materials);
-    //       if (materials.length > 0) {
-    //         materials.forEach((item) => {
-    //           if (!item.vnName) return false;
-    //         });
-    //         return true;
-    //       } else {
-    //         return false;
-    //       }
-    //     }
-    //   ),
+
+    defaultMaterials: yup.mixed().when("customizable", {
+      is: true,
+      then: yup.array().of(
+        yup.object().shape({
+          vnName: yup.string().required("Tên hiển thị không được để trống"),
+          textureBeforeUpload: yup
+            .mixed()
+            .test(
+              "rqTexture",
+              "Vui lòng chọn ảnh texture .png, .jpg, .jpeg",
+              (value, testContext) => {
+                const parent = testContext.parent;
+                const canAddImg = parent?.canAddImg;
+
+                if (canAddImg) {
+                  const bf = parent.textureBeforeUpload?.length
+                    ? parent.textureBeforeUpload.length
+                    : 0;
+                  const tt = parent.textures?.length
+                    ? parent.textures.length
+                    : 0;
+                  return tt + bf > 0;
+                } else {
+                  return true;
+                }
+              }
+            ),
+        })
+      ),
+      otherwise: yup.mixed().nullable(),
+    }),
   });
   const methods = useForm({
     resolver: yupResolver(schema),
+    mode: "onSubmit",
   });
   const {
     register,
-    unregister,
     watch,
     control,
     formState: { errors, isSubmitting },
@@ -191,7 +247,7 @@ function ManagerProductEdit(props) {
   useEffect(() => {
     const fetchDataByProductId = async (productId) => {
       setProduct({ loading: true, success: false });
-      console.log(productId);
+
       try {
         const responseFish = await ProductAPI.getAllFish();
 
@@ -208,7 +264,6 @@ function ManagerProductEdit(props) {
         let currentModel = null;
         try {
           currentModel = await ManagerProductAPI.getModelByProductId(productId);
-          console.log(currentModel);
         } catch (e) {
           console.log(e);
         }
@@ -238,6 +293,7 @@ function ManagerProductEdit(props) {
 
   const onChangeInputFileModel = (e) => {
     const file = e.target.files[0];
+
     setValue("file3dUpload", [...e.target.files]);
     remove();
     if (file) {
@@ -252,7 +308,11 @@ function ManagerProductEdit(props) {
 
         scene.traverse(function (object) {
           if (object.material)
-            materials.push({ defaultName: object.material.name });
+            materials.push({
+              defaultName: object.material.name,
+              textureBeforeUpload: [],
+              listIdTexturesRemove: [],
+            });
         });
 
         append(materials);
@@ -272,7 +332,9 @@ function ManagerProductEdit(props) {
       return [];
     }
   };
+  // console.log(watch());
   const onSubmit = async (data) => {
+    console.log("form submit", data);
     try {
       //====product======
 
@@ -345,7 +407,7 @@ function ManagerProductEdit(props) {
         };
         await updateModelById(updateModelParams);
       }
-      console.log(data);
+
       history.push(DEFINELINK.manager + DEFINELINK.product);
       toast.success("Thành công");
     } catch (e) {
@@ -397,6 +459,7 @@ function ManagerProductEdit(props) {
                           label={"Giá (\u20AB) "}
                           placeholder={"\u20AB"}
                           type={"number"}
+                          step={"any"}
                           isRequired
                         />
                       </td>
@@ -406,6 +469,7 @@ function ManagerProductEdit(props) {
                           methods={methods}
                           label={"Chiều dài (cm)"}
                           placeholder={"(cm)"}
+                          step={"any"}
                           type={"number"}
                           isRequired
                         />
@@ -418,6 +482,7 @@ function ManagerProductEdit(props) {
                           methods={methods}
                           label={"Cỡ lưỡi"}
                           placeholder={"Cỡ lưỡi"}
+                          step={"any"}
                           type={"number"}
                           isRequired
                         />
@@ -448,6 +513,7 @@ function ManagerProductEdit(props) {
                           methods={methods}
                           label={"Trọng lượng (g)"}
                           type={"number"}
+                          step={"any"}
                           placeholder={"(g)"}
                           isRequired
                         />
@@ -477,22 +543,24 @@ function ManagerProductEdit(props) {
                       <td>
                         {isCustomizeWeight && (
                           <div className="d-flex flex-wrap  justify-content-between">
-                            <div>
+                            <div className={"w-100"}>
                               <YlInputFormHook
                                 name={"minWeight"}
                                 methods={methods}
                                 label={"Tối thiểu (g) "}
                                 placeholder={"(g)"}
+                                step={"any"}
                                 type={"number"}
                                 isRequired
                               />
                             </div>
-                            <div>
+                            <div className={"w-100"}>
                               <YlInputFormHook
                                 name={"maxWeight"}
                                 methods={methods}
                                 label={"Tối đa (g) "}
                                 placeholder={"(g)"}
+                                step={"any"}
                                 type={"number"}
                                 isRequired
                               />
@@ -513,7 +581,9 @@ function ManagerProductEdit(props) {
                           placeholder="Mô tả"
                           {...register("description")}
                         />
-                        <span>{errors.description?.message}</span>
+                        <span className={"error-message"}>
+                          {errors.description?.message}
+                        </span>
                       </td>
                     </tr>
                     <tr>
@@ -527,7 +597,6 @@ function ManagerProductEdit(props) {
                           placeholder="Mô tả chi tiết "
                           {...register("content")}
                         />
-                        <span>{errors.content?.message}</span>
                       </td>
                     </tr>
                     <tr>
@@ -579,7 +648,9 @@ function ManagerProductEdit(props) {
                               {...register("model")}
                               onChange={(e) => onChangeInputFileModel(e)}
                             />
-                            <span>{errors.model?.message}</span>
+                            <span className="error-message">
+                              {errors.model?.message}
+                            </span>
                           </div>
                         )}
                       </td>
@@ -627,18 +698,23 @@ function ManagerProductEdit(props) {
                                   <span className={" text-ellipsis"}>
                                     {defaultName}
                                   </span>
+                                  {/*none display*/}
                                 </td>
-                                <td className={"d-flex justify-content-center"}>
+                                <td className={"d-flex   flex-column"}>
                                   <input
                                     className={
                                       "form-control w-75 mate-name mb-1 mt-3"
                                     }
-                                    required
                                     {...register(
                                       `defaultMaterials[${index}].vnName`
                                     )}
                                     defaultValue={vnName}
                                   />
+                                  <span className="error-message error-message-material-item text-left ">
+                                    {errors?.defaultMaterials &&
+                                      errors?.defaultMaterials[index]?.vnName
+                                        ?.message}
+                                  </span>
                                 </td>
                                 <td>
                                   <input
@@ -704,6 +780,11 @@ function ManagerProductEdit(props) {
                                         nestedFieldIndex={index}
                                         materialId={materialId}
                                       />
+                                      <span className="error-message error-message-material-item text-left ">
+                                        {errors?.defaultMaterials &&
+                                          errors?.defaultMaterials[index]
+                                            ?.textureBeforeUpload?.message}
+                                      </span>
                                     </td>
                                   </tr>
                                 )}
@@ -756,6 +837,14 @@ function ManagerProductEdit(props) {
             <div className={"sticky-bar-bottom"}>
               <div className="col-12 bg-white bg-shadow submit-button-form">
                 <YLButton variant="danger" type="submit" value="Hủy" />
+                {continuesAdd && (
+                  <HorizontalStepper
+                    steps={ADD_PRODUCT_STEPS}
+                    active={1}
+                    completed={[0]}
+                  />
+                )}
+
                 <YLButton
                   variant="primary"
                   type="submit"
