@@ -22,7 +22,7 @@ public interface CategoryRepos extends JpaRepository<Category, Long> {
             " ORDER BY sum_quantity DESC ", nativeQuery = true)
     List<Category> getBestSellerWithCategory();
 
-    @Query(value = "SELECT ct.*, SUM(ol.quantity) AS sum_quantity\n" +
+    @Query(value = "SELECT ct.*, COALESCE(SUM(ol.quantity),0) AS sum_quantity\n" +
             "FROM tbl_category ct\n" +
             "left join tbl_products pr on ct.category_id = pr.category_id\n" +
             "left join tbl_variants v on pr.product_id = v.product_id\n" +

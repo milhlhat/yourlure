@@ -31,32 +31,30 @@ public class VariantServiceImpl implements VariantService {
 
     @Override
     public Boolean save(VariantDtoInput variantDtoInput) {
-        try {
-            Product product = productJPARepos.getById(variantDtoInput.getProductId());
-            Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
-            variantInput.setProduct(product);
-            variantRepos.save(variantInput);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+
+        Product product = productJPARepos.getById(variantDtoInput.getProductId());
+        if (product != null) {
+            throw new ValidationException("Mã sản phẩm không tồn tại!");
         }
-        return true;
+        Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
+        variantInput.setProduct(product);
+        variantRepos.save(variantInput);
+        throw new ValidationException("Đã thêm biến thể mới!");
+
     }
 
     @Override
     public Boolean update(VariantDtoInput variantDtoInput, Long variantId) {
-        try {
-            Optional<Product> productOptional = productJPARepos.findById(variantDtoInput.getProductId());
-            Product product = productOptional.get();
-            Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
-            variantInput.setProduct(product);
-            variantInput.setVariantId(variantId);
-            variantRepos.save(variantInput);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+
+        Optional<Product> productOptional = productJPARepos.findById(variantDtoInput.getProductId());
+        Product product = productOptional.get();
+
+        Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
+        variantInput.setProduct(product);
+        variantInput.setVariantId(variantId);
+        variantRepos.save(variantInput);
+        throw new ValidationException("Cập nhật biến thành công!");
+
     }
 
     @Override
@@ -83,7 +81,6 @@ public class VariantServiceImpl implements VariantService {
             return variant.get();
         }
         throw new ValidationException("Không tìm thấy biến thể!");
-
 
     }
 }
