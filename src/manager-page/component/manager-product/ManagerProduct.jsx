@@ -79,10 +79,10 @@ function ManagerProduct(props) {
   const history = useHistory();
   const location = useLocation();
 
-  const handleEditClicked = (data) => {
+  const handleEditClicked = (e, data) => {
+    e.stopPropagation();
     history.push({
       pathname: "/manager/product/edit/" + data,
-      canBack: setBack,
     });
   };
 
@@ -90,11 +90,7 @@ function ManagerProduct(props) {
     setProductFilter({ ...productFilter, page: newPage - 1 });
     setActivePage(newPage);
   }
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Sản phẩm",
-  };
+
   const handleClickDetail = () => {};
   useEffect(() => {
     fetchManagerProduct();
@@ -113,7 +109,7 @@ function ManagerProduct(props) {
               variant="primary"
               onClick={() => history.push("/manager/product/addnew")}
               value="Thêm"
-              to={{ pathname: "/manager/product/addnew", canBack: setBack }}
+              to={{ pathname: "/manager/product/addnew" }}
             />
           </div>
         </div>
@@ -135,27 +131,36 @@ function ManagerProduct(props) {
                 <th>Tên sản phẩm</th>
                 <th>Danh mục</th>
                 <th className="text-center">Trạng thái</th>
-                <th onClick={()=>setProductFilter({...productFilter,isAsc:!productFilter.isAsc,sortBy:"defaultPrice"})} className="text-center pointer">Giá</th>
+                <th
+                  onClick={() =>
+                    setProductFilter({
+                      ...productFilter,
+                      isAsc: !productFilter.isAsc,
+                      sortBy: "defaultPrice",
+                    })
+                  }
+                  className="text-center pointer"
+                >
+                  Giá
+                </th>
                 <th></th>
               </tr>
               {products?.data?.productOutputList?.map((item, i) => (
-                <tr key={i} className="hover-background">
+                <tr
+                  key={i}
+                  className="hover-background pointer"
+                  onClick={() =>
+                    history.push({
+                      pathname: "/manager/product/detail/" + item.productId,
+                    })
+                  }
+                >
                   <td>
                     {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
                       i +
                       1}
                   </td>
-                  <td
-                    className="pointer"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/manager/product/detail/" + item.productId,
-                        canBack: setBack,
-                      })
-                    }
-                  >
-                    {item.productName}
-                  </td>
+                  <td>{item.productName}</td>
                   <td>{item.category.categoryName}</td>
                   <td className="text-center">
                     {item.visibleInStorefront == null
@@ -171,7 +176,7 @@ function ManagerProduct(props) {
                     <img
                       src={Editor}
                       className="pointer"
-                      onClick={() => handleEditClicked(item.productId)}
+                      onClick={(e) => handleEditClicked(e, item.productId)}
                     />
                   </td>
                   <td>
