@@ -121,7 +121,7 @@ function ManagerChangePassWord(props) {
     <div>
       <span className="pointer primary-color" onClick={handleChangePassword}>
         {noAddress ? (
-          <YLButton variant="primary">Thêm địa chỉ mới</YLButton>
+          <YLButton variant="primary" type="button">Thêm địa chỉ mới</YLButton>
         ) : (
           "Thêm địa chỉ mới"
         )}

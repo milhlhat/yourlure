@@ -17,6 +17,7 @@ import ErrorLoad from "components/error-notify/ErrorLoad";
 import { AbilityContext } from "ability/can";
 import CartAPI from "api/user-cart-api";
 import { toast } from "react-toastify";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 function CartRowProduct(props) {
   const ability = useContext(AbilityContext);
@@ -124,11 +125,14 @@ function CartRowProduct(props) {
             </td>
             <td className="d-flex align-items-center">
               <img
-                className="content-fit"
-                src={item?.variantImg}
+                className="content-fit pointer"
+                src={createImageUrlByLinkOrFile(item?.variantImg?item?.variantImg:item?.thumbnailUrl)}
                 width={canChange ? 100 : 50}
                 height={canChange ? 100 : 50}
                 alt="ảnh sản phẩm"
+                onClick={() =>
+                  history.push(`/product/detail/${item?.productId}`)
+                }
               />
               <div className="right ms-2">
                 <span

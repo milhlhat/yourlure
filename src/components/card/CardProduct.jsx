@@ -22,14 +22,14 @@ function CardProduct(props) {
             <img
               className="card-img-top"
               src={
-                // createImageUrlByLinkOrFile(
-                //   product.imageCollection && product.imageCollection.length > 0
-                //     ? product.imageCollection[0].linkImage
-                //     : ""
-                // )
-                product.imageCollection && product.imageCollection.length > 0
-                	? product.imageCollection[0].linkImage
-                	: ''
+                createImageUrlByLinkOrFile(
+                  product.imageCollection && product.imageCollection.length > 0
+                    ? product.imageCollection[0].linkImage
+                    : ""
+                )
+                // product.imageCollection && product.imageCollection.length > 0
+                // 	? product.imageCollection[0].linkImage
+                // 	: ''
               }
             />
           </div>

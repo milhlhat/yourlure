@@ -84,7 +84,7 @@ function CartProduct(props) {
   // } else
   return (
     <div className="container">
-      {/* {console.log(cartsSelected)} */}
+      {console.log(cart)}
       {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">

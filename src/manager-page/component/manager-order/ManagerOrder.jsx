@@ -7,11 +7,12 @@ import "./scss/manager-order.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { convertToVND, getStatus } from "utils/format-string";
+import ManagerSort from "../sort/ManagerSort";
 
 function ManagerOrder(props) {
   const totalItem = 10;
   const [filterOrder, setFilterOrder] = useState({
-    isAsc: true,
+    isAsc: false,
     keyword: "",
     limit: totalItem,
     page: 0,
@@ -34,7 +35,32 @@ function ManagerOrder(props) {
       formatDate.getFullYear()
     );
   };
-
+  const options = [
+    {
+      display: "Cũ nhất",
+      isAsc: true,
+      sortBy: "orderId",
+      value: "SORT_id_ASC",
+    },
+    {
+      display: "Mới nhất",
+      isAsc: false,
+      sortBy: "orderId",
+      value: "SORT_id_DESC",
+    },
+    {
+      display: "Tên từ A-Z",
+      isAsc: true,
+      sortBy: "categoryName",
+      value: "SORT_NAME_DESC",
+    },
+    {
+      display: "Tên từ Z-A",
+      isAsc: false,
+      sortBy: "categoryName",
+      value: "SORT_NAME_DESC",
+    },
+  ];
   const [activePage, setActivePage] = useState(1);
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -78,7 +104,10 @@ function ManagerOrder(props) {
         <div className="manager-order-show mt-3 bg-white bg-shadow">
           <span>Tất cả đơn hàng</span>
           <hr />
-          {/* <ManagerSort /> */}
+          <ManagerSort  
+            filter={filterOrder}
+            setFilter={setFilterOrder}
+            options={options}/>
           {orderList?.data?.orders?.length <= 0 && (
             <p>Không có đơn hàng</p>
           )}

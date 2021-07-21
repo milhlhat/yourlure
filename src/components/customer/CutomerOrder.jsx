@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 import Pagination from "react-js-pagination";
 import { convertToVND, formatDate, getShipping, getStatus, totalPrice } from "utils/format-string";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 function CutomerOrder(props) {
   const [page, setPage] = useState(0);
   const totalItemInPage = 12;
@@ -91,7 +92,7 @@ function CutomerOrder(props) {
                     className="order-row-item text-small p-2 pe-2 mb-2"
                     key={"order-product-" + i}
                   >
-                    <img className="order-img" src={product?.thumbnailUrl} />
+                    <img className="order-img" src={createImageUrlByLinkOrFile(product?.thumbnailUrl)} />
                     <div className="order-row-item-info">
                       <span className="order-title">
                         {product?.productName}

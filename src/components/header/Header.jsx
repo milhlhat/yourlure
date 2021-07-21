@@ -1,19 +1,15 @@
+import logo from "assets/images/logo/logo-social.png";
+import "assets/scss/scss-components/header.scss";
+import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
+  Collapse, Nav, Navbar,
+  NavbarToggler, NavItem
 } from "reactstrap";
-import "assets/scss/scss-components/header.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
-import { filterConfig } from "constant/filter-setting";
+import { setFilter } from "redux/product-action/fetch-filter";
 import DEFINELINK from "routes/define-link";
-import logo from "assets/images/logo/logo-social.png";
 
 function Header(props) {
   const productFilter = useSelector((state) => state.productFilter.filter);

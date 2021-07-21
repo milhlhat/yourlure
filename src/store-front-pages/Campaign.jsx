@@ -9,6 +9,7 @@ import activity from "assets/images/g1.jpg";
 import CampaignAPI from "api/campaign-api";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 function Campaign(props) {
   const { campaignId } = props;
@@ -142,7 +143,7 @@ function Campaign(props) {
       <div className="banner">
         <img
           className="img-banner"
-          src={campaign?.imageCollection[0]?.linkImage}
+          src={createImageUrlByLinkOrFile(campaign?.imageCollection[0]?.linkImage)}
           alt=""
         />
         <div className={`countdown ${isEnd ? "d-none" : ""}`}>
@@ -212,7 +213,7 @@ function Campaign(props) {
           {campaign &&
             campaign.imageCollection &&
             campaign.imageCollection.map((camp, index) => (
-              <img src={camp.linkImage} alt="" key={index} />
+              <img src={createImageUrlByLinkOrFile(camp.linkImage)} alt="" key={index} />
             ))}
         </div>
       </div>
@@ -237,10 +238,9 @@ function Campaign(props) {
             >
               <div className="campaign-img">
                 <img
-                  src={
-                    list && list.imageCollection
-                      ? list.imageCollection[0]?.linkImage
-                      : ""
+                  src={createImageUrlByLinkOrFile(list?.imageCollection
+                      ? list?.imageCollection[0]?.linkImage
+                      : "")
                   }
                   alt="Hình ảnh về sự kiện"
                 />
