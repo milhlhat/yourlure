@@ -72,7 +72,7 @@ function Home() {
               {/* <Can I="read" a="all" > */}
               {/* {(allowed) => ( */}
               <YLButton
-                value="Discover me"
+                value="Khám phá"
                 // disabled={!allowed}
                 to={DEFINELINK.product}
                 variant="primary"
