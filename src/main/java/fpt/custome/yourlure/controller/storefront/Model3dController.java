@@ -80,7 +80,7 @@ public interface Model3dController {
 
 
     @GetMapping(value = "/get-model-by-product-id/{productId}")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+//    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
@@ -89,7 +89,7 @@ public interface Model3dController {
 
 
     @GetMapping(value = "/get-model-by-model-id/{modelId}")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+//    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
