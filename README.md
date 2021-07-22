@@ -20,13 +20,13 @@
 
   - Create service for our application
 
-    + Direct to system folder:
+    + Direct to system folder and create file .service:
     ```
     cd /etc/systemd/system
     nano yourlure-be.service
     ```
 
-    + Saste and edit in []:
+    + Paste and edit in []:
     ```
         [Unit]
         Description=My Webapp Java REST Service
