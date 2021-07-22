@@ -304,7 +304,7 @@ public class ProductServiceImpl implements ProductService {
                 throw new ValidationException("Không có sản phẩm nào có ID này!");
             }
             productJPARepos.deleteById(id);
-            throw new ValidationException("Xóa sản phẩm thành công!");
+            return true;
         } else
             throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
     }

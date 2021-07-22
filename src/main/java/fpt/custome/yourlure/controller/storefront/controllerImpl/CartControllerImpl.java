@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +24,11 @@ public class CartControllerImpl implements CartController {
     @Override
     public ResponseEntity<Object> getCart(HttpServletRequest req) {
         return new ResponseEntity<>(cartService.getCart(req), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> getListVariant(List<AddToCartDto> addToCartDtos) {
+        return new ResponseEntity<>(cartService.getListVariant(addToCartDtos), HttpStatus.OK);
     }
 
     @Override

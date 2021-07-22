@@ -20,7 +20,7 @@ public class CartDtoOut {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CartItemDtoOut{
+    public static class CartItemDtoOut {
 
         private Long cartItemId;
         private Long customizeId;
@@ -29,9 +29,11 @@ public class CartDtoOut {
         private Long productId;
         private String productName;
         private Integer quantity;
+        private Integer variantQuantity;
         private Long variantId;
         private String variantName;
         private String variantImg;
+        private Boolean visibleInStorefront;
         private Float weight;
         private Float price;
 
