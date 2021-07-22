@@ -34,13 +34,17 @@
       WantedBy=multi-user.target
   ```
  - setup service:
+ ```
     sudo systemctl daemon-reload
     sudo systemctl enable yourlure-be.service
     sudo systemctl start yourlure-be
     sudo systemctl status yourlure-be
+ ```
     
  - show log:
+ ```
     sudo journalctl -f -n 1000 -u yourlure-be
+ ```
 
 2. create gihub action file (yml file):
 ```
