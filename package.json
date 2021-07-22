@@ -19,6 +19,7 @@
     "bootstrap": "^5.0.1",
     "formik": "^2.2.8",
     "node-sass": "^4.14.1",
+    "prop-types": "^15.7.2",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
     "react-colorful": "^5.2.2",
@@ -41,7 +42,6 @@
     "start": "react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "deploy": "sh ./deploy.sh"
   },
   "eslintConfig": {

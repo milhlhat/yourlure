@@ -1,17 +1,22 @@
 import React, { memo, useEffect, useState } from "react";
-import { getUniqueFiles } from "../../../utils/prototype";
-import { useFieldArray, useWatch } from "react-hook-form";
-import ManagerProductAPI from "../../../api/manager-product-api";
-import { createImageUrlByLinkOrFile } from "../../../utils/manager-product";
+import { getUniqueFiles } from "../../utils/prototype";
+import { useFieldArray } from "react-hook-form";
 
-function ChooseProductImage(props) {
-  const { name, productId, methods } = props;
-  const {
-    setValue,
-    control,
+import { createImageUrlByLinkOrFile } from "../../utils/manager-product";
+import PropTypes from "prop-types";
+import "./scss/choose-multi-images.scss";
+ChooseMultiImages.propTypes = {
+  name: PropTypes.string.isRequired,
+  removeName: PropTypes.string.isRequired,
+  getOldImage: PropTypes.func.isRequired, // recommend use useCallback
+  fieldNameImgFromOldList: PropTypes.string.isRequired, // name of list response
+  methods: PropTypes.any,
+};
 
-    formState: { errors },
-  } = methods;
+function ChooseMultiImages(props) {
+  const { name, methods, removeName, getOldImage, fieldNameImgFromOldList } =
+    props;
+  const { setValue, control, register } = methods;
 
   const { fields, append, remove } = useFieldArray({ control, name: name });
 
@@ -33,10 +38,10 @@ function ChooseProductImage(props) {
     let removelist = [...removeImages];
     fields.forEach((item, index) => {
       if (e.target.id === "imgUploadOld" + index) {
-        removelist.push(fields[index].linkImage);
+        removelist.push(fields[index][fieldNameImgFromOldList]);
         setRemoveImages(removelist);
         remove(index);
-        setValue("imgListRemove", removelist);
+        setValue(removeName, removelist);
       }
     });
   };
@@ -56,10 +61,9 @@ function ChooseProductImage(props) {
           <div className="img-item" key={field.id}>
             <img
               id={"imgUploadOld" + index}
-              src={createImageUrlByLinkOrFile(field.linkImage)}
+              src={createImageUrlByLinkOrFile(field[fieldNameImgFromOldList])}
               className="pointer"
               onClick={(e) => handleDeleteOldImage(e)}
-              alt={"Mồi câu"}
             />
             <button className="btn btn-light">Xóa</button>
           </div>
@@ -73,7 +77,7 @@ function ChooseProductImage(props) {
                 src={createImageUrlByLinkOrFile(field)}
                 className="pointer"
                 onClick={(e) => handleDeletenewImages(e)}
-                alt={"Mới"}
+                alt={"new image"}
               />
               <button className="btn btn-light">Xóa</button>
             </div>
@@ -82,21 +86,22 @@ function ChooseProductImage(props) {
     );
   };
 
-  const fetchImgByProductId = async (productId) => {
+  const fetchImgByProductId = async () => {
     try {
       remove();
-      const response = await ManagerProductAPI.getProductByID(productId);
-      append(response.imageCollection);
+      // const response = await ManagerProductAPI.getProductByID(productId);
+      const response = await getOldImage();
+      append(response);
     } catch (error) {}
   };
 
   useEffect(async () => {
-    await fetchImgByProductId(productId);
-  }, [productId]);
+    await fetchImgByProductId();
+  }, []);
 
   return (
-    <div className="product-info bg-white bg-shadow col-12 col-md-8  pb-2">
-      <div className="px-3 pt-3 product-images-add">
+    <div className="  bg-white  pb-2">
+      <div className="px-3 pt-3 d-flex justify-content-between">
         <h5>
           Hình ảnh <span className="error-message">(*)</span>
         </h5>
@@ -122,6 +127,6 @@ function ChooseProductImage(props) {
   );
 }
 
-export default memo(ChooseProductImage, (preProps, nextProps) => {
+export default memo(ChooseMultiImages, (preProps, nextProps) => {
   return preProps.productId === nextProps.productId;
 });

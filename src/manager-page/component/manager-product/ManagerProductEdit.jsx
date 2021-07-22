@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
@@ -15,7 +15,7 @@ import ManagerProductAPI, {
 import CategorySelectFormHook from "./CategorySelectFormHook";
 import FishCheckBoxFormHook from "./FishCheckBoxFormHook";
 import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
-import ChooseProductImage from "./ChooseProductImage";
+import ChooseProductImage from "../../../components/choose-image/ChooseMultiImages";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import ChooseTextureImage from "./ChooseTextureImage";
@@ -141,6 +141,7 @@ function ManagerProductEdit(props) {
           "modelType",
           "Vui lòng chọn 1 file model định dạng .glb",
           (value) => {
+            if (hasModel) return true;
             if (value) {
               const v = value[0] && value[0]?.name ? value[0].name : "";
               if (v.endsWith(".glb")) return true;
@@ -290,7 +291,10 @@ function ManagerProductEdit(props) {
   }, [productId]);
 
   //===========handle form
-
+  const handleGetProductImageById = useCallback(async () => {
+    const response = await ManagerProductAPI.getProductByID(productId);
+    return response.imageCollection;
+  }, [productId]);
   const onChangeInputFileModel = (e) => {
     const file = e.target.files[0];
 
@@ -319,7 +323,7 @@ function ManagerProductEdit(props) {
       });
     }
   };
-
+  // for update check box fish
   const getFishIds = (fishChecked) => {
     if (fishChecked.length > 0) {
       let temp = [];
@@ -821,13 +825,15 @@ function ManagerProductEdit(props) {
             </div>
             {/*end right side bar*/}
             {/*product image*/}
-            <ChooseProductImage
-              methods={methods}
-              name={"imgList"}
-              productId={product.data.productId}
-            />
 
-            <div className="shadow-bottom bg-white   col-12 col-md-8 mb-md-5  pb-2 ps-4">
+            <div className=" bg-white bg-shadow  col-12 col-md-8 mb-md-5   ">
+              <ChooseProductImage
+                methods={methods}
+                name={"imgList"}
+                removeName={"imgListRemove"}
+                getOldImage={handleGetProductImageById}
+                fieldNameImgFromOldList={"linkImage"}
+              />
               <span className="error-message">{errors.imgList?.message}</span>
             </div>
             {/*end product image*/}

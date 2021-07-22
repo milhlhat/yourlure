@@ -1,4 +1,4 @@
-import ManagerProductAPI from "api/manager-product-api";
+import ManagerProductAPI, { deleteProductById } from "api/manager-product-api";
 import Editor from "assets/icon/editor.svg";
 import Trash from "assets/icon/trash.svg";
 import "assets/scss/scss-manager/manager-product.scss";
@@ -11,6 +11,8 @@ import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
 import { convertToVND } from "utils/format-string";
+import ConfirmPopupV2 from "../../../components/confirm-popup/ConfirmPopupV2";
+import { toast } from "react-toastify";
 
 ManagerProduct.propTypes = {};
 
@@ -91,7 +93,15 @@ function ManagerProduct(props) {
     setActivePage(newPage);
   }
 
-  const handleClickDetail = () => {};
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await deleteProductById(productId);
+      toast.success("Xoá thành công");
+      await fetchManagerProduct();
+    } catch (e) {
+      toast.error(e.response.data);
+    }
+  };
   useEffect(() => {
     fetchManagerProduct();
   }, [productFilter]);
@@ -143,7 +153,8 @@ function ManagerProduct(props) {
                 >
                   Giá
                 </th>
-                <th></th>
+                <th />
+                <th />
               </tr>
               {products?.data?.productOutputList?.map((item, i) => (
                 <tr
@@ -162,7 +173,7 @@ function ManagerProduct(props) {
                   </td>
                   <td>{item.productName}</td>
                   <td>{item.category.categoryName}</td>
-                  <td className="text-center">
+                  <td className="text-center py-2">
                     {item.visibleInStorefront == null
                       ? "-"
                       : item.visibleInStorefront
@@ -172,15 +183,17 @@ function ManagerProduct(props) {
                   <td className="text-end pe-4">
                     {!item ? "N/A" : convertToVND(item.defaultPrice)}
                   </td>
-                  <td>
-                    <img
-                      src={Editor}
-                      className="pointer"
-                      onClick={(e) => handleEditClicked(e, item.productId)}
-                    />
+                  <td onClick={(e) => handleEditClicked(e, item.productId)}>
+                    <img src={Editor} className="pointer" />
                   </td>
-                  <td>
-                    <img src={Trash} />
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <ConfirmPopupV2
+                      onConfirm={() => handleDeleteProduct(item.productId)}
+                      title={"Xoá sản phẩm"}
+                      content={"Chắc chắn xoá: " + item.productName}
+                    >
+                      <img src={Trash} />
+                    </ConfirmPopupV2>
                   </td>
                 </tr>
               ))}

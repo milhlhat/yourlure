@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 function ManagerSort(props) {
   const { filter, setFilter, options } = props;
+
   function handleSelectSort(e) {
     let sort = e.target.value;
     for (let o of options) {
@@ -32,7 +33,8 @@ function ManagerSort(props) {
                   type="submit"
                   value="Tìm kiếm"
                   variant="primary"
-                ></YLButton>
+                  width={"100%"}
+                />
               </div>
               <div className="col-9">
                 <input

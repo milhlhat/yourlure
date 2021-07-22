@@ -13,3 +13,4 @@ nohup serve -l 80 -s -n build &
 #ssh root@103.130.214.97
 #9t6Qp8LtcVS67kD9
 #/root/actions-runner/yourlure-fe/yourlure/yourlure/build
+# nohup java -jar yourlure-0.0.1-SNAPSHOT.jar &

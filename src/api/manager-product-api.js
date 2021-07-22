@@ -65,6 +65,10 @@ const ManagerProductAPI = {
     const url = `/model3d/update-model`;
     return AxiosClient.post(url, params);
   },
+  deleteProductById: (productId) => {
+    const url = `/admin/product/${productId}`;
+    return AxiosClient.delete(url);
+  },
 };
 export const {
   getProductByID,
@@ -76,5 +80,6 @@ export const {
   getModelByProductId,
   updateModelById,
   uploadMultiTexture,
+  deleteProductById,
 } = ManagerProductAPI;
 export default ManagerProductAPI;

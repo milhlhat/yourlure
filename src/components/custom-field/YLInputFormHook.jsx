@@ -1,5 +1,16 @@
 import React from "react";
+import PropTypes from "prop-types";
 
+YlInputFormHook.propTypes = {
+  methods: PropTypes.any,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  message: PropTypes.string,
+  placeholder: PropTypes.string,
+  isRequired: PropTypes.bool,
+  type: PropTypes.string,
+  step: PropTypes.any,
+};
 function YlInputFormHook(props) {
   const {
     methods,

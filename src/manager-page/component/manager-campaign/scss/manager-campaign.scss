@@ -8,10 +8,7 @@
     border-bottom: 4px solid $bottom-line;
     padding: 15px 0;
   }
-  & td,
-  & th {
-    padding: 5px;
-  }
+
   & th,
   & caption {
     font-weight: 500;
@@ -23,5 +20,8 @@
   }
   & .page-link {
     color: $primary;
+  }
+  .item-right{
+
   }
 }
