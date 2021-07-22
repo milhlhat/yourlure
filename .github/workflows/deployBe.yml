@@ -27,8 +27,9 @@ jobs:
       - name: Upload file jar
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.VPS_IP_ADDRESS }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PASSWORD }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
           source: "target/yourlure-0.0.1-SNAPSHOT.jar"
           target: "~/BE"
