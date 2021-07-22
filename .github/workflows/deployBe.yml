@@ -23,8 +23,6 @@ jobs:
       - name: Build with Maven
         run: |
           mvn -B clean package
-#          cd target/
-#          tar -cvf deploy.tar ../target/
       - name: Upload file jar
         uses: appleboy/scp-action@master
         with:
@@ -32,5 +30,20 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "yourlure-0.0.1-SNAPSHOT.jar"
+          source: "target/yourlure-0.0.1-SNAPSHOT.jar"
           target: "~/BE"
+      - name: Start service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo /etc/init.d/be-service stop
+            mv ~/BE/be-service.jar ~/BE/my-app-old.jar
+            mv ~/BE/yourlure-0.0.1-SNAPSHOT.jar ~/BE/be-service.jar
+            sudo rm -rf /etc/init.d/be-service
+            sudo ln -s -f ~/BE/be-service.jar /etc/init.d/be-service
+            sudo /etc/init.d/be-service start
+            rm ~/BE/my-app-old.jar
