@@ -2,12 +2,12 @@
 
 1. create service on vps
 - we need to work into folder /home/ubuntu
-- create sh file:
-  Front end:
+- create sh file
+  + Front end:
   ```sh
   sudo /usr/bin/serve -l 80 -s -n build
   ```
-  Back end:
+  + Back end:
   ```
   sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
   ```
@@ -39,7 +39,7 @@
       [Install]
       WantedBy=multi-user.target
   ```
- - setup service:
+- setup service:
  ```
     sudo systemctl daemon-reload
     sudo systemctl enable yourlure-be.service
