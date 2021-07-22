@@ -9,26 +9,26 @@
   cd /etc/systemd/system
   nano yourlure-be.service
   paste and edit that:
-                      [Unit]
-                      Description=My Webapp Java REST Service
-                      [Service]
-                      User=root
-                      # The configuration file application.properties should be here:
+      [Unit]
+      Description=My Webapp Java REST Service
+      [Service]
+      User=root
+      # The configuration file application.properties should be here:
 
-                      #change this to your workspace
-                      WorkingDirectory=/home/ubuntu/[YOUR-FOLDER]
+      #change this to your workspace
+      WorkingDirectory=/home/ubuntu/[YOUR-FOLDER]
 
-                      #path to executable. 
-                      #executable is a bash script which calls jar file
-                      ExecStart=/home/ubuntu/[YOUR-FOLDER]/[SH-FILE-NAME].sh
+      #path to executable. 
+      #executable is a bash script which calls jar file
+      ExecStart=/home/ubuntu/[YOUR-FOLDER]/[SH-FILE-NAME].sh
 
-                      SuccessExitStatus=143
-                      TimeoutStopSec=10
-                      Restart=on-failure
-                      RestartSec=5
+      SuccessExitStatus=143
+      TimeoutStopSec=10
+      Restart=on-failure
+      RestartSec=5
 
-                      [Install]
-                      WantedBy=multi-user.target
+      [Install]
+      WantedBy=multi-user.target
                       
  - setup service:
     sudo systemctl daemon-reload
