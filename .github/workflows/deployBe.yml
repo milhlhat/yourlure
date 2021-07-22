@@ -30,7 +30,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "target"
+          # file want to copy
+          source: "target/yourlure-0.0.1-SNAPSHOT.jar"
+          # the destination of file
           target: "/home/ubuntu"
       - name: Start service
         uses: appleboy/ssh-action@master
