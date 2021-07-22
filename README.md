@@ -1,9 +1,13 @@
 ## How to auto deploy to vps with github actions
 
 1. Create service on vps
+
 - First step, we need to install environment: npm, serve, java
+
 - We need to work into folder /home/ubuntu
+
 - Create sh file
+
   + Front end:
   ```sh
   sudo /usr/bin/serve -l 80 -s -n build
@@ -12,12 +16,15 @@
   ```
   sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
   ```
+  
 - Create service for our application
+
   + Direct to system folder:
   ```
   cd /etc/systemd/system
   nano yourlure-be.service
   ```
+  
   + Saste and edit in []:
   ```
       [Unit]
@@ -41,6 +48,7 @@
       [Install]
       WantedBy=multi-user.target
   ```
+  
  + Setup service:
  ```
     sudo systemctl daemon-reload
@@ -53,6 +61,7 @@
  ```
     sudo journalctl -f -n 1000 -u yourlure-be
  ```
+
 
 2. Create gihub action file (yml file)
 ```
