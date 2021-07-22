@@ -41,9 +41,9 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             sudo /etc/init.d/be-service stop
-            mv ~/BE/be-service.jar ~/BE/my-app-old.jar
-            mv ~/BE/yourlure-0.0.1-SNAPSHOT.jar ~/BE/be-service.jar
+            mv ~/BE/target/be-service.jar ~/BE/target/my-app-old.jar
+            mv ~/BE/target/yourlure-0.0.1-SNAPSHOT.jar ~/BE/target/be-service.jar
             sudo rm -rf /etc/init.d/be-service
-            sudo ln -s -f ~/BE/be-service.jar /etc/init.d/be-service
+            sudo ln -s -f ~/BE/target/be-service.jar /etc/init.d/be-service
             sudo /etc/init.d/be-service start
-            rm ~/BE/my-app-old.jar
+            rm ~/BE/target/my-app-old.jar
