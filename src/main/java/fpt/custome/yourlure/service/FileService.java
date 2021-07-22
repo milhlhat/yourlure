@@ -21,12 +21,12 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-//    public static String parentPath = System.getProperty("user.dir");
-    public static String parentPath = "/home/ubuntu/target/";
-    public static final String CUSTOMS_DIR = "static/customs";
-    public static final String UPLOADS = "static/uploads";
-    public static final String MODELS_DIR = "static/models";
-    public static final String TEXTURE_DIR = "static/textures";
+    public static String parentPath = System.getProperty("user.dir") + "/static/";
+//    public static String parentPath = "/home/ubuntu/target/";
+    public static final String CUSTOMS_DIR = "customs";
+    public static final String UPLOADS = "uploads";
+    public static final String MODELS_DIR = "models";
+    public static final String TEXTURE_DIR = "textures";
 
     static {
         new File(parentPath + CUSTOMS_DIR).mkdir();
