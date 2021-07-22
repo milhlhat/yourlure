@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
 
         User user = userService.whoami(req);
         Optional<Cart> cart = cartRepos.findCartByUserUserId(user.getUserId());
-        if(cart.isPresent()){
+        if (cart.isPresent()) {
             List<CartItem> items = (List<CartItem>) cart.get().getCartItemCollection();
             items.sort(new Comparator<CartItem>() {
                 @Override
@@ -70,7 +70,27 @@ public class CartServiceImpl implements CartService {
 
     }
 
-    protected CustomizeModel getMyCustom(User user, Long customizeId){
+    @Override
+    public CartDtoOut getListVariant(List<AddToCartDto> addToCartDtos) {
+
+        List<CartItem> cartItems = new ArrayList<>();
+        for (AddToCartDto cartItemInput : addToCartDtos) {
+            CartItem cartItem = CartItem.builder()
+                    .variantId(cartItemInput.getVariantId())
+                    .quantity(cartItemInput.getQuantity())
+                    .weight(cartItemInput.getWeight())
+                    .build();
+            cartItems.add(cartItem);
+        }
+        Cart cart = Cart.builder()
+                .cartItemCollection(cartItems)
+                .build();
+
+        CartDtoOut result = cartToCartDto(cart);
+        return result;
+    }
+
+    protected CustomizeModel getMyCustom(User user, Long customizeId) {
         for (CustomizeModel customizeModel : user.getCustomizeModels()) {
             if (customizeModel.getCustomizeId().equals(customizeId)) {
                 return customizeModel;
@@ -80,41 +100,50 @@ public class CartServiceImpl implements CartService {
     }
 
 
-
-    protected CartDtoOut cartToCartDto(Cart cart){
+    protected CartDtoOut cartToCartDto(Cart cart) {
         Collection<CartItem> items = cart.getCartItemCollection();
-        if(items == null){
+        if (items == null) {
             items = new ArrayList<>();
         }
         List<CartDtoOut.CartItemDtoOut> itemsDto = new ArrayList<>();
-        for (CartItem item : items){
+        for (CartItem item : items) {
             // map attribute to dto
             CartDtoOut.CartItemDtoOut itemDtoOut = mapper.map(item, CartDtoOut.CartItemDtoOut.class);
 
             // get custom model information
-            if(item.getCustomModelId() != null){
-                CustomizeModel customizeModel = customizeRepos.getById(item.getCustomModelId());
-                itemDtoOut.setCustomizeName(customizeModel.getName());
-                itemDtoOut.setThumbnailUrl(customizeModel.getThumbnailUrl());
+            if (item.getCustomModelId() != null) {
+                Optional<CustomizeModel> customizeModelOptional = customizeRepos.findById(item.getCustomModelId());
+                if (customizeModelOptional.isPresent()) {
+                    CustomizeModel customizeModel = customizeModelOptional.get();
+                    itemDtoOut.setCustomizeName(customizeModel.getName());
+                    itemDtoOut.setThumbnailUrl(customizeModel.getThumbnailUrl());
 
-                Model3d m3d = customizeModel.getModel3d();
-                Product product = m3d.getProduct();
-                itemDtoOut.setProductName(product.getProductName());
-                itemDtoOut.setProductId(product.getProductId());
-                itemDtoOut.setPrice(product.getDefaultPrice() + orderService.calculateCustomizePrice(customizeModel));
+                    //get product information
+                    Model3d m3d = customizeModel.getModel3d();
+                    Product product = m3d.getProduct();
+                    itemDtoOut.setProductName(product.getProductName());
+                    itemDtoOut.setProductId(product.getProductId());
+                    itemDtoOut.setPrice(product.getDefaultPrice() + orderService.calculateCustomizePrice(customizeModel));
+                }
             }
 
             // get variant information
-            if(item.getVariantId() != null){
-                Variant variant = variantRepos.getById(item.getVariantId());
-                itemDtoOut.setVariantId(variant.getVariantId());
-                itemDtoOut.setVariantName(variant.getVariantName());
-                itemDtoOut.setVariantImg(variant.getImageUrl());
-                itemDtoOut.setProductId(variant.getProduct().getProductId());
-                itemDtoOut.setProductName(variant.getProduct().getProductName());
-                itemDtoOut.setPrice(variant.getNewPrice());
-            }
+            if (item.getVariantId() != null) {
+                Optional<Variant> variantOptional = variantRepos.findById(item.getVariantId());
+                if (variantOptional.isPresent()) {
+                    Variant variant = variantOptional.get();
+                    itemDtoOut.setVariantId(variant.getVariantId());
+                    itemDtoOut.setVariantName(variant.getVariantName());
+                    itemDtoOut.setVariantImg(variant.getImageUrl());
+                    itemDtoOut.setProductId(variant.getProduct().getProductId());
+                    itemDtoOut.setProductName(variant.getProduct().getProductName());
+                    itemDtoOut.setPrice(variant.getNewPrice());
+                    itemDtoOut.setVariantQuantity(variant.getQuantity());
 
+                    Product product = variant.getProduct();
+                    itemDtoOut.setVisibleInStorefront(product.getVisibleInStorefront());
+                }
+            }
 
             itemsDto.add(itemDtoOut);
 
@@ -123,14 +152,14 @@ public class CartServiceImpl implements CartService {
         return CartDtoOut.builder().cartItems(itemsDto).build();
     }
 
-    protected Cart myCart(HttpServletRequest req){
+    protected Cart myCart(HttpServletRequest req) {
         User user = userService.whoami(req);
         Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(null);
-        if(cart == null){
+        if (cart == null) {
             cart = Cart.builder().user(user).build();
             cart = cartRepos.save(cart);
         }
-        if(cart.getCartItemCollection() == null){
+        if (cart.getCartItemCollection() == null) {
             cart.setCartItemCollection(new ArrayList<>());
         }
         return cart;
@@ -144,13 +173,13 @@ public class CartServiceImpl implements CartService {
         // check custom model is belong to current user or not. if not, this user can't add to cart
 
         CustomizeModel myCustom = getMyCustom(user, addToCartDto.getCustomModelId());
-        if(myCustom == null){
+        if (myCustom == null) {
             throw new Exception("this custom model isn't yours!");
         }
 
         // if exist -> just increase quantity
         for (CartItem cartItem : cart.getCartItemCollection()) {
-            if(cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
+            if (cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
                 cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
                 cartItemRepos.save(cartItem);
                 return true;
@@ -169,18 +198,17 @@ public class CartServiceImpl implements CartService {
     }
 
 
-
     @Override
     public Boolean addVariantItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
 
         Cart cart = myCart(req);
 
         Optional<Variant> variant = variantRepos.findById(addToCartDto.getVariantId());
-        if(variant.isPresent()){
+        if (variant.isPresent()) {
 
             // cart item exist
             for (CartItem cartItem : cart.getCartItemCollection()) {
-                if(cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())){
+                if (cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
 
                     cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
                     cartItemRepos.save(cartItem);
@@ -209,7 +237,7 @@ public class CartServiceImpl implements CartService {
             return false;
         }
         for (CartItem cartItem : cart.getCartItemCollection()) {
-            if(cartItem.getCartItemId().equals(cartItemId)){
+            if (cartItem.getCartItemId().equals(cartItemId)) {
                 cartItemRepos.delete(cartItem);
                 return true;
             }

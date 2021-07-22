@@ -29,6 +29,7 @@ public class Cart {
 
     @JsonIgnore
     @OneToMany(mappedBy = "cart")
+    @OrderBy("cartItemId DESC")
     // MapopedBy trỏ tới tên biến cart ở trong cartItem.
     //1 cart có nhiều cartItem
     private Collection<CartItem> cartItemCollection;

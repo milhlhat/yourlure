@@ -31,6 +31,7 @@ public class ProductsDetailDtoOut {
     private String brand;
     private String imgUrlModel;
     private Category category;
+    private Boolean visibleInStorefront;
     private Collection<Image> imageCollection;
     private Collection<Variant> variantCollection;
 

@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.AddToCartDto;
 import fpt.custome.yourlure.dto.dtoOut.CartDtoOut;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 public interface CartService {
@@ -15,6 +16,14 @@ public interface CartService {
      * @return
      */
     CartDtoOut getCart(HttpServletRequest req);
+
+    /**
+     * lấy giả hàng của guest gen from data local storege
+     * @param addToCartDtos
+     * @return
+     */
+    CartDtoOut getListVariant(List<AddToCartDto> addToCartDtos);
+
 
     /**
      * Thêm sản phẩm vào giỏ hàng

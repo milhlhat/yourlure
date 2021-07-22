@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/get-address-user").permitAll()
                 .antMatchers("/user/forgot-password").permitAll()
                 .antMatchers("/user/reset-password").permitAll()
+                .antMatchers("/cart/list-variant-of-guest").permitAll()
 
 
 //                .antMatchers("/api/product/model-download").permitAll()

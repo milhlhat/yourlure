@@ -39,6 +39,10 @@ public class Variant {
     @Column(name = "imageUrl")
     private String imageUrl;
 
+    @Nullable
+    @Column(name = "visibleInStorefront")
+    private Boolean visibleInStorefront;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productId", nullable = false)
