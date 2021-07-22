@@ -47,11 +47,9 @@
       branches: [ MAIN-BACKEND ]
     pull_request:
       branches: [ MAIN-BACKEND ]
-
   jobs:
     build:
       runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
