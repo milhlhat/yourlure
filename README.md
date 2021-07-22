@@ -41,17 +41,16 @@
 
 2. create gihub action file (yml file):
 
-name: Java CI
+  name: Java CI
+  on:
+    push:
+      branches: [ MAIN-BACKEND ]
+    pull_request:
+      branches: [ MAIN-BACKEND ]
 
-on:
-  push:
-    branches: [ MAIN-BACKEND ]
-  pull_request:
-    branches: [ MAIN-BACKEND ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
+  jobs:
+    build:
+      runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
