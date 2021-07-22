@@ -17,6 +17,7 @@
   sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
   ```
   
+  
 - Create service for our application
 
   + Direct to system folder:
@@ -49,6 +50,7 @@
       WantedBy=multi-user.target
   ```
   
+  
  + Setup service:
  ```
     sudo systemctl daemon-reload
@@ -57,10 +59,12 @@
     sudo systemctl status yourlure-be
  ```
     
+    
  + Show log:
  ```
     sudo journalctl -f -n 1000 -u yourlure-be
  ```
+
 
 
 2. Create gihub action file (yml file)
