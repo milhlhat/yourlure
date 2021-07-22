@@ -1,3 +1,4 @@
+fuser -k 8000/tcp
 mvn package
 cd target/
-java -jar yourlure-0.0.1-SNAPSHOT.jar
+nohup java -jar yourlure-0.0.1-SNAPSHOT.jar &
