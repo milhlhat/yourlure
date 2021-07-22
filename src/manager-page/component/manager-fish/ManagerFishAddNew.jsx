@@ -68,7 +68,7 @@ function ManagerFishAddNew(props) {
                     />
                     <div className="mt-3 d-flex justify-content-center">
                         <YLButton variant="primary" type="submit" value="Xong" />
-                        <YLButton variant="link" to="/manager/category" value="Hủy" />
+                        <YLButton variant="link" to="/manager/fish" value="Hủy" />
                     </div>
                 </form>
             </div>
