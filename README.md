@@ -3,14 +3,20 @@
 1. create service on vps
 - we need to work into folder /home/ubuntu
 - create sh file:
-```
-  sudo /usr/bin/serve -l 80 -s -n build ( Front end )
-  sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar ( Back end )
-```
+  Front end:
+  ```sh
+  sudo /usr/bin/serve -l 80 -s -n build
+  ```
+  Back end:
+  ```
+  sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
+  ```
 - create .service file:
+  ```
   cd /etc/systemd/system
   nano yourlure-be.service
-  paste and edit that:
+  ```
+  paste and edit in []:
   ```
       [Unit]
       Description=My Webapp Java REST Service
