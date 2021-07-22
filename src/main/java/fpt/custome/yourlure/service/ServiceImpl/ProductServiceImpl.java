@@ -161,60 +161,58 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id) {
-        try {
-            if (id != null && productsDtoInp != null) {
-                Product productToUpdate = productJPARepos.getById(id);
-                if (productToUpdate != null) {
-                    productToUpdate.update(productsDtoInp);
-                    productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
-                    //update properties product
-                    //add image
-                    if (!productsDtoInp.getImgListInput().isEmpty())
-                        for (String link : productsDtoInp.getImgListInput()) {
-                            Image image = Image.builder()
-                                    .product(Product.builder().productId(id).build())
-                                    .linkImage(link)
-                                    .build();
-                            productToUpdate.getImageCollection().add(image);
-                        }
+    public Object updateProduct(ProductsDtoInp productsDtoInp, Long id) {
 
-                    //remove image
-                    if (!productsDtoInp.getImgListRemove().isEmpty()) {
-                        for (String imgRemove : productsDtoInp.getImgListRemove()) {
-                            imageRepos.deleteByLinkImage(imgRemove);
+        if (id != null && productsDtoInp != null) {
+            Product productToUpdate = productJPARepos.getById(id);
+            if (productToUpdate != null) {
+                productToUpdate.update(productsDtoInp);
+                productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
+                //update properties product
+                //add image
+                if (!productsDtoInp.getImgListInput().isEmpty())
+                    for (String link : productsDtoInp.getImgListInput()) {
+                        Image image = Image.builder()
+                                .product(Product.builder().productId(id).build())
+                                .linkImage(link)
+                                .build();
+                        productToUpdate.getImageCollection().add(image);
+                    }
+
+                //remove image
+                if (!productsDtoInp.getImgListRemove().isEmpty()) {
+                    for (String imgRemove : productsDtoInp.getImgListRemove()) {
+                        imageRepos.deleteByLinkImage(imgRemove);
 //                            productToUpdate.getImageCollection().remove(Image.builder().linkImage(imgRemove).build());
-                        }
-                        adminProductController.deleteFiles(productsDtoInp.getImgListRemove());
                     }
-
-                    Product product = productJPARepos.save(productToUpdate);
-
-                    //update fish
-
-                    //clear product in fish_product
-                    for (Fish fish : fishRepos.findAll()) {
-                        fish.removeProduct(product);
-                        fishRepos.save(fish);
-                    }
-                    //add to fish_product (update)
-                    if (productsDtoInp.getListFishId() != null) {
-                        for (Long fishId : productsDtoInp.getListFishId()) {
-                            Fish fishInput = fishRepos.getById(fishId);
-                            fishInput.addProduct(product);
-                            fishRepos.save(fishInput);
-                        }
-                    }
-
-                } else {
-                    return false;
+                    adminProductController.deleteFiles(productsDtoInp.getImgListRemove());
                 }
+
+                Product product = productJPARepos.save(productToUpdate);
+
+                //update fish
+
+                //clear product in fish_product
+                for (Fish fish : fishRepos.findAll()) {
+                    fish.removeProduct(product);
+                    fishRepos.save(fish);
+                }
+                //add to fish_product (update)
+                if (productsDtoInp.getListFishId() != null) {
+                    for (Long fishId : productsDtoInp.getListFishId()) {
+                        Fish fishInput = fishRepos.getById(fishId);
+                        fishInput.addProduct(product);
+                        fishRepos.save(fishInput);
+                    }
+                }
+                return "Cập nhật sản phẩm thành công!";
+            } else {
+                throw new ValidationException("Mã Sản Phẩm cập nhật không tồn tại!");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } else {
+            throw new ValidationException("Mã Sản Phẩm cập nhật không được null!");
         }
-        return true;
+
     }
 
     @Transactional

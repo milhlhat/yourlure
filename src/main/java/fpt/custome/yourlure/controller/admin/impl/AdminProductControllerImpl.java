@@ -71,8 +71,16 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Object> editProduct(Long id, ProductsDtoInp productsDtoInp) {
-        Boolean check = productService.updateProduct(productsDtoInp, id);
-        return new ResponseEntity<>(check, HttpStatus.OK);
+        try {
+            Object check = productService.updateProduct(productsDtoInp, id);
+            return new ResponseEntity<>(check, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

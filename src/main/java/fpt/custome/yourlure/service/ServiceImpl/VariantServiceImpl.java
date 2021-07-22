@@ -30,7 +30,7 @@ public class VariantServiceImpl implements VariantService {
     private ModelMapper modelMapper;
 
     @Override
-    public Boolean save(VariantDtoInput variantDtoInput) {
+    public Object save(VariantDtoInput variantDtoInput) {
 
         Product product = productJPARepos.getById(variantDtoInput.getProductId());
         if (product == null) {
@@ -39,12 +39,12 @@ public class VariantServiceImpl implements VariantService {
         Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
         variantInput.setProduct(product);
         variantRepos.save(variantInput);
-        throw new ValidationException("Đã thêm biến thể mới!");
+        return "Đã thêm biến thể mới!";
 
     }
 
     @Override
-    public Boolean update(VariantDtoInput variantDtoInput, Long variantId) {
+    public Object update(VariantDtoInput variantDtoInput, Long variantId) {
 
         Optional<Product> productOptional = productJPARepos.findById(variantDtoInput.getProductId());
         Product product = productOptional.get();
@@ -53,12 +53,12 @@ public class VariantServiceImpl implements VariantService {
         variantInput.setProduct(product);
         variantInput.setVariantId(variantId);
         variantRepos.save(variantInput);
-        throw new ValidationException("Cập nhật biến thành công!");
+        return "Cập nhật biến thành công!";
 
     }
 
     @Override
-    public Boolean remove(Long variantId, Long productId) {
+    public Object remove(Long variantId, Long productId) {
 
         //check variant is exist in order_line
         if (orderLineRepos.findByProductIdOrVariantId(variantId) == null) {
@@ -67,8 +67,7 @@ public class VariantServiceImpl implements VariantService {
                 Variant variant = variantRepos.getById(variantId);
                 product.getVariantCollection().remove(variant);
                 productJPARepos.save(product);
-//                throw new ValidationException("Xóa biến thể thành công!");
-                return true;
+                return "Xóa biến thể thành công!";
             } else {
                 throw new ValidationException("Phải tồn tại ít nhất một biến thể!");
             }

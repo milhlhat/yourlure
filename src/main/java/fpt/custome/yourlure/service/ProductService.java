@@ -34,7 +34,7 @@ public interface ProductService {
 
     Optional<AdminProductDtoOut> adminSearchProductName(String keyword, Pageable pageable);
 
-    Boolean updateProduct(ProductsDtoInp productsDtoInp, Long id);
+    Object updateProduct(ProductsDtoInp productsDtoInp, Long id);
 
     Object remove(Long id);
 
