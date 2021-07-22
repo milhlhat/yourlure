@@ -4,11 +4,11 @@ import fpt.custome.yourlure.dto.dtoInp.VariantDtoInput;
 import fpt.custome.yourlure.entity.Variant;
 
 public interface VariantService {
-    Boolean save(VariantDtoInput variantDtoInput);
+    Object save(VariantDtoInput variantDtoInput);
 
-    Boolean update(VariantDtoInput variantDtoInput, Long variantId);
+    Object update(VariantDtoInput variantDtoInput, Long variantId);
 
-    Boolean remove(Long variantId,Long productId);
+    Object remove(Long variantId,Long productId);
 
     Variant getById(Long id);
 

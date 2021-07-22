@@ -19,7 +19,7 @@ public class AdminVariantControllerImpl implements AdminVariantController {
     @Override
     public ResponseEntity<Object> save(VariantDtoInput variantDtoInput) {
         try {
-            Boolean result = variantService.save(variantDtoInput);
+            Object result = variantService.save(variantDtoInput);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
@@ -34,7 +34,7 @@ public class AdminVariantControllerImpl implements AdminVariantController {
     @Override
     public ResponseEntity<Object> update(VariantDtoInput variantDtoInput, Long id) {
         try {
-            Boolean result = variantService.update(variantDtoInput, id);
+            Object result = variantService.update(variantDtoInput, id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
@@ -49,7 +49,7 @@ public class AdminVariantControllerImpl implements AdminVariantController {
     @Override
     public ResponseEntity<Object> delete(Long variantId, Long productId) {
         try {
-            Boolean result = variantService.remove(variantId, productId);
+            Object result = variantService.remove(variantId, productId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
