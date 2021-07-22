@@ -21,7 +21,8 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    public static String parentPath = System.getProperty("user.dir");
+//    public static String parentPath = System.getProperty("user.dir");
+    public static String parentPath = "/home/ubuntu/target/";
     public static final String CUSTOMS_DIR = "static/customs";
     public static final String UPLOADS = "static/uploads";
     public static final String MODELS_DIR = "static/models";
