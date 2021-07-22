@@ -62,8 +62,12 @@ public class VariantServiceImpl implements VariantService {
 
         //check variant is exist in order_line
         if (orderLineRepos.findByProductIdOrVariantId(variantId) == null) {
-            if (productJPARepos.getById(productId).getVariantCollection().size() > 1) {
-                variantRepos.deleteById(variantId);
+            Product product = productJPARepos.getById(productId);
+            if (product.getVariantCollection().size() > 1) {
+                Variant variant = variantRepos.getById(variantId);
+                product.getVariantCollection().remove(variant);
+                productJPARepos.save(product);
+//                throw new ValidationException("Xóa biến thể thành công!");
                 return true;
             } else {
                 throw new ValidationException("Phải tồn tại ít nhất một biến thể!");

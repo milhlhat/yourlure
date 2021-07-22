@@ -115,7 +115,7 @@ public class Product {
 
     @JsonIgnore
     @OrderBy("variantId ASC")
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
