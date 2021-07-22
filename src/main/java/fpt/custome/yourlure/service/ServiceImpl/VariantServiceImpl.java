@@ -33,7 +33,7 @@ public class VariantServiceImpl implements VariantService {
     public Boolean save(VariantDtoInput variantDtoInput) {
 
         Product product = productJPARepos.getById(variantDtoInput.getProductId());
-        if (product != null) {
+        if (product == null) {
             throw new ValidationException("Mã sản phẩm không tồn tại!");
         }
         Variant variantInput = modelMapper.map(variantDtoInput, Variant.class);
