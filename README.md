@@ -1,4 +1,4 @@
-# how to auto deploy to vps with github actions
+## how to auto deploy to vps with github actions
 
 1. create service on vps
 - we need to work into folder /home/ubuntu
@@ -9,6 +9,7 @@
   cd /etc/systemd/system
   nano yourlure-be.service
   paste and edit that:
+  ```
       [Unit]
       Description=My Webapp Java REST Service
       [Service]
@@ -29,7 +30,7 @@
 
       [Install]
       WantedBy=multi-user.target
-                      
+  ```
  - setup service:
     sudo systemctl daemon-reload
     sudo systemctl enable yourlure-be.service
@@ -40,7 +41,7 @@
     sudo journalctl -f -n 1000 -u yourlure-be
 
 2. create gihub action file (yml file):
-
+```
   name: Java CI
   on:
     push:
@@ -82,3 +83,4 @@
             sudo systemctl stop yourlure-be
             sudo sudo systemctl daemon-reload
             sudo systemctl start yourlure-be
+```
