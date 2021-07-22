@@ -2,68 +2,68 @@
 
 1. Create service on vps
 
-- First step, we need to install environment: npm, serve, java
+  - First step, we need to install environment: npm, serve, java
 
-- We need to work into folder /home/ubuntu
+  - We need to work into folder /home/ubuntu
 
-- Create sh file
+  - Create sh file
 
-  + Front end:
-  ```sh
-  sudo /usr/bin/serve -l 80 -s -n build
-  ```
-  + Back end:
-  ```
-  sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
-  ```
-  
-  
-- Create service for our application
+    + Front end:
+    ```sh
+    sudo /usr/bin/serve -l 80 -s -n build
+    ```
+    + Back end:
+    ```
+    sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
+    ```
 
-  + Direct to system folder:
-  ```
-  cd /etc/systemd/system
-  nano yourlure-be.service
-  ```
-  
-  + Saste and edit in []:
-  ```
-      [Unit]
-      Description=My Webapp Java REST Service
-      [Service]
-      User=root
-      # The configuration file application.properties should be here:
 
-      #change this to your workspace
-      WorkingDirectory=/home/ubuntu/[YOUR-FOLDER]
+  - Create service for our application
 
-      #path to executable. 
-      #executable is a bash script which calls jar file
-      ExecStart=/home/ubuntu/[YOUR-FOLDER]/[SH-FILE-NAME].sh
+    + Direct to system folder:
+    ```
+    cd /etc/systemd/system
+    nano yourlure-be.service
+    ```
 
-      SuccessExitStatus=143
-      TimeoutStopSec=10
-      Restart=on-failure
-      RestartSec=5
+    + Saste and edit in []:
+    ```
+        [Unit]
+        Description=My Webapp Java REST Service
+        [Service]
+        User=root
+        # The configuration file application.properties should be here:
 
-      [Install]
-      WantedBy=multi-user.target
-  ```
-  
-  
- + Setup service:
- ```
-    sudo systemctl daemon-reload
-    sudo systemctl enable yourlure-be.service
-    sudo systemctl start yourlure-be
-    sudo systemctl status yourlure-be
- ```
-    
-    
- + Show log:
- ```
-    sudo journalctl -f -n 1000 -u yourlure-be
- ```
+        #change this to your workspace
+        WorkingDirectory=/home/ubuntu/[YOUR-FOLDER]
+
+        #path to executable. 
+        #executable is a bash script which calls jar file
+        ExecStart=/home/ubuntu/[YOUR-FOLDER]/[SH-FILE-NAME].sh
+
+        SuccessExitStatus=143
+        TimeoutStopSec=10
+        Restart=on-failure
+        RestartSec=5
+
+        [Install]
+        WantedBy=multi-user.target
+    ```
+
+
+   + Setup service:
+   ```
+      sudo systemctl daemon-reload
+      sudo systemctl enable yourlure-be.service
+      sudo systemctl start yourlure-be
+      sudo systemctl status yourlure-be
+   ```
+
+
+   + Show log:
+   ```
+      sudo journalctl -f -n 1000 -u yourlure-be
+   ```
 
 
 
