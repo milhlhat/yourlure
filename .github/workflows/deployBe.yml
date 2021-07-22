@@ -23,7 +23,7 @@ jobs:
       - name: Build with Maven
         run: |
           mvn -B clean package
-          cd target/
+#          cd target/
 #          tar -cvf deploy.tar ../target/
       - name: Upload file jar
         uses: appleboy/scp-action@master
