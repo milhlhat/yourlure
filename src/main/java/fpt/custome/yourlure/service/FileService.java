@@ -21,7 +21,7 @@ import java.util.Objects;
 @Service
 public class FileService {
 
-    public static String parentPath = System.getProperty("user.dir") + "/classes/";
+    public static String parentPath = System.getProperty("user.dir") + "/target/classes/";
     public static final String CUSTOMS_DIR = "static/customs";
     public static final String UPLOADS = "static/uploads";
     public static final String MODELS_DIR = "static/models";
@@ -54,7 +54,7 @@ public class FileService {
     public List<String> saveMultipartFiles(MultipartFile[] files, String path) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
-            String fileName = new Date() + RandomStringUtils.randomAlphabetic(6) + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String fileName = new Date().getTime() + RandomStringUtils.randomAlphabetic(6) + Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
             result.add(saveMultipartFile(file, path, fileName));
         }
         return result;
