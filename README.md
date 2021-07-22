@@ -1,6 +1,7 @@
 ## How to auto deploy to vps with github actions
 
 1. Create service on vps
+- First step, we need to install environment: npm, serve, java
 - We need to work into folder /home/ubuntu
 - Create sh file
   + Front end:
