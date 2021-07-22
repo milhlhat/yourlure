@@ -23,7 +23,7 @@ jobs:
       - name: Build with Maven
         run: |
           mvn -B clean package
-          tar -cvf deploy.tar ../target/
+#          tar -cvf deploy.tar ../target/
       - name: Upload file jar
         uses: appleboy/scp-action@master
         with:
@@ -31,5 +31,5 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_PASSWORD }}
           port: 22
-          source: "deploy.tar"
+          source: "target/yourlure-0.0.1-SNAPSHOT.jar"
           target: "~/BE"
