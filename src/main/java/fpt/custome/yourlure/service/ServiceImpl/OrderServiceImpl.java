@@ -427,7 +427,7 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : items) {
             if (item.getCustomModelId() != null) {
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
-                totalPrice += calculateCustomizePrice(customizeModel);
+                totalPrice += calculateCustomizePrice(customizeModel)*item.getQuantity();
             } else {
                 // set price by variant
                 Optional<Variant> variant = variantRepos.findById(item.getVariantId());
@@ -435,7 +435,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new ValidationException("Vui lòng chọn sản phẩm trước khi thanh toán!");
                 }
                 if (variant.get().getQuantity() > 0) {
-                    totalPrice += variant.get().getNewPrice();
+                    totalPrice += variant.get().getNewPrice()*item.getQuantity();
                 }
             }
         }
