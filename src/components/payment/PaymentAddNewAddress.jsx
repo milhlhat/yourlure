@@ -58,7 +58,7 @@ function Alert(props) {
 }
 
 function ManagerChangePassWord(props) {
-  const { fetchCustomAddress, noAddress,setNewAddress } = props;
+  const { fetchCustomAddress, noAddress, setNewAddress } = props;
   const [openAlert, setOpenAlert] = useState({
     isOpen: false,
     content: "",
@@ -91,6 +91,7 @@ function ManagerChangePassWord(props) {
     register,
     reset,
     getValues,
+    setValue,
     formState: { errors },
   } = methods;
 
@@ -117,11 +118,26 @@ function ManagerChangePassWord(props) {
       console.log("fail to fetch add address");
     }
   };
+  useEffect(() => {
+    const fetchCustomAccount = async () => {
+      try {
+        const response = await UserApi.getMe();
+        setValue("userName", response.username);
+        setValue("phone", response.phone);
+      } catch (error) {
+        console.log("fail to fetch information");
+      }
+    };
+    fetchCustomAccount();
+    return fetchCustomAccount();
+  }, []);
   return (
     <div>
       <span className="pointer primary-color" onClick={handleChangePassword}>
         {noAddress ? (
-          <YLButton variant="primary" type="button">Thêm địa chỉ mới</YLButton>
+          <YLButton variant="primary" type="button">
+            Thêm địa chỉ mới
+          </YLButton>
         ) : (
           "Thêm địa chỉ mới"
         )}

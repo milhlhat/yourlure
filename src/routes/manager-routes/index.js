@@ -24,7 +24,7 @@ function ManagementRouter(props) {
         allowed ? (
           <ManagerLayout>
             <Switch>
-              <Redirect exact from="/manager" to={path + DEFINELINK.managementUser} />
+              <Redirect exact from="/manager" to={path + DEFINELINK.managementProduct} />
               <Route
                 path={path + DEFINELINK.managementUser}
                 component={ManagerUser}

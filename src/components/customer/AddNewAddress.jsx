@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ function AddNewAddress() {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isDirty, isSubmitted },
   } = methods;
   const onSubmit = async (data) => {
@@ -31,11 +32,24 @@ function AddNewAddress() {
     }
   };
   useEffect(() => {
+    const fetchCustomAccount = async () => {
+      try {
+        const response = await UserApi.getMe();
+        setValue("userName", response.username);
+        setValue("phone", response.phone);
+      } catch (error) {
+        console.log("fail to fetch information");
+      }
+    };
+    fetchCustomAccount();
+    return fetchCustomAccount();
+  }, []);
+  useEffect(() => {
     return () => {
       // console.log("dirty and submitted", isDirty, isSubmitted);
       if (isDirty && !isSubmitted) return (window.onbeforeunload = () => true);
     };
-  });
+  }, []);
   return (
     <div className="bg-box bg-shadow">
       <Prompt

@@ -16,8 +16,6 @@ function CartProduct(props) {
   const cartData = props?.location?.cart;
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
-  if (isLoggedIn) {
-  }
   const state = useSelector((state) => state.cartGuest.carts);
   const [cart, setCart] = useState({
     data: null,
@@ -37,7 +35,11 @@ function CartProduct(props) {
           isSuccess: true,
           isLoading: false,
         });
-        setCartsSelected([...response.cartItems]);
+        setCartsSelected([
+          ...response.cartItems.filter(
+            (e) => e.visibleInStorefront !== false && e.variantQuantity > 0
+          ),
+        ]);
       }
     } catch (error) {
       setCart({
@@ -48,12 +50,39 @@ function CartProduct(props) {
       console.log("fail to fetch cart ");
     }
   };
+  const fetchCartGuest = async (data) => {
+    setCart({ ...cart, isLoading: true });
+    try {
+      const response = await CartAPI.getGuestCart(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setCart({
+          data: response.cartItems,
+          isSuccess: true,
+          isLoading: false,
+        });
+        setCartsSelected([
+          ...response.cartItems.filter(
+            (e) => e.visibleInStorefront !== false && e.variantQuantity > 0
+          ),
+        ]);
+      }
+    } catch (error) {
+      setCart({
+        ...cart,
+        isSuccess: false,
+        isLoading: false,
+      });
+      console.log("fail to fetch cart guest");
+    }
+  };
   useEffect(() => {
     if (isLoggedIn) {
       fetchCart();
+      return fetchCart();
     } else {
-      setCart({ ...cart, data: state });
-      setCartsSelected([...state]);
+      fetchCartGuest(state)
     }
   }, [state]);
 
@@ -79,12 +108,14 @@ function CartProduct(props) {
   };
   // if (isLoggedIn && cart.isLoading) {
   //   return <Loading />;
-  // } else if (isLoggedIn && !cart.isSuccess) {
+  // }
+  // else if (isLoggedIn && !cart.isSuccess) {
   //   return <ErrorLoad />;
-  // } else
+  // }
+  // else
   return (
     <div className="container">
-      {console.log(cart)}
+      {/* {console.log(cart)} */}
       {cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">
@@ -138,7 +169,9 @@ function CartProduct(props) {
                           Tiếp tục
                         </YLButon>
                         {cartsSelected.length === 0 && (
-                          <span className="text-danger">Bạn chưa chọn mặt hàng nào(*)</span>
+                          <span className="text-danger">
+                            Bạn chưa chọn mặt hàng nào(*)
+                          </span>
                         )}
                       </td>
                     </tr>

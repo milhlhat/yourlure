@@ -7,9 +7,9 @@ import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-order-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
-import { convertToVND } from "utils/format-string";
+import { convertToVND, getShipping } from "utils/format-string";
 import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 function ManagerOrderDetail(props) {
@@ -45,6 +45,7 @@ function ManagerOrderDetail(props) {
     { value: "PENDING", lable: "Đang chờ xác nhận" },
     { value: "ACCEPT", lable: "Xác nhận" },
     { value: "STAFF_REJECT", lable: "Hủy đơn" },
+    { value: "CUSTOMER_REJECT", lable: "Hủy đơn" },
   ];
   function totalPrice(list) {
     let total = list.reduce((sum, product) => {
@@ -237,15 +238,35 @@ function ManagerOrderDetail(props) {
               </div>
             </div>
             <div className="bg-box bg-shadow mt-5 py-3">
-              {/* <b>Tổng tiền hàng:</b>{" "}
-              {order?.data?.items &&
-                convertToVND(totalPrice(order?.data?.items))}
-              <b>Được giảm giá:</b>{" "}
-              {order?.data?.items &&
-                convertToVND(order?.data?.items.))} */}
-              <b>Tổng thanh toán:</b>{" "}
-              {order?.data?.items &&
-                convertToVND(totalPrice(order?.data?.items))}
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Tổng tiền hàng:</th>
+                    <td className="text-end">
+                      {order?.data?.items &&
+                        convertToVND(totalPrice(order?.data?.items))}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Được giảm giá:</th>
+                    <td className="text-end">
+                      {order?.data?.items &&
+                        convertToVND(order?.data?.discount)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Phí vận chuyển:</th>
+                    <td className="text-end">{convertToVND(getShipping())}</td>
+                  </tr>
+                  <tr>
+                    <th>Tổng thanh toán:</th>
+                    <td className="text-end">
+                      {order?.data?.items &&
+                        convertToVND((totalPrice(order?.data?.items))+getShipping()-order?.data?.discount)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

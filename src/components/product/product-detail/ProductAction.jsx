@@ -80,14 +80,16 @@ function ProductAction(props) {
   const handleAddToCart = async () => {
     let data = {
       customModelId: customize ? customize.customizeId : null,
-      productId: product.productId,
+      // productId: product.productId,
       quantity: quantity,
       variantId: color,
-      price: price,
-      variantName: variantName,
-      weight: getValues("weight"),
-      variantImg: variantImg,
+      // price: price,
+      // variantName: variantName,
+      weight: Number(getValues("weight")),
+      // variantImg: variantImg,
     };
+
+
     console.log(data);
     if (
       (product.maxWeight && data.weight > product.maxWeight) ||
@@ -132,6 +134,8 @@ function ProductAction(props) {
         }
       } else {
         data = { ...data, productName: product.productName };
+        console.log("data");
+        console.log(data);
         const action = setCartGuest(data);
         dispatch(action);
         toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
@@ -229,7 +233,6 @@ function ProductAction(props) {
                       ? product.variantCollection[index].imageUrl
                       : product.imageCollection[0].linkImage
                   )}
-                  alt="ảnh sản phẩm"
                 />
               </div>
               <span className="d-none">
@@ -271,17 +274,20 @@ function ProductAction(props) {
         </div>
         <span>
           {!customize ? (
+            product?.visibleInStorefront?(
             takeOut <= 0 ? (
               <span className="text-danger bold">Hết hàng</span>
             ) : (
               "còn " + takeOut + " sản phẩm"
+            )):(
+              <span className="text-danger bold">Ngừng kinh doanh</span>
             )
           ) : (
             "Sản phẩm tùy biến của bạn"
           )}
         </span>
       </div>
-      <div className="product-quantity mt-4 row">
+      {product?.visibleInStorefront&&<div className="product-quantity mt-4 row">
         <h5>Số lượng:</h5>
         <div className="product-details-quantity d-flex">
           <button className="quantity-input" onClick={decrement}>
@@ -298,14 +304,14 @@ function ProductAction(props) {
             <i className="fal fa-plus"></i>
           </button>
         </div>
-      </div>
+      </div>}
 
       <div className="product-buy mt-5">
         <div onClick={() => handlePayNow()}>
           <YLButton
             variant="light"
             type="button"
-            disabled={takeOut <= 0}
+            disabled={takeOut <= 0||!product?.visibleInStorefront}
             value="Mua ngay"
           ></YLButton>
         </div>
@@ -313,7 +319,7 @@ function ProductAction(props) {
           <YLButton
             variant="primary"
             type="button"
-            disabled={takeOut <= 0}
+            // disabled={takeOut <= 0||!product?.visibleInStorefront}
             value="Thêm vào giỏ hàng"
           ></YLButton>
         </div>

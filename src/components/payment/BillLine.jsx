@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "./scss/bill-line.scss";
 import { Link, useHistory } from "react-router-dom";
-import { convertToVND, formatDate, totalPrice } from "utils/format-string";
+import { convertToVND, formatDate, getShipping, totalPrice } from "utils/format-string";
 
 function BillLine(props) {
   const { open, setOpen, billLine } = props;
@@ -22,10 +22,6 @@ function BillLine(props) {
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
   return (
     <div>
-      <span className="pointer primary-color" onClick={() => setOpen(true)}>
-        hoàn thành
-      </span>
-
       <Dialog
         fullScreen={fullScreen}
         maxWidth="lg"
@@ -61,7 +57,7 @@ function BillLine(props) {
                     </tr>
                     <tr>
                       <th className="text-start">Tổng cộng</th>
-                      <td className="text-end">{billLine&&convertToVND((totalPrice(billLine?.orderLineCollection)-billLine?.discount+25000))}</td>
+                      <td className="text-end">{billLine&&convertToVND((totalPrice(billLine?.orderLineCollection)-billLine?.discount+getShipping()))}</td>
                     </tr>
                     <tr>
                       <th className="text-start">Phương thức thanh toán</th>

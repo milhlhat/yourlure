@@ -37,7 +37,7 @@ function CustomerAddressInput(props) {
     try {
       const response = await UserApi.getAddress();
       setAddress({ data: response, isLoading: false, isSuccess: true });
-      setInfo(response?.find((e)=>e.isDefault===true));
+      setInfo(response?.find((e) => e.isDefault === true));
     } catch (error) {
       console.log(error);
       setAddress({ data: null, isLoading: false, isSuccess: false });
@@ -69,6 +69,7 @@ function CustomerAddressInput(props) {
               fetchCustomAddress={fetchCustomAddress}
               noAddress={false}
               setNewAddress={setNewAddress}
+              setValue={setValue}
             />
           )}
         </div>
