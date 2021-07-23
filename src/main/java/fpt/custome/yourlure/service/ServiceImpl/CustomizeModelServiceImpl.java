@@ -235,7 +235,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             CustomMaterial mat = mapper.map(materialDtoInput, CustomMaterial.class);
             mat.setCustomizeModel(customizeModel);
             mat.setDefaultMaterial(defaultMaterialRepos.getById(materialDtoInput.getMaterialId()));
-//            mat = customMaterialRepos.save(mat);
+            mat = customMaterialRepos.save(mat);
             materials.add(mat);
         }
         customizeModel.setCustomMaterials(materials);
