@@ -15,4 +15,6 @@ public interface CustomizeModelRepos extends JpaRepository<CustomizeModel, Long>
             "JOIN tbl_products on tbl_model_3d.product_id = tbl_products.product_id\n" +
             "WHERE tbl_users.user_id = ?1 AND tbl_products.product_id = ?2", nativeQuery = true)
     List<CustomizeModel> findAllByUserIdAndProductId(Long userId, Long productId);
+
+    void deleteByCustomizeId(Long customizeId);
 }

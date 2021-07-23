@@ -62,7 +62,6 @@ public class User {
                 ", provider=" + provider +
                 ", customizeModels=" + customizeModels +
                 ", orderActivities=" + orderActivities +
-                ", customizeCollection=" + customizeCollection +
                 ", userAddressCollection=" + userAddressCollection +
                 '}';
     }
@@ -86,22 +85,16 @@ public class User {
     private Provider provider;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     // MapopedBy trỏ tới tên biến users ở trong UserAddress .
     //1 users có nhiều UserAddress
     private Collection<CustomizeModel> customizeModels;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "assigner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "assigner")
     // MapopedBy trỏ tới tên biến user ở trong status.
     //1 user có nhiều status
     private Collection<OrderActivity> orderActivities;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến users ở trong Customize .
-    //1 User có nhiều Customize
-    private Collection<CustomizeModel> customizeCollection;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

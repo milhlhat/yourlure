@@ -39,7 +39,7 @@ public class CustomizeModel {
 
     @JsonIgnore
     @OrderBy("materialId asc")
-    @OneToMany(mappedBy = "customizeModel", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customizeModel")
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
     private Collection<CustomMaterial> customMaterials;

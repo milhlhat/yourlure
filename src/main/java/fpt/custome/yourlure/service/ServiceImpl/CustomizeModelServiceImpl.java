@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -285,12 +286,14 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         return output;
     }
 
+    @Transactional
     @Override
     public Boolean deleteCustomizeModel(HttpServletRequest rq, Long customizeModelId) {
         User user = userService.whoami(rq);
         for (CustomizeModel customizeModel : user.getCustomizeModels()) {
             if (customizeModel.getCustomizeId().equals(customizeModelId)) {
-                customizeModelRepos.delete(customizeModel);
+                customMaterialRepos.deleteAllByCustomizeModelCustomizeId(customizeModel.getCustomizeId());
+                customizeModelRepos.deleteByCustomizeId(customizeModel.getCustomizeId());
                 return true;
             }
         }
