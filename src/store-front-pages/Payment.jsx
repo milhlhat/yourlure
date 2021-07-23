@@ -97,6 +97,10 @@ function Payment(props) {
     }
     setDiscountLoad(false);
   };
+  const onDiscountDelete=()=>{
+    setDiscount(0)
+    setDiscountValue(null)
+  }
 
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
@@ -236,22 +240,35 @@ function Payment(props) {
                     onChange={(e) => setDiscountValue(e.target.value)}
                     type="text"
                     id="voucher"
+                    value={discountValue?discountValue:""}
+                    disabled={discount > 0}
                   />
-                  <div onClick={onDiscountSubmit}>
+                  {discount > 0 ? (
+                    <><div onClick={onDiscountDelete}>
                     <YLButton
-                      variant="primary"
-                      disabled={discountLoad}
+                      variant="danger"
                       type="button"
                     >
-                      Áp dụng{" "}
-                      {discountLoad && (
-                        <CircularProgress
-                          size={15}
-                          className="circle-progress"
-                        />
-                      )}
+                      Xóa
                     </YLButton>
-                  </div>
+                  </div></>
+                  ) : (
+                    <div onClick={onDiscountSubmit}>
+                      <YLButton
+                        variant="primary"
+                        disabled={discountLoad}
+                        type="button"
+                      >
+                        Áp dụng{" "}
+                        {discountLoad && (
+                          <CircularProgress
+                            size={15}
+                            className="circle-progress"
+                          />
+                        )}
+                      </YLButton>
+                    </div>
+                  )}
                 </div>
                 <table className="table table-borderless">
                   <tbody>

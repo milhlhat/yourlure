@@ -36,9 +36,9 @@ function CartRowProduct(props) {
   const [quantity, setQuantity] = useState(item?.quantity);
   const history = useHistory();
   const dispatch = useDispatch();
-  useEffect(() => {
-    setQuantity(item.quantity);
-  }, [item]);
+  // useEffect(() => {
+  //   setQuantity(item.quantity);
+  // }, [item]);
   const onConfirm = async (data) => {
     if (isLoggedIn) {
       try {
@@ -55,6 +55,7 @@ function CartRowProduct(props) {
         console.log("fail to fetch delete ");
       }
     } else {
+      console.log(data);
       const action = deleteCartGuest(data);
       dispatch(action);
     }
@@ -116,7 +117,7 @@ function CartRowProduct(props) {
         <tbody>
           <tr>
             <td>
-              {canChange&&<input
+              {canChange&&item?.visibleInStorefront&&item?.variantQuantity>0&&<input
                 type="checkbox"
                 value={item?.variantId}
                 onChange={() => handleChangeSelected(item)}
@@ -172,12 +173,24 @@ function CartRowProduct(props) {
             <td>
               <div className="d-flex float-end">
                 {canChange && (
+                  item?.visibleInStorefront?(
+                    item?.variantQuantity>0?(
+                      
                   <span>
                     <ChangeQuantity
                       quantity={quantity}
                       setQuantity={setQuantity}
                     />
                   </span>
+                    ):(
+                      <span className="text-danger">Hết hàng</span>
+                    )
+                  )
+                  :(
+                    <span className="text-danger">
+                    Ngừng kinh doanh</span>
+                  )
+
                 )}
                 <span className="mx-3">{convertToVND(sumPrice())}</span>
                 {canChange && (

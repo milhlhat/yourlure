@@ -26,7 +26,8 @@ const cart = createSlice({
         if (
           state.carts[i].productId === action.payload.productId &&
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customModelId
+          state.carts[i].customModelId === action.payload.customizeId &&
+          state.carts[i].weight === action.payload.weight
         ) {
           state.carts[i].quantity += action.payload.quantity;
           ex = true;
@@ -35,7 +36,7 @@ const cart = createSlice({
       }
 
       //check for add cart
-      !ex && state.carts.push(action.payload);
+      !ex && state.carts.unshift(action.payload);
       // console.log(current(state.carts));
       // return { ...state, carts: temp.carts };
     },
@@ -43,11 +44,12 @@ const cart = createSlice({
       // let temp = { ...state };
       //
       // console.log(action.payload);
+      console.log(action.payload);
       for (let i in state.carts) {
         if (
-          state.carts[i].productId === action.payload.productId &&
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customModelId
+          state.carts[i].customModelId === action.payload.customizeId 
+          // state.carts[i].weight === action.payload.weight
         ) {
           state.carts[i].quantity = action.payload.quantity;
           break;
@@ -59,12 +61,11 @@ const cart = createSlice({
       //
       // console.log(current(state.carts[0]));
       // let temp = { ...state };
-
       for (let i in state.carts) {
         if (
-          state.carts[i].productId === action.payload.productId &&
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customModelId
+          state.carts[i].customModelId === action.payload.customizeId &&
+          state.carts[i].weight === action.payload.weight
         ) {
           state.carts.splice(i, 1);
           break;
@@ -76,9 +77,10 @@ const cart = createSlice({
       for (let i in state.carts) {
         for (let index in action.payload) {
           if (
-            state.carts[i].productId === action.payload[index].productId &&
             state.carts[i].variantId === action.payload[index].variantId &&
-            state.carts[i].customModelId === action.payload[index].customModelId
+            state.carts[i].customModelId ===
+              action.payload[index].customizeId &&
+            state.carts[i].weight === action.payload[index].weight
           ) {
             state.carts.splice(i, 1);
           }

@@ -128,7 +128,7 @@ function Sidebar(props) {
                     : "link-dark"
                     }`}
                 >
-                  <i className="fal fa-box-heart"></i>
+                  <i className="fal fa-badge-percent"></i>
                   <span className="text-side-bar"> Mã giảm giá</span>
                 </Link>
               </li>
@@ -141,7 +141,7 @@ function Sidebar(props) {
                     }`}
                 >
                   <i className="fal fa-box-heart"></i>
-                  <span className="text-side-bar"> Campaign</span>
+                  <span className="text-side-bar"> Chiến dịch</span>
                 </Link>
               </li>
               {/* <li>

@@ -22,5 +22,10 @@ const CartAPI = {
 		const url = `/cart/remove-item?cartItemId=${id}`;
 		return AxiosClient.delete(url);
 	},
+	getGuestCart: (params) => {
+		const url = `/cart/list-variant-of-guest`;
+		return AxiosClient.post(url,params);
+	},
+
 };
 export default CartAPI;
