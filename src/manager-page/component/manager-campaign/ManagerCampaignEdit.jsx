@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import ManagerCampaignAPI from "api/manager-campaign-api";
-import ManagerVoucherAPI from "api/manager-voucher";
+import { getCampaignById, updateCampaign } from "api/manager-campaign-api";
+
 import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,220 +9,210 @@ import { useHistory } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 import "./scss/manager-campaign-addNew.scss";
+
+import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
+import { VALIDATE_CAMPAIGN_SCHEMA } from "./ManagerCampaignAddNew";
+import ChooseProductImage from "../../../components/choose-image/ChooseMultiImages";
+import Loading from "../../../components/Loading";
+import ErrorLoad from "../../../components/error-notify/ErrorLoad";
+import { toast } from "react-toastify";
+import { SUPPORTED_IMAGE_FORMATS } from "../../../constant/product-config";
 function ManagerCampignEdit(props) {
-    const canBack = props.location.canBack;
-    const dispatch = useDispatch();
-    const voucherId = props.match.params.id;
-    const history = useHistory();
-    const schema = yup.object().shape({
-        banner: yup.string().required("Tên chiến dịch không được để trống"),
-        description: yup.string().required("Mô tả chiến dịch không được để trống"),
-    });
-    const [voucher, setVoucher] = useState({
-        data: [],
+  const canBack = props.location.canBack;
+  const dispatch = useDispatch();
+
+  const campaignId = props.match.params.id;
+  const history = useHistory();
+  const schema = yup.object().shape({
+    ...VALIDATE_CAMPAIGN_SCHEMA,
+    // newImages: yup.mixed().when("imgList", {
+    //   is: (imgList) => {
+    //     return imgList?.length > 0;
+    //   },
+    //   then: yup.mixed().nullable,
+    //   // otherwise: yup
+    //   //   .array()
+    //   //   .min(1, "Vui lòng chọn ảnh chiến dịch")
+    //   //   .test("prodImgType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
+    //   //     for (const file of value) {
+    //   //       if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
+    //   //         return false;
+    //   //       }
+    //   //     }
+    //   //     return true;
+    //   //   }),
+    // }),
+  });
+  const [campaign, setCampaign] = useState({
+    data: [],
+    isLoading: true,
+    isSuccess: false,
+  });
+
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = methods;
+  const fetchCampaign = async (id) => {
+    try {
+      const response = await getCampaignById(id);
+      setCampaign({
+        data: response,
         isLoading: false,
         isSuccess: true,
-    });
-    const formatDate = (date) => {
-        let formatDate = new Date(date);
-        return (
-            formatDate.getFullYear() +
-            "-" +
-            ` 0${(formatDate.getMonth() + 1)}`.slice(-2) +
-            "-" +
-            ` 0${(formatDate.getDate() + 1)}`.slice(-2)
-        );
-    };
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-        setValue,
-    } = useForm({
-        resolver: yupResolver(schema),
-    });
-    const fetchVoucher = async () => {
-        try {
-            const response = await ManagerCampaignAPI.getById(voucherId);
-            if (response.error) {
-                throw new Error(response.error);
-            } else {
-                setVoucher({
-                    data: response,
-                    success: true,
-                });
-            }
-        } catch (error) {
-            console.log("fail to fetch voucher ");
-        }
-    };
-    useEffect(() => {
-        fetchVoucher();
-    }, [voucherId]);
+      });
+      setValue("banner", response.banner);
+      setValue("description", response.description);
+      setValue("content", response.content);
+      setValue(
+        "startDate",
+        response.startDate ? response.startDate.substr(0, 10) : ""
+      );
+      setValue(
+        "endDate",
+        response.endDate ? response.endDate.substr(0, 10) : ""
+      );
+      setValue("imgList", response.imageCollection);
+      setValue("newImages", []);
+    } catch (error) {
+      toast.error("Lỗi hệ thống");
+    }
+  };
+  useEffect(() => {
+    fetchCampaign(campaignId);
+  }, [campaignId]);
 
-    useEffect(() => {
+  useEffect(() => {
+    if (canBack) {
+      const action = setIsBack({
+        canBack: canBack.canBack,
+        path: canBack.path,
+        label: canBack.label,
+      });
+      dispatch(action);
+    }
+  }, [canBack]);
 
-        setValue("banner", voucher?.data?.banner);
-        setValue("description", voucher?.data?.description);
-        setValue("content", voucher?.data?.content);
-        setValue("startDate", voucher?.data?.startDate ? formatDate(voucher?.data?.startDate) : '');
-        setValue("endDate", voucher?.data?.endDate ? formatDate(voucher?.data?.endDate) : '');
-    }, [voucher]);
-
-    useEffect(() => {
-        if (canBack) {
-            const action = setIsBack({
-                canBack: canBack.canBack,
-                path: canBack.path,
-                label: canBack.label,
-            });
-            dispatch(action);
-        }
-    }, [canBack]);
-
-    const onsubmit = async (data) => {
-        try {
-            let start_date = new Date(data?.start_date);
-            let end_date = new Date(data?.end_date);
-            if (start_date.getTime() > end_date.getTime()) {
-                alert("Ngày kết thúc phải lớn hơn ngày bắt đầu");
-            } else {
-                console.log(data);
-                const response = await ManagerCampaignAPI.update(data, voucherId);
-                console.log(response);
-                if (response.error) {
-                    throw new Error(response.error);
-                } else {
-                    alert("Cập nhật thành công");
-                    history.push("/manager/campaign");
-                }
-            }
-        } catch (error) {
-            alert("Cập nhật thất bại");
-            console.log("fail to fetch update");
-        }
-    };
-
-
+  const onsubmit = async (data) => {
+    try {
+      const response = updateCampaign(campaignId, data);
+      console.log(response);
+    } catch (error) {
+      alert("Cập nhật thất bại");
+      console.log("fail to fetch update");
+    }
+  };
+  if (campaign.isLoading) {
+    return <Loading hasLayout />;
+  } else if (!campaign.isSuccess) {
+    return <ErrorLoad hasLayout />;
+  } else
     return (
-        <div>
-            <h3>Thông Tin Chiến Dịch Mới</h3>
-            <form onSubmit={handleSubmit(onsubmit)}>
-                <div className=" add-new-form row">
-                    <div className="info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2 pb-md-5 mt-md-3" id="product-info">
-                        <div className="px-3 pt-3">
-                            <h5>Chi tiết chiến dịch</h5>
+      <div>
+        <h3>Thông Tin Chiến Dịch Mới</h3>
+        <form onSubmit={handleSubmit(onsubmit)}>
+          <div className=" add-new-form row">
+            <div className=" bg-box bg-shadow col-12  mb-md-5 mb-2 pb-2 pb-md-5 mt-md-3">
+              <div className="px-3 pt-3">
+                <h5>Chi tiết chiến dịch</h5>
+              </div>
+              <hr />
+              <div className="px-3">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <YlInputFormHook
+                          name={"banner"}
+                          methods={methods}
+                          label={"Tên chiến dịch"}
+                          placeholder={"Tên chiến dịch"}
+                          isRequired
+                        />
+                      </td>
+                      <td>
+                        <YlInputFormHook
+                          name={"startDate"}
+                          isRequired={true}
+                          label={"Ngày bắt đầu"}
+                          type="date"
+                          methods={methods}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <YlInputFormHook
+                          name={"description"}
+                          isRequired={true}
+                          label={"Mô tả"}
+                          placeholder={"Mô tả"}
+                          methods={methods}
+                        />
+                      </td>
+                      <td>
+                        <YlInputFormHook
+                          name={"endDate"}
+                          isRequired={true}
+                          label={"Ngày bắt đầu"}
+                          type="date"
+                          methods={methods}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="2">
+                        <label htmlFor="content" className="form-label">
+                          Mô chi tiết{" "}
+                          <span className="error-message"> (*)</span>
+                        </label>
+                        <textarea
+                          type="text"
+                          className="form-control"
+                          id="content"
+                          placeholder="Mô tả chi tiết"
+                          {...register("content")}
+                        />
+                        <span className="error-message">
+                          {errors["content"]?.message}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={2}>
+                        <div className=" bg-white  ">
+                          <ChooseProductImage
+                            methods={methods}
+                            name={"imgList"}
+                            removeName={"imageCollectionRemove"}
+                            getOldImage={() => {
+                              return [];
+                            }}
+                            fieldNameImgFromOldList={"linkImage"}
+                          />
+                          <span className="error-message">
+                            {errors.newImages?.message}
+                          </span>
                         </div>
-                        <hr />
-                        <div className="px-3">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <label for="banner" className="form-label">
-                                                Tên chiến dịch <span className="error-message">(*)</span>
-                                            </label>
-                                            <input
-                                                type="text"
-                                                className={`form-control ${errors.name ? "outline-red" : ""
-                                                    }`}
-                                                id="banner"
-                                                placeholder="Tên chiến dịch"
-                                                {...register("banner")}
-                                            />
-                                            <span className="error-message">
-                                                {errors.banner?.message}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <label for="start-date" className="form-label">
-                                                Bắt đầu từ ngày
-                                            </label>
-                                            <input
-                                                type="date"
-                                                className="form-control"
-                                                id="start-date"
-                                                placeholder="Ngày bắt đầu"
-                                                {...register("startDate")}
-                                            />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label for="description" className="form-label">
-                                                Mô tả <span className="error-message">(*)</span>
-                                            </label>
-                                            <textarea
-                                                type="text"
-                                                className="form-control"
-                                                id="description"
-                                                placeholder="Mô tả"
-                                                {...register("description")}
-                                            />
-                                            <span className="error-message">
-                                                {errors.description?.message}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <label for="end-date" className="form-label">
-                                                Ngày kết thúc
-                                            </label>
-                                            <input
-                                                type="date"
-                                                className="form-control"
-                                                id="end-date"
-                                                placeholder="Ngày kết thúc"
-                                                {...register("endDate")}
-                                            />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colSpan="2">
-                                            <label htmlFor="content" className="form-label">
-                                                Mô  chi tiết
-                                            </label>
-                                            <textarea
-                                                type="text"
-                                                className="form-control"
-                                                id="content"
-                                                placeholder="Mô tả"
-                                                {...register("content")}
-                                            />
-                                        </td>
-                                    </tr>
-                                    {/* <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">
-                                    <div className="px-3 pt-3 product-images-add">
-                                        <h5>Hình ảnh</h5>
-                                        <input
-                                            {...register("imgList")}
-                                            hidden
-                                            type="file"
-                                            multiple
-                                            id="file"
-                                            accept={"image/*"}
-                                            onChange={imageHandleChange}
-                                        />
-                                        <label htmlFor="file" className="pointer">
-                                            <i className="fal fa-images" /> Thêm hình ảnh
-                                        </label>
-                                    </div>
-                                    <hr />
-                                    <div className="px-3 manager-product-imgList">
-                                        {RenderPhotos(selectedImages)}
-                                    </div>
-                                </div> */}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-                    <div className="col-12 bg-white bg-shadow submit-button-form">
-                        <YLButton variant="danger" to="/manager/voucher" value="Hủy" />
-                        <YLButton variant="primary" type="submit" value="Xong" />
-                    </div>
-                </div>
-            </form>
-        </div>
+            <div className="col-12 bg-white bg-shadow submit-button-form">
+              <YLButton variant="danger" to="/manager/voucher" value="Hủy" />
+              <YLButton variant="primary" type="submit" value="Xong" />
+            </div>
+          </div>
+        </form>
+      </div>
     );
 }
 

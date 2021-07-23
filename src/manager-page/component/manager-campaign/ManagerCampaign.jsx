@@ -1,4 +1,4 @@
-import ManagerCampaignAPI from "api/manager-campaign-api";
+import { deleteCampaignById, getAllCampaign } from "api/manager-campaign-api";
 import Trash from "assets/icon/trash.svg";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import YLButton from "components/custom-field/YLButton";
@@ -14,6 +14,7 @@ import { setIsBack } from "redux/back-action/back-action";
 import "./scss/manager-campaign.scss";
 import { toast } from "react-toastify";
 import ManagerSort from "../sort/ManagerSort";
+import { formatDate } from "../../../utils/format-string";
 
 function ManagerCampaign(props) {
   const totalItem = 10;
@@ -74,7 +75,7 @@ function ManagerCampaign(props) {
   //delete category
   const handleDelete = async (id) => {
     try {
-      const response = await ManagerCampaignAPI.delete(id);
+      const response = await deleteCampaignById(id);
       console.log(response);
       if (response === true) {
         fetchManagerCampaign();
@@ -89,17 +90,6 @@ function ManagerCampaign(props) {
       toast.error(`Xóa chiến dịch thất bại! 
         Lỗi hệ thống`);
     }
-  };
-  //format date
-  const formatDate = (date) => {
-    let formatDate = new Date(date);
-    return (
-      ` 0${formatDate.getDate() + 1}`.slice(-2) +
-      "-" +
-      ` 0${formatDate.getMonth() + 1}`.slice(-2) +
-      "-" +
-      formatDate.getFullYear()
-    );
   };
 
   const dispatch = useDispatch();
@@ -118,7 +108,7 @@ function ManagerCampaign(props) {
     });
     try {
       console.log(filter);
-      const response = await ManagerCampaignAPI.getAll(filter);
+      const response = await getAllCampaign(filter);
       console.log(response);
       setCampaignList({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {

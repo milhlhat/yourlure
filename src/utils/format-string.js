@@ -8,7 +8,7 @@ let FormatUtils = {
     return result;
   },
   totalPrice: (data) => {
-    if(!data||data.length===0) return 0;
+    if (!data || data.length === 0) return 0;
     let total = data.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
@@ -16,15 +16,14 @@ let FormatUtils = {
   },
   formatDate: (date) => {
     if (date == null) return null;
-    let formatDate = new Date(date);
-    return (
-      formatDate.getDate() +
-      "/" +
-      (formatDate.getMonth() + 1) +
-      "/" +
-      formatDate.getFullYear()
-    );
+    let today = new Date(date);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
+
+    return dd + "/" + mm + "/" + yyyy;
   },
+
   getStatus: (status, reject) => {
     if (!status) return null;
     if (status === "PENDING") return "Đang chờ xác nhận";
@@ -43,10 +42,10 @@ let FormatUtils = {
     }
     if (status === "DONE") return "Hoàn thành";
   },
-  getShipping(){
+  getShipping() {
     return 25000;
-  }
-  
+  },
 };
-export const { convertToVND, totalPrice, formatDate, getStatus,getShipping } = FormatUtils;
+export const { convertToVND, totalPrice, formatDate, getStatus, getShipping } =
+  FormatUtils;
 export default FormatUtils;

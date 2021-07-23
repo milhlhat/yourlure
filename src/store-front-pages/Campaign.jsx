@@ -10,6 +10,7 @@ import CampaignAPI from "api/campaign-api";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
+import { formatDate } from "../utils/format-string";
 
 function Campaign(props) {
   const { campaignId } = props;
@@ -118,10 +119,7 @@ function Campaign(props) {
   function handleClickChangeCampaign(id) {
     setId(id);
   }
-  function pipeDate(date) {
-    let d = new Date(date);
-    return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
-  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchCampaignList();
@@ -143,7 +141,9 @@ function Campaign(props) {
       <div className="banner">
         <img
           className="img-banner"
-          src={createImageUrlByLinkOrFile(campaign?.imageCollection[0]?.linkImage)}
+          src={createImageUrlByLinkOrFile(
+            campaign?.imageCollection[0]?.linkImage
+          )}
           alt=""
         />
         <div className={`countdown ${isEnd ? "d-none" : ""}`}>
@@ -213,7 +213,11 @@ function Campaign(props) {
           {campaign &&
             campaign.imageCollection &&
             campaign.imageCollection.map((camp, index) => (
-              <img src={createImageUrlByLinkOrFile(camp.linkImage)} alt="" key={index} />
+              <img
+                src={createImageUrlByLinkOrFile(camp.linkImage)}
+                alt=""
+                key={index}
+              />
             ))}
         </div>
       </div>
@@ -238,15 +242,16 @@ function Campaign(props) {
             >
               <div className="campaign-img">
                 <img
-                  src={createImageUrlByLinkOrFile(list?.imageCollection
+                  src={createImageUrlByLinkOrFile(
+                    list?.imageCollection
                       ? list?.imageCollection[0]?.linkImage
-                      : "")
-                  }
+                      : ""
+                  )}
                   alt="Hình ảnh về sự kiện"
                 />
               </div>
               <div className="dateEnd">
-                Đã kết thúc vào:{pipeDate(list.startDate)}
+                Đã kết thúc vào:{formatDate(list.startDate)}
               </div>
             </div>
           ))}

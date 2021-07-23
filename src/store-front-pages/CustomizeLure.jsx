@@ -151,10 +151,10 @@ function RenderModel(props) {
       rerender.domElement.getContext("webgl", { preserveDrawingBuffer: true });
 
       const camera = new THREE.PerspectiveCamera(
-        70,
+        40,
         window.innerWidth / window.innerHeight,
         1,
-        1000
+        250
       );
       camera.position.set(0, 0, 4);
 
@@ -265,7 +265,7 @@ function CanvasModel(props) {
             captureModel={captureModel}
             handleExportModel={handleExportModel}
           />
-          <Environment preset="sunset" background={true} />
+          <Environment preset="sunset" background={false} />
           <ContactShadows
             rotation-x={Math.PI / 2}
             position={[0, -0.8, 0]}
@@ -324,7 +324,7 @@ function ExportCustomInformation(props) {
 
   const [openDialog, setOpenDialog] = useState(false);
   const onCapture = () => {
-    setOpenDialog(true)
+    setOpenDialog(true);
   };
   return (
     <div className="export">
@@ -342,10 +342,7 @@ function ExportCustomInformation(props) {
           "Xong"
         )}
       </YLButton>
-      <AddNameCustomize
-        open={openDialog}
-        setOpen={setOpenDialog}
-      />
+      <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
 }

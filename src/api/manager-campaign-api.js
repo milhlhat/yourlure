@@ -1,41 +1,32 @@
-import AxiosClient from './axios-client';
+import AxiosClient from "./axios-client";
 
 const ManagerCampaignAPI = {
-    getAll: (param) => {
-        const url = '/admin/campaign/admin-all';
-        return AxiosClient.post(url, param);
-    },
-    getById: (id) => {
-        const url = `/admin/campaign/${id}`;
-        return AxiosClient.get(url);
-    },
-    delete: (id) => {
-        const url = `/admin/campaign/delete?id=${id}`;
-        return AxiosClient.delete(url);
-    },
-    add: (param) => {
-        const url = '/admin/campaign/save';
-        return AxiosClient.post(url, param);
-    },
-    update: (voucher, id) => {
-        const url = `/admin/campaign/update?id=${id}`;
-        return AxiosClient.post(url, voucher);
-    },
-    uploadMultiFiles: (files) => {
-        const url = "/admin/product/upload";
-        const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        };
-        const formData = new FormData();
-
-        files.forEach((file) => {
-            formData.append("files", file);
-        });
-
-        return AxiosClient.post(url, formData, config);
-    },
+  getAllCampaign: (param) => {
+    const url = "/admin/campaign/admin-all";
+    return AxiosClient.post(url, param);
+  },
+  getCampaignById: (id) => {
+    const url = `/admin/campaign/${id}`;
+    return AxiosClient.get(url);
+  },
+  deleteCampaignById: (id) => {
+    const url = `/admin/campaign/delete?id=${id}`;
+    return AxiosClient.delete(url);
+  },
+  addCampaign: (param) => {
+    const url = "/admin/campaign/save";
+    return AxiosClient.post(url, param);
+  },
+  updateCampaign: (campaignId, params) => {
+    const url = `/admin/campaign/update?id=${campaignId}`;
+    return AxiosClient.post(url, params);
+  },
 };
-export const { getAll, getById, uploadMultiFiles } = ManagerCampaignAPI;
+export const {
+  addCampaign,
+  deleteCampaignById,
+  getAllCampaign,
+  getCampaignById,
+  updateCampaign,
+} = ManagerCampaignAPI;
 export default ManagerCampaignAPI;

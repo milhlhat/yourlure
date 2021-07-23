@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import ManagerCampaignAPI, { uploadMultiFiles } from "api/manager-campaign-api";
+
 import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,8 @@ import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
 import ChooseProductImage from "../../../components/choose-image/ChooseMultiImages";
 import { SUPPORTED_IMAGE_FORMATS } from "../../../constant/product-config";
 import { toast } from "react-toastify";
+import { uploadMultiFiles } from "../../../api/manager-product-api";
+import { addCampaign } from "../../../api/manager-campaign-api";
 
 function ManagerVoucherAddNew(props) {
   const dispatch = useDispatch();
@@ -20,19 +22,10 @@ function ManagerVoucherAddNew(props) {
 
   const history = useHistory();
   const schema = yup.object().shape({
-    banner: yup.string().required("Tên chiến dịch không được để trống"),
-    description: yup.string().required("Mô tả không được để trống"),
-    startDate: yup
-      .date()
-      .typeError("Ngày bắt đầu không được để trống")
-      .max(yup.ref("endDate"), "Ngày bắt đầu phải trước ngày kết thúc"),
-    endDate: yup
-      .date()
-      .typeError("Ngày bắt đầu không được để trống")
-      .min(yup.ref("startDate"), "Ngày kết thúc phải sau ngày bắt đầu"),
+    ...VALIDATE_CAMPAIGN_SCHEMA,
     newImages: yup
       .array()
-      .min(1, "Vui lòng chọn ảnh sản phẩm")
+      .min(1, "Vui lòng chọn ảnh chiến dịch")
       .test("prodImgType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
         for (const file of value) {
           if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
@@ -57,8 +50,7 @@ function ManagerVoucherAddNew(props) {
     try {
       const fileLinks = await uploadMultiFiles(data.newImages);
       data.imageCollection = fileLinks;
-      await ManagerCampaignAPI.add(data);
-
+      await addCampaign(data);
       toast.success("Thêm chiến dịch thành công");
       history.push("/manager/campaign");
       console.log(data);
@@ -133,15 +125,18 @@ function ManagerVoucherAddNew(props) {
               <tr>
                 <td colSpan="2">
                   <label htmlFor="content" className="form-label">
-                    Mô chi tiết
+                    Mô chi tiết <span className="error-message"> (*)</span>
                   </label>
                   <textarea
                     type="text"
                     className="form-control"
                     id="content"
-                    placeholder="Mô tả"
+                    placeholder="Mô tả chi tiết"
                     {...register("content")}
                   />
+                  <span className="error-message">
+                    {errors["content"]?.message}
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -174,5 +169,17 @@ function ManagerVoucherAddNew(props) {
     </form>
   );
 }
-
+export const VALIDATE_CAMPAIGN_SCHEMA = {
+  banner: yup.string().required("Tên chiến dịch không được để trống"),
+  description: yup.string().required("Mô tả không được để trống"),
+  content: yup.string().required("Mô tả chi tiết không được để trống"),
+  startDate: yup
+    .date()
+    .typeError("Ngày bắt đầu không được để trống")
+    .max(yup.ref("endDate"), "Ngày bắt đầu phải trước ngày kết thúc"),
+  endDate: yup
+    .date()
+    .typeError("Ngày bắt đầu không được để trống")
+    .min(yup.ref("startDate"), "Ngày kết thúc phải sau ngày bắt đầu"),
+};
 export default ManagerVoucherAddNew;

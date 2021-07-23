@@ -56,7 +56,7 @@ function ChooseMultiImages(props) {
 
   const RenderPhotos = ({ newImages }) => {
     return (
-      <>
+      <div className={"d-flex flex-wrap"}>
         {fields?.map((field, index) => (
           <div className="img-item" key={field.id}>
             <img
@@ -82,7 +82,7 @@ function ChooseMultiImages(props) {
               <button className="btn btn-light">Xóa</button>
             </div>
           ))}
-      </>
+      </div>
     );
   };
 
@@ -128,5 +128,5 @@ function ChooseMultiImages(props) {
 }
 
 export default memo(ChooseMultiImages, (preProps, nextProps) => {
-  return preProps.productId === nextProps.productId;
+  return preProps.name === nextProps.name;
 });
