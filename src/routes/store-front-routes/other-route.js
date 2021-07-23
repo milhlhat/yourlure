@@ -8,7 +8,7 @@ const HomePage = React.lazy(() => import("store-front-pages/Home"));
 const Login = React.lazy(() => import("store-front-pages/Login"));
 const Register = React.lazy(() => import("store-front-pages/Register"));
 const FogotPassWord = React.lazy(() =>
-  import("store-front-pages/FogotPassWord")
+  import("store-front-pages/ForgotPassWord")
 );
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 

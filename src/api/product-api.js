@@ -55,6 +55,10 @@ const ProductAPI = {
     const url = `/model3d/all-customize`;
     return AxiosClient.get(url);
   },
+  deleteCustomize: (id) => {
+    const url = `/model3d/delete-custom?customizeId=${id}`;
+    return AxiosClient.delete(url);
+  },
 };
 export const {
   getBestSeller,

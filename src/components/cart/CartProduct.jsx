@@ -37,7 +37,7 @@ function CartProduct(props) {
         });
         setCartsSelected([
           ...response.cartItems.filter(
-            (e) => e.visibleInStorefront !== false && e.variantQuantity > 0
+            (e) => (e.visibleInStorefront !== false && e.variantQuantity > 0)||e.thumbnailUrl
           ),
         ]);
       }

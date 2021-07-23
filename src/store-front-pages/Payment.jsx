@@ -97,10 +97,10 @@ function Payment(props) {
     }
     setDiscountLoad(false);
   };
-  const onDiscountDelete=()=>{
-    setDiscount(0)
-    setDiscountValue(null)
-  }
+  const onDiscountDelete = () => {
+    setDiscount(0);
+    setDiscountValue(null);
+  };
 
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
@@ -124,7 +124,11 @@ function Payment(props) {
     //user payment
     if (isLoggedIn) {
       let cartItemIds = listCartItemId(cartData);
-      data = { ...data, paymentId: 1 };
+      data = {
+        ...data,
+        paymentId: 1,
+        discountCode: discount === 0 ? "" : discountValue,
+      };
       if (cartItemIds[0]) {
         data = { ...data, cartItemIds: listCartItemId(cartData) };
         setCompleteLoad(true);
@@ -240,18 +244,17 @@ function Payment(props) {
                     onChange={(e) => setDiscountValue(e.target.value)}
                     type="text"
                     id="voucher"
-                    value={discountValue?discountValue:""}
+                    value={discountValue ? discountValue : ""}
                     disabled={discount > 0}
                   />
                   {discount > 0 ? (
-                    <><div onClick={onDiscountDelete}>
-                    <YLButton
-                      variant="danger"
-                      type="button"
-                    >
-                      Xóa
-                    </YLButton>
-                  </div></>
+                    <>
+                      <div onClick={onDiscountDelete}>
+                        <YLButton variant="danger" type="button">
+                          Xóa
+                        </YLButton>
+                      </div>
+                    </>
                   ) : (
                     <div onClick={onDiscountSubmit}>
                       <YLButton

@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import 'assets/scss/scss-components/product/product-detail.scss';
 import {useHistory} from 'react-router';
 import { createImageUrlByLinkOrFile } from 'utils/manager-product';
+import { AbilityContext } from 'ability/can';
 
 function ProductImage(props) {
+    const ability = useContext(AbilityContext);
+    const isLoggedIn = ability.can("login", "website");
     let {product,setBigImgLink,bigImgLink, productCustomize} = props;
     const isCustome = true;
     const [selectImg, setSelectImg] = useState(0);
@@ -24,7 +27,7 @@ function ProductImage(props) {
                 <button
                     className={`big-image-edit ${product ? (product.customizable ? '' : 'd-none') : ''}`}
                     onClick={goToCustomize}
-                    hidden={!isCustome}
+                    hidden={!isCustome||!isLoggedIn}
                 >
                     <i className="fa fa-pencil"></i>
                 </button>

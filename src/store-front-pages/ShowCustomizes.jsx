@@ -1,5 +1,6 @@
 import { AbilityContext } from "ability/can";
 import ProductAPI from "api/product-api";
+import CardCustom from "components/card/CardCustom";
 import CardProduct from "components/card/CardProduct";
 import { filterConfig } from "constant/filter-setting";
 import React, { useContext, useEffect, useState } from "react";
@@ -52,10 +53,25 @@ function ShowCustomizes(props) {
         <div className="show-customize container-lg">
           <div className="bg-box bg-shadow my-4">
             <h6>Danh sách tùy biến của bạn</h6>
-            {console.log(products)}
-            <span className="d-flex justify-content-center mb-4">
+            {console.log(customizes)}
+            {customizes?.data?.length <= 0 ? (
+              <span className="d-flex justify-content-center mb-4">
                 Bạn chưa tùy biến sản phẩm nào.
-            </span>
+              </span>
+            ) : (
+              <div>
+                <div className="d-flex">
+                  {customizes?.data?.map((item, i) => (
+                    <CardCustom
+                      canCustom={true}
+                      product={item}
+                      key={`my-custom--${i}`}
+                      fetchCustomize={fetchCustomize}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="bg-box bg-shadow my-4">
             <h6>Danh sách sản phẩm có thể tùy biến</h6>
@@ -72,7 +88,8 @@ function ShowCustomizes(props) {
         </div>
       ) : (
         <div className="d-flex justify-content-center mt-5">
-            <Link to="/login">Đăng nhập</Link>&nbsp; để có thể sử dụng chức năng tùy biến
+          <Link to="/login">Đăng nhập</Link>&nbsp; để có thể sử dụng chức năng
+          tùy biến
         </div>
       )}
     </>

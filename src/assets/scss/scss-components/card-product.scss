@@ -10,6 +10,7 @@
 	background-clip: border-box;
 	border: 1px solid #e5e5e5;
 	transition: 0.5s;
+	position: relative;
 	& .text-color-primary {
 		color: $primary;
 	}
@@ -24,6 +25,16 @@
 		display: flex;
 		justify-content: center;
 		justify-items: center;
+		& .delete-custom-button{
+			position: absolute;
+			right: 0;
+			& i{
+				font-size: 25px;
+			}
+			&:hover{
+				color: red;
+			}
+		}
 	}
 	& .card-img-top{
 		object-fit: contain;
@@ -31,7 +42,7 @@
 }
 
 .card-product:hover {
-	box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+	box-shadow: 0px 5px 13px -7px #000000, 3px 3px 10px 3px rgba(0, 0, 0, 0);
 	transform: translateY(-7px);
 	& .text-name-product {
 		text-decoration: underline;

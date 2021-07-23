@@ -274,7 +274,7 @@ function ProductAction(props) {
         </div>
         <span>
           {!customize ? (
-            product?.visibleInStorefront?(
+            product?.visibleInStorefront!==false?(
             takeOut <= 0 ? (
               <span className="text-danger bold">Hết hàng</span>
             ) : (

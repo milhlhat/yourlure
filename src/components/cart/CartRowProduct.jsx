@@ -117,17 +117,23 @@ function CartRowProduct(props) {
         <tbody>
           <tr>
             <td>
-              {canChange&&item?.visibleInStorefront&&item?.variantQuantity>0&&<input
-                type="checkbox"
-                value={item?.variantId}
-                onChange={() => handleChangeSelected(item)}
-                defaultChecked={true}
-              />}
+              {canChange &&
+                (item?.thumbnailUrl||(item?.visibleInStorefront &&
+                item?.variantQuantity > 0)) && (
+                  <input
+                    type="checkbox"
+                    value={item?.variantId}
+                    onChange={() => handleChangeSelected(item)}
+                    defaultChecked={true}
+                  />
+                )}
             </td>
             <td className="d-flex align-items-center">
               <img
                 className="content-fit pointer"
-                src={createImageUrlByLinkOrFile(item?.variantImg?item?.variantImg:item?.thumbnailUrl)}
+                src={createImageUrlByLinkOrFile(
+                  item?.variantImg ? item?.variantImg : item?.thumbnailUrl
+                )}
                 width={canChange ? 100 : 50}
                 height={canChange ? 100 : 50}
                 alt="ảnh sản phẩm"
@@ -172,26 +178,28 @@ function CartRowProduct(props) {
             </td>
             <td>
               <div className="d-flex float-end">
-                {canChange && (
-                  item?.visibleInStorefront?(
-                    item?.variantQuantity>0?(
-                      
-                  <span>
-                    <ChangeQuantity
-                      quantity={quantity}
-                      setQuantity={setQuantity}
-                    />
-                  </span>
-                    ):(
+                {canChange &&
+                  (item?.thumbnailUrl ? (
+                    <span>
+                      <ChangeQuantity
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                      />
+                    </span>
+                  ) : item?.visibleInStorefront ? (
+                    item?.variantQuantity > 0 ? (
+                      <span>
+                        <ChangeQuantity
+                          quantity={quantity}
+                          setQuantity={setQuantity}
+                        />
+                      </span>
+                    ) : (
                       <span className="text-danger">Hết hàng</span>
                     )
-                  )
-                  :(
-                    <span className="text-danger">
-                    Ngừng kinh doanh</span>
-                  )
-
-                )}
+                  ) : (
+                    <span className="text-danger">Ngừng kinh doanh</span>
+                  ))}
                 <span className="mx-3">{convertToVND(sumPrice())}</span>
                 {canChange && (
                   <ConfirmPopup
