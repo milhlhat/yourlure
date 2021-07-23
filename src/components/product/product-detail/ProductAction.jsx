@@ -319,7 +319,7 @@ function ProductAction(props) {
           <YLButton
             variant="primary"
             type="button"
-            // disabled={takeOut <= 0||!product?.visibleInStorefront}
+            disabled={takeOut <= 0||!product?.visibleInStorefront}
             value="Thêm vào giỏ hàng"
           ></YLButton>
         </div>
