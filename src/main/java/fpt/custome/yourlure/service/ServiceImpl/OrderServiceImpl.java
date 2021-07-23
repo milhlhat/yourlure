@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
         return payment.get();
     }
 
+    @Transactional
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         if (items.isEmpty()) {
             throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
@@ -195,6 +196,7 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+
     @Override
     public Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception {
         if (orderUserDtoInput.getCartItemIds() == null || orderUserDtoInput.getCartItemIds().size() == 0) {
@@ -225,14 +227,14 @@ public class OrderServiceImpl implements OrderService {
             throw new Exception("can't process order because cart is empty!");
         }
 
+
         List<CartItem> items = cart.getCartItemCollection().stream()
                 .filter(cartItem -> orderUserDtoInput.getCartItemIds().contains(cartItem.getCartItemId()))
                 .collect(Collectors.toList());
-
-        List<OrderLine> orderLines = createOrderLines(order, items);
-
         // calculate discount
         order.setDiscount(calculateDiscount(orderUserDtoInput.getDiscountCode(), calculateItemPrices(items)));
+
+        List<OrderLine> orderLines = createOrderLines(order, items);
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);

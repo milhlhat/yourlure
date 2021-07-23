@@ -9,6 +9,7 @@ import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,10 @@ public interface OrderService {
 
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
 
+    @Transactional
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
 
+    @Transactional
     boolean cancelOrder(HttpServletRequest rq, Long orderId);
 
     void returnQuantityCancelOrder(Order order);
