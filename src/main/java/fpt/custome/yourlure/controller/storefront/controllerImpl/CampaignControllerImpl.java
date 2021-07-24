@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CampaignController;
+import fpt.custome.yourlure.dto.dtoInp.CampaignRegisterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import fpt.custome.yourlure.entity.Campaign;
 import fpt.custome.yourlure.service.CampaignService;
@@ -48,6 +49,20 @@ public class CampaignControllerImpl implements CampaignController {
     public ResponseEntity<Object> getById(Long id) {
         Optional<CampaignDtoOut> dtoOut = campaignService.getById(id);
         return new ResponseEntity<>(dtoOut, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
+        try {
+            Object dtoOut = campaignService.registerCampaign(campaignRegisterDtoInput);
+            return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

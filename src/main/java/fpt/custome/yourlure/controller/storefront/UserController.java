@@ -4,7 +4,6 @@ import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AddressFromWarDtoOutput;
-import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.address.Country;
@@ -69,7 +68,7 @@ public interface UserController {
 
     @PostMapping("/get-address-user")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req);
+    ResponseEntity<Object> getAddressUser(HttpServletRequest req);
 
     @GetMapping(value = "/roles")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF') or hasRole('ROLE_CUSTOMER')")

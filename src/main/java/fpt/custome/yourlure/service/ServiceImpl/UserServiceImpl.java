@@ -324,15 +324,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
+    public Object getAddressUser(HttpServletRequest req) {
         List<UserAddressDtoOut> result = new ArrayList<>();
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         // map collection user address to dto
         List<UserAddress> userAddressList = userAddressRepos.findAllByUser_UserIdOrderByUserAddressId(user.getUserId());
-        if (!userAddressList.isEmpty()) {
-            result = getAddressInUser(userAddressList);
+        if (userAddressList.isEmpty()) {
+            return "Không tồn tại địa chỉ nào!";
         }
-        return result;
+        return result = getAddressInUser(userAddressList);
     }
 
     @Override
@@ -476,16 +476,19 @@ public class UserServiceImpl implements UserService {
     public List<UserAddressDtoOut> getAddressInUser(List<UserAddress> list) {
         List<UserAddressDtoOut> result = new ArrayList<>();
         for (UserAddress userAddress : list) {
-            Ward ward = userWardRepos.getById(userAddress.getUserWardId());
-            UserAddressDtoOut dtoOut = mapper.map(userAddress, UserAddressDtoOut.class);
-            dtoOut.setUserWardName(ward.getUserWardName());
-            dtoOut.setUserWardId(ward.getUserWardID());
-            dtoOut.setUserDistrictName(ward.getUserDistrict().getUserDistrictName());
-            dtoOut.setUserDistrictId(ward.getUserDistrict().getUserDistrictID());
-            dtoOut.setUserProvinceName(ward.getUserDistrict().getUserProvince().getUserProvinceName());
-            dtoOut.setUserProvinceId(ward.getUserDistrict().getUserProvince().getUserProvinceID());
-            dtoOut.setDescription(userAddress.getDescription());
-            result.add(dtoOut);
+            Optional<Ward> wardOptional = userWardRepos.findById(userAddress.getUserWardId());
+            if (wardOptional.isPresent()) {
+                Ward ward = wardOptional.get();
+                UserAddressDtoOut dtoOut = mapper.map(userAddress, UserAddressDtoOut.class);
+                dtoOut.setUserWardName(ward.getUserWardName());
+                dtoOut.setUserWardId(ward.getUserWardID());
+                dtoOut.setUserDistrictName(ward.getUserDistrict().getUserDistrictName());
+                dtoOut.setUserDistrictId(ward.getUserDistrict().getUserDistrictID());
+                dtoOut.setUserProvinceName(ward.getUserDistrict().getUserProvince().getUserProvinceName());
+                dtoOut.setUserProvinceId(ward.getUserDistrict().getUserProvince().getUserProvinceID());
+                dtoOut.setDescription(userAddress.getDescription());
+                result.add(dtoOut);
+            }
         }
         return result;
     }

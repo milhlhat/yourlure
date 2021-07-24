@@ -34,7 +34,7 @@ public interface UserService {
 
     String refresh(String phone);
 
-    List<UserAddressDtoOut> getAddressUser(HttpServletRequest req);
+    Object getAddressUser(HttpServletRequest req);
 
     Boolean updateUser(HttpServletRequest req, UserDtoInp userDtoInp);
 

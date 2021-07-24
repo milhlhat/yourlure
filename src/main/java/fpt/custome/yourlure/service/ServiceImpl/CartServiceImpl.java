@@ -143,7 +143,6 @@ public class CartServiceImpl implements CartService {
 
                     Product product = variant.getProduct();
                     itemDtoOut.setVisibleInStorefront(product.getVisibleInStorefront());
-                    itemDtoOut.setProductId(product.getProductId());
                 }
             }
 
