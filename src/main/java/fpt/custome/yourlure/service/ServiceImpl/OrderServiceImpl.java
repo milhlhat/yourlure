@@ -133,6 +133,7 @@ public class OrderServiceImpl implements OrderService {
                 orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
                 orderLine.setCustomModelName(customizeModel.getName());
                 orderLine.setProductName(product.getProductName());
+                orderLine.setProductId(product.getProductId());
 
             } else if (item.getVariantId() != null) {
                 // set price by variant
@@ -145,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
                     }
                     orderLine.setImgThumbnail(variant.getImageUrl());
                     orderLine.setVariantName(variant.getVariantName());
+                    orderLine.setProductId(variant.getProduct().getProductId());
                     orderLine.setProductName(variant.getProduct().getProductName());
 
                     // decrease variant when order variant
@@ -255,7 +257,7 @@ public class OrderServiceImpl implements OrderService {
             List<Order> orders = orderRepos.findAllByUserUserId(user.getUserId());
             if (orders.stream().anyMatch(ord -> ord.getOrderId().equals(orderId))) {
                 OrderActivity activity = switchActivity(order.get(), OrderActivityEnum.CUSTOMER_REJECT, user);
-                if(activity != null){
+                if (activity != null) {
                     returnQuantityCancelOrder(order.get());
                     return true;
                 }
@@ -269,9 +271,9 @@ public class OrderServiceImpl implements OrderService {
     public void returnQuantityCancelOrder(Order order) {
         Collection<OrderLine> orderLines = order.getOrderLineCollection();
         for (OrderLine orderLine : orderLines) {
-            if(orderLine.getVariantId() != null){
+            if (orderLine.getVariantId() != null) {
                 Optional<Variant> variant = variantRepos.findById(orderLine.getVariantId());
-                variant.ifPresent(value ->{
+                variant.ifPresent(value -> {
                     value.setQuantity(value.getQuantity() + orderLine.getQuantity());
                     variantRepos.save(value);
                 });
@@ -430,15 +432,15 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : items) {
             if (item.getCustomModelId() != null) {
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
-                totalPrice += calculateCustomizePrice(customizeModel)*item.getQuantity();
+                totalPrice += calculateCustomizePrice(customizeModel) * item.getQuantity();
             } else {
                 // set price by variant
                 Optional<Variant> variant = variantRepos.findById(item.getVariantId());
-                if(!variant.isPresent()){
+                if (!variant.isPresent()) {
                     throw new ValidationException("Vui lòng chọn sản phẩm trước khi thanh toán!");
                 }
                 if (variant.get().getQuantity() > 0) {
-                    totalPrice += variant.get().getNewPrice()*item.getQuantity();
+                    totalPrice += variant.get().getNewPrice() * item.getQuantity();
                 }
             }
         }
@@ -517,7 +519,7 @@ public class OrderServiceImpl implements OrderService {
         return orderDetail(order.get());
     }
 
-    public OrderDtoOut.Order orderDetail(Order order){
+    public OrderDtoOut.Order orderDetail(Order order) {
         OrderDtoOut.Order orderDtoOut = mapper.map(order, OrderDtoOut.Order.class);
         orderDtoOut.setPaymentName(order.getPayment().getPayment());
         orderDtoOut.setItems(getOrderItemsDto(order));
@@ -529,9 +531,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderActivity switchActivity(Order order, OrderActivityEnum activityIn, User assigner) {
         List<OrderActivity> activities = getOrderActivities(order);
 
-        if(!activities.isEmpty()){
+        if (!activities.isEmpty()) {
             // Can't add when last activity is CUSTOMER_REJECT OR STAFF_REJECT OR ACCEPT
-            switch (activities.get(0).getActivityName()){
+            switch (activities.get(0).getActivityName()) {
                 case ACCEPT:
                     throw new ValidationException("Không thể thay đổi trạng thái đơn hàng sau khi chấp thuận đơn hàng!");
                 case CUSTOMER_REJECT:
@@ -540,7 +542,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new ValidationException("Đơn hàng đã bị từ chối bởi shop!");
             }
             // Can't add when new activity is same last activity
-            if(activities.stream().anyMatch(act -> act.getActivityName().equals(activityIn))){
+            if (activities.stream().anyMatch(act -> act.getActivityName().equals(activityIn))) {
                 throw new ValidationException("Trạng thái order phải khác trạng thái trước!");
             }
         }
@@ -569,7 +571,7 @@ public class OrderServiceImpl implements OrderService {
         }
         OrderActivity activity = switchActivity(order.get(), activityEnum, staff);
         if (activity != null) {
-            if(activityEnum.equals(OrderActivityEnum.STAFF_REJECT)){
+            if (activityEnum.equals(OrderActivityEnum.STAFF_REJECT)) {
                 returnQuantityCancelOrder(order.get());
             }
             return true;
