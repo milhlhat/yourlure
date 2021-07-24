@@ -476,16 +476,19 @@ public class UserServiceImpl implements UserService {
     public List<UserAddressDtoOut> getAddressInUser(List<UserAddress> list) {
         List<UserAddressDtoOut> result = new ArrayList<>();
         for (UserAddress userAddress : list) {
-            Ward ward = userWardRepos.getById(userAddress.getUserWardId());
-            UserAddressDtoOut dtoOut = mapper.map(userAddress, UserAddressDtoOut.class);
-            dtoOut.setUserWardName(ward.getUserWardName());
-            dtoOut.setUserWardId(ward.getUserWardID());
-            dtoOut.setUserDistrictName(ward.getUserDistrict().getUserDistrictName());
-            dtoOut.setUserDistrictId(ward.getUserDistrict().getUserDistrictID());
-            dtoOut.setUserProvinceName(ward.getUserDistrict().getUserProvince().getUserProvinceName());
-            dtoOut.setUserProvinceId(ward.getUserDistrict().getUserProvince().getUserProvinceID());
-            dtoOut.setDescription(userAddress.getDescription());
-            result.add(dtoOut);
+            Optional<Ward> wardOptional = userWardRepos.findById(userAddress.getUserWardId());
+            if (wardOptional.isPresent()) {
+                Ward ward = wardOptional.get();
+                UserAddressDtoOut dtoOut = mapper.map(userAddress, UserAddressDtoOut.class);
+                dtoOut.setUserWardName(ward.getUserWardName());
+                dtoOut.setUserWardId(ward.getUserWardID());
+                dtoOut.setUserDistrictName(ward.getUserDistrict().getUserDistrictName());
+                dtoOut.setUserDistrictId(ward.getUserDistrict().getUserDistrictID());
+                dtoOut.setUserProvinceName(ward.getUserDistrict().getUserProvince().getUserProvinceName());
+                dtoOut.setUserProvinceId(ward.getUserDistrict().getUserProvince().getUserProvinceID());
+                dtoOut.setDescription(userAddress.getDescription());
+                result.add(dtoOut);
+            }
         }
         return result;
     }
