@@ -35,10 +35,10 @@ public interface AdminOrderController {
     /**
      * chi tiet 1 order cua user
      *
-     * @param userId
+     * @param orderId
      * @return
      */
-    @GetMapping("/get-user-order-detail/{userId}")
+    @GetMapping("/get-user-order-detail/{orderId}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Object> getUserOrder(@PathVariable("orderId") Long orderId);
 

@@ -47,6 +47,7 @@ public class OrderDtoOut {
         private String customModelName;
         private String productId;
         private String productName;
+        private Boolean visibleInStorefront;
         private String categoryName;
         private Integer quantity;
         private String variantName;

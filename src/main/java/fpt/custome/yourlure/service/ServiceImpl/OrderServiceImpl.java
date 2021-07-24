@@ -305,6 +305,7 @@ public class OrderServiceImpl implements OrderService {
 //                    item.setCustomizeName(model.getName());
                     item.setThumbnailUrl(model.getThumbnailUrl());
                     item.setCategoryName(model.getModel3d().getProduct().getCategory().getCategoryName());
+                    item.setVisibleInStorefront(model.getModel3d().getProduct().getVisibleInStorefront());
                 });
             }
 
@@ -315,6 +316,7 @@ public class OrderServiceImpl implements OrderService {
 //                    item.setProductName(var.getProduct().getProductName());
 //                    item.setVariantName(var.getVariantName());
                     item.setThumbnailUrl(var.getImageUrl());
+                    item.setVisibleInStorefront(var.getVisibleInStorefront());
                 });
             }
 
