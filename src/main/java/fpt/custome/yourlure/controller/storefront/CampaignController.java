@@ -19,7 +19,7 @@ public interface CampaignController {
     ResponseEntity<Object> newest();
 
     @GetMapping("/{id}")
-    ResponseEntity<Optional<CampaignDtoOut>> getById(@PathVariable Long id);
+    ResponseEntity<Object> getById(@PathVariable Long id);
 
     @PostMapping("/campaign-register")
     ResponseEntity<Object> registerCampaign(@RequestBody CampaignRegisterDtoInput campaignRegisterDtoInput);
