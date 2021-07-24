@@ -37,8 +37,8 @@ public interface CartController {
      */
     @PostMapping("/add-customize")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> addItem(HttpServletRequest req,
-                                   @RequestBody @Valid AddToCartDto addToCartDto);
+    ResponseEntity<Object> addCustomize(HttpServletRequest req,
+                                        @RequestBody @Valid AddToCartDto addToCartDto);
 
     @PostMapping("/add-variant")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")

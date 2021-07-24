@@ -29,7 +29,7 @@ public class CustomizeModel {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @JsonIgnore

@@ -23,7 +23,7 @@ public class CartDtoOut {
     public static class CartItemDtoOut {
 
         private Long cartItemId;
-        private Long customizeId;
+        private Long customModelId;
         private String thumbnailUrl;
         private String customizeName;
         private Long productId;

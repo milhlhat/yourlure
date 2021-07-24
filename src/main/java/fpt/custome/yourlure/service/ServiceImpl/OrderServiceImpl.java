@@ -238,6 +238,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderLineCollection(orderLines);
         order = orderRepos.save(order);
+
         OrderActivity activity = switchActivity(order, OrderActivityEnum.PENDING, user);
         order.setActivities(Collections.singleton(activity));
 

@@ -124,6 +124,7 @@ public class CartServiceImpl implements CartService {
                     itemDtoOut.setProductName(product.getProductName());
                     itemDtoOut.setProductId(product.getProductId());
                     itemDtoOut.setPrice(product.getDefaultPrice() + orderService.calculateCustomizePrice(customizeModel));
+                    itemDtoOut.setVisibleInStorefront(product.getVisibleInStorefront());
                 }
             }
 

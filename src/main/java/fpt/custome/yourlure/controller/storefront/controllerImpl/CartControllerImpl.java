@@ -32,8 +32,8 @@ public class CartControllerImpl implements CartController {
     }
 
     @Override
-    public ResponseEntity<Object> addItem(HttpServletRequest req,
-                                          AddToCartDto addToCartDto) {
+    public ResponseEntity<Object> addCustomize(HttpServletRequest req,
+                                               AddToCartDto addToCartDto) {
         try{
             return new ResponseEntity<>(cartService.addCustomizeItem(req, addToCartDto), HttpStatus.OK);
 

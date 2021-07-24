@@ -4,6 +4,8 @@ import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
+import fpt.custome.yourlure.entity.CartItem;
+import fpt.custome.yourlure.entity.OrderLine;
 import fpt.custome.yourlure.entity.Product;
 import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.customizemodel.*;
@@ -47,6 +49,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
     @Autowired
     private ProductJpaRepos productJpaRepos;
+
+    @Autowired
+    private CartItemRepos cartItemRepos;
+
+    @Autowired
+    private OrderLineRepos orderLineRepos;
 
     @Autowired
     private UserRepos userRepos;
@@ -292,6 +300,17 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         User user = userService.whoami(rq);
         for (CustomizeModel customizeModel : user.getCustomizeModels()) {
             if (customizeModel.getCustomizeId().equals(customizeModelId)) {
+                // check customize is in order
+                List<OrderLine> orderLines = orderLineRepos.findAllByCustomModelId(customizeModelId);
+                if(!orderLines.isEmpty()){
+                    // just remove user_id in customize table
+                    customizeModel.setUser(null);
+                    customizeModel = customizeModelRepos.save(customizeModel);
+                    return true;
+                }
+                // delete customize in cart
+                cartItemRepos.deleteAllByCustomModelId(customizeModelId);
+                // delete customize
                 customMaterialRepos.deleteAllByCustomizeModelCustomizeId(customizeModel.getCustomizeId());
                 customizeModelRepos.deleteByCustomizeId(customizeModel.getCustomizeId());
                 return true;
