@@ -12,7 +12,7 @@ public interface UserRepos extends JpaRepository<User, Long> {
 
     User findByPhone(String phone);
 
-    @Query(value = " SELECT distinct u.* \n" +
+    @Query(value = " SELECT u.* \n" +
             "from tbl_users u\n" +
             "LEFT JOIN user_roles ur on u.user_id = ur.user_user_id\n" +
             "LEFT JOIN tbl_orders o on u.user_id = o.user_id\n " +
@@ -20,8 +20,8 @@ public interface UserRepos extends JpaRepository<User, Long> {
             "ur.roles = 2\n " +
             "and concat(lower(unaccent(u.username)),\n " +
             "lower(unaccent(u.phone)),o.order_id)\n " +
-            "like lower(unaccent(?1))\n " +
-            " \n" , nativeQuery = true)
+            "like lower(unaccent(?1))\n" +
+            "GROUP BY u.user_id" , nativeQuery = true)
     Page<User> findAllUser(String keyword,Pageable pageable);
 
     @Query(value = "SELECT distinct u.* \n" +

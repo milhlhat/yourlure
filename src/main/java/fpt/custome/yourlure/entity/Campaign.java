@@ -22,11 +22,11 @@ public class Campaign {
     private Long campaignId;
 
     @Nullable
-    @Column(name = "description", columnDefinition="TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Nullable
-    @Column(name = "content", columnDefinition="TEXT")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Nullable
@@ -53,4 +53,11 @@ public class Campaign {
                 "imageCollection=" + imageCollection +
                 '}';
     }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL)
+    // MapopedBy trỏ tới tên biến campaign ở trong CampaignRegister.
+    //1 campaign có nhiều CampaignRegister
+    private Collection<CampaignRegister> campaignRegisterCollection;
+
 }

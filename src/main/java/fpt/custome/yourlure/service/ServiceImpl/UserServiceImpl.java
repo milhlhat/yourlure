@@ -325,13 +325,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
-        List<UserAddressDtoOut> result;
+        List<UserAddressDtoOut> result = new ArrayList<>();
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
-        List<UserAddress> list = (List<UserAddress>) user.getUserAddressCollection();
         // map collection user address to dto
         List<UserAddress> userAddressList = userAddressRepos.findAllByUser_UserIdOrderByUserAddressId(user.getUserId());
-
-        result = getAddressInUser(userAddressList);
+        if (!userAddressList.isEmpty()) {
+            result = getAddressInUser(userAddressList);
+        }
         return result;
     }
 
@@ -454,7 +454,7 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(0,
                 100000000,
                 Sort.by("userWardName").ascending());
-        List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id,pageable);
+        List<Ward> result = userWardRepos.findByUserDistrictUserDistrictID(id, pageable);
         return result;
     }
 

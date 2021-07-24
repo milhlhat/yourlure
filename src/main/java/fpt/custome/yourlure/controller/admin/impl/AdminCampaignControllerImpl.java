@@ -26,7 +26,7 @@ public class AdminCampaignControllerImpl implements AdminCampaignController {
     CampaignService campaignService;
 
     @Override
-    public ResponseEntity<Optional<AdminCampaignDtoOut>> adminGetAll(AdminFilterDtoInput filter) {
+    public ResponseEntity<Object> adminGetAll(AdminFilterDtoInput filter) {
         Optional<AdminCampaignDtoOut> dtoOuts = campaignService.adminGetAll(filter.getKeyword(),
                 PageRequest.of(filter.getPage(),
                         filter.getLimit(),
@@ -35,27 +35,27 @@ public class AdminCampaignControllerImpl implements AdminCampaignController {
     }
 
     @Override
-    public ResponseEntity<Optional<CampaignDtoOut>> getById(Long id) {
+    public ResponseEntity<Object> getById(Long id) {
         Optional<CampaignDtoOut> dtoOut = campaignService.getById(id);
         return new ResponseEntity<>(dtoOut, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<Boolean>> update(Long id, AdminCampaignDtoInput adminCampaignDtoInput) {
-        Optional<Boolean> result = campaignService.update(id,adminCampaignDtoInput);
+    public ResponseEntity<Object> update(Long id, AdminCampaignDtoInput adminCampaignDtoInput) {
+        Optional<Boolean> result = campaignService.update(id, adminCampaignDtoInput);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<Boolean>> save(AdminCampaignDtoInput adminCampaignDtoInput) {
+    public ResponseEntity<Object> save(AdminCampaignDtoInput adminCampaignDtoInput) {
         Optional<Boolean> result = campaignService.save(adminCampaignDtoInput);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Optional<Boolean>> delete(Long id) {
+    public ResponseEntity<Object> delete(Long id) {
         Optional<Boolean> result = campaignService.delete(id);
-        if (!result.get()){
+        if (!result.get()) {
             new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -1,5 +1,6 @@
 package fpt.custome.yourlure.dto.dtoOut;
 
+import fpt.custome.yourlure.entity.CampaignRegister;
 import fpt.custome.yourlure.entity.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +23,6 @@ public class CampaignDtoOut {
     private String banner;
     private String content;
     private Collection<Image> imageCollection;
+    private Collection<CampaignRegister> campaignRegisterCollection;
 
 }
