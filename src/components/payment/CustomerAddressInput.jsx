@@ -64,7 +64,7 @@ function CustomerAddressInput(props) {
           <h5>
             <i className="fas fa-map-marker-check"></i> ĐỊA CHỈ GIAO HÀNG
           </h5>
-          {address?.data.length > 0 && (
+          {address?.data?.length > 0 && (
             <PaymentAddNewAddress
               fetchCustomAddress={fetchCustomAddress}
               noAddress={false}

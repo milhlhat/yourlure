@@ -41,6 +41,7 @@ function PhoneForm(props) {
   const history = useHistory();
   const { changeTab } = props;
   const register = (value) => {
+    alert(value)
     changeTab(1, value);
   };
   //constructor value for formik field
@@ -63,8 +64,7 @@ function PhoneForm(props) {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log("submited");
-          register(values);
+          register(values.phone);
         }}
       >
         {(formikProps) => {
@@ -72,7 +72,7 @@ function PhoneForm(props) {
           // console.log({ values, errors, touched });
           return (
             <Form>
-              <div className="mt-2">
+              <div className="mt-2"> 
                 <FastField
                   name="phone"
                   component={InputField}

@@ -16,7 +16,7 @@ function GusestAddressInput(props) {
         className="form-control mb-3"
         placeholder={"*Họ và Tên"}
         {...register("receiverName", {
-          required: "Trường bắt buộc",
+          required: "Tên người nhận không được để trống",
         })}
       />
       {errors.receiverName && (
@@ -29,7 +29,7 @@ function GusestAddressInput(props) {
         className="form-control my-3"
         placeholder={"*Địa chỉ, số nhà, tên đường"}
         {...register("address", {
-          required: "Trường bắt buộc",
+          required: "Chi tiết địa chỉ không được để trống",
         })}
       />
       {errors.address && (
@@ -39,7 +39,8 @@ function GusestAddressInput(props) {
         className="form-control my-3"
         placeholder={"*Số điện thoại"}
         {...register("phone", {
-          required: "Trường bắt buộc",
+          required: "Số điện thoại không được để trống",
+          pattern: {value:/((\+84|84|0)[35789][0-9]{8})\b/,message:"Vui lòng nhập đúng số điện thoại"}
         })}
       />
       {errors.phone && (

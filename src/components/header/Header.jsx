@@ -156,19 +156,15 @@ function Header(props) {
                   }`}
                 >
                   <Link className="nav-link item-hover" to="/about">
-                    About
+                    Giới thiệu
                   </Link>
                 </div>
-                <Can do="read-write" on="admin-staff" passThrough>
-                  {(allowed) =>
-                    allowed && (
-                      <div>
-                        <Link className="nav-link item-hover" to="/manager">
-                          Quản lý
-                        </Link>
-                      </div>
-                    )
-                  }
+                <Can do="read-write" on="admin-staff">
+                  <div>
+                    <Link className="nav-link item-hover" to="/manager">
+                      Quản lý
+                    </Link>
+                  </div>
                 </Can>
               </div>
               <div className="group-icon">

@@ -11,6 +11,7 @@ import { convertToVND, getShipping } from "utils/format-string";
 import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
 import { get, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
 
 function ManagerOrderDetail(props) {
   const canBack = props.location.canBack;
@@ -24,17 +25,26 @@ function ManagerOrderDetail(props) {
   });
 
   const { register, handleSubmit, setValue } = useForm();
-
-  const handleSelectSort = async (data) => {
-    let option = options.find((o) => o.lable === data.status);
-    console.log(option.value);
-    console.log(data);
+  const handleSetValueStatus = () => {
+    let stt = order?.data?.activities[0];
+    if (stt.activityName === options[0].value) {
+      return options[1].lable;
+    } else if (stt.activityName === options[1].value) {
+      return options[4].lable;
+    } else {
+      let option = options.find((o) => o.value === stt.activityName);
+      return option.lable;
+    }
+  };
+  const handleSubmitStatus = async (data) => {
+    let option = options.find((o) => o.lable === data);
     try {
       const response = await ManagerOrderAPI.changeStatusOrder(
         option.value,
         orderId
       );
       toast.success("Thay đổi trạng thái thành công");
+      fetchOrder();
     } catch (error) {
       toast.success(error.response.data);
       console.log("fail to fetch address");
@@ -44,8 +54,10 @@ function ManagerOrderDetail(props) {
   const options = [
     { value: "PENDING", lable: "Đang chờ xác nhận" },
     { value: "ACCEPT", lable: "Xác nhận" },
-    { value: "STAFF_REJECT", lable: "Hủy đơn" },
-    { value: "CUSTOMER_REJECT", lable: "Hủy đơn" },
+    { value: "STAFF_REJECT", lable: "Đã hủy bởi cửa hàng" },
+    { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
+    { value: "DONE", lable: "Xong" },
+    { value: "DONED", lable: "Đã hoàn tất" },
   ];
   function totalPrice(list) {
     let total = list.reduce((sum, product) => {
@@ -64,7 +76,7 @@ function ManagerOrderDetail(props) {
       setOrder({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {
       setOrder({ data: null, isLoading: false, isSuccess: false });
-      console.log("fail to fetch address");
+      console.log("fail to fetch order");
     }
   };
 
@@ -93,7 +105,6 @@ function ManagerOrderDetail(props) {
   } else
     return (
       <div className="manager-order-detail">
-        {console.log(order)}
         <div className="d-flex row">
           <div className="col-12 col-lg-9 p-2">
             <div className="bg-box bg-shadow">
@@ -129,7 +140,11 @@ function ManagerOrderDetail(props) {
                         <td className="text-center">{item?.variantName}</td>
                         <td>{item.categoryName}</td>
                         <td className="text-center">{item.quantity}</td>
-                        <td className="text-center"></td>
+                        <td className="text-center">
+                          {item.visibleInStorefront == false
+                            ? "Ngừng kinh doanh"
+                            : "Đang kinh doanh"}
+                        </td>
                         <td className="text-end">
                           {!item ? "N/A" : convertToVND(item.price)}
                         </td>
@@ -156,36 +171,44 @@ function ManagerOrderDetail(props) {
                     </tr> */}
                   </tbody>
                 </table>
-                <div className="row">
+                <div className="d-flex justify-content-end">
                   {order?.data?.activities[0]?.activityName && (
-                    <form onSubmit={handleSubmit(handleSelectSort)}>
-                      <select
-                        className="form-select select-sort pointer my-3 col-7"
-                        {...register("status")}
-                      >
-                        {options.map((item, i) => (
-                          <option
-                            key={"option-" + i}
-                            className="pointer"
-                            selected={
-                              item.value ===
-                              order?.data?.activities[0]?.activityName
-                            }
-                          >
-                            {item.lable}
-                            {console.log(
-                              item.value ===
-                                order?.data?.activities[0]?.activityName
-                            )}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="col-5">
-                        <YLButton variant="primary" type="submit">
-                          Xác nhận
+                    <>
+                      {order?.data?.activities[0].activityName ===
+                        options[0].value && (
+                        <ConfirmPopupV2
+                          children={
+                            <YLButton variant="warning" type="button">
+                              Hủy
+                            </YLButton>
+                          }
+                          title="Bạn có chắc chắn muốn hủy đơn?"
+                          onConfirm={() => handleSubmitStatus(options[2].lable)}
+                        ></ConfirmPopupV2>
+                      )}
+                      <div className="ms-2">
+                        <YLButton
+                          variant={
+                            handleSetValueStatus() === options[2].lable ||
+                            handleSetValueStatus() === options[3].lable ||
+                            handleSetValueStatus() === options[5].lable
+                              ? "warning"
+                              : "primary"
+                          }
+                          type="button"
+                          onClick={() =>
+                            handleSubmitStatus(handleSetValueStatus())
+                          }
+                          disabled={
+                            handleSetValueStatus() === options[2].lable ||
+                            handleSetValueStatus() === options[3].lable ||
+                            handleSetValueStatus() === options[5].lable
+                          }
+                        >
+                          {handleSetValueStatus()}
                         </YLButton>
                       </div>
-                    </form>
+                    </>
                   )}
                 </div>
               </div>
@@ -262,7 +285,11 @@ function ManagerOrderDetail(props) {
                     <th>Tổng thanh toán:</th>
                     <td className="text-end">
                       {order?.data?.items &&
-                        convertToVND((totalPrice(order?.data?.items))+getShipping()-order?.data?.discount)}
+                        convertToVND(
+                          totalPrice(order?.data?.items) +
+                            getShipping() -
+                            order?.data?.discount
+                        )}
                     </td>
                   </tr>
                 </tbody>
