@@ -22,8 +22,8 @@ public interface CampaignRepos extends JpaRepository<Campaign, Long> {
 
     @Query(value = "SELECT *\n" +
             "FROM tbl_campaign\n" +
-            "ORDER BY tbl_campaign.end_date DESC ", nativeQuery = true)
-    List<Campaign> findAllOrderByEndDate();
+            "ORDER BY tbl_campaign.end_date DESC LIMIT 10", nativeQuery = true)
+    List<Campaign> findAllOrderByEndDateLimit10();
 
     @Query(value = "SELECT *\n" +
             "FROM tbl_campaign\n" +
