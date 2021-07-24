@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { getCampaignById, updateCampaign } from "api/manager-campaign-api";
 
 import YLButton from "components/custom-field/YLButton";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -17,6 +17,9 @@ import Loading from "../../../components/Loading";
 import ErrorLoad from "../../../components/error-notify/ErrorLoad";
 import { toast } from "react-toastify";
 import { SUPPORTED_IMAGE_FORMATS } from "../../../constant/product-config";
+import { uploadMultiFiles } from "../../../api/manager-product-api";
+import DEFINELINK from "../../../routes/define-link";
+
 function ManagerCampignEdit(props) {
   const canBack = props.location.canBack;
   const dispatch = useDispatch();
@@ -25,23 +28,25 @@ function ManagerCampignEdit(props) {
   const history = useHistory();
   const schema = yup.object().shape({
     ...VALIDATE_CAMPAIGN_SCHEMA,
-    // newImages: yup.mixed().when("imgList", {
-    //   is: (imgList) => {
-    //     return imgList?.length > 0;
-    //   },
-    //   then: yup.mixed().nullable,
-    //   // otherwise: yup
-    //   //   .array()
-    //   //   .min(1, "Vui lòng chọn ảnh chiến dịch")
-    //   //   .test("prodImgType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
-    //   //     for (const file of value) {
-    //   //       if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
-    //   //         return false;
-    //   //       }
-    //   //     }
-    //   //     return true;
-    //   //   }),
-    // }),
+    newImages: yup.mixed().when("imgList", {
+      is: (imgList) => {
+        console.log(imgList);
+
+        return imgList?.length > 0;
+      },
+      then: yup.mixed().nullable(),
+      otherwise: yup
+        .array()
+        .min(1, "Vui lòng chọn ảnh chiến dịch")
+        .test("prodImgType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
+          for (const file of value) {
+            if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
+              return false;
+            }
+          }
+          return true;
+        }),
+    }),
   });
   const [campaign, setCampaign] = useState({
     data: [],
@@ -58,6 +63,12 @@ function ManagerCampignEdit(props) {
     handleSubmit,
     setValue,
   } = methods;
+  console.log(errors);
+  const handleGetOldImage = useCallback(async () => {
+    const response = await getCampaignById(campaignId);
+    return response.imageCollection;
+  }, [campaignId]);
+
   const fetchCampaign = async (id) => {
     try {
       const response = await getCampaignById(id);
@@ -79,6 +90,7 @@ function ManagerCampignEdit(props) {
       );
       setValue("imgList", response.imageCollection);
       setValue("newImages", []);
+      setValue("imageCollection", []);
     } catch (error) {
       toast.error("Lỗi hệ thống");
     }
@@ -100,11 +112,16 @@ function ManagerCampignEdit(props) {
 
   const onsubmit = async (data) => {
     try {
-      const response = updateCampaign(campaignId, data);
-      console.log(response);
+      if (data.newImages && data.newImages.length > 0) {
+        const fileLinks = await uploadMultiFiles(data.newImages);
+        data.imageCollection = fileLinks;
+      }
+
+      await updateCampaign(campaignId, data);
+      toast.success("Cập nhật chiến dịch thành công");
+      history.push(DEFINELINK.manager + DEFINELINK.campaign);
     } catch (error) {
-      alert("Cập nhật thất bại");
-      console.log("fail to fetch update");
+      toast.error("Cập nhật chiến dịch thất bại");
     }
   };
   if (campaign.isLoading) {
@@ -190,9 +207,7 @@ function ManagerCampignEdit(props) {
                             methods={methods}
                             name={"imgList"}
                             removeName={"imageCollectionRemove"}
-                            getOldImage={() => {
-                              return [];
-                            }}
+                            getOldImage={handleGetOldImage}
                             fieldNameImgFromOldList={"linkImage"}
                           />
                           <span className="error-message">
@@ -207,7 +222,11 @@ function ManagerCampignEdit(props) {
             </div>
 
             <div className="col-12 bg-white bg-shadow submit-button-form">
-              <YLButton variant="danger" to="/manager/voucher" value="Hủy" />
+              <YLButton
+                variant="danger"
+                to={DEFINELINK.manager + DEFINELINK.campaign}
+                value="Hủy"
+              />
               <YLButton variant="primary" type="submit" value="Xong" />
             </div>
           </div>

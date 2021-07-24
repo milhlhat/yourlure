@@ -4,19 +4,26 @@ import * as Yup from "yup";
 import { FastField, Form, Formik } from "formik";
 import InputField from "components/custom-field/YLInput";
 import YLButton from "components/custom-field/YLButton";
-import banner from "assets/images/urban-fishing-in-boston-social.jpg";
-import activity from "assets/images/g1.jpg";
-import CampaignAPI from "api/campaign-api";
+
+import {
+  getAllCampaignByGuest,
+  getCampaignGuestById,
+  getNewestCampaignGuest,
+  registerCampaignGuest,
+} from "api/campaign-api";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 import { formatDate } from "../utils/format-string";
+import { fade } from "@material-ui/core";
+import Loading from "../components/Loading";
+import ErrorLoad from "../components/error-notify/ErrorLoad";
+import { toast } from "react-toastify";
+import YlInputFormHook from "../components/custom-field/YLInputFormHook";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-function Campaign(props) {
-  const { campaignId } = props;
-
-  const [id, setId] = useState(campaignId ? campaignId : 1);
-  const [isEnd, setIsEnd] = useState(false);
+function Campaign() {
   //constructor value for formik field
   const initialValues = {
     phone: "",
@@ -24,12 +31,32 @@ function Campaign(props) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    phone: Yup.string().required("This field is required."),
-    fullname: Yup.string().required("This field is required."),
+    phone: Yup.string()
+      .required("Vui lòng nhập số điện thoại.")
+      .matches(
+        /((\+84|84|0)[35789][0-9]{8})\b/,
+        "Vui lòng nhập đúng số điện thoại"
+      ),
+    username: Yup.string()
+      .required("Vui lòng nhập họ tên")
+      .typeError("Vui lòng nhập họ tên"),
   });
 
+  const methods = useForm({ resolver: yupResolver(validationSchema) });
+  const { handleSubmit } = methods;
   //submit register
-  const campaignRegister = () => {};
+  const campaignRegister = async (data) => {
+    try {
+      data.campaignId = campaign.data.campaignId;
+      await registerCampaignGuest(data);
+      console.log(data);
+      toast.success(
+        "Đăng ký sự kiện thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất"
+      );
+    } catch (e) {
+      toast.error("Hệ thống gặp lỗi lạ, thử lại sau");
+    }
+  };
 
   const [campaignList, setCampaignList] = useState({
     list: [],
@@ -39,7 +66,7 @@ function Campaign(props) {
 
   const fetchCampaignList = async () => {
     try {
-      const response = await CampaignAPI.getAll();
+      const response = await getAllCampaignByGuest();
       if (response.error) {
         setCampaignList({ ...campaignList, failFetch: true });
         throw new Error(response.error);
@@ -54,48 +81,59 @@ function Campaign(props) {
       console.log("fail to fetch customer list");
     }
   };
-  const [campaign, setCampaign] = useState(null);
-  const fetchCampaign = async (id) => {
+  const [campaign, setCampaign] = useState({
+    data: null,
+    isLoading: true,
+    isSuccess: false,
+  });
+  const fetchNewestCampaign = async () => {
     try {
-      const response = await CampaignAPI.getById(id);
+      const response = await getNewestCampaignGuest();
       if (response.error) {
         throw new Error(response.error);
       } else {
-        await setCampaign(response);
+        await setCampaign({
+          data: response,
+          isLoading: false,
+          isSuccess: true,
+        });
       }
     } catch (error) {
+      setCampaign({ data: null, isLoading: false, isSuccess: false });
       console.log("fail to fetch customer list");
     }
   };
-  const timeCountDown = (endDate) => {
-    let days = document.querySelector("#day");
-    let hour = document.querySelector("#hour");
-    let min = document.querySelector("#min");
-    let second = document.querySelector("#second");
-    days.innerText = Math.floor((endDate - new Date()) / 86400000) + 1;
-    countTime();
 
-    function countTime() {
-      let today = new Date();
-      let ms = (endDate - today) % 86400000;
-
-      let h = Math.floor(ms / 3600000);
-      h = h < 10 ? "0" + h : h;
-
-      let m = Math.floor((ms % 3600000) / 60000);
-      m = m < 10 ? "0" + m : m;
-
-      let s = Math.floor(((ms % 3600000) % 60000) / 1000);
-      s = s < 10 ? "0" + s : s;
-
-      hour.innerText = h;
-      min.innerText = m;
-      second.innerText = s;
+  const fetchCampaignGuestById = async (id) => {
+    setCampaign({ data: null, isLoading: true, isSuccess: false });
+    try {
+      const response = await getCampaignGuestById(id);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        await setCampaign({
+          data: response,
+          isLoading: false,
+          isSuccess: true,
+        });
+      }
+    } catch (error) {
+      setCampaign({ data: null, isLoading: false, isSuccess: false });
+      toast.error("Hệ thống gặp lỗi lạ");
     }
-
-    setInterval(countTime, 1000);
   };
+  const handleClickChangeCampaign = async (id) => {
+    await fetchCampaignGuestById(id);
+    window.scrollTo(0, 0);
+  };
+  const [countdown, setCountdown] = useState();
 
+  const responsiveBanner = {
+    all: {
+      breakpoint: { max: 4640, min: 0 },
+      items: 1,
+    },
+  };
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -116,149 +154,159 @@ function Campaign(props) {
     },
   };
 
-  function handleClickChangeCampaign(id) {
-    setId(id);
-  }
-
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchCampaignList();
-    fetchCampaign(id);
-    setIsEnd(
-      campaign ? (campaign.startDate - new Date() > 0 ? false : true) : true
-    );
-    if (!isEnd) {
-      timeCountDown(
-        campaign
-          ? new Date(campaign.startDate)
-          : new Date("2021-06-26T07:51:26.000+00:00")
+    fetchNewestCampaign();
+  }, []);
+  const timeCountDown = () => {
+    const endDate = new Date(campaign?.data?.endDate);
+    let countDownInterval;
+    const countTime = () => {
+      const today = new Date();
+      let ms = (endDate - today) % 86400000;
+      if (ms < 1) clearInterval(countDownInterval);
+      const d = Math.floor((endDate - today) / 86400000) + 1;
+      let h = Math.floor(ms / 3600000);
+
+      let m = Math.floor((ms % 3600000) / 60000);
+
+      let s = Math.floor(((ms % 3600000) % 60000) / 1000);
+
+      setCountdown(
+        `Kết thúc sau ${d.toString().padStart(2, "0")} : ${h
+          .toString()
+          .padStart(2, "0")} : ${m.toString().padStart(2, "0")} : ${s
+          .toString()
+          .padStart(2, "0")} `
       );
-    }
-    console.log(campaignList);
-  }, [id]);
-  return (
-    <div className="container campaign">
-      <div className="banner">
-        <img
-          className="img-banner"
-          src={createImageUrlByLinkOrFile(
-            campaign?.imageCollection[0]?.linkImage
-          )}
-          alt=""
-        />
-        <div className={`countdown ${isEnd ? "d-none" : ""}`}>
-          <div id="day"></div>
-          <div className="fs-6 me-2">ngày</div>
-          <div id="hour"></div>
-          <div className="fs-6 me-2">giờ</div>
-          <div id="min"></div>
-          <div className="fs-6 me-2">phút</div>
-          <div id="second"></div>
+    };
+    if (endDate - new Date() > 0) {
+      countDownInterval = setInterval(() => countTime(), 1000);
+    } else setCountdown("Sự kiện đã kết thúc");
+
+    return countDownInterval;
+  };
+  useEffect(() => {
+    const countInterval = timeCountDown();
+    return () => clearInterval(countInterval);
+  }, [campaign]);
+
+  if (campaign.isLoading) {
+    return <Loading hasLayout />;
+  } else if (!campaign.isSuccess) {
+    return <ErrorLoad hasLayout />;
+  } else
+    return (
+      <div className="container campaign">
+        <div className="banner d-block ">
+          <Carousel
+            responsive={responsiveBanner}
+            removeArrowOnDeviceType={["all"]}
+            showDots
+            autoPlay
+            infinite
+            draggable={false}
+            customTransition="all 1s"
+            transitionDuration={1000}
+          >
+            {campaign?.data?.imageCollection?.length > 0 &&
+              campaign?.data?.imageCollection.map((item, i) => (
+                <div key={"img-banner" + i} className={"banner-container"}>
+                  <img
+                    className={"img-banner"}
+                    src={createImageUrlByLinkOrFile(item.linkImage)}
+                  />
+                </div>
+              ))}
+          </Carousel>
         </div>
-        <div className={`countdown ${isEnd ? "" : "d-none"}`}>Đã kết thúc.</div>
-      </div>
-      <div className="campaign-main row mt-5">
-        <div className="campain-information col-12 col-md-6">
-          <h1>Thông tin sự kiện</h1>
-          <div className="information">
-            <span>{campaign ? campaign.description : "null"}</span>
+        <div className={"bg-box mt-4 text-center"}>
+          <h2 className={"countdown"}>{countdown}</h2>
+        </div>
+        <div className="campaign-main  mt-3 bg-box  ">
+          <article>
+            <h1 className={"text-center mt-3"}>{campaign?.data?.banner}</h1>
+            <p className={"text-center w-75 mx-auto mb-5"}>
+              {campaign?.data?.description}
+            </p>
+          </article>
+          <div className={"d-flex flex-wrap"}>
+            <div className="campain-information col-12 col-md-6 pe-md-3">
+              <h3 className={"pb-3 content"}>Thông tin sự kiện</h3>
+              <p className={"content"}>
+                {campaign ? campaign?.data?.content : "null"}
+              </p>
+            </div>
+            <div className="campaign-register col-12 col-md-6 ps-md-3">
+              <div className="campaign-register-form">
+                <h2 className={"pb-3"}>Đăng ký tham gia sự kiện</h2>
+                <form onSubmit={handleSubmit(campaignRegister)}>
+                  <YlInputFormHook
+                    name={"phone"}
+                    isRequired
+                    placeholder={"Nhập số điện thoại"}
+                    label={"Số điện thoại"}
+                    methods={methods}
+                    type={"number"}
+                  />
+                  <br />
+                  <YlInputFormHook
+                    name={"username"}
+                    isRequired
+                    placeholder={"Họ tên"}
+                    label={"Nhập họ tên"}
+                    methods={methods}
+                  />
+                  <br />
+                  <YLButton
+                    type={"submit"}
+                    variant={"primary"}
+                    value={"Đăng ký"}
+                  />
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="campaign-register col-12 col-md-6">
-          <h2>Đăng ký tham gia sự kiện</h2>
-          <div className="campaign-register-form">
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={(values) => {
-                campaignRegister(values);
-              }}
-            >
-              {(formikProps) => {
-                const { values, errors, touched } = formikProps;
-                // console.log({ values, errors, touched });
-                return (
-                  <Form>
-                    <FastField
-                      name="phone"
-                      component={InputField}
-                      label="Số điện thoại"
-                      placeholder="Nhập số điện thoại"
-                    ></FastField>
-                    <FastField
-                      name="fullname"
-                      type="fullname"
-                      component={InputField}
-                      label="Họ tên"
-                      placeholder="Nhập họ tên"
-                    ></FastField>
-                    <div className="mt-2">
-                      <YLButton
-                        type="submit"
-                        variant="primary"
-                        value="Đăng ký"
-                        width={100}
-                      ></YLButton>
-                    </div>
-                  </Form>
-                );
-              }}
-            </Formik>
-          </div>
-        </div>
-      </div>
-      <div className="campaign-list-img mt-5">
-        <h1>Hình ảnh nổi bật</h1>
-        <div className="list-img">
-          {campaign &&
-            campaign.imageCollection &&
-            campaign.imageCollection.map((camp, index) => (
-              <img
-                src={createImageUrlByLinkOrFile(camp.linkImage)}
-                alt=""
-                key={index}
-              />
-            ))}
-        </div>
-      </div>
-      <div className="campaign-orther-list my-md-5 my-2">
-        <h3>Các sự kiện Khác</h3>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          responsive={responsive}
-          ssr={true} // means to render carousel on server-side.
-          infinite={true}
-          keyBoardControl={true}
-          customTransition="all 1s"
-          transitionDuration={500}
-        >
-          {campaignList.list.map((list, i) => (
-            <div
-              className="campaign-list-card bg-white m-1"
-              key={i}
-              onClick={() => handleClickChangeCampaign(list.campaignID)}
-            >
-              <div className="campaign-img">
+
+        <div className="campaign-orther-list my-md-5 my-2 bg-box">
+          <h3 className={"mb-3"}>Các sự kiện khác</h3>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            responsive={responsive}
+            ssr={true} // means to render carousel on server-side.
+            infinite={true}
+            keyBoardControl={true}
+            customTransition="all 1s"
+            transitionDuration={500}
+          >
+            {campaignList.list.map((campaign, i) => (
+              <div
+                className="campaign-list-card bg-white me-3 pointer"
+                key={i}
+                onClick={() => handleClickChangeCampaign(campaign.campaignId)}
+              >
                 <img
+                  className="campaign-img rounded-3"
                   src={createImageUrlByLinkOrFile(
-                    list?.imageCollection
-                      ? list?.imageCollection[0]?.linkImage
+                    campaign?.imageCollection
+                      ? campaign?.imageCollection[0]?.linkImage
                       : ""
                   )}
                   alt="Hình ảnh về sự kiện"
                 />
+
+                <div className="dateEnd">
+                  Kết thúc: {formatDate(campaign.endDate)}
+                </div>
               </div>
-              <div className="dateEnd">
-                Đã kết thúc vào:{formatDate(list.startDate)}
-              </div>
-            </div>
-          ))}
-        </Carousel>
+            ))}
+          </Carousel>
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default Campaign;

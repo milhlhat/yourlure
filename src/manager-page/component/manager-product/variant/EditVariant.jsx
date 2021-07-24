@@ -85,9 +85,12 @@ function EditVariant(props) {
     if (typeof data.fileUpload !== "string") {
       const fileUpload = await uploadMultiFiles([data.fileUpload]);
       data.imageUrl = fileUpload[0];
+    } else {
+      data.imageUrl = data.fileUpload;
     }
 
     await updateVariant(variantId, data);
+    toast.success("Cập nhật thành công");
     history.push(parentRedirect || parent);
   };
 

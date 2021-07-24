@@ -1,72 +1,89 @@
 @import "../base/variable";
 
-.hidden{
-  display: none;
-}
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500&display=swap');
+
+
 .campaign {
+  font-family: 'Lexend', sans-serif;
+
+  & h3 {
+    font-weight: 500;
+  }
+
   & .banner {
-    object-fit: contain;
-    & .img-banner {
-      object-fit: cover;
-      width: 100%;
-    }
-    & .countdown {
-      display: flex;
-      align-items: baseline;
+
+    & .banner-container {
+      position: relative;
+
+      & .img-banner {
+        object-fit: cover;
+        width: 100%;
+      }
     }
   }
+
+  & .countdown {
+    font-weight: 300;
+  }
+
   & .campaign-main {
-    width: 100%;
+    //width: 100%;
+
+
     & .campain-information {
       text-align: right;
-      & .information {
-        height: 100%;
-        text-align: justify;
-      }
+
     }
+
     & .campaign-register {
-      padding: 30px;
+
       height: 500px;
-      border: 1px solid $primary;
-      border-radius: 2em;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      //border: 3px solid $hover-color;
+      border-radius: 10px;
+
+
+      //justify-content: center;
       & .campaign-register-form {
-        padding: 10%;
+
       }
     }
   }
+
   & .campaign-list-img {
     display: flex;
     flex-direction: column;
-    align-items: center;
+
     & .list-img {
-      justify-content: center;
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
     }
   }
+
   & .campaign-orther-list {
     display: block;
     width: 100%;
+
     & ul {
       & li {
         display: flex;
         justify-content: center;
       }
     }
+
     & .campaign-list-card {
       display: flex;
       flex-direction: column;
       align-content: center;
       justify-content: space-between;
       text-align: center;
-      & img{
+      grid-column-gap: 20px;
+
+      & .campaign-img {
         width: 100%;
-        object-fit: contain;
-        // height: 80px;
+        height: 100%;
+        object-fit: cover;
+
       }
     }
   }
@@ -77,6 +94,7 @@
     & .img-banner {
       height: 200px;
     }
+
     & .countdown {
       // width: 200px;
       font-size: 34px;
@@ -85,9 +103,8 @@
   }
   .campaign-main {
     & .campain-information {
-      & .information {
-        text-align: justify;
-        margin: 50px 0;
+      & .content {
+        text-align: center;
       }
     }
   }
@@ -99,11 +116,13 @@
     }
   }
 }
+
 @media screen and (min-width: $mobile-width - 1px) {
   & .banner {
     & .img-banner {
       height: 300px;
     }
+
     & .countdown {
       // width: 200px;
       font-size: 40px;
@@ -111,10 +130,12 @@
     }
   }
   .campaign-main {
+    padding: 0 15% !important;;
+
     & .campain-information {
       & .information {
         width: 80%;
-        margin: 50px 0;
+
       }
     }
   }
@@ -126,11 +147,13 @@
     }
   }
 }
+
 @media screen and (min-width: $tablet-width - 1px) {
   & .banner {
     & .img-banner {
       height: 400px;
     }
+
     & .countdown {
       // width: 200px;
       font-size: 46px;
@@ -138,11 +161,12 @@
     }
   }
   .campaign-main {
+    padding: 0 15% !important;
     & .campain-information {
       & .information {
         width: 80%;
         float: right;
-        margin: 50px 0;
+
       }
     }
   }
@@ -154,11 +178,13 @@
     }
   }
 }
+
 @media screen and (min-width: $desktop-width - 1px) {
   & .banner {
     & .img-banner {
       height: 500px;
     }
+
     & .countdown {
       // width: 200px;
       font-size: 52px;
@@ -170,7 +196,7 @@
       & .information {
         width: 80%;
         float: right;
-        margin: 50px 0;
+
       }
     }
   }

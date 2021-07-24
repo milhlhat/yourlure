@@ -97,7 +97,7 @@ function ShowVariant(props) {
                     src={createImageUrlByLinkOrFile(imageUrl)}
                     key={index}
                     alt={"Mồi"}
-                    className={"mb-2"}
+                    className={"mb-2 rounded-2"}
                   />
                 </td>
 

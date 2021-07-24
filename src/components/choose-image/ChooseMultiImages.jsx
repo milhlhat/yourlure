@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { getUniqueFiles } from "../../utils/prototype";
 import { useFieldArray } from "react-hook-form";
-
 import { createImageUrlByLinkOrFile } from "../../utils/manager-product";
 import PropTypes from "prop-types";
 import "./scss/choose-multi-images.scss";
@@ -128,5 +127,5 @@ function ChooseMultiImages(props) {
 }
 
 export default memo(ChooseMultiImages, (preProps, nextProps) => {
-  return preProps.name === nextProps.name;
+  return preProps.getOldImage === nextProps.getOldImage;
 });

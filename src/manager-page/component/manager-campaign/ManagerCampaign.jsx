@@ -146,13 +146,13 @@ function ManagerCampaign(props) {
             setFilter={setFilter}
             options={options}
           />
-          {/* <ManagerSort /> */}
+
           {campaignList?.data?.length <= 0 && <p>Chưa có chiến dịch </p>}
           <table className="table">
             <tbody>
               <tr>
                 <th>#</th>
-                <th>Tên chiến dịch (banner)</th>
+                <th>Tên chiến dịch </th>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
 

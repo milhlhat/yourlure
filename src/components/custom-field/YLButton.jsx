@@ -1,7 +1,13 @@
 import React from "react";
 import "assets/scss/scss-components/custom-field/YLButton.scss";
 import { Link } from "react-router-dom";
-YLButton.propTypes = {};
+import propTypes from "prop-types";
+YLButton.propTypes = {
+  variant: propTypes.string,
+  value: propTypes.string,
+  width: propTypes.string,
+  height: propTypes.string,
+};
 
 function YLButton(props) {
   const { variant, value, onClick, disabled, type, to, width, height } = props;

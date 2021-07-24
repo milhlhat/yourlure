@@ -170,9 +170,18 @@ function ManagerVoucherAddNew(props) {
   );
 }
 export const VALIDATE_CAMPAIGN_SCHEMA = {
-  banner: yup.string().required("Tên chiến dịch không được để trống"),
-  description: yup.string().required("Mô tả không được để trống"),
-  content: yup.string().required("Mô tả chi tiết không được để trống"),
+  banner: yup
+    .string()
+    .required("Tên chiến dịch không được để trống")
+    .typeError("Tên chiến dịch không được để trống"),
+  description: yup
+    .string()
+    .required("Mô tả không được để trống")
+    .typeError("Mô tả không được để trống"),
+  content: yup
+    .string()
+    .typeError("Mô tả chi tiết không được để trống")
+    .required("Mô tả chi tiết không được để trống"),
   startDate: yup
     .date()
     .typeError("Ngày bắt đầu không được để trống")
