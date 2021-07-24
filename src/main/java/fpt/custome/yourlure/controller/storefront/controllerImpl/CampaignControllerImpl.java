@@ -2,6 +2,7 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 
 import fpt.custome.yourlure.controller.storefront.CampaignController;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
+import fpt.custome.yourlure.entity.Campaign;
 import fpt.custome.yourlure.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +24,28 @@ public class CampaignControllerImpl implements CampaignController {
     CampaignService campaignService;
 
     @Override
-    public ResponseEntity<List<CampaignDtoOut>> getAll() {
+    public ResponseEntity<Object> getAll() {
         List<CampaignDtoOut> dtoOuts = campaignService.getAll();
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<CampaignDtoOut>> getById(Long id) {
+    public ResponseEntity<Object> newest() {
+        try {
+            CampaignDtoOut campaign = campaignService.newest();
+            return new ResponseEntity<>(campaign, HttpStatus.OK);
+
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Lỗi hệ thống", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<Object> getById(Long id) {
         Optional<CampaignDtoOut> dtoOut = campaignService.getById(id);
         return new ResponseEntity<>(dtoOut, HttpStatus.OK);
     }

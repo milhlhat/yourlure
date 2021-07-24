@@ -14,8 +14,11 @@ import java.util.Optional;
 public interface CampaignController {
 
     @GetMapping("/all")
-    ResponseEntity<List<CampaignDtoOut>> getAll();
+    ResponseEntity<Object> getAll();
 
-      @GetMapping("/{id}")
-    ResponseEntity<Optional<CampaignDtoOut>> getById(@PathVariable Long id);
+    @GetMapping("/newest")
+    ResponseEntity<Object> newest();
+
+    @GetMapping("/{id}")
+    ResponseEntity<Object> getById(@PathVariable Long id);
 }

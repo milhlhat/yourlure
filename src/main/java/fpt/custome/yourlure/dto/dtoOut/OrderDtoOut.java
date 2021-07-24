@@ -27,6 +27,7 @@ public class OrderDtoOut {
     public static class Order{
         private Long orderId;
         private Date orderDate;
+        private Long userId;
         private String address;
         private String phone;
         private String receiverName;

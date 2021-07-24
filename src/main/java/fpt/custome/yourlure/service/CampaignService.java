@@ -3,6 +3,7 @@ package fpt.custome.yourlure.service;
 import fpt.custome.yourlure.dto.dtoInp.AdminCampaignDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminCampaignDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
+import fpt.custome.yourlure.entity.Campaign;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface CampaignService {
     List<CampaignDtoOut> getAll();
 
     Optional<AdminCampaignDtoOut> adminGetAll(String keyword, Pageable pageable);
+
+    CampaignDtoOut newest();
 
     Optional<CampaignDtoOut> getById(Long id);
 

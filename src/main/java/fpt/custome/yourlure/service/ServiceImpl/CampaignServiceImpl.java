@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
@@ -36,7 +37,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<CampaignDtoOut> getAll() {
         List<CampaignDtoOut> result = new ArrayList<>();
-        List<Campaign> list = campaignRepos.findAll();
+        List<Campaign> list = campaignRepos.findAllNewest();
         for (Campaign item : list) {
             CampaignDtoOut dtoOut = mapper.map(item, CampaignDtoOut.class);
             result.add(dtoOut);
@@ -57,6 +58,17 @@ public class CampaignServiceImpl implements CampaignService {
         result.setTotalPage(list.getTotalPages());
         result.setCampaignDtoOuts(campaignDtoOuts);
         return Optional.of(result);
+    }
+
+    @Override
+    public CampaignDtoOut newest() {
+        Optional<Campaign> campaign = campaignRepos.findNewest();
+        if(campaign.isPresent()){
+            CampaignDtoOut dtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
+            return dtoOut;
+        }
+
+        throw new ValidationException("Không tìm thấy campain nào!");
     }
 
     @Override
