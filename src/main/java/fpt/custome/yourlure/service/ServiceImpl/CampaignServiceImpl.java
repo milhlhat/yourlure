@@ -47,7 +47,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<CampaignDtoOut> getAll() {
         List<CampaignDtoOut> result = new ArrayList<>();
-        List<Campaign> list = campaignRepos.findAllNewest();
+        List<Campaign> list = campaignRepos.findAllOrderByEndDate();
         for (Campaign item : list) {
             CampaignDtoOut dtoOut = mapper.map(item, CampaignDtoOut.class);
             result.add(dtoOut);
