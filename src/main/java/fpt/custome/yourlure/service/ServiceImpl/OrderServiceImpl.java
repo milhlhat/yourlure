@@ -12,6 +12,7 @@ import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
+import fpt.custome.yourlure.service.OtpService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private OtpService otpService;
 
     @Override
     public DiscountVoucher verifyDiscountCode(String discountCode) throws Exception {
@@ -175,6 +179,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
+        // verify phone number
+        orderGuestDtoInput.setPhone(userService.verifyPhone(orderGuestDtoInput.getPhone()));
+        Boolean isValid = otpService.validateOTP(orderGuestDtoInput.getPhone(), orderGuestDtoInput.getOtp());
+        if (!isValid) {
+            throw new ValidationException("Mã OTP không chính xác!");
+        }
+
         Order order = mapper.map(orderGuestDtoInput, Order.class);
         order.setOrderDate(new Date());
 

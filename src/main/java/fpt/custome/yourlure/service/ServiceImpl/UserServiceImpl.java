@@ -75,7 +75,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OtpService otpService;
 
-    protected String verifyPhone(String phone) {
+    @Override
+    public boolean checkPhoneExist(String phone) {
+        phone = verifyPhone(phone);
+        if (userRepos.existsByPhone(phone)) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public String verifyPhone(String phone) {
         phone = phone.replace("+84", "0");
         if (phone.startsWith("84")) {
             phone = "0" + phone.substring(2);
@@ -99,19 +109,31 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public String signup(User user) {
-        if (!userRepos.existsByPhone(user.getPhone())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setProvider(Provider.LOCAL);
-            user.setEnabled(true);
-            user.setMaxCustomizable(5);
-            user.setRoles(Collections.singleton(Role.ROLE_CUSTOMER));
-            userRepos.save(user);
-            return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
-        } else {
-            throw new CustomException("Username or phone is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+    public String signup(String phone, String password, Integer otp) {
+        phone = verifyPhone(phone);
+        Boolean isValid = otpService.validateOTP(phone, otp);
+        if (isValid) {
+            if (!userRepos.existsByPhone(phone)) {
+
+                User user = User.builder()
+                        .phone(phone)
+                        .password(passwordEncoder.encode(password))
+                        .provider(Provider.LOCAL)
+                        .enabled(true)
+                        .maxCustomizable(5)
+                        .roles(Collections.singleton(Role.ROLE_CUSTOMER))
+                        .build();
+                userRepos.save(user);
+                return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
+            } else {
+                throw new ValidationException("Username or phone is already in use");
+            }
+
         }
+        throw new ValidationException("Mã OTP không chính xác!");
+
     }
+
 
     @Override
     public Boolean changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
@@ -353,6 +375,11 @@ public class UserServiceImpl implements UserService {
     public Boolean saveAddress(HttpServletRequest req, UserAddressInput userAddressInput) {
         try {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+            userAddressInput.setPhone(verifyPhone(userAddressInput.getPhone()));
+            Boolean isValid = otpService.validateOTP(userAddressInput.getPhone(), userAddressInput.getOtp());
+            if (!isValid) {
+                return false;
+            }
             Optional<Ward> ward = userWardRepos.findById(userAddressInput.getUserWardId());
             if (ward.isPresent()) {
                 UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);

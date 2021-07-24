@@ -148,8 +148,15 @@ public class UserControllerImpl implements UserController {
 
 
     @Override
-    public String signup(UserDataDTO user) {
-        return userService.signup(modelMapper.map(user, User.class));
+    public ResponseEntity<Object> signup(String phone, String password, Integer otp) {
+        try{
+            return new ResponseEntity<>(userService.signup(phone, password, otp), HttpStatus.OK);
+        }catch (ValidationException e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -168,7 +175,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Object> forgotPwd(String phone) {
+    public ResponseEntity<Object> sendOtp(String phone) {
         if (userService.forgotPwd(phone)) {
             // success
             return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
@@ -176,6 +183,17 @@ public class UserControllerImpl implements UserController {
         // failure message
         return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
 
+    }
+
+    @Override
+    public ResponseEntity<Object> checkPhoneExist(String phone) {
+
+        try{
+            return new ResponseEntity<>(userService.checkPhoneExist(phone), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
