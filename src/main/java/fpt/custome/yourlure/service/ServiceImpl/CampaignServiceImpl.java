@@ -1,10 +1,13 @@
 package fpt.custome.yourlure.service.ServiceImpl;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminCampaignDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.CampaignRegisterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminCampaignDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import fpt.custome.yourlure.entity.Campaign;
+import fpt.custome.yourlure.entity.CampaignRegister;
 import fpt.custome.yourlure.entity.Image;
+import fpt.custome.yourlure.repositories.CampaignRegisterRepos;
 import fpt.custome.yourlure.repositories.CampaignRepos;
 import fpt.custome.yourlure.repositories.ImageRepos;
 import fpt.custome.yourlure.service.CampaignService;
@@ -16,13 +19,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
 
     @Autowired
     private CampaignRepos campaignRepos;
+
+    @Autowired
+    private CampaignRegisterRepos campaignRegisterRepos;
 
     @Autowired
     private ImageRepos imageRepos;
@@ -155,5 +164,17 @@ public class CampaignServiceImpl implements CampaignService {
             Optional.of(false);
         }
         return Optional.of(false);
+    }
+
+    @Override
+    public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
+        if (campaignRegisterDtoInput != null) {
+            CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
+            campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
+            campaignRegisterRepos.save(campaignRegister);
+        } else {
+            return "Data input is null!";
+        }
+        return "Đăng ký tham gia thành công!";
     }
 }

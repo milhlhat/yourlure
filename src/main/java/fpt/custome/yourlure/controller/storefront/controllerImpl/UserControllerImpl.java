@@ -5,7 +5,6 @@ import fpt.custome.yourlure.dto.dtoInp.UserAddressInput;
 import fpt.custome.yourlure.dto.dtoInp.UserDataDTO;
 import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AddressFromWarDtoOutput;
-import fpt.custome.yourlure.dto.dtoOut.UserAddressDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
 import fpt.custome.yourlure.entity.User;
@@ -119,9 +118,17 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<List<UserAddressDtoOut>> getAddressUser(HttpServletRequest req) {
-        List<UserAddressDtoOut> result = userService.getAddressUser(req);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> getAddressUser(HttpServletRequest req) {
+        try {
+            Object result = userService.getAddressUser(req);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -28,11 +27,6 @@ public class CampaignRegister {
     @NotNull
     @Column(name = "username")
     private String username;
-
-    @NotNull
-    @Column(name = "email")
-    @Email(message = "Email should be valid")
-    private String email;
 
     @NotNull
     @NotBlank(message = "phone can not contains black character!")

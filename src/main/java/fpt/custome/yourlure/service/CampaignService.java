@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.service;
 
 import fpt.custome.yourlure.dto.dtoInp.AdminCampaignDtoInput;
+import fpt.custome.yourlure.dto.dtoInp.CampaignRegisterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminCampaignDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +23,7 @@ public interface CampaignService {
     Optional<Boolean> save( AdminCampaignDtoInput adminCampaignDtoInput);
 
     Optional<Boolean> delete(Long id);
+
+    Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput);
 
 }

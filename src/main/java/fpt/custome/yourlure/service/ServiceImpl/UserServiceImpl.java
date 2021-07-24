@@ -324,15 +324,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserAddressDtoOut> getAddressUser(HttpServletRequest req) {
+    public Object getAddressUser(HttpServletRequest req) {
         List<UserAddressDtoOut> result = new ArrayList<>();
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
         // map collection user address to dto
         List<UserAddress> userAddressList = userAddressRepos.findAllByUser_UserIdOrderByUserAddressId(user.getUserId());
-        if (!userAddressList.isEmpty()) {
-            result = getAddressInUser(userAddressList);
+        if (userAddressList.isEmpty()) {
+            return "Không tồn tại địa chỉ nào!";
         }
-        return result;
+        return result = getAddressInUser(userAddressList);
     }
 
     @Override
