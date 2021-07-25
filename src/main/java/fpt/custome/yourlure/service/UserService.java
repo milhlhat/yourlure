@@ -31,6 +31,8 @@ public interface UserService {
 
     Boolean forgotPwd(String phone);
 
+    Boolean sendOTP(String phone);
+
     Boolean resetPwd(String phone, String newPwd, Integer otp);
 
     User whoami(HttpServletRequest req);

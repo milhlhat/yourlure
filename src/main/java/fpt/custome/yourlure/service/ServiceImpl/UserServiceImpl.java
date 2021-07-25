@@ -168,6 +168,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean sendOTP(String phone) {
+        if (phone == null) {
+            return false;
+        }
+        phone = verifyPhone(phone);
+        return otpService.generateOtp(phone);
+
+    }
+
+    @Override
     public Boolean resetPwd(String phone, String newPwd, Integer otp) {
         phone = verifyPhone(phone);
         Boolean isValid = otpService.validateOTP(phone, otp);

@@ -175,7 +175,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Object> sendOtp(String phone) {
+    public ResponseEntity<Object> forgotPassword(String phone) {
         if (userService.forgotPwd(phone)) {
             // success
             return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
@@ -183,6 +183,16 @@ public class UserControllerImpl implements UserController {
         // failure message
         return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
 
+    }
+
+    @Override
+    public ResponseEntity<Object> sendOTP(String phone) {
+        if (userService.sendOTP(phone)) {
+            // success
+            return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+        }
+        // failure message
+        return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
     }
 
     @Override

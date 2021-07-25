@@ -115,8 +115,11 @@ public interface UserController {
                                      @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String oldPassword,
                                      @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String password);
 
+    @PostMapping("/forgot-password")
+    ResponseEntity<Object> forgotPassword(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
     @PostMapping("/send-otp")
-    ResponseEntity<Object> sendOtp(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
+    ResponseEntity<Object> sendOTP(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
+
 
     @PostMapping("/check-phone-exist")
     ResponseEntity<Object> checkPhoneExist(@RequestParam @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
