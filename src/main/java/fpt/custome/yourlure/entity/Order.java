@@ -1,6 +1,7 @@
 package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,20 +25,24 @@ public class Order {
     @Column(name = "orderId")
     private Long orderId;
 
+    @NotNull
+    @Column(name = "orderCode", unique = true, nullable = false)
+    private String orderCode;
+
     @Nullable
     @Column(name = "orderDate")
     private Date orderDate;
 
-    @Nullable
-    @Column(name = "address")
+    @NotNull
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Nullable
-    @Column(name = "phone")
+    @NotNull
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Nullable
-    @Column(name = "receiverName")
+    @NotNull
+    @Column(name = "receiverName", nullable = false)
     private String receiverName;
 
     @Nullable
@@ -45,6 +50,7 @@ public class Order {
     private String note;
 
     @JsonIgnore
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "paymentId", nullable = false)
     private Payment payment;
