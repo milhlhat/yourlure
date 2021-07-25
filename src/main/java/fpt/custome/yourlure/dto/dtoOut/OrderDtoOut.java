@@ -26,6 +26,7 @@ public class OrderDtoOut {
     @AllArgsConstructor
     public static class Order{
         private Long orderId;
+        private String orderCode;
         private Date orderDate;
         private Long userId;
         private String address;

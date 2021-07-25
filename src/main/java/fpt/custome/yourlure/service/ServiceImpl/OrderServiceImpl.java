@@ -12,7 +12,9 @@ import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
+import fpt.custome.yourlure.service.OtpService;
 import fpt.custome.yourlure.service.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -78,6 +80,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private OtpService otpService;
 
     @Override
     public DiscountVoucher verifyDiscountCode(String discountCode) throws Exception {
@@ -173,9 +178,21 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    protected String genOrderCode(){
+        return new Date().getTime() + RandomStringUtils.randomAlphanumeric(8);
+    }
+
     @Override
     public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
+        // verify phone number
+        orderGuestDtoInput.setPhone(userService.verifyPhone(orderGuestDtoInput.getPhone()));
+        Boolean isValid = otpService.validateOTP(orderGuestDtoInput.getPhone(), orderGuestDtoInput.getOtp());
+        if (!isValid) {
+            throw new ValidationException("Mã OTP không chính xác!");
+        }
+
         Order order = mapper.map(orderGuestDtoInput, Order.class);
+        order.setOrderCode(genOrderCode());
         order.setOrderDate(new Date());
 
         // check payment
@@ -216,6 +233,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .address(orderUserDtoInput.getAddress())
                 .user(user)
+                .orderCode(genOrderCode())
                 .orderDate(new Date())
                 .phone(orderUserDtoInput.getPhone())
                 .payment(payment)
@@ -417,6 +435,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = mapper.map(orderInput, Order.class);
         order.setUser(user);
+        order.setOrderCode(genOrderCode());
         order.setOrderDate(new Date());
         order.setPayment(verifyPayment(orderInput.getPaymentId()));
         order.setDiscount(calculateDiscount(orderInput.getDiscountCode(), calculateItemPrices(orderInput.getCartItems())));

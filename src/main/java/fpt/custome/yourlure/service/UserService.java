@@ -19,14 +19,19 @@ import java.util.Set;
 
 public interface UserService {
 
+    boolean checkPhoneExist(String phone);
+
+    String verifyPhone(String phone);
     //store front -------------------------------------------
     String signin(String phone, String password);
 
-    String signup(User user);
+    String signup(String phone, String password, Integer otp);
 
     Boolean changePwd(HttpServletRequest rq, String oldPwd, String newPwd);
 
     Boolean forgotPwd(String phone);
+
+    Boolean sendOTP(String phone);
 
     Boolean resetPwd(String phone, String newPwd, Integer otp);
 

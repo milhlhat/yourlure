@@ -20,6 +20,7 @@ public class AdminOrderDetailDtoOut {
     private String phone;
     private String receiverName;
     private String note;
+    private String orderCode;
     private Date orderDate;
     private String activityName;
     List<ProductDtoOut> productDtoOuts;

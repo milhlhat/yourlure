@@ -28,6 +28,7 @@ public class OrderGuestDtoInput {
     @NotNull
     private Long paymentId;
 
-    public String discountCode;
-    public List<CartItem> cartItems;
+    private String discountCode;
+    private List<CartItem> cartItems;
+    private Integer otp;
 }

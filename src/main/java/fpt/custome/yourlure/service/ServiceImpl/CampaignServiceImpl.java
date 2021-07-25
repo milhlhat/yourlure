@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.ValidationException;
-import java.util.*;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -47,7 +46,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<CampaignDtoOut> getAll() {
         List<CampaignDtoOut> result = new ArrayList<>();
-        List<Campaign> list = campaignRepos.findAllOrderByEndDate();
+        List<Campaign> list = campaignRepos.findAllOrderByEndDateLimit10();
         for (Campaign item : list) {
             CampaignDtoOut dtoOut = mapper.map(item, CampaignDtoOut.class);
             result.add(dtoOut);

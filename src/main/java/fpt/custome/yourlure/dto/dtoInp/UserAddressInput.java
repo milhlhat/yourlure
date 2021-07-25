@@ -21,6 +21,7 @@ public class UserAddressInput {
     private String userEmail;
     private String description;
     private Long userWardId;
+    private Integer otp;
 
 }
 

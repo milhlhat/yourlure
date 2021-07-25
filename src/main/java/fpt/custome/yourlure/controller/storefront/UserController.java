@@ -99,7 +99,9 @@ public interface UserController {
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 422, message = "phone or email is already in use")})
-    String signup(@ApiParam("Signup User") @RequestBody  UserDataDTO user);
+    ResponseEntity<Object> signup(@RequestParam @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone,
+                  @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String newPwd,
+                  @RequestParam Integer otp);
 
     @PostMapping("/signin")
     @ApiOperation(value = "${UserController.signin}")
@@ -114,7 +116,13 @@ public interface UserController {
                                      @RequestParam @NotBlank @Size(min = 6, max = 24, message = "password just contain 6-24 characters!") String password);
 
     @PostMapping("/forgot-password")
-    ResponseEntity<Object> forgotPwd(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
+    ResponseEntity<Object> forgotPassword(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
+    @PostMapping("/send-otp")
+    ResponseEntity<Object> sendOTP(@RequestBody @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
+
+
+    @PostMapping("/check-phone-exist")
+    ResponseEntity<Object> checkPhoneExist(@RequestParam @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone);
 
     @PostMapping("/reset-password")
     ResponseEntity<Object> resetPwd(@RequestParam @NotBlank @Size(min = 10, max = 13, message = "phone number just contains 10 characters") String phone,
