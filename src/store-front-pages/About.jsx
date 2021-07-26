@@ -1,122 +1,140 @@
 import React from "react";
 import "assets/scss/scss-pages/about.scss";
-import img3 from "assets/images/about/about3.jpg";
-import img1 from "assets/images/about/about1.jpg";
-import img6 from "assets/images/about/about6.jpg";
-import img4 from "assets/images/about/about4.jpg";
+import teamImg from "assets/images/about/about1.jpg";
+import nhatAvt from "assets/images/about/nhat.jpg";
+import supervisor from "assets/images/about/supervisor.jpg";
 
-function About(props) {
+import CardProfile from "../components/card/CardProfile";
+const TOPPOINT = [
+  {
+    icon: "fal fa-send-back",
+    name: "Giao diện thân thiện",
+    content: `Sed pretium, ligula sollicitu r libero
+          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.`,
+  },
+  {
+    icon: "fal fa-heart",
+    name: "Nhiệt huyết",
+    content: `Sed pretium, 
+          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.`,
+  },
+  {
+    icon: "fal fa-chart-network",
+    name: "Chuyên nghiệp",
+    content: `Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
+          `,
+  },
+];
+
+const TEAMPROFILES = [
+  {
+    name: "Thầy Bùi Ngọc Anh",
+    title: "Supervisor",
+    content: "",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: supervisor,
+  },
+  {
+    name: "Nguyễn Minh Nhật",
+    title: "Team lead front-end",
+    content: "Hay nói dối",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: nhatAvt,
+  },
+  {
+    name: "Nguyễn Minh Nhật",
+    title: "Team lead front-end",
+    content: "Hay nói dối",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: nhatAvt,
+  },
+  {
+    name: "Nguyễn Minh Nhật",
+    title: "Team lead front-end",
+    content: "Hay nói dối",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: nhatAvt,
+  },
+  {
+    name: "Nguyễn Minh Nhật",
+    title: "Team lead front-end",
+    content: "Hay nói dối",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: nhatAvt,
+  },
+  {
+    name: "Nguyễn Minh Nhật",
+    title: "Team lead front-end",
+    content: "Hay nói dối",
+    facebook: "",
+    instagram: "",
+    mail: "",
+    image: nhatAvt,
+  },
+];
+function About() {
   return (
-    <div className="container about">
-      {/* <h1>Giới thiệu</h1> */}
-      <div className="big-image">
-        <img src={img3} alt="banner your lure studio" className="w-100" />
-      </div>
-      <div className="over-view">
-        <p>
-          Câu cá là một hoạt động giải trí ngoài trời phổ biến ở Việt Nam trong
-          thời gian gần đây. Khi mua mồi câu, cần thủ thường mua mồi câu đẹp,
-          kiểu dáng bắt mắt, nhưng rất tiếc, các cửa hàng trực tuyến hiện nay
-          chỉ cung cấp một số mẫu mồi câu cá, người đi câu cần chọn một trong
-          những mẫu này và họ không thể tự tùy chỉnh. Họ tốn rất nhiều thời gian
-          để chọn mẫu mà họ thích nhất.
+    <div className={"component about "}>
+      <article className={"bg-box first-content"}>
+        <h3 className={"text-center mb-4"}>YOURLURE</h3>
+        <p className={"text-center content"}>
+          Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
+          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.
+          Sed egestas, ante et vulputate volutpat, uctus metus libero eu augue.
+          Morbi purus libero, faucibus adipiscing, commodo quis, gravida id,
+          est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem
+          at felis.
         </p>
-        <p>
-          Nhiều cần thủ muốn sở hữu một số loại mồi câu cá độc đáo để thỏa mãn
-          bản thân. Vì mỗi người có một sở thích cá nhân khác nhau. Khi họ chọn
-          một loại mồi câu cá, thật khó để chọn được một mẫu mồi câu cá phù hợp
-          nhất. Mặc dù nhiều mẫu mồi câu cá đã được tạo ra nhưng vẫn chưa đủ cho
-          những người câu cá lựa chọn. Ngoài ra, việc tạo ra nhiều mô hình mồi
-          chài sẽ làm tăng chi phí thiết kế.
-        </p>
-        <p>
-          Đối với những người chơi mồi lure và muốn mua mồi trực tuyến thì hệ
-          thống YourLure là website chuyên bán các loại mồi. Không giống như các
-          trang web bán mồi hiện nay, trong trang web có phần lựa chọn tùy chỉnh
-          cho phép người mua tự thiết kế cho mồi của mình, giúp nâng cao sự lựa
-          chọn cho khách hàng. Mục đích chính là giúp khách hàng tự thiết kế,
-          chọn mồi và đặt hàng nhanh chóng. YourLure luôn muốn mang đến cho
-          người dùng những trải nhiệm mới thú vị và hấp dẫn.
-        </p>
+        <p className={"sign text-center"}>Yourlure Team</p>
+        <img
+          src={teamImg}
+          className={"team-img"}
+          alt={"Ảnh giới thiệu chính"}
+        />
+      </article>
+
+      <div className={"top-points mt-3  bg-box pb-5 mt-4 mb-4"}>
+        {TOPPOINT.map((item, index) => (
+          <TopPoint
+            iconFAWS={item.icon}
+            name={item.name}
+            content={item.content}
+            key={index}
+          />
+        ))}
       </div>
-      <div className="row mt-5">
-        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text">
-          <img src={img1} className="img-responsive" />
-        </div>
-        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text text-case">
-          <span>
-            Bạn cho tôi một con cá , tôi sẽ ăn hết nó trong một ngày . Nhưng nếu
-            dạy tôi cách câu cá, tôi sẽ được ăn cá cả đời " - đó chính là nguồn
-            cảm hứng để chúng tôi -YourLure - mang đến cho bạn về một thế giới
-            đồ câu mới lạ và sáng tạo
-          </span>
-        </div>
+
+      <div className={"bg-box d-flex flex-column align-items-center  p-5"}>
+        <h3 className={"text-center mb-3"}>Tuỳ biến chuyên nghiệp</h3>
+        <iframe
+          className={"youtube-frame"}
+          src="https://www.youtube.com/embed/mf4upAPwHEo"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
       </div>
-      <div className="row">
-        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text">
-          <img src={img6} className="img-responsive" />
+
+      <div className={"bg-box pt-4 mt-4"}>
+        <h3 className={"text-center mb-5"}>Nhân sự</h3>
+        <div className={"supervisor"}>
+          <CardProfile item={TEAMPROFILES[0]} />
         </div>
-        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text text-case">
-          <span>
-            Cho dù bạn có câu cá hàng giờ không được gì ngoài cái nắng cháy da
-            và ngứa ngáy thì bạn vẫn đỡ hơn con mồi mà bạn dùng để câu chính vì
-            thế chúng tôi -YourLure đem đến cho bạn một trang web không chỉ bán
-            mồi câu, ở đó bạn còn được thỏa sức sáng tạo ra con mồi cho riêng
-            mình như một sự nâng niu và tôn trọng nhất định cho những chuyến đi
-            câu của bạn .
-          </span>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12 col-md-6 order-md-1 my-auto showcase-text">
-          <img src={img4} className="img-responsive" />
-        </div>
-        <div className="col-12 col-md-6 order-md-2 my-auto showcase-text text-case">
-          <span>
-            "Cách tốt nhất để biết tính cách 1 người câu cá là quăng cục mồi giả
-            của anh ta đi !"- mồi câu luôn là thứ được các cần thủ coi trọng và
-            săn đón và sẽ thật tuyệt vời khi chúng tôi - YourLure được các cần
-            thủ tin tưởng lựa chọn để phục vụ . YourLure cam kết sẽ đem đến cho
-            bạn trải nghiệm hoàn toàn mới về thế giới mồi câu nơi bạn sẽ có con
-            mồi cho riêng mình và mang đậm dấu ấn cá nhân của bạn .
-          </span>
-        </div>
-      </div>
-      <div className="information-about mt-5">
-        <div className="info-detail mx-2">
-          <img
-            src="https://source.unsplash.com/200x200/?perth,australia"
-            alt=""
-          />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
-        </div>
-        <div className="info-detail mx-2">
-          <img
-            src="https://source.unsplash.com/200x200/?perth,australia"
-            alt=""
-          />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
-        </div>
-        <div className="info-detail mx-2">
-          <img
-            src="https://source.unsplash.com/200x200/?perth,australia"
-            alt=""
-          />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
-        </div>
-        <div className="info-detail mx-2">
-          <img
-            src="https://source.unsplash.com/200x200/?perth,australia"
-            alt=""
-          />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
-        </div>
-        <div className="info-detail mx-2">
-          <img
-            src="https://source.unsplash.com/200x200/?perth,australia"
-            alt=""
-          />
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elite.</p>
+        <div className={" d-flex flex-wrap"}>
+          {TEAMPROFILES.slice(1).map((item, index) => (
+            <CardProfile item={item} />
+          ))}
         </div>
       </div>
     </div>
@@ -124,3 +142,13 @@ function About(props) {
 }
 
 export default About;
+
+export function TopPoint({ iconFAWS, name, content }) {
+  return (
+    <div className={"  d-flex flex-column align-items-center top-point "}>
+      <i className={iconFAWS + " icon-point"} />
+      <p className={"text-center point-name"}>{name}</p>
+      <p className={"text-center content"}> {content}</p>
+    </div>
+  );
+}
