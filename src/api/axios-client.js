@@ -1,12 +1,10 @@
 import axios from "axios";
 import queryString from "query-string";
 import { getToken } from "utils/user";
-import DEFINELINK from "../routes/define-link";
 
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
 const AxiosClient = axios.create({
-  // baseURL: 'http://192.168.1.9:8080/',
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
@@ -40,8 +38,14 @@ AxiosClient.interceptors.response.use(
     // console.log(error.response.headers);
     // console.log(error.request);
     // console.log(error.config);
+    
     if (error.response?.status === 403 && error.config.url !== "/user/roles") {
-      window.location.href = DEFINELINK.home;
+      // window.location.href = DEFINELINK.home;
+    }
+    if(error.message==="Network Error"){
+      // return <ErrorLoad message="Mất kết nối"/>
+      //disconnect to server then do
+      console.log("network error");
     }
     throw error;
   }
