@@ -9,6 +9,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./scss/manager-product-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 ManagerProductDetail.propTypes = {};
 
@@ -72,7 +73,7 @@ function ManagerProductDetail(props) {
       <div className="manager-product-edit mb-3 mb-md-5 float-end">
         <YLButton
           variant="warning"
-          value="Chính sửa"
+          value="Chỉnh sửa"
           to={{ pathname: "/manager/product/edit/"+productId, canBack: setBack }}
         />
       </div>
@@ -143,7 +144,7 @@ function ManagerProductDetail(props) {
               <th>Hình ảnh</th>
               <td className="product-detail-image">
                 {productDetail?.list?.imageCollection.map((images, i) => (
-                  <img src={images.linkImage} key={"img" + i}  />
+                  <img src={createImageUrlByLinkOrFile(images.linkImage)} key={"img" + i}  />
                 ))}
               </td>
               <td colSpan="2">
@@ -166,7 +167,7 @@ function ManagerProductDetail(props) {
                               ? variant.newPrice
                               : productDetail.list.defaultPrice}
                           </td>
-                          <td><img src={variant.imageUrl} width={50} /> </td>
+                          <td><img src={createImageUrlByLinkOrFile(variant.imageUrl)} width={50} /> </td>
                         </tr>
                       )
                     )}

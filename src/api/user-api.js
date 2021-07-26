@@ -53,8 +53,8 @@ const UserApi = {
     return AxiosClient.post(url,address);
   },
   signup:(user)=>{
-    const url = `/user/signup`;
-    return AxiosClient.post(url,user);
+    const url = `/user/signup?otp=${user.otp}&password=${user.password}&phone=${user.phone}`;
+    return AxiosClient.post(url);
   },
   changePassword:(param)=>{
     const url = `/user/change-password?oldPassword=${param.oldPassword}&password=${param.password}`;

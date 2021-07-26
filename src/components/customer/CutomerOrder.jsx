@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import Pagination from "react-js-pagination";
 import { convertToVND, formatDate, getShipping, getStatus, totalPrice } from "utils/format-string";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
+import { useHistory } from "react-router-dom";
 function CutomerOrder(props) {
   const [page, setPage] = useState(0);
   const totalItemInPage = 12;
@@ -54,7 +55,7 @@ function CutomerOrder(props) {
       console.log("fail to fetch order");
     }
   };
-
+  const history=useHistory()
   useEffect(() => {
     fetchCustomOrder();
     // return fetchCustomOrder();
@@ -89,8 +90,9 @@ function CutomerOrder(props) {
               <div className="order-product-list">
                 {order?.items?.map((product, i) => (
                   <div
-                    className="order-row-item text-small p-2 pe-2 mb-2"
+                    className="order-row-item text-small p-2 pe-2 mb-2 pointer"
                     key={"order-product-" + i}
+                    onClick={()=>history.push(`/product/detail/${product.productId}`)}
                   >
                     <img className="order-img" src={createImageUrlByLinkOrFile(product?.thumbnailUrl)} />
                     <div className="order-row-item-info">

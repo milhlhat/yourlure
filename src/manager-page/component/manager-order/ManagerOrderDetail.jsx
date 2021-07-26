@@ -1,7 +1,7 @@
 import ManagerOrderAPI from "api/manager-order-api";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-order-detail.scss";
@@ -12,6 +12,7 @@ import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
 import { get, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
+import DEFINELINK from "routes/define-link";
 
 function ManagerOrderDetail(props) {
   const canBack = props.location.canBack;
@@ -87,7 +88,12 @@ function ManagerOrderDetail(props) {
     );
     setValue("status", stt?.lable);
   }, [orderId]);
-
+  const location = useLocation();
+  const setBack = {
+    canBack: true,
+    path: location,
+    label: "Chi tiết đơn hàng",
+  };
   useEffect(() => {
     if (canBack) {
       const action = setIsBack({
@@ -127,7 +133,17 @@ function ManagerOrderDetail(props) {
                       <th className="text-center">Tổng</th>
                     </tr>
                     {order?.data?.items?.map((item, i) => (
-                      <tr>
+                      <tr
+                        className="pointer hover-background"
+                        onClick={() => {
+                          history.push({
+                            pathname:
+                              "/manager/product/detail/" + item.productId,
+                            canBack: setBack,
+                          });
+                        }}
+                        key={"product-" + i}
+                      >
                         <td>{i + 1}</td>
                         <td>{item.productName}</td>
                         <td>
@@ -218,13 +234,13 @@ function ManagerOrderDetail(props) {
             <div className="bg-box bg-shadow">
               <div className="order-head-row d-flex justify-content-between align-items-end">
                 <h6>Khách hàng</h6>
-                <div className="order-customer">
+                {order?.data?.userId&&<div className="order-customer">
                   <YLButton
                     variant="link"
                     value="Xem hồ sơ"
                     to={`/manager/user/detail/8`}
                   />
-                </div>
+                </div>}
               </div>
               <div className="manager-customer-show">
                 <hr />

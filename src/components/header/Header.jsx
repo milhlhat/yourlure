@@ -1,8 +1,8 @@
-import { Can } from "ability/can";
+import { AbilityContext, Can } from "ability/can";
 import logo from "assets/images/logo/logo-social.png";
 import "assets/scss/scss-components/header.scss";
 import { filterConfig } from "constant/filter-setting";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from "reactstrap";
@@ -17,6 +17,8 @@ function Header(props) {
   const [isClose, setIsClose] = useState(true);
   const [keyword, setKeyword] = useState(productFilter.keyword);
   const location = useLocation();
+  const ability = useContext(AbilityContext);
+  const isLoggedIn = ability.can("login", "website");
   const toggle = () => {
     setIsOpen(!isClose);
   };
@@ -193,16 +195,34 @@ function Header(props) {
                     />
                   </Link>
                 </NavItem>
-                <NavItem className="header-user ms-2 me-2 ">
-                  <Link className={"nav-link"} to={DEFINELINK.customer}>
-                    <i
-                      className={
-                        "fa fa-user " +
-                        (path.indexOf(DEFINELINK.customer) > -1 ? "active" : "")
-                      }
-                    />
-                  </Link>
-                </NavItem>
+
+                {isLoggedIn ? (
+                  <NavItem className="header-user ms-2 me-2 ">
+                    <Link className={"nav-link"} to={DEFINELINK.customer}>
+                      <i
+                        className={
+                          "fa fa-user " +
+                          (path.indexOf(DEFINELINK.customer) > -1
+                            ? "active"
+                            : "")
+                        }
+                      />
+                    </Link>
+                  </NavItem>
+                ) : (
+                  <>
+                    <NavItem>
+                      <Link className={"nav-link"} to={DEFINELINK.login}>
+                        Đăng nhập
+                      </Link>
+                    </NavItem>
+                    {/* <NavItem>
+                      <Link className={"nav-link"} to={DEFINELINK.register}>
+                        Đăng ký
+                      </Link>
+                    </NavItem> */}
+                  </>
+                )}
               </div>
             </Nav>
           </Collapse>

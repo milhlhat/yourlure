@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import "assets/scss/scss-pages/forgot-password.scss";
 import Fishing from "assets/images/fishing.jpg";
+import PhoneAPI from "api/phone-number-api";
+import { toast } from "react-toastify";
 
 function FogotPassWord(props) {
   const [onTab, setOnTab] = useState(0);
@@ -27,10 +29,7 @@ function FogotPassWord(props) {
   return (
     <div className="login">
       <div className="login-big-image">
-        <img
-          src={Fishing}
-          alt=""
-        />
+        <img src={Fishing} alt="" />
       </div>
       <div className="login-form">{component[onTab].component}</div>
     </div>
@@ -40,9 +39,24 @@ function FogotPassWord(props) {
 function PhoneForm(props) {
   const history = useHistory();
   const { changeTab } = props;
-  const register = (value) => {
-    alert(value)
-    changeTab(1, value);
+  const register = async (value) => {
+    try {
+      const response = await PhoneAPI.checkPhoneExist(value);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        if (response.data == false) {
+          throw new Error();
+        }
+        changeTab(1, value);
+      }
+    } catch (error) {
+      if (error?.response?.status - 500 >= 0) {
+        toast.error("Lỗi hệ thống");
+      } else {
+        toast.error("Số điện thoại chưa được đăng ký trước đó");
+      }
+    }
   };
   //constructor value for formik field
   const initialValues = {
@@ -72,7 +86,7 @@ function PhoneForm(props) {
           // console.log({ values, errors, touched });
           return (
             <Form>
-              <div className="mt-2"> 
+              <div className="mt-2">
                 <FastField
                   name="phone"
                   component={InputField}
@@ -139,7 +153,6 @@ function OTPForm(props) {
             return (
               <Form>
                 <div className="otp-form my-2">
-                  
                   <FastField
                     name="otp"
                     component={InputField}

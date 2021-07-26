@@ -16,7 +16,7 @@ import { useTheme } from "@material-ui/core/styles";
 import UserApi from "api/user-api";
 import "manager-page/component/header/scss/header-dialog.scss";
 import { setCaptureModel } from "redux/customize-action/capture-model";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const styles = (theme) => ({
   root: {
@@ -52,6 +52,7 @@ const DialogTitle = withStyles(styles)((props) => {
 
 function AddNameCustomize(props) {
   const { open, setOpen } = props;
+  const captureModel = useSelector((state) => state.captureModel);
   //Dialog
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("xs"));
 
@@ -78,8 +79,9 @@ function AddNameCustomize(props) {
     setOpen(false);
   };
   const setInitialValue = () => {
-    setValue("customName", "");
+    setValue("customName", captureModel?.name?captureModel?.name:"");
   };
+
   useEffect(() => {
     setInitialValue();
   }, []);
@@ -98,6 +100,7 @@ function AddNameCustomize(props) {
               Nhập tên sản phẩm của bạn
             </DialogTitle>
           </div>
+          {console.log(captureModel)}
           <DialogContent>
             <DialogContentText>
               <div className="dialog-content">

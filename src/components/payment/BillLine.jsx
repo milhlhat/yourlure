@@ -8,16 +8,22 @@ import React, { useState } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "./scss/bill-line.scss";
 import { Link, useHistory } from "react-router-dom";
-import { convertToVND, formatDate, getShipping, totalPrice } from "utils/format-string";
+import {
+  convertToVND,
+  formatDate,
+  getShipping,
+  totalPrice,
+} from "utils/format-string";
+import DEFINELINK from "routes/define-link";
 
 function BillLine(props) {
   const { open, setOpen, billLine } = props;
 
   const history = useHistory();
-  const handleClickOutSide = ()=>{
+  const handleClickOutSide = () => {
     setOpen(false);
-    history.push("/cart")
-  }
+    history.push("/cart");
+  };
   //Dialog
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
   return (
@@ -43,7 +49,10 @@ function BillLine(props) {
                 <span className="mt-3">
                   <i className="far fa-check-circle success-icon"></i>
                 </span>
-                <Link className="primary-color pointer back-to-home bold mb-4" to="/">
+                <Link
+                  className="primary-color pointer back-to-home bold mb-4"
+                  to="/"
+                >
                   <i className="fal fa-arrow-left"></i> &nbsp; Quay về trang chủ
                 </Link>
               </div>
@@ -57,7 +66,14 @@ function BillLine(props) {
                     </tr>
                     <tr>
                       <th className="text-start">Tổng cộng</th>
-                      <td className="text-end">{billLine&&convertToVND((totalPrice(billLine?.orderLineCollection)-billLine?.discount+getShipping()))}</td>
+                      <td className="text-end">
+                        {billLine &&
+                          convertToVND(
+                            totalPrice(billLine?.orderLineCollection) -
+                              billLine?.discount +
+                              getShipping()
+                          )}
+                      </td>
                     </tr>
                     <tr>
                       <th className="text-start">Phương thức thanh toán</th>
@@ -67,19 +83,33 @@ function BillLine(props) {
                     </tr>
                     <tr>
                       <th className="text-start">Ngày đặt hàng</th>
-                      <td className="text-end">{formatDate(billLine?.orderDate)}</td>
+                      <td className="text-end">
+                        {formatDate(billLine?.orderDate)}
+                      </td>
                     </tr>
                     <tr>
                       <th className="text-start">Địa chỉ giao hàng</th>
                       <td className="text-end">
-                        <span>{billLine?.receiverName}</span><br />
-                        <span>{billLine?.phone}</span><br />
+                        <span>{billLine?.receiverName}</span>
+                        <br />
+                        <span>{billLine?.phone}</span>
+                        <br />
                         <span>{billLine?.address}</span>
                       </td>
                     </tr>
                     <tr>
                       <th className="text-start">Lưu ý</th>
                       <td className="text-end">{billLine?.note}</td>
+                    </tr>
+                    <tr>
+                      <td >
+                        <Link
+                          className="primary-color pointer back-to-home bold mb-4"
+                          to={DEFINELINK.customer+DEFINELINK.order}
+                        >
+                          <i className="fal fa-arrow-left"></i> &nbsp; Xem đơn hàng
+                        </Link>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

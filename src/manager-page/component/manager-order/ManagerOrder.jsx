@@ -116,7 +116,8 @@ function ManagerOrder(props) {
               <tr>
                 <th>#</th>
                 <th>Ngày</th>
-                <th>Khách hàng</th>
+                <th>Người nhận</th>
+                <th>Mã đơn hàng</th>
                 <th>Số điện thoại</th>
                 <th>Tình trạng thực hiện</th>
                 <th className="text-center">Tổng</th>
@@ -135,8 +136,9 @@ function ManagerOrder(props) {
                   <td>{(activePage - 1) * totalItem + i + 1}</td>
                   <td>{item?.orderDate ? formatDate(item.orderDate) : "-"}</td>
                   <td>{item.receiverName ? item.receiverName : "-"}</td>
+                  <td>{item.orderCode ? item.orderCode : "-"}</td>
                   <td>{item.phone}</td>
-                  <td className="text-center">
+                  <td >
                     {item?.activities[0]?.activityName
                       ? getStatus(item?.activities[0]?.activityName)
                       : "-"}

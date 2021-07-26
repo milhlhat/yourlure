@@ -295,6 +295,8 @@ function ManagerProductEdit(props) {
     const response = await ManagerProductAPI.getProductByID(productId);
     return response.imageCollection;
   }, [productId]);
+
+  // generate material
   const onChangeInputFileModel = (e) => {
     const file = e.target.files[0];
 
@@ -316,6 +318,7 @@ function ManagerProductEdit(props) {
               defaultName: object.material.name,
               textureBeforeUpload: [],
               listIdTexturesRemove: [],
+              canAddColor : true
             });
         });
 

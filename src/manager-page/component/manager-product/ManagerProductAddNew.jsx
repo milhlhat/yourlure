@@ -23,6 +23,7 @@ import {
   SUPPORTED_IMAGE_FORMATS,
 } from "../../../constant/product-config";
 import Stepper from "./stepper/Stepper";
+import { getUniqueFiles } from "utils/prototype";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -90,16 +91,8 @@ function ManagerProductAddNew(props) {
     let file = Array.from(e.target.files);
 
     if (file) {
-      Array.prototype.uniqueName = function () {
-        let a = this.concat();
-        for (let i = 0; i < a.length; ++i) {
-          for (let j = i + 1; j < a.length; ++j) {
-            if (a[i].name === a[j].name) a.splice(j--, 1);
-          }
-        }
-        return a;
-      };
-      setFileImage(fileImages.concat(file).uniqueName());
+      let temp = [...fileImages];
+      setFileImage(getUniqueFiles(temp.concat(file)));
     }
   };
   const handleDeleteImage = (e) => {

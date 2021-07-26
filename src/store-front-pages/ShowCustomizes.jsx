@@ -2,6 +2,7 @@ import { AbilityContext } from "ability/can";
 import ProductAPI from "api/product-api";
 import CardCustom from "components/card/CardCustom";
 import CardProduct from "components/card/CardProduct";
+import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,14 +54,15 @@ function ShowCustomizes(props) {
         <div className="show-customize container-lg">
           <div className="bg-box bg-shadow my-4">
             <h6>Danh sách tùy biến của bạn</h6>
-            {console.log(customizes)}
-            {customizes?.data?.length <= 0 ? (
+            {customizes.isLoading ? (
+              <Loading />
+            ) : customizes?.data?.length <= 0 ? (
               <span className="d-flex justify-content-center mb-4">
                 Bạn chưa tùy biến sản phẩm nào.
               </span>
             ) : (
               <div>
-                <div className="d-flex">
+                <div className="d-flex flex-wrap">
                   {customizes?.data?.map((item, i) => (
                     <CardCustom
                       canCustom={true}
@@ -75,7 +77,7 @@ function ShowCustomizes(props) {
           </div>
           <div className="bg-box bg-shadow my-4">
             <h6>Danh sách sản phẩm có thể tùy biến</h6>
-            <div className="d-flex">
+            <div className="d-flex flex-wrap">
               {products?.productOutList?.map((item, i) => (
                 <CardProduct
                   canCustom={true}

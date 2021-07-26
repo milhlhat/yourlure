@@ -210,7 +210,7 @@ function ManagerUserDetail(props) {
                       })
                     }
                   >
-                    <td>{item.orderId}</td>
+                    <td>{item.orderCode}</td>
                     <td>{formatDate(item.orderDate)}</td>
                     <td>{formatActivity(item?.activities[0]?.activityName)} </td>
                     <td className="text-end">{convertToVND(item.total)} </td>

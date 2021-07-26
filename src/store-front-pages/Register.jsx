@@ -5,13 +5,15 @@ import YLButton from "components/custom-field/YLButton";
 import InputField from "components/custom-field/YLInput";
 import userConfig from "constant/user-config";
 import { FastField, Form, Formik } from "formik";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { updateRoles } from "utils/user";
 import * as Yup from "yup";
 import { Redirect } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import Fishing from "assets/images/fishing.jpg";
+import { toast } from "react-toastify";
+import PhoneAPI from "api/phone-number-api";
 
 const EXISTED_PHONE_STATUS = 422;
 function Register(props) {
@@ -30,7 +32,9 @@ function Register(props) {
     },
     {
       name: "register-otp",
-      component: <RegisterOTP info={info} changeTab={changeTab} />,
+      component: (
+        <RegisterOTP info={info} changeTab={changeTab} ability={ability} />
+      ),
     },
   ];
   const [onTab, setOnTab] = useState(0);
@@ -52,38 +56,57 @@ function Register(props) {
   );
 }
 
-function RegisterBase({ ability }) {
+function RegisterBase({ ability, changeTab }) {
   const history = useHistory();
   const register = async (data) => {
-    delete data.rePassword;
-    console.log(data);
+    console.log(data.phone);
+
+    // check phone exist
     try {
-      const response = await UserApi.signup(data);
+      const response = await PhoneAPI.checkPhoneExist(data.phone);
       if (response.error) {
         throw new Error(response.error);
       } else {
-        localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
-        localStorage.setItem(
-          userConfig.LOCAL_STORE_LOGIN_AT,
-          new Date().toLocaleString()
-        );
-        updateRoles(ability, history);
-        alert("Đăng ký thành công");
+        if (response.data) {
+          throw new Error();
+        }
+        // else{
+        //   const sentOTP = await PhoneAPI.verifyNewPhoneNumber(data.phone);
+        // }
+        changeTab(1, data);
       }
     } catch (error) {
-      if (error.response.status === EXISTED_PHONE_STATUS) {
-        alert("Tài khoản đã tồn tại");
-      } else alert("Đăng ký thất bại");
+      if (error?.response?.status - 500 >= 0) {
+        toast.error("Lỗi hệ thống");
+      } else {
+        toast.error("Số điện thoại đã đăng ký trước đó");
+      }
     }
+
+    // try {
+    //   const response = await UserApi.signup(data);
+    //   if (response.error) {
+    //     throw new Error(response.error);
+    //   } else {
+    //     localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
+    //     localStorage.setItem(
+    //       userConfig.LOCAL_STORE_LOGIN_AT,
+    //       new Date().toLocaleString()
+    //     );
+    //     updateRoles(ability, history);
+    //     toast.success("Đăng ký thành công");
+    //   }
+    // } catch (error) {
+    //   if (error?.response?.status === EXISTED_PHONE_STATUS) {
+    //     toast.warning("Tài khoản đã tồn tại");
+    //   } else toast.error("Đăng ký thất bại");
+    // }
   };
   //constructor value for formik field
   const initialValues = {
     phone: "",
     password: "",
     rePassword: "",
-  };
-  const equal = (a, b) => {
-    return a === b;
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
@@ -168,12 +191,54 @@ function RegisterBase({ ability }) {
   );
 }
 
-function RegisterOTP(props) {
-  const { changeTab, info } = props;
-  const register = (value) => {
+function RegisterOTP({ ability, changeTab, info }) {
+  const history = useHistory();
+  const submitOTP = async (value) => {
     console.log(value);
-    changeTab(0);
+    // changeTab(0);
+    try {
+      const response = await UserApi.signup(value);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
+        localStorage.setItem(
+          userConfig.LOCAL_STORE_LOGIN_AT,
+          new Date().toLocaleString()
+        );
+        updateRoles(ability, history);
+        toast.success("Đăng ký thành công");
+      }
+    } catch (error) {
+      if (error?.response?.status === EXISTED_PHONE_STATUS) {
+        toast.warning("Tài khoản đã tồn tại");
+      } else toast.error(error?.response?.data);
+    }
   };
+
+  //
+  const sentOTP = async () => {
+    try {
+      const response = await PhoneAPI.verifyNewPhoneNumber(info.phone);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        if (response.data) {
+          throw new Error();
+        }
+      }
+    } catch (error) {
+      if (error?.response?.status - 500 >= 0) {
+        toast.error("Lỗi hệ thống");
+      } else {
+        toast.error("Số điện thoại chưa được đăng ký OTP");
+      }
+    }
+  };
+  useEffect(() => {
+    sentOTP();
+  }, []);
+
   //constructor value for formik field
   const initialValues = {
     otp: "",
@@ -186,8 +251,12 @@ function RegisterOTP(props) {
       .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
       .max(6, "Vui lòng nhập đúng mã OTP"),
   });
+  // const [send,setsend]=useState(true);
+  //   const interval = setInterval(() => {
+  //     setsend(false);
+  //   }, 1000);
   return (
-    <div className="register-form">
+    <div className="register-form p-3">
       <div className="register-form-input">
         <h1>Xác thực OTP</h1>
         <Formik
@@ -195,7 +264,7 @@ function RegisterOTP(props) {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             console.log("submited");
-            register(values);
+            submitOTP(values);
           }}
         >
           {(formikProps) => {
@@ -208,9 +277,13 @@ function RegisterOTP(props) {
                     name="otp"
                     component={InputField}
                     label="Nhập mã OTP"
-                    placeholder="Nhập số điện thoại"
+                    placeholder="Nhập OTP"
                   ></FastField>
-                  <YLButton variant="primary" value="Gửi lại mã OTP"></YLButton>
+                  <YLButton
+                    onClick={sentOTP}
+                    variant="primary"
+                    value="Gửi lại mã OTP"
+                  ></YLButton>
                 </div>
                 <div className="otp-form">
                   <YLButton
