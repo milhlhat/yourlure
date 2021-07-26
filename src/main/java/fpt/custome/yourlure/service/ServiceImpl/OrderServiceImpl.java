@@ -545,6 +545,7 @@ public class OrderServiceImpl implements OrderService {
         orderDtoOut.setPaymentName(order.getPayment().getPayment());
         orderDtoOut.setItems(getOrderItemsDto(order));
         orderDtoOut.setActivities(getOrderActivities(order));
+        orderDtoOut.setUserId(order.getOrderId());
         return orderDtoOut;
     }
 
