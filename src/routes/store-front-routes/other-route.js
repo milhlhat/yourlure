@@ -19,7 +19,7 @@ export default function OtherRoute() {
     {
       path: path + DEFINELINK.about,
       component: About,
-      exact: false,
+      exact: true,
       // can: { do: "login", on: "website"},
     },
     { path: path + DEFINELINK.campaign, component: Campaign },

@@ -149,17 +149,17 @@ function ManagerOrderDetail(props) {
                         <td>
                           {item.customizeId == null
                             ? item.customizeId
-                              ? "có"
-                              : "không"
+                              ? "Có"
+                              : "Không"
                             : "-"}
                         </td>
                         <td className="text-center">{item?.variantName}</td>
                         <td>{item.categoryName}</td>
                         <td className="text-center">{item.quantity}</td>
                         <td className="text-center">
-                          {item.visibleInStorefront == false
-                            ? "Ngừng kinh doanh"
-                            : "Đang kinh doanh"}
+                          {item.visibleInStorefront
+                            ? "Đang kinh doanh"
+                            : "Ngừng kinh doanh"}
                         </td>
                         <td className="text-end">
                           {!item ? "N/A" : convertToVND(item.price)}
@@ -234,13 +234,15 @@ function ManagerOrderDetail(props) {
             <div className="bg-box bg-shadow">
               <div className="order-head-row d-flex justify-content-between align-items-end">
                 <h6>Khách hàng</h6>
-                {order?.data?.userId&&<div className="order-customer">
-                  <YLButton
-                    variant="link"
-                    value="Xem hồ sơ"
-                    to={`/manager/user/detail/8`}
-                  />
-                </div>}
+                {order?.data?.userId && (
+                  <div className="order-customer">
+                    <YLButton
+                      variant="link"
+                      value="Xem hồ sơ"
+                      to={`/manager/user/detail/8`}
+                    />
+                  </div>
+                )}
               </div>
               <div className="manager-customer-show">
                 <hr />

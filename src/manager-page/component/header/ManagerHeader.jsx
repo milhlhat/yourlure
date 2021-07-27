@@ -102,11 +102,6 @@ function ManagerHeader(props) {
             </button>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li>
-                <span className="dropdown-item pointer" onClick={handleLogOut}>
-                  Đăng xuất
-                </span>
-              </li>
-              <li>
                 <ManagerInformation
                   fetchCustomAccount={fetchCustomAccount}
                   edit={false}
@@ -115,6 +110,11 @@ function ManagerHeader(props) {
               </li>
               <li>
                 <ManagerChangePassWord />
+              </li>
+              <li>
+                <span className="dropdown-item pointer" onClick={handleLogOut}>
+                  Đăng xuất
+                </span>
               </li>
             </ul>
           </div>

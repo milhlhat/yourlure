@@ -7,6 +7,7 @@ function NotFound(props) {
   return (
     <div className={"d-flex flex-column align-items-center my-5"}>
       <img src={notfoundImg} className={"mb-4"} />
+      <p>Trang bạn truy cập không tìm thấy</p>
       <YLButton
         to={location.includes("manager") ? DEFINELINK.manager : DEFINELINK.home}
         variant={"primary"}

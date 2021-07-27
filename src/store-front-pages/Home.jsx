@@ -76,6 +76,7 @@ function Home() {
                 // disabled={!allowed}
                 to={DEFINELINK.product}
                 variant="primary"
+                width={"150px"}
               />
               {/* )} */}
               {/* </Can> */}

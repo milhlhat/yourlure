@@ -10,6 +10,7 @@ import { Tooltip } from "@material-ui/core";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import ManagerSort from "manager-page/component/sort/ManagerSort";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 ManagerUser.propTypes = {};
 
@@ -75,8 +76,10 @@ function ManagerUser(props) {
       }
     } catch (error) {
       data.enabled
-        ? alert(`Chặn ${data.username ? data.username : data.phone} thất bại`)
-        : alert(
+        ? toast.error(
+            `Chặn ${data.username ? data.username : data.phone} thất bại`
+          )
+        : toast.error(
             `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
           );
       console.log("fail to switch status user");
@@ -105,7 +108,7 @@ function ManagerUser(props) {
       <>
         <div className="user-head-row">
           <h3>Khách hàng</h3>
-          <div className="product-add-new"></div>
+          <div className="product-add-new" />
         </div>
         <div className="manager-user-show mt-3 bg-white bg-shadow">
           <span>Tất cả khách hàng</span>
@@ -128,7 +131,7 @@ function ManagerUser(props) {
                   <th>Số điện thoại</th>
                   <th>Trạng thái</th>
                   <th>Số đơn hàng</th>
-                  <th></th>
+                  <th />
                 </tr>
                 {userList?.data?.userDtoOutList?.map((item, i) => (
                   <tr key={"manager-user-" + i} className="hover-background">
@@ -156,7 +159,7 @@ function ManagerUser(props) {
                               width="70px"
                               height="25px"
                               btnText={
-                                <i className="far fa-user-slash text-danger"></i>
+                                <i className="far fa-user-slash text-danger" />
                               }
                               content={`Bạn chắc chắn muốn chặn ${
                                 item.username ? item.username : item.phone
@@ -173,7 +176,7 @@ function ManagerUser(props) {
                               width="70px"
                               height="25px"
                               btnText={
-                                <i className="far fa-user text-success"></i>
+                                <i className="far fa-user text-success" />
                               }
                               content={`Bạn chắc chắn muốn bỏ chặn ${
                                 item.username ? item.username : item.phone

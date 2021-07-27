@@ -73,12 +73,12 @@ function ManagerUserDetail(props) {
     { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
     { value: "STAFF_REJECT", lable: "Đã hủy bởi của hàng" },
   ];
-  const formatActivity=(action)=>{
-    if(!action) return "N/A"
-    let act=options.find((e)=>e.value===action);
+  const formatActivity = (action) => {
+    if (!action) return "N/A";
+    let act = options.find((e) => e.value === action);
     // console.log(act);
     return act.lable;
-  }
+  };
   const history = useHistory();
   const filterOrder = {
     isAsc: false,
@@ -124,9 +124,7 @@ function ManagerUserDetail(props) {
     return (
       <div className="manager-user-detail">
         <div className="bg-box bg-shadow mt-4 py-3">
-          <h6>Thông tin tổng quan của khách hàng</h6>
-        </div>
-        <div className="bg-box bg-shadow mt-4 py-3">
+          <h4>Thông tin tổng quan khách hàng</h4>
           <div className="row">
             <div className="col-6">
               <table className="table table-borderless">
@@ -212,7 +210,9 @@ function ManagerUserDetail(props) {
                   >
                     <td>{item.orderCode}</td>
                     <td>{formatDate(item.orderDate)}</td>
-                    <td>{formatActivity(item?.activities[0]?.activityName)} </td>
+                    <td>
+                      {formatActivity(item?.activities[0]?.activityName)}{" "}
+                    </td>
                     <td className="text-end">{convertToVND(item.total)} </td>
                   </tr>
                 ))}

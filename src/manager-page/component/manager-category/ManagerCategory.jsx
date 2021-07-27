@@ -145,17 +145,19 @@ function ManagerCategory(props) {
           </div>
         </div>
         <div className="manager-category-show mt-3 bg-white bg-shadow">
-          <span>tất cả danh mục</span>
+          <span>Tất cả danh mục</span>
           <hr />
 
           <div className="bg-white manager-sort p-2">
-          <ManagerSort
-            filter={filter}
-            setFilter={setFilter}
-            options={options}
-          />
+            <ManagerSort
+              filter={filter}
+              setFilter={setFilter}
+              options={options}
+            />
           </div>
-          {categoryList?.data?.length <= 0 && <p>Không có danh mục {filter?.keyword&& `"${filter?.keyword}"`}</p>}
+          {categoryList?.data?.length <= 0 && (
+            <p>Không có danh mục {filter?.keyword && `"${filter?.keyword}"`}</p>
+          )}
           {categoryList?.data?.length > 0 && (
             <table>
               <tbody>

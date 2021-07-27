@@ -304,18 +304,15 @@ function ListActionMaterials(props) {
     <div className="list-group picker">
       {customizeInfo.length > 0 &&
         customizeInfo.map((item, i) => (
-        
-             <a
+          <a
             onClick={() => handleChangeMId(item.materialId)}
-           key={i}
+            key={i}
             className={`list-group-item list-group-item-action pointer ${
               mId === item.materialId ? "list-group-active" : ""
             } ${!item.canAddImg && !item.canAddColor && " d-none"}`}
           >
             {item.vnName}
           </a>
-        
-       
         ))}
     </div>
   );
@@ -330,7 +327,12 @@ function ExportCustomInformation(props) {
     setOpenDialog(true);
   };
   return (
-    <div className="export d-flex gap-1">  <YLButton variant="warning" to={DEFINELINK.product+DEFINELINK.productShowCustomizes}>
+    <div className="export d-flex gap-1">
+      {" "}
+      <YLButton
+        variant="warning"
+        to={DEFINELINK.product + DEFINELINK.productShowCustomizes}
+      >
         Hủy
       </YLButton>
       <YLButton
@@ -339,7 +341,6 @@ function ExportCustomInformation(props) {
         type={"button"}
         disabled={exportStt.isLoading}
         width={"70px"}
-      
       >
         {exportStt.isLoading ? (
           <CircularProgress size={20} className="circle-progress" />
@@ -347,7 +348,6 @@ function ExportCustomInformation(props) {
           "Xong"
         )}
       </YLButton>
-    
       <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
@@ -417,6 +417,7 @@ export default function Customize(props) {
     // await fetchProduct();
 
     document.getElementById("footer").style.display = "none";
+    return () => (document.getElementById("footer").style.display = "block");
   }, [productId, isEdit]);
   if (product.isLoading) {
     return <Loading hasLayout />;

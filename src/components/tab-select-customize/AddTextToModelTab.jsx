@@ -5,7 +5,7 @@ import { getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { HexColorPicker } from "react-colorful";
 
-function AddTextToModelTab(props) {
+function AddTextToModelTab() {
   const BE_SERVER = process.env.REACT_APP_API_URL;
   const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
@@ -22,9 +22,8 @@ function AddTextToModelTab(props) {
   const customizeInfo = useSelector((state) => state.customizeInfo);
   const mId = useSelector((state) => state.customizeId);
 
-  const canvasRef = React.useRef(null);
   const imgRef = React.useRef(new Image());
-  // const textAttributeDebounceRef = React.useRef();
+
   const fonts = [
     "Big Shoulders Display",
     "Festive",
@@ -122,16 +121,16 @@ function AddTextToModelTab(props) {
               // </>
             ))}
           </div>
-          <div className="d-flex flex-column mt-3 align-items-center">
-            {/*<YLButton*/}
-            {/*  variant="negative"*/}
-            {/*  type="button"*/}
-            {/*  value="Không dùng ảnh"*/}
-            {/*  onClick={() => removeImg()}*/}
-            {/*/>*/}
+          {/*<div className="d-flex flex-column mt-3 align-items-center">*/}
+          {/*  <YLButton*/}
+          {/*    variant="negative"*/}
+          {/*    type="button"*/}
+          {/*    value="Không dùng ảnh"*/}
+          {/*    onClick={() => removeImg()}*/}
+          {/*  />*/}
 
-            {/* <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
-          </div>
+          {/*   <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
+          {/*</div>*/}
           {currentMaterial?.canAddText && (
             <div className="w-100 d-flex align-items-center flex-column px-1 gap-3">
               <hr className="hr my-3" />
@@ -143,6 +142,7 @@ function AddTextToModelTab(props) {
                   className="form-control w-100"
                   defaultValue={currentMaterial.text}
                   onChange={(e) => handleChangeInputAddText(e)}
+                  maxLength="30"
                 />
               </div>
 
