@@ -19,11 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.ValidationException;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -72,7 +72,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignDtoOut newest() {
         Optional<Campaign> campaign = campaignRepos.findNewest();
-        if(campaign.isPresent()){
+        if (campaign.isPresent()) {
             CampaignDtoOut dtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
             return dtoOut;
         }
@@ -87,6 +87,7 @@ public class CampaignServiceImpl implements CampaignService {
         Optional<Campaign> campaign = campaignRepos.findById(id);
         if (campaign.isPresent()) {
             CampaignDtoOut campaignDtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
+            campaignDtoOut.getCampaignRegisterCollection().clear();
             return Optional.of(campaignDtoOut);
         }
         return Optional.empty();
