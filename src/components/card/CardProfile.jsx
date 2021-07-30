@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./scss/card-profile.scss";
+
 function CardProfile(props) {
   const { name, title, content, facebook, instagram, mail, image } = props.item;
 
@@ -18,30 +19,31 @@ function CardProfile(props) {
             </h2>
             <p>{content}</p>
             <div className="social-icons social-icons-simple">
-              <Link
-                to={facebook}
+              <a
+                href={facebook}
                 className="social-icon"
                 title="Facebook"
                 target="_blank"
               >
                 <i className="fab fa-facebook-f" />
+              </a>
+              <Link to="#" className="social-icon" title="Mail">
+                <i
+                  className="fal fa-envelope-open-text"
+                  onClick={(e) => {
+                    window.location = `mailto:${mail}`;
+                    e.preventDefault();
+                  }}
+                />
               </Link>
-              <Link
-                to={`mailto:${mail}`}
-                className="social-icon"
-                title="Mail"
-                target="_blank"
-              >
-                <i className="fal fa-envelope-open-text" />
-              </Link>
-              <Link
-                to={instagram}
+              <a
+                href={instagram}
                 className="social-icon"
                 title="Instagram"
                 target="_blank"
               >
                 <i className="fab fa-instagram" />
-              </Link>
+              </a>
             </div>
           </div>
         </figcaption>

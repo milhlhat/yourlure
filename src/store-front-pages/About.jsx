@@ -2,6 +2,8 @@ import React from "react";
 import "assets/scss/scss-pages/about.scss";
 import teamImg from "assets/images/about/about1.jpg";
 import nhatAvt from "assets/images/about/nhat.jpg";
+import sonAvt from "assets/images/about/sonAvt.jpg";
+import thangAvt from "assets/images/about/thangAvt.jpg";
 import supervisor from "assets/images/about/supervisor.jpg";
 
 import CardProfile from "../components/card/CardProfile";
@@ -37,13 +39,13 @@ const TEAMPROFILES = [
     image: supervisor,
   },
   {
-    name: "Nguyễn Minh Nhật",
-    title: "Team lead front-end",
-    content: "Hay nói dối",
-    facebook: "",
+    name: "Phạm Hồng Sơn",
+    title: "Chiến thần Backu-endo",
+    content: "Kẻ hủy diệt deadline",
+    facebook: "https://www.facebook.com/sn.pham.3/",
     instagram: "",
-    mail: "",
-    image: nhatAvt,
+    mail: "snpham1102@gmail.com",
+    image: sonAvt,
   },
   {
     name: "Nguyễn Minh Nhật",
@@ -55,13 +57,13 @@ const TEAMPROFILES = [
     image: nhatAvt,
   },
   {
-    name: "Nguyễn Minh Nhật",
-    title: "Team lead front-end",
-    content: "Hay nói dối",
-    facebook: "",
+    name: "Ngô Minh Thắng",
+    title: "Leader",
+    content: "Không ai eo",
+    facebook: "fb.com/thangnm99",
     instagram: "",
     mail: "",
-    image: nhatAvt,
+    image: thangAvt,
   },
   {
     name: "Nguyễn Minh Nhật",

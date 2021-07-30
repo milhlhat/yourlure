@@ -13,8 +13,8 @@ function Footer(props) {
             <Link className="link-footer" to={DEFINELINK.about}>
               Giới thiệu
             </Link>
-            <Link className="link-footer" to={"#"}>
-              Tin Tức
+            <Link className="link-footer" to={DEFINELINK.campaign}>
+              Sự kiện
             </Link>
           </div>
           <div className="col-6 col-sm-3 d-flex flex-column">

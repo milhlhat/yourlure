@@ -417,7 +417,6 @@ export default function Customize(props) {
     // await fetchProduct();
 
     document.getElementById("footer").style.display = "none";
-    return () => (document.getElementById("footer").style.display = "block");
   }, [productId, isEdit]);
   if (product.isLoading) {
     return <Loading hasLayout />;
@@ -425,17 +424,19 @@ export default function Customize(props) {
     return <ErrorLoad hasLayout />;
   } else
     return (
-      <div className="main-customize">
-        <div className="col-sm-12 col-md-3">
-          <TabSelectCustomize product={product} />
-        </div>
-        <div className="col-sm-12 col-md-9">
-          <CanvasModel
-            dispatch={dispatch}
-            mId={mId}
-            customizeInfo={customizeInfo}
-            model3d={product.data.url}
-          />
+      <div className={"over-screen"}>
+        <div className="main-customize">
+          <div className="col-sm-12 col-md-3">
+            <TabSelectCustomize product={product} />
+          </div>
+          <div className="col-sm-12 col-md-9">
+            <CanvasModel
+              dispatch={dispatch}
+              mId={mId}
+              customizeInfo={customizeInfo}
+              model3d={product.data.url}
+            />
+          </div>
         </div>
       </div>
     );
