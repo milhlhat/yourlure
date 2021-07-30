@@ -41,7 +41,7 @@ public class OtpService {
 
         LOGGER.info("Generated OTP: {}", otpValue);
 
-        SmsRequest smsRequest = new SmsRequest(key, "Mã xác nhận yourlure.com của bạn là: " + otpValue);
+        SmsRequest smsRequest = new SmsRequest(key, "Mã xác nhận yourlure.shop của bạn là: " + otpValue);
         // fetch user phone from database
 //        User user = userRepos.findByPhone(key);
 //
