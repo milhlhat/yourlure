@@ -22,11 +22,11 @@ const cart = createSlice({
       // let temp = { ...state };
       //update cart
       let ex = false;
-      for (let i in state.carts) {
+      for (let i in current(state.carts) ) {
         if (
-          state.carts[i].productId === action.payload.productId &&
+          // state.carts[i].productId === action.payload.productId &&
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customizeId &&
+          // state.carts[i].customModelId === action.payload.customizeId &&
           state.carts[i].weight === action.payload.weight
         ) {
           state.carts[i].quantity += action.payload.quantity;
@@ -44,12 +44,12 @@ const cart = createSlice({
       // let temp = { ...state };
       //
       // console.log(action.payload);
-      console.log(action.payload);
-      for (let i in state.carts) {
+      // console.log(current(state.carts));
+      for (let i in current(state.carts)) {
         if (
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customizeId 
-          // state.carts[i].weight === action.payload.weight
+          // state.carts[i].customModelId === action.payload.customizeId 
+          state.carts[i].weight === action.payload.weight
         ) {
           state.carts[i].quantity = action.payload.quantity;
           break;
@@ -61,10 +61,10 @@ const cart = createSlice({
       //
       // console.log(current(state.carts[0]));
       // let temp = { ...state };
-      for (let i in state.carts) {
+      for (let i in current(state.carts)) {
         if (
           state.carts[i].variantId === action.payload.variantId &&
-          state.carts[i].customModelId === action.payload.customizeId &&
+          // state.carts[i].customModelId === action.payload.customizeId &&
           state.carts[i].weight === action.payload.weight
         ) {
           state.carts.splice(i, 1);
@@ -74,12 +74,12 @@ const cart = createSlice({
       // return { ...state, carts: temp.carts };
     },
     updateAfterBuy: (state, action) => {
-      for (let i in state.carts) {
+      for (let i in current(state.carts)) {
         for (let index in action.payload) {
           if (
             state.carts[i].variantId === action.payload[index].variantId &&
-            state.carts[i].customModelId ===
-              action.payload[index].customizeId &&
+            // state.carts[i].customModelId ===
+            //   action.payload[index].customizeId &&
             state.carts[i].weight === action.payload[index].weight
           ) {
             state.carts.splice(i, 1);

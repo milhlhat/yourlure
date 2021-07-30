@@ -4,6 +4,7 @@ import teamImg from "assets/images/about/about1.jpg";
 import nhatAvt from "assets/images/about/nhat.jpg";
 import sonAvt from "assets/images/about/sonAvt.jpg";
 import thangAvt from "assets/images/about/thangAvt.jpg";
+import datAvt from "assets/images/about/dat.jpg";
 import supervisor from "assets/images/about/supervisor.jpg";
 
 import CardProfile from "../components/card/CardProfile";
@@ -60,19 +61,19 @@ const TEAMPROFILES = [
     name: "Ngô Minh Thắng",
     title: "Leader",
     content: "Không ai eo",
-    facebook: "fb.com/thangnm99",
+    facebook: "https://www.fb.com/thangnm99",
     instagram: "",
     mail: "",
     image: thangAvt,
   },
   {
-    name: "Nguyễn Minh Nhật",
-    title: "Team lead front-end",
-    content: "Hay nói dối",
-    facebook: "",
+    name: "Bùi Hữu Đạt",
+    title: "Member front-end",
+    content: "Bị thiếu muối",
+    facebook: "https://www.fb.com/dat375",
     instagram: "",
     mail: "",
-    image: nhatAvt,
+    image: datAvt,
   },
   {
     name: "Nguyễn Minh Nhật",

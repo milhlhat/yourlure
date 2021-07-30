@@ -59,7 +59,7 @@ function Home() {
   } else
     return (
       <div className="container home-page">
-        <div className="banner ">
+        <div className="home-banner ">
           <div className="img-banner bg-shadow">
             <img src={banner} alt="banner yourlure" />
           </div>

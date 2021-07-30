@@ -2,7 +2,7 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  & .banner {
+  & .home-banner {
     object-fit: contain;
     height: 500px;
     & .img-banner img {

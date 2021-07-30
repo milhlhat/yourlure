@@ -7,6 +7,7 @@ YLButton.propTypes = {
   value: propTypes.string,
   width: propTypes.string,
   height: propTypes.string,
+  disabled: propTypes.bool,
 };
 
 function YLButton(props) {

@@ -56,7 +56,7 @@ function ProductAction(props) {
 
   const handlePayNow = async () => {
     let data = {
-      customModelId: null,
+      customModelId: customize ? customize.customizeId : null,
       productId: product.productId,
       productName: product.productName,
       quantity: quantity,
@@ -89,8 +89,6 @@ function ProductAction(props) {
       // variantImg: variantImg,
     };
 
-
-    console.log(data);
     if (
       (product.maxWeight && data.weight > product.maxWeight) ||
       (product.minWeight && data.weight < product.minWeight)
@@ -98,9 +96,6 @@ function ProductAction(props) {
       toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
     } else {
-      // console.log(data);
-      // let fin=[data]
-      // cartData.push(data);
       if (isLoggedIn) {
         //add customize product to cart
         if (data.customModelId) {
@@ -134,8 +129,6 @@ function ProductAction(props) {
         }
       } else {
         data = { ...data, productName: product.productName };
-        console.log("data");
-        console.log(data);
         const action = setCartGuest(data);
         dispatch(action);
         toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
@@ -191,7 +184,7 @@ function ProductAction(props) {
             <input
               {...register("weight")}
               type="number"
-              defaultValue={product ? product.defaultWeight : ""}
+              defaultValue={product?.defaultWeight}
               min={product ? product.minWeight : ""}
               max={product ? product.maxWeight : ""}
             />
@@ -242,8 +235,6 @@ function ProductAction(props) {
               </span>
             </div>
           ))}
-          {console.log("productCustomize?.list")}
-          {console.log(productCustomize?.list)}
           {productCustomize?.list?.map((item, i) => (
             <div
               key={i}
@@ -274,12 +265,13 @@ function ProductAction(props) {
         </div>
         <span>
           {!customize ? (
-            product?.visibleInStorefront!==false?(
-            takeOut <= 0 ? (
-              <span className="text-danger bold">Hết hàng</span>
+            product?.visibleInStorefront !== false ? (
+              takeOut <= 0 ? (
+                <span className="text-danger bold">Hết hàng</span>
+              ) : (
+                "còn " + takeOut + " sản phẩm"
+              )
             ) : (
-              "còn " + takeOut + " sản phẩm"
-            )):(
               <span className="text-danger bold">Ngừng kinh doanh</span>
             )
           ) : (
@@ -287,31 +279,33 @@ function ProductAction(props) {
           )}
         </span>
       </div>
-      {product?.visibleInStorefront&&<div className="product-quantity mt-4 row">
-        <h5>Số lượng:</h5>
-        <div className="product-details-quantity d-flex">
-          <button className="quantity-input" onClick={decrement}>
-            <i className="fal fa-minus"></i>
-          </button>
-          <input
-            {...register("quantity")}
-            type="number"
-            className="input-quickview"
-            value={quantity}
-            required
-          />
-          <button className="quantity-input" onClick={increment}>
-            <i className="fal fa-plus"></i>
-          </button>
+      {product?.visibleInStorefront && (
+        <div className="product-quantity mt-4 row">
+          <h5>Số lượng:</h5>
+          <div className="product-details-quantity d-flex">
+            <button className="quantity-input" onClick={decrement}>
+              <i className="fal fa-minus"></i>
+            </button>
+            <input
+              {...register("quantity")}
+              type="number"
+              className="input-quickview"
+              value={quantity}
+              required
+            />
+            <button className="quantity-input" onClick={increment}>
+              <i className="fal fa-plus"></i>
+            </button>
+          </div>
         </div>
-      </div>}
+      )}
 
       <div className="product-buy mt-5">
         <div onClick={() => handlePayNow()}>
           <YLButton
             variant="light"
             type="button"
-            disabled={takeOut <= 0||!product?.visibleInStorefront}
+            disabled={takeOut <= 0 || !product?.visibleInStorefront}
             value="Mua ngay"
           ></YLButton>
         </div>
@@ -319,7 +313,7 @@ function ProductAction(props) {
           <YLButton
             variant="primary"
             type="button"
-            disabled={takeOut <= 0||!product?.visibleInStorefront}
+            disabled={takeOut <= 0 || !product?.visibleInStorefront}
             value="Thêm vào giỏ hàng"
           ></YLButton>
         </div>
