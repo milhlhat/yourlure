@@ -126,80 +126,68 @@ public class DriveService {
 
 //        RandomString gen = new RandomString(8, ThreadLocalRandom.current());
 //        System.out.println(gen.nextString());
-        int[] A = {0, 1, 1, 0};
-        System.out.println(q1(A));
+//        int[] A = {0, 1, 1, 0};
+//        System.out.println(q1(A));
 
-        System.out.println(q2(123491));
+//        System.out.println(q2(123491));
+//        System.out.println(solution1(new int[]{1,2,3}));
     }
 
-    static int solution1(int[] A) {
-
-        // remove negative
-        A = removeNegative(A);
-        // sort
-        for (int i = 0; i < A.length - 1; i++) {
-            if (A[i] > A[i + 1]) {
-                int tempt = A[i];
-                A[i] = A[i + 1];
-                A[i + 1] = tempt;
-            }
-        }
-
-        int run = A[0];
-        if(run > 1){
-            return 1;
-        }
-        for(int i=0; i<A.length; i++){
-            if(A[i] != run){
-                return A[i];
-            }
-            run++;
-        }
-        return A[A.length-1];
-
-    }
-
-
-    static int[] removeNegative(int[] A){
-        List<Integer> result = new ArrayList<>();
-        for (int j : A) {
-            if (j > 0) {
-                result.add(j);
-            }
-        }
-        return result.stream().mapToInt(i->i).toArray();
-    }
-
-
-    static int q1(int[] A) {
-        int case1 = 0;
-        int case2 = 0;
-        int n = A.length;
-        if (n == 1) {
-            return 0;
-        }
-        for (int i = 0; i < n; i++) {
-            if (i % 2 == 0 && A[i] == 0 || i % 2 != 0 && A[i] == 1) {
-                case1++;
-            }
-            if (i % 2 == 0 && A[i] == 1 || i % 2 != 0 && A[i] == 0) {
-                case2++;
-            }
-        }
-        return Math.min(case1, case2);
-    }
-
-    static int q2(int n) {
-        int max = 0;
-        String nStr = String.valueOf(n);
-        while (n != 0) {
-            int r = n % 10;
-            max = Math.max(r, max);
-            n = n / 10;
-        }
-        nStr = nStr.replaceAll(max + "", max + "5");
-        return Integer.parseInt(nStr);
-    }
-
+//    static int solution1(int[] A) {
+//        // remove negative
+//        int min = Integer.MAX_VALUE;
+//        int max = 1;
+//        StringBuilder aStr = new StringBuilder();
+//        for (int i : A) {
+//            if(i>0){
+//                aStr.append
+//            if(i<min && i>0){
+//                min = i;
+//            }
+//            if(i>max && i>0){
+//                max = i;
+//            }
+//        }
+//
+//        for(int i=min; i<=max; i++){
+//            if()
+//        }
+//    }
+//
+//
+//
+//
+//
+//
+//    static int q1(int[] A) {
+//        int case1 = 0;
+//        int case2 = 0;
+//        int n = A.length;
+//        if (n == 1) {
+//            return 0;
+//        }
+//        for (int i = 0; i < n; i++) {
+//            if (i % 2 == 0 && A[i] == 0 || i % 2 != 0 && A[i] == 1) {
+//                case1++;
+//            }
+//            if (i % 2 == 0 && A[i] == 1 || i % 2 != 0 && A[i] == 0) {
+//                case2++;
+//            }
+//        }
+//        return Math.min(case1, case2);
+//    }
+//
+//    static int q2(int n) {
+//        int max = 0;
+//        String nStr = String.valueOf(n);
+//        while (n != 0) {
+//            int r = n % 10;
+//            max = Math.max(r, max);
+//            n = n / 10;
+//        }
+//        nStr = nStr.replaceAll(max + "", max + "5");
+//        return Integer.parseInt(nStr);
+//    }
+//
 
 }

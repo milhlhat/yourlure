@@ -60,16 +60,16 @@ public class OtpService {
      * @return boolean value (true|false)
      */
     public Boolean validateOTP(String key, Integer otpNumber) {
-        return true;
-//        if(key.startsWith("0")){
-//            key = "+84" + key.substring(1);
-//        }
-//        // get OTP from cache
-//        Integer cacheOTP = otpGenerator.getOPTByKey(key);
-//        if (cacheOTP.equals(otpNumber)) {
-//            otpGenerator.clearOTPFromCache(key);
-//            return true;
-//        }
-//        return false;
+//        return true;
+        if(key.startsWith("0")){
+            key = "+84" + key.substring(1);
+        }
+        // get OTP from cache
+        Integer cacheOTP = otpGenerator.getOPTByKey(key);
+        if (cacheOTP.equals(otpNumber)) {
+            otpGenerator.clearOTPFromCache(key);
+            return true;
+        }
+        return false;
     }
 }
