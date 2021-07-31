@@ -4,10 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
-import fpt.custome.yourlure.entity.CartItem;
-import fpt.custome.yourlure.entity.OrderLine;
-import fpt.custome.yourlure.entity.Product;
-import fpt.custome.yourlure.entity.User;
+import fpt.custome.yourlure.entity.*;
 import fpt.custome.yourlure.entity.customizemodel.*;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
@@ -190,13 +187,20 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     @Override
     public CustomModelDtoOut getCustomModelById(HttpServletRequest rq, Long customModelId) {
         User user = userService.whoami(rq);
-        CustomizeModel customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
+        CustomizeModel customizeModel;
+
+        if(user.getRoles().contains(Role.ROLE_ADMIN) || user.getRoles().contains(Role.ROLE_STAFF)){
+            customizeModel= customizeModelRepos.findById(customModelId).orElse(null);
+        }else{
+            customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
+        }
+
         CustomModelDtoOut output;
         if (customizeModel != null) {
             Float customPrice = orderService.calculateCustomizePrice(customizeModel);
             output = new CustomModelDtoOut(customizeModel, customPrice);
         } else {
-            throw new ValidationException("Người dùng không có tùy biến nào");
+            throw new ValidationException("Không tồn tại tuỳ biến này!");
         }
         return output;
     }
