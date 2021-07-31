@@ -14,6 +14,10 @@ public interface AdminCampaignController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Object> adminGetAll(@RequestBody AdminFilterDtoInput adminFilterDtoInput);
 
+    @PostMapping("/admin-register-all")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
+    ResponseEntity<Object> adminGetAllRegister(@RequestBody AdminFilterDtoInput adminFilterDtoInput);
+
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
     ResponseEntity<Object> getById(@PathVariable Long id);
