@@ -386,10 +386,6 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
             userAddressInput.setPhone(verifyPhone(userAddressInput.getPhone()));
-            Boolean isValid = otpService.validateOTP(userAddressInput.getPhone(), userAddressInput.getOtp());
-            if (!isValid) {
-                return false;
-            }
             Optional<Ward> ward = userWardRepos.findById(userAddressInput.getUserWardId());
             if (ward.isPresent()) {
                 UserAddress userAddress = mapper.map(userAddressInput, UserAddress.class);
@@ -405,7 +401,6 @@ public class UserServiceImpl implements UserService {
 
         } catch (Exception e) {
             e.printStackTrace();
-
         }
         return false;
     }

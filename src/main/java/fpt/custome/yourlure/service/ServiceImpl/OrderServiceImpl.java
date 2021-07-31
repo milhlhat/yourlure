@@ -186,10 +186,6 @@ public class OrderServiceImpl implements OrderService {
     public Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception {
         // verify phone number
         orderGuestDtoInput.setPhone(userService.verifyPhone(orderGuestDtoInput.getPhone()));
-        Boolean isValid = otpService.validateOTP(orderGuestDtoInput.getPhone(), orderGuestDtoInput.getOtp());
-        if (!isValid) {
-            throw new ValidationException("Mã OTP không chính xác!");
-        }
 
         Order order = mapper.map(orderGuestDtoInput, Order.class);
         order.setOrderCode(genOrderCode());
@@ -246,7 +242,6 @@ public class OrderServiceImpl implements OrderService {
         if (cart == null) {
             throw new Exception("can't process order because cart is empty!");
         }
-
 
         List<CartItem> items = cart.getCartItemCollection().stream()
                 .filter(cartItem -> orderUserDtoInput.getCartItemIds().contains(cartItem.getCartItemId()))

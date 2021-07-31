@@ -30,5 +30,4 @@ public class OrderGuestDtoInput {
 
     private String discountCode;
     private List<CartItem> cartItems;
-    private Integer otp;
 }
