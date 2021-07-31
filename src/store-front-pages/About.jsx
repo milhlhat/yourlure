@@ -50,7 +50,7 @@ const TEAMPROFILES = [
   },
   {
     name: "Nguyễn Minh Nhật",
-    title: "Team lead front-end",
+    title: "Developer",
     content: "Hay nói dối",
     facebook: "",
     instagram: "",
@@ -76,9 +76,9 @@ const TEAMPROFILES = [
     image: datAvt,
   },
   {
-    name: "Nguyễn Minh Nhật",
-    title: "Team lead front-end",
-    content: "Hay nói dối",
+    name: "Phùng Thị Lan",
+    title: "Tester",
+    content: "",
     facebook: "",
     instagram: "",
     mail: "",
