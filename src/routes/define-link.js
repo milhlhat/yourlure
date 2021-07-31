@@ -21,7 +21,6 @@ const DEFINELINK = {
   cart: "/cart",
   payment: "/payment", // /cart/payment
 
-
   //product
   product: "/product",
   productDetail: "/detail/:id", // /product/detail/:id
@@ -76,5 +75,6 @@ const DEFINELINK = {
   managementCampaign: "/campaign",
   managementCampaignAddNew: "/addnew",
   managementCampaignEdit: "/edit/:id",
+  managementCampaignDetail: "/detail/:id",
 };
 export default DEFINELINK;

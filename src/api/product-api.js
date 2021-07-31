@@ -35,7 +35,6 @@ const ProductAPI = {
   getMaterialsCustomizeId: (id) => {
     const url = "/model3d/find-custom-by-id/" + id;
     return AxiosClient.get(url);
-    // return dumyCustomize.initMaterials();
   },
   createCustomizeByModelId: (params) => {
     const url = "/model3d/create-custom";
@@ -47,8 +46,8 @@ const ProductAPI = {
     console.log(params);
     return AxiosClient.post(url, params);
   },
-  getCustomizebyProductId: (params) => {
-    const url = `/model3d/find-custom-by-product-id/${params}`;
+  getCustomizeByProductId: (customizeId) => {
+    const url = `/model3d/find-custom-by-product-id/${customizeId}`;
     return AxiosClient.get(url);
   },
   getAllCustomize: () => {

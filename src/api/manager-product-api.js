@@ -69,6 +69,10 @@ const ManagerProductAPI = {
     const url = `/admin/product/${productId}`;
     return AxiosClient.delete(url);
   },
+  getCustomizeByCustomByCustomModelId: (customModelId) => {
+    const url = `/model3d/get-model-by-model-id/${customModelId}`;
+    return AxiosClient.get(url);
+  },
 };
 export const {
   getProductByID,
@@ -81,5 +85,6 @@ export const {
   updateModelById,
   uploadMultiTexture,
   deleteProductById,
+  getCustomizeByCustomByCustomModelId,
 } = ManagerProductAPI;
 export default ManagerProductAPI;

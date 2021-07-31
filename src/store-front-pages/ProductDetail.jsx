@@ -79,7 +79,7 @@ function ProductDetail(props) {
   const fetchProductCustomize = async () => {
     setProductCustomize({ ...productCustomize, isLoading: true });
     try {
-      const response = await ProductAPI.getCustomizebyProductId(productId);
+      const response = await ProductAPI.getCustomizeByProductId(productId);
       if (response.error) {
         throw new Error(response.error);
       } else {

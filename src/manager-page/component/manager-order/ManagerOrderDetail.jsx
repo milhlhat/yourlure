@@ -13,6 +13,7 @@ import { get, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
 import DEFINELINK from "routes/define-link";
+import ExportGlb from "./ExportGLB";
 
 function ManagerOrderDetail(props) {
   const canBack = props.location.canBack;
@@ -131,6 +132,7 @@ function ManagerOrderDetail(props) {
                       <th>Trạng thái</th>
                       <th className="text-center">Giá</th>
                       <th className="text-center">Tổng</th>
+                      <th className="text-center">Xuất File</th>
                     </tr>
                     {order?.data?.items?.map((item, i) => (
                       <tr
@@ -168,6 +170,14 @@ function ManagerOrderDetail(props) {
                           {!item
                             ? "N/A"
                             : convertToVND(item.price * item.quantity)}
+                        </td>
+                        <td
+                          className="text-center"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {item.customModelId && (
+                            <ExportGlb customModelId={item.customModelId} />
+                          )}
                         </td>
                       </tr>
                     ))}

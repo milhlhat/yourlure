@@ -49,7 +49,7 @@ function RenderModel(props) {
   //Load 3d model
   // console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
   const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`);
-
+  console.log(nodes);
   const [meshs, setMeshs] = useState([]);
 
   const [listNodes, setListNodes] = useState(getNodesInfoBy(nodes, "Mesh"));
@@ -102,6 +102,7 @@ function RenderModel(props) {
       .catch((err) => console.log(err));
   }, [customizeInfo, listNodes, listMaterials]);
 
+  //generate mesh to render
   useEffect(() => {
     let listMesh = [];
     for (let i = 0; i < listNodes.length; i++) {
@@ -121,17 +122,6 @@ function RenderModel(props) {
     }
     setMeshs(listMesh);
   }, [customizeInfo, listNodes, listMaterials]);
-
-  // thay bang database
-  // let listMaterialsName = getMaterialsName(
-  //   materials,
-  //   "MeshStandardMaterial",
-  //   "MeshBasicMaterial"
-  // );
-  // useEffect(() => {
-  //   const action = setCustomizeInfo(listMaterialsName);
-  //   dispatch(action);
-  // }, []);
 
   // texture0.wrapS = THREE.RepeatWrapping;
   // texture0.wrapT = THREE.RepeatWrapping;

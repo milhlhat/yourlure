@@ -15,6 +15,7 @@ import "./scss/manager-campaign.scss";
 import { toast } from "react-toastify";
 import ManagerSort from "../sort/ManagerSort";
 import { formatDate } from "../../../utils/format-string";
+import DEFINELINK from "../../../routes/define-link";
 
 function ManagerCampaign(props) {
   const totalItem = 10;
@@ -73,7 +74,7 @@ function ManagerCampaign(props) {
   }
 
   //delete category
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
     try {
       const response = await deleteCampaignById(id);
       console.log(response);
@@ -149,23 +150,39 @@ function ManagerCampaign(props) {
 
           {campaignList?.data?.length <= 0 && <p>Chưa có chiến dịch </p>}
           <table className="table">
-            <tbody>
+            <thead>
               <tr>
                 <th>#</th>
-                <th>Tên chiến dịch </th>
+                <th>Tên chiến dịch</th>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
 
-                <th></th>
-                <th></th>
+                <th />
+                <th />
               </tr>
+            </thead>
+            <tbody>
               {campaignList?.data?.campaignDtoOuts?.map((item, i) => (
-                <tr key={"campaign-" + i} className="hover-background">
+                <tr
+                  key={"campaign-" + i}
+                  className="hover-background pointer"
+                  onClick={() =>
+                    history.push(
+                      DEFINELINK.manager +
+                        DEFINELINK.campaign +
+                        "/detail/" +
+                        item.campaignId
+                    )
+                  }
+                >
                   <td>{(activePage - 1) * totalItem + i + 1}</td>
                   <td>{item?.banner ? item?.banner : "-"}</td>
                   <td>{item.startDate ? formatDate(item.startDate) : "-"}</td>
                   <td>{item.endDate ? formatDate(item.endDate) : "-"}</td>
-                  <td className={"item-action"}>
+                  <td
+                    className={"item-action"}
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <Link
                       to={{
                         pathname: "/manager/campaign/edit/" + item.campaignId,
@@ -178,7 +195,10 @@ function ManagerCampaign(props) {
                       />
                     </Link>
                   </td>
-                  <td className={"item-action"}>
+                  <td
+                    className={"item-action"}
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <ConfirmPopup
                       variant="link"
                       width="15px"
@@ -186,7 +206,7 @@ function ManagerCampaign(props) {
                       btnText={<img src={Trash} />}
                       title="Xóa"
                       content="Bạn chắc chắn muốn xóa chiến dịch?"
-                      onConfirm={() => handleDelete(item.campaignId)}
+                      onConfirm={(e) => handleDelete(item.campaignId)}
                     />
                   </td>
                 </tr>

@@ -153,8 +153,8 @@ let customizeUtils = {
     }
     if (
       imgLink !== "" &&
-      !imgLink.startsWith("http") &&
-      !imgLink.startsWith("data:image")
+      !imgLink?.startsWith("http") &&
+      !imgLink?.startsWith("data:image")
     ) {
       imgLink = BE_SERVER + BE_FOLDER + imgLink;
     }
