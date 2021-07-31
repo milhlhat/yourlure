@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/get-all-province").permitAll()
                 .antMatchers("/user/get-address-user").permitAll()
                 .antMatchers("/user/forgot-password").permitAll()
-                .antMatchers("/user/send-otp").permitAll()
+                .antMatchers("/user/send-otp-register").permitAll()
                 .antMatchers("/user/check-phone-exist").permitAll()
                 .antMatchers("/user/reset-password").permitAll()
                 .antMatchers("/cart/list-variant-of-guest").permitAll()
