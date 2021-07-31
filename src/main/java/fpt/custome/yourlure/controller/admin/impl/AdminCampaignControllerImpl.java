@@ -35,6 +35,15 @@ public class AdminCampaignControllerImpl implements AdminCampaignController {
     }
 
     @Override
+    public ResponseEntity<Object> adminGetAllRegister(AdminFilterDtoInput filter) {
+        Object dtoOuts = campaignService.adminGetAllRegister(filter.getKeyword(),
+                PageRequest.of(filter.getPage(),
+                        filter.getLimit(),
+                        filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<Object> getById(Long id) {
         Optional<CampaignDtoOut> dtoOut = campaignService.getById(id);
         return new ResponseEntity<>(dtoOut, HttpStatus.OK);

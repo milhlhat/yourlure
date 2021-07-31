@@ -3,6 +3,7 @@ package fpt.custome.yourlure.service.ServiceImpl;
 import fpt.custome.yourlure.dto.dtoInp.AdminCampaignDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CampaignRegisterDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.AdminCampaignDtoOut;
+import fpt.custome.yourlure.dto.dtoOut.AdminCampaignRegisterDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import fpt.custome.yourlure.entity.Campaign;
 import fpt.custome.yourlure.entity.CampaignRegister;
@@ -182,12 +183,30 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
         if (campaignRegisterDtoInput != null) {
-            CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
-            campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
-            campaignRegisterRepos.save(campaignRegister);
+            if (campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()) != null) {
+                CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
+                campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
+                campaignRegisterRepos.save(campaignRegister);
+            } else {
+                return "Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!";
+            }
         } else {
             return "Data input is null!";
         }
         return "Đăng ký tham gia thành công!";
+    }
+
+    @Override
+    public Object adminGetAllRegister(String keyword, Pageable pageable) {
+        Page<CampaignRegister> list = campaignRegisterRepos.findAllCampaignRegister("%" + keyword + "%", pageable);
+        List<AdminCampaignRegisterDtoOutput> result = new ArrayList<>();
+        if (list.isEmpty()) {
+            return result;
+        }
+        for (CampaignRegister item : list) {
+            AdminCampaignRegisterDtoOutput output = mapper.map(item, AdminCampaignRegisterDtoOutput.class);
+            result.add(output);
+        }
+        return result;
     }
 }
