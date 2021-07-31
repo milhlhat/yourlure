@@ -45,7 +45,7 @@ public interface Model3dController {
 
 
     @GetMapping(value = "/find-custom-by-id/{customId}")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_STAFF') or hasRole('ROLE_ADMIN')")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
@@ -53,7 +53,7 @@ public interface Model3dController {
     ResponseEntity<Object> findCustomModelByCustomId(HttpServletRequest rq, @PathVariable(name = "customId") Long customId);
 
     @GetMapping(value = "/find-custom-by-product-id/{productId}")
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER') or hasRole('ROLE_STAFF') or hasRole('ROLE_ADMIN')")
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
