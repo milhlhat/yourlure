@@ -168,11 +168,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean sendOTP(String phone) {
+    public Boolean sendOTPRegister(String phone) {
         if (phone == null) {
             return false;
         }
         phone = verifyPhone(phone);
+        if(userRepos.existsByPhone(phone)){
+            throw new ValidationException("Số điện thoại đã tồn tại trong hệ thống!");
+        }
         return otpService.generateOtp(phone);
 
     }

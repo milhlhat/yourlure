@@ -7,7 +7,6 @@ import fpt.custome.yourlure.dto.dtoInp.UserDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AddressFromWarDtoOutput;
 import fpt.custome.yourlure.dto.dtoOut.UserResponseDTO;
 import fpt.custome.yourlure.entity.Role;
-import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.address.Country;
 import fpt.custome.yourlure.entity.address.District;
 import fpt.custome.yourlure.entity.address.Province;
@@ -149,12 +148,12 @@ public class UserControllerImpl implements UserController {
 
     @Override
     public ResponseEntity<Object> signup(String phone, String password, Integer otp) {
-        try{
+        try {
             return new ResponseEntity<>(userService.signup(phone, password, otp), HttpStatus.OK);
-        }catch (ValidationException e){
+        } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -186,21 +185,28 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public ResponseEntity<Object> sendOTP(String phone) {
-        if (userService.sendOTP(phone)) {
-            // success
-            return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+    public ResponseEntity<Object> sendOTPRegister(String phone) {
+        try {
+            if (userService.sendOTPRegister(phone)) {
+                // success
+                return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
+
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Lỗi hệ thống", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        // failure message
-        return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
     }
 
     @Override
     public ResponseEntity<Object> checkPhoneExist(String phone) {
 
-        try{
+        try {
             return new ResponseEntity<>(userService.checkPhoneExist(phone), HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }

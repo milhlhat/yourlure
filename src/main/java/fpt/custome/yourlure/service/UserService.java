@@ -31,7 +31,7 @@ public interface UserService {
 
     Boolean forgotPwd(String phone);
 
-    Boolean sendOTP(String phone);
+    Boolean sendOTPRegister(String phone);
 
     Boolean resetPwd(String phone, String newPwd, Integer otp);
 
