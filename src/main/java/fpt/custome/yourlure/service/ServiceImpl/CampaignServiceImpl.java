@@ -190,10 +190,10 @@ public class CampaignServiceImpl implements CampaignService {
                 campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
                 campaignRegisterRepos.save(campaignRegister);
             } else {
-                return "Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!";
+                throw new ValidationException("Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!");
             }
         } else {
-            return "Data input is null!";
+            throw new ValidationException("Data input is null!");
         }
         return "Đăng ký tham gia thành công!";
     }
