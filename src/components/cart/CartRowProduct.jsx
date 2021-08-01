@@ -1,22 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import ChangeQuantity from "components/orther/ChangeQuantity";
-import "assets/scss/scss-components/cart/cart-row.scss";
-import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
-import ProductAPI from "api/product-api";
-import { convertToVND } from "utils/format-string";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteCartGuest,
-  setCartGuest,
-  updateQuantityCarts,
-} from "redux/cart/cart-guest";
-import { useHistory } from "react-router-dom";
-import { isFulfilled } from "@reduxjs/toolkit";
-import Loading from "components/Loading";
-import ErrorLoad from "components/error-notify/ErrorLoad";
 import { AbilityContext } from "ability/can";
 import CartAPI from "api/user-cart-api";
+import "assets/scss/scss-components/cart/cart-row.scss";
+import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
+import ChangeQuantity from "components/orther/ChangeQuantity";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { deleteCartGuest, updateQuantityCarts } from "redux/cart/cart-guest";
+import { convertToVND } from "utils/format-string";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 function CartRowProduct(props) {
@@ -25,20 +17,14 @@ function CartRowProduct(props) {
   const {
     item,
     canChange,
-    setListTotal,
-    listTotal,
     fetchCart,
     handleChangeSelected,
-    cartData,
+    cartsSelected,
+    setCheckChange,
   } = props;
-  const handleChangeQuantity = (quantity) => {};
-  const handleCheckBox = (value, checked) => {};
   const [quantity, setQuantity] = useState(item?.quantity);
   const history = useHistory();
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   setQuantity(item.quantity);
-  // }, [item]);
   const onConfirm = async (data) => {
     if (isLoggedIn) {
       try {
@@ -48,6 +34,7 @@ function CartRowProduct(props) {
         } else if (response.error) {
           throw new Error(response.error);
         } else {
+          setCheckChange(2);
           fetchCart();
         }
       } catch (error) {
@@ -55,13 +42,22 @@ function CartRowProduct(props) {
         console.log("fail to fetch delete ");
       }
     } else {
-      console.log(data);
+      setCheckChange(2);
       const action = deleteCartGuest(data);
       dispatch(action);
     }
   };
   const sumPrice = () => {
     return item?.price * quantity;
+  };
+  const ischecked = () => {
+    let product = cartsSelected.find(
+      (o) =>
+        o.variantId === item.variantId &&
+        o.customModelId === item.customModelId &&
+        o.weight === item.weight
+    );
+    return product ? true : false;
   };
   useEffect(async () => {
     if (canChange) {
@@ -76,6 +72,7 @@ function CartRowProduct(props) {
           } else if (response.error) {
             throw new Error(response.error);
           } else {
+            setCheckChange(1);
             fetchCart();
           }
         } catch (error) {
@@ -83,29 +80,9 @@ function CartRowProduct(props) {
           console.log("fail to fetch update ");
         }
       } else {
+        setCheckChange(1);
         const action = updateQuantityCarts({ ...item, quantity: quantity });
         dispatch(action);
-      }
-
-      if (listTotal?.data?.length) {
-        let exist = false;
-        for (let o of listTotal?.data) {
-          if (
-            o.productId === item.productId &&
-            o.variantId === item.variantId
-          ) {
-            o.quantity = quantity;
-            exist = true;
-            break;
-          }
-        }
-        if (!exist) {
-          let newArr = listTotal;
-          newArr.push({ ...item, quantity: quantity });
-          setListTotal((prevState) => {
-            return { ...prevState, data: newArr };
-          });
-        }
       }
     }
   }, [quantity]);
@@ -118,13 +95,13 @@ function CartRowProduct(props) {
           <tr>
             <td>
               {canChange &&
-                (item?.thumbnailUrl||(item?.visibleInStorefront &&
-                item?.variantQuantity > 0)) && (
+                (item?.thumbnailUrl ||
+                  (item?.visibleInStorefront && item?.variantQuantity > 0)) && (
                   <input
                     type="checkbox"
                     value={item?.variantId}
                     onChange={() => handleChangeSelected(item)}
-                    defaultChecked={true}
+                    checked={ischecked()}
                   />
                 )}
             </td>
@@ -158,13 +135,13 @@ function CartRowProduct(props) {
                 {!canChange && (
                   <span className="text-x-small">
                     Số lượng:
-                    {quantity}
+                    {item?.quantity}
                   </span>
                 )}
                 <br />
                 <span className="text-x-small">
                   Màu sắc:{" "}
-                  {item?.variantName?item.variantName:item.customizeName}
+                  {item?.variantName ? item.variantName : item.customizeName}
                 </span>
                 <br />
                 <span className="text-x-small">
@@ -182,7 +159,7 @@ function CartRowProduct(props) {
                   (item?.thumbnailUrl ? (
                     <span>
                       <ChangeQuantity
-                        quantity={quantity}
+                        quantity={item?.quantity}
                         setQuantity={setQuantity}
                       />
                     </span>
@@ -190,7 +167,7 @@ function CartRowProduct(props) {
                     item?.variantQuantity > 0 ? (
                       <span>
                         <ChangeQuantity
-                          quantity={quantity}
+                          quantity={item?.quantity}
                           setQuantity={setQuantity}
                         />
                       </span>

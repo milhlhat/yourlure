@@ -23,6 +23,10 @@ function CartProduct(props) {
     isLoading: false,
   });
   const [cartsSelected, setCartsSelected] = useState([]);
+
+  //check change: 0 is not change, 1 is update quantity, 2 is delete cart item
+  const [checkChange, setCheckChange] = useState(0);
+
   const fetchCart = async () => {
     setCart({ ...cart, isLoading: true });
     try {
@@ -35,11 +39,35 @@ function CartProduct(props) {
           isSuccess: true,
           isLoading: false,
         });
-        setCartsSelected([
-          ...response.cartItems.filter(
-            (e) => (e.visibleInStorefront !== false && e.variantQuantity > 0)||e.thumbnailUrl
-          ),
-        ]);
+        // setCartsSelected([
+        //   ...response.cartItems.filter(
+        //     (e) =>
+        //       (e.visibleInStorefront !== false && e.variantQuantity > 0) ||
+        //       e.thumbnailUrl
+        //   ),
+        // ]);
+        if (checkChange === 0) {
+          setCartsSelected([
+            ...response.cartItems.filter(
+              (e) =>
+                (e.visibleInStorefront !== false && e.variantQuantity > 0) ||
+                e.thumbnailUrl
+            ),
+          ]);
+          // setCheckChange(0);
+        }
+        //change quantity and check for update or delete to list cart selected
+        else if (checkChange >= 1) {
+          setCartsSelected([
+            ...response.cartItems.filter(
+              (e) =>
+                ((e.visibleInStorefront !== false && e.variantQuantity > 0) ||
+                  e.thumbnailUrl) &&
+                checkExist(e)
+            ),
+          ]);
+          // setCheckChange(0);
+        }
       }
     } catch (error) {
       setCart({
@@ -62,11 +90,26 @@ function CartProduct(props) {
           isSuccess: true,
           isLoading: false,
         });
-        setCartsSelected([
-          ...response.cartItems.filter(
-            (e) => e.visibleInStorefront !== false && e.variantQuantity > 0
-          ),
-        ]);
+        if (checkChange === 0) {
+          setCartsSelected([
+            ...response.cartItems.filter(
+              (e) => e.visibleInStorefront !== false && e.variantQuantity > 0
+            ),
+          ]);
+          setCheckChange(0);
+        }
+        //change quantity and check for update or delete to list cart selected
+        else if (checkChange >= 1) {
+          setCartsSelected([
+            ...response.cartItems.filter(
+              (e) =>
+                e.visibleInStorefront !== false &&
+                e.variantQuantity > 0 &&
+                checkExist(e)
+            ),
+          ]);
+          setCheckChange(0);
+        }
       }
     } catch (error) {
       setCart({
@@ -77,12 +120,21 @@ function CartProduct(props) {
       console.log("fail to fetch cart guest");
     }
   };
+  const checkExist = (item) => {
+    let result = cartsSelected.find(
+      (o) =>
+        o.variantId === item.variantId &&
+        o.weight === item.weight &&
+        o.customModelId === item.customModelId
+    );
+    return result ? true : false;
+  };
   useEffect(() => {
     if (isLoggedIn) {
       fetchCart();
-      return fetchCart();
     } else {
-      fetchCartGuest(state)
+      console.log(state);
+      fetchCartGuest(state);
     }
   }, [state]);
 
@@ -125,8 +177,8 @@ function CartProduct(props) {
                 <CartRowProduct
                   item={item}
                   key={"cart-row" + index}
-                  setListTotal={setListTotal}
-                  listTotal={listTotal}
+                  cartsSelected={cartsSelected}
+                  setCheckChange={setCheckChange}
                   canChange={true}
                   fetchCart={fetchCart}
                   handleChangeSelected={handleChangeSelected}
