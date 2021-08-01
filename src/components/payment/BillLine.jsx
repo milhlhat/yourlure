@@ -62,7 +62,7 @@ function BillLine(props) {
                   <tbody>
                     <tr>
                       <th className="text-start">Mã đơn hàng</th>
-                      <td className="text-end">{billLine?.orderId}</td>
+                      <td className="text-end">{billLine?.orderCode}</td>
                     </tr>
                     <tr>
                       <th className="text-start">Tổng cộng</th>
@@ -102,7 +102,7 @@ function BillLine(props) {
                       <td className="text-end">{billLine?.note}</td>
                     </tr>
                     <tr>
-                      <td >
+                      <td colspan="2" className="text-center">
                         <Link
                           className="primary-color pointer back-to-home bold mb-4"
                           to={DEFINELINK.customer+DEFINELINK.order}

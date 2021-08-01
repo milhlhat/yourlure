@@ -245,6 +245,7 @@ function ProductAction(props) {
                 setcustomize(item);
                 setBigImgLink(item?.thumbnailUrl);
                 setPrice(item.customPrice + product?.defaultPrice);
+                setVariantName(item.name)
               }}
             >
               <span className="d-none">{(takeOut = 100)}</span>

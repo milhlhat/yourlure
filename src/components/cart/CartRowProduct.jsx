@@ -163,8 +163,8 @@ function CartRowProduct(props) {
                 )}
                 <br />
                 <span className="text-x-small">
-                  Màu sắc:
-                  {item?.variantName}
+                  Màu sắc:{" "}
+                  {item?.variantName?item.variantName:item.customizeName}
                 </span>
                 <br />
                 <span className="text-x-small">

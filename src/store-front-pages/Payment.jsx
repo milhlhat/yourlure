@@ -189,7 +189,7 @@ function Payment(props) {
           toast.success("Mua hàng thành công");
         }
       } catch (error) {
-        toast.warning("error.response.data");
+        toast.warning(error.response.data);
         console.log("fail to fetch guest payment");
       }
       setCompleteLoad(false);

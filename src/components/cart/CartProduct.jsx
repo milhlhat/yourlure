@@ -86,7 +86,6 @@ function CartProduct(props) {
     }
   }, [state]);
 
-  // console.log(cart?.data);
   const shiping = getShipping();
   const [listTotal, setListTotal] = useState({
     data: [],

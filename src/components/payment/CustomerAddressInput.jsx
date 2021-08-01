@@ -37,7 +37,9 @@ function CustomerAddressInput(props) {
     try {
       const response = await UserApi.getAddress();
       setAddress({ data: response, isLoading: false, isSuccess: true });
-      setInfo(response?.find((e) => e.isDefault === true));
+      if (response === "Không tồn tại địa chỉ nào!") {
+        setInfo(null);
+      } else setInfo(response?.find((e) => e.isDefault === true));
     } catch (error) {
       console.log(error);
       setAddress({ data: null, isLoading: false, isSuccess: false });
@@ -88,7 +90,8 @@ function CustomerAddressInput(props) {
         )}
         <input type="text" hidden {...register("phone")} />
         <input type="text" hidden {...register("receiverName")} />
-        {address?.data?.map((item, i) => (
+        
+        {address?.data!=="Không tồn tại địa chỉ nào!"? address?.data?.map((item, i) => (
           <div className="form-check my-3" key={"address-item-" + i}>
             <input
               className="form-check-input"
@@ -117,7 +120,17 @@ function CustomerAddressInput(props) {
               )}
             </label>
           </div>
-        ))}
+        )):(
+          <div className="d-flex flex-wrap justify-content-center mt-5">
+            <span className="mb-3 col-12">
+              Bạn chưa có địa chỉ nào, vui lòng thêm địa chỉ mới
+            </span>
+            <PaymentAddNewAddress
+              fetchCustomAddress={fetchCustomAddress}
+              noAddress={true}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -68,6 +68,10 @@ const UserApi = {
     const url = `/user/get-address-from-ward-id?id=${param}`;
     return AxiosClient.get(url);
   },
+  resetPassword:(param)=>{
+    const url = `/user/reset-password?newPwd=${param.password}&otp=${param.otp}&phone=${param.phone}`;
+    return AxiosClient.post(url);
+  },
 };
 
 export default UserApi;

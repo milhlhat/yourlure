@@ -7,7 +7,7 @@ const PhoneAPI = {
 		return AxiosClient.post(url);
 	},
 	verifyNewPhoneNumber: (param) => {
-		const url = `/user/send-otp`;
+		const url = `/user/send-otp-register`;
 		return AxiosClient.post(url,param);
 	},
 	verifyOldPhoneNumber: (param) => {

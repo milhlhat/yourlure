@@ -14,6 +14,7 @@ import DEFINELINK from "routes/define-link";
 import Fishing from "assets/images/fishing.jpg";
 import { toast } from "react-toastify";
 import PhoneAPI from "api/phone-number-api";
+import { CircularProgress } from "@material-ui/core";
 
 const EXISTED_PHONE_STATUS = 422;
 function Register(props) {
@@ -58,29 +59,22 @@ function Register(props) {
 
 function RegisterBase({ ability, changeTab }) {
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const register = async (data) => {
-    console.log(data.phone);
-
     // check phone exist
     try {
-      const response = await PhoneAPI.checkPhoneExist(data.phone);
+      setLoading(true);
+      const response = await PhoneAPI.verifyNewPhoneNumber(data.phone);
       if (response.error) {
         throw new Error(response.error);
       } else {
-        if (response.data) {
-          throw new Error();
-        }
-        // else{
-        //   const sentOTP = await PhoneAPI.verifyNewPhoneNumber(data.phone);
-        // }
+        toast.success(`Mã OTP đã được gửi tới ${data.phone}`);
         changeTab(1, data);
+        setLoading(false);
       }
     } catch (error) {
-      if (error?.response?.status - 500 >= 0) {
-        toast.error("Lỗi hệ thống");
-      } else {
-        toast.error("Số điện thoại đã đăng ký trước đó");
-      }
+      setLoading(false);
+      toast.error(error.response.data);
     }
 
     // try {
@@ -98,7 +92,7 @@ function RegisterBase({ ability, changeTab }) {
     //   }
     // } catch (error) {
     //   if (error?.response?.status === EXISTED_PHONE_STATUS) {
-    //     toast.warning("Tài khoản đã tồn tại");
+    //     toast.warning("Số điện thoại đã tồn tại");
     //   } else toast.error("Đăng ký thất bại");
     // }
   };
@@ -166,9 +160,14 @@ function RegisterBase({ ability, changeTab }) {
                   <YLButton
                     type="submit"
                     variant="primary"
-                    value="Đăng ký"
                     width="100%"
-                  ></YLButton>
+                    disabled={loading}
+                  >
+                    Đăng ký
+                    {loading && (
+                      <CircularProgress size={15} className="circle-progress" />
+                    )}
+                  </YLButton>
                 </div>
               </Form>
             );
@@ -193,6 +192,7 @@ function RegisterBase({ ability, changeTab }) {
 
 function RegisterOTP({ ability, changeTab, info }) {
   const history = useHistory();
+  const [isDisableSendOtp, setDisableSendOtp] = useState(false);
   const submitOTP = async (value) => {
     console.log(value);
     // changeTab(0);
@@ -215,29 +215,36 @@ function RegisterOTP({ ability, changeTab, info }) {
       } else toast.error(error?.response?.data);
     }
   };
-
+  const [countTime, setCountTime] = useState(0);
   //
   const sentOTP = async () => {
+    console.log("send OTP");
+    setDisableSendOtp(true);
+    setCountTime(30);
+    let sendCountTime;
+    let time = 30;
+    const runtime = () => {
+      if (time <= 0) {
+        setDisableSendOtp(false);
+        clearInterval(sendCountTime);
+      } else {
+        setCountTime(--time);
+      }
+    };
+    if (time > 0) {
+      sendCountTime = setInterval(() => runtime(), 1000);
+    }
     try {
       const response = await PhoneAPI.verifyNewPhoneNumber(info.phone);
       if (response.error) {
         throw new Error(response.error);
       } else {
-        if (response.data) {
-          throw new Error();
-        }
+        toast.success(`Mã OTP đã được gửi lại tới ${info.phone}`);
       }
     } catch (error) {
-      if (error?.response?.status - 500 >= 0) {
-        toast.error("Lỗi hệ thống");
-      } else {
-        toast.error("Số điện thoại chưa được đăng ký OTP");
-      }
+      toast.error(error.response.data);
     }
   };
-  useEffect(() => {
-    sentOTP();
-  }, []);
 
   //constructor value for formik field
   const initialValues = {
@@ -251,10 +258,6 @@ function RegisterOTP({ ability, changeTab, info }) {
       .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
       .max(6, "Vui lòng nhập đúng mã OTP"),
   });
-  // const [send,setsend]=useState(true);
-  //   const interval = setInterval(() => {
-  //     setsend(false);
-  //   }, 1000);
   return (
     <div className="register-form p-3">
       <div className="register-form-input">
@@ -276,14 +279,19 @@ function RegisterOTP({ ability, changeTab, info }) {
                   <FastField
                     name="otp"
                     component={InputField}
-                    label="Nhập mã OTP"
                     placeholder="Nhập OTP"
                   ></FastField>
-                  <YLButton
-                    onClick={sentOTP}
-                    variant="primary"
-                    value="Gửi lại mã OTP"
-                  ></YLButton>
+                  <div className="ms-2">
+                    <YLButton
+                      onClick={sentOTP}
+                      variant="warning"
+                      value={`Gửi lại OTP ${
+                        countTime > 0 ? "(" + countTime + ")" : ""
+                      }`}
+                      disabled={isDisableSendOtp}
+                      type="button"
+                    ></YLButton>
+                  </div>
                 </div>
                 <div className="otp-form">
                   <YLButton
