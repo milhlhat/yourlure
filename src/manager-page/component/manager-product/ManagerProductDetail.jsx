@@ -89,7 +89,7 @@ function ManagerProductDetail(props) {
               <th>Tên sản phẩm</th>
               <td>{productDetail?.list?.productName}</td>
               <th>Danh mục</th>
-              <td>{productDetail?.list?.categoryId?productDetail?.list?.categoryId:'-'}</td>
+              <td>{productDetail?.list?.category?.categoryName}</td>
             </tr>
             <tr>
               <th>Giá</th>
@@ -115,7 +115,7 @@ function ManagerProductDetail(props) {
             <tr>
               <th>Số móc</th>
               <td>{productDetail?.list?.hookSize}</td>
-              <th>Độ dài mặc định</th>
+              <th>Độ nặng mặc định</th>
               <td>{productDetail?.list?.defaultWeight} (g)</td>
             </tr>
             <tr>
@@ -125,7 +125,7 @@ function ManagerProductDetail(props) {
               <td>{productDetail?.list?.brand?productDetail?.list?.brand:'-'}</td>
             </tr>
             <tr>
-              <th>Lặn sâu</th>
+              <th>Lặn sâu(m)</th>
               <td>{productDetail?.list?.deepDiving}</td>
               <th>Chất liệu</th>
               <td>{productDetail?.list?.material}</td>
@@ -134,7 +134,7 @@ function ManagerProductDetail(props) {
               <th>Có thể tùy biến</th>
               <td>{productDetail?.list?.customizable?'Có':'Không'}</td>
               <th>Giới hạn độ nặng</th>
-              <td>{productDetail?.list?.minWeight} (cm) - {productDetail?.list?.maxWeight} (cm)</td>
+              <td>{productDetail?.list?.minWeight} (g) - {productDetail?.list?.maxWeight} (g)</td>
             </tr>
             <tr>
               <th>Loại cá</th>
@@ -152,7 +152,7 @@ function ManagerProductDetail(props) {
                 <table>
                   <tbody>
                     <tr>
-                      <th>Màu</th>
+                      <th>Tên</th>
                       <th>Số lượng</th>
                       <th>Giá</th>
                       <th>Hình ảnh</th>
@@ -160,7 +160,7 @@ function ManagerProductDetail(props) {
                     {productDetail?.list?.variantCollection.map(
                       (variant, i) => (
                         <tr key={"variant" + i} className="border-bottom-0">
-                          <td>{variant.backgroundColor}</td>
+                          <td>{variant.variantName}</td>
                           <td>{variant.quantity}</td>
                           <td>
                             {variant.newPrice

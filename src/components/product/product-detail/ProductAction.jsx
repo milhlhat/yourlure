@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
 function ProductAction(props) {
+  const { product, setBigImgLink, productCustomize } = props;
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
   const [quantity, setQuantity] = useState(1);
@@ -20,9 +21,11 @@ function ProductAction(props) {
   const [variantImg, setVariantImg] = useState();
   const [price, setPrice] = useState();
   const [disount, setDiscount] = useState();
-  let takeOut = 0;
+  const [takeOut, setTakeOut] = useState(
+    product?.variantCollection[0]?.quantity
+  );
+  // let takeOut = 0;
   const { register, getValues, setValue } = useForm();
-  const { product, setBigImgLink, productCustomize } = props;
   const history = useHistory();
   const decrement = () => {
     if (takeOut === 0) {
@@ -105,7 +108,7 @@ function ProductAction(props) {
             if (response.error) {
               throw new Error(response.error);
             } else {
-              toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+              toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
             }
           } catch (error) {
             toast.error("Thêm sản phẩm thất bại");
@@ -120,7 +123,7 @@ function ProductAction(props) {
             if (response.error) {
               throw new Error(response.error);
             } else {
-              toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+              toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
             }
           } catch (error) {
             toast.error("Thêm sản phẩm thất bại");
@@ -131,7 +134,7 @@ function ProductAction(props) {
         data = { ...data, productName: product.productName };
         const action = setCartGuest(data);
         dispatch(action);
-        toast.success(`đã thêm ${data.quantity} sản phẩm vào giỏ hàng.`);
+        toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
       }
       setQuantity(1);
     }
@@ -211,6 +214,7 @@ function ProductAction(props) {
                 );
                 setBigImgLink(product?.variantCollection[index]?.imageUrl);
                 setcustomize(null);
+                setTakeOut(product.variantCollection[index].quantity);
               }}
             >
               <div
@@ -228,11 +232,11 @@ function ProductAction(props) {
                   )}
                 />
               </div>
-              <span className="d-none">
+              {/* <span className="d-none">
                 {product.variantCollection[index].variantId == color
-                  ? (takeOut = product.variantCollection[index].quantity)
+                  ? (setTakeOut(product.variantCollection[index].quantity))
                   : ""}
-              </span>
+              </span> */}
             </div>
           ))}
           {productCustomize?.list?.map((item, i) => (
@@ -245,10 +249,11 @@ function ProductAction(props) {
                 setcustomize(item);
                 setBigImgLink(item?.thumbnailUrl);
                 setPrice(item.customPrice + product?.defaultPrice);
-                setVariantName(item.name)
+                setVariantName(item.name);
+                setTakeOut(100);
               }}
             >
-              <span className="d-none">{(takeOut = 100)}</span>
+              {/* <span className="d-none">{(takeOut = 100)}</span> */}
               <div
                 className={`box-color m-1 ${
                   item.customizeId === customize?.customizeId

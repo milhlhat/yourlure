@@ -105,7 +105,7 @@ function ManagerStaffAddNew(props) {
           )}
 
 
-          <label htmlFor="role">Giới tính</label>
+          <label htmlFor="role">Vị trí</label>
           <select className="form-select" {...register("role")} id="role">
             <option value="ROLE_STAFF" selected>
               Nhân viên

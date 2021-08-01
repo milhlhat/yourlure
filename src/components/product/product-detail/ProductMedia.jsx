@@ -7,10 +7,7 @@ import { AbilityContext } from "ability/can";
 import LoadingBall from 'assets/images/loading-ball.gif';
 
 function ProductImage(props) {
-  const ability = useContext(AbilityContext);
-  const isLoggedIn = ability.can("login", "website");
-  let { product, setBigImgLink, bigImgLink, productCustomize } = props;
-  const isCustome = true;
+  let { product, setBigImgLink, bigImgLink } = props;
   const [selectImg, setSelectImg] = useState(0);
   const history = useHistory();
 
@@ -32,7 +29,6 @@ function ProductImage(props) {
             product ? (product.customizable ? "" : "d-none") : ""
           }`}
           onClick={goToCustomize}
-          hidden={!isCustome || !isLoggedIn}
         >
           <i className="fa fa-pencil"></i>
         </button>
