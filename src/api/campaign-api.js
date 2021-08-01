@@ -15,7 +15,7 @@ const CampaignAPI = {
   },
   registerCampaignGuest: (param) => {
     const url = `/api/campaign/campaign-register`;
-    AxiosClient.post(url, param);
+    return AxiosClient.post(url, param);
   },
 };
 export const {

@@ -1,4 +1,4 @@
-@import "assets/scss/base/_variable.scss";
+@import "src/assets/scss/base/_variable.scss";
 .fish-head-row {
     width: 100%;
     display: flex;
@@ -25,11 +25,5 @@
         font-weight: 500;
         color: $primary;
     }
-    & .page-item.active .page-link {
-        background-color: $primary;
-        border-color: $primary;
-    }
-    & .page-link {
-        color: $primary;
-    }
+
 }
