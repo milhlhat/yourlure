@@ -185,7 +185,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
         if (campaignRegisterDtoInput != null) {
-            if (campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()) == null) {
+            if (!campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()).isPresent()) {
                 CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
                 campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
                 campaignRegisterRepos.save(campaignRegister);
