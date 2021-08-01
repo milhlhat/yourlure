@@ -17,6 +17,10 @@ public class AdminCampaignRegisterDtoOutput {
     private Integer totalPage;
     private List<CampaignRegisterDtoOutput> campaignDtoOuts;
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class CampaignRegisterDtoOutput {
         private Long campaignRegisterId;
         private String username;
