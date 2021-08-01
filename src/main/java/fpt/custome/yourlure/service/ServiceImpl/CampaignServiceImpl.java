@@ -201,14 +201,21 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object adminGetAllRegister(String keyword, Pageable pageable) {
         Page<CampaignRegister> list = campaignRegisterRepos.findAllCampaignRegister("%" + keyword + "%", pageable);
-        List<AdminCampaignRegisterDtoOutput> result = new ArrayList<>();
+        List<AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput> outputs = new ArrayList<>();
         if (list.isEmpty()) {
-            return result;
+            return outputs;
         }
         for (CampaignRegister item : list) {
-            AdminCampaignRegisterDtoOutput output = mapper.map(item, AdminCampaignRegisterDtoOutput.class);
-            result.add(output);
+            AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput output =
+                    mapper.map(item, AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput.class);
+            outputs.add(output);
         }
-        return result;
+
+        AdminCampaignRegisterDtoOutput ressult = AdminCampaignRegisterDtoOutput.builder()
+                .campaignDtoOuts(outputs)
+                .totalItem((int) list.getTotalElements())
+                .totalPage(list.getTotalPages())
+                .build();
+        return ressult;
     }
 }

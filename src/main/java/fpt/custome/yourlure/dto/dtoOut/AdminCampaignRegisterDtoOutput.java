@@ -5,14 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminCampaignRegisterDtoOutput {
 
-    private Long campaignRegisterId;
-    private String username;
-    private String phone;
+    private Integer totalItem;
+    private Integer totalPage;
+    private List<CampaignRegisterDtoOutput> campaignDtoOuts;
+
+    public static class CampaignRegisterDtoOutput {
+        private Long campaignRegisterId;
+        private String username;
+        private String phone;
+    }
 
 }
