@@ -77,7 +77,6 @@ public class CampaignServiceImpl implements CampaignService {
             CampaignDtoOut dtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
             return dtoOut;
         }
-
         throw new ValidationException("Không tìm thấy campain nào!");
     }
 
@@ -98,29 +97,32 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Optional<Boolean> update(Long idInput, AdminCampaignDtoInput adminCampaignDtoInput) {
         try {
-            Campaign objUpdate = campaignRepos.findById(idInput).get();
-            if (idInput != null && adminCampaignDtoInput != null && objUpdate != null) {
-                objUpdate.setBanner(adminCampaignDtoInput.getBanner());
-                objUpdate.setContent(adminCampaignDtoInput.getContent());
-                objUpdate.setDescription(adminCampaignDtoInput.getDescription());
-                objUpdate.setStartDate(adminCampaignDtoInput.getStartDate());
-                objUpdate.setEndDate(adminCampaignDtoInput.getEndDate());
+            Optional<Campaign> objUpdateOptional = campaignRepos.findById(idInput);
+            if (objUpdateOptional.isPresent()) {
+                Campaign objUpdate = objUpdateOptional.get();
+                if (idInput != null && adminCampaignDtoInput != null && objUpdate != null) {
+                    objUpdate.setBanner(adminCampaignDtoInput.getBanner());
+                    objUpdate.setContent(adminCampaignDtoInput.getContent());
+                    objUpdate.setDescription(adminCampaignDtoInput.getDescription());
+                    objUpdate.setStartDate(adminCampaignDtoInput.getStartDate());
+                    objUpdate.setEndDate(adminCampaignDtoInput.getEndDate());
 
-                //add new image
-                for (String link : adminCampaignDtoInput.getImageCollection()) {
-                    Image image = Image.builder()
-                            .campaign(Campaign.builder().campaignId(idInput).build())
-                            .linkImage(link)
-                            .build();
-                    objUpdate.getImageCollection().add(image);
+                    //add new image
+                    for (String link : adminCampaignDtoInput.getImageCollection()) {
+                        Image image = Image.builder()
+                                .campaign(Campaign.builder().campaignId(idInput).build())
+                                .linkImage(link)
+                                .build();
+                        objUpdate.getImageCollection().add(image);
+                    }
+                    fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
+                    campaignRepos.save(objUpdate);
+                    //delete image
+                    for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
+                        imageRepos.deleteByLinkImage(link.trim());
+                    }
+                    return Optional.of(true);
                 }
-                fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
-                campaignRepos.save(objUpdate);
-                //delete image
-                for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
-                    imageRepos.deleteByLinkImage(link.trim());
-                }
-                return Optional.of(true);
             } else {
                 return Optional.of(false);
             }
@@ -175,7 +177,7 @@ public class CampaignServiceImpl implements CampaignService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Optional.of(false);
+            return Optional.of(false);
         }
         return Optional.of(false);
     }
@@ -183,15 +185,15 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
         if (campaignRegisterDtoInput != null) {
-            if (campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()) != null) {
+            if (!campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()).isPresent()) {
                 CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
                 campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
                 campaignRegisterRepos.save(campaignRegister);
             } else {
-                return "Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!";
+                throw new ValidationException("Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!");
             }
         } else {
-            return "Data input is null!";
+            throw new ValidationException("Data input is null!");
         }
         return "Đăng ký tham gia thành công!";
     }
@@ -199,14 +201,21 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object adminGetAllRegister(String keyword, Pageable pageable) {
         Page<CampaignRegister> list = campaignRegisterRepos.findAllCampaignRegister("%" + keyword + "%", pageable);
-        List<AdminCampaignRegisterDtoOutput> result = new ArrayList<>();
+        List<AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput> outputs = new ArrayList<>();
         if (list.isEmpty()) {
-            return result;
+            return outputs;
         }
         for (CampaignRegister item : list) {
-            AdminCampaignRegisterDtoOutput output = mapper.map(item, AdminCampaignRegisterDtoOutput.class);
-            result.add(output);
+            AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput output =
+                    mapper.map(item, AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput.class);
+            outputs.add(output);
         }
-        return result;
+
+        AdminCampaignRegisterDtoOutput ressult = AdminCampaignRegisterDtoOutput.builder()
+                .campaignDtoOuts(outputs)
+                .totalItem((int) list.getTotalElements())
+                .totalPage(list.getTotalPages())
+                .build();
+        return ressult;
     }
 }

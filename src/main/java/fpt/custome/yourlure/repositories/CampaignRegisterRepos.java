@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface CampaignRegisterRepos extends JpaRepository<CampaignRegister, Long> {
 
-    Long findAllByPhone(String phone);
+    Optional<CampaignRegister> findAllByPhone(String phone);
 
     @Query(value = "SELECT\n" +
             "cr.* \n" +
