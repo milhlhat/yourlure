@@ -77,7 +77,6 @@ public class CampaignServiceImpl implements CampaignService {
             CampaignDtoOut dtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
             return dtoOut;
         }
-
         throw new ValidationException("Không tìm thấy campain nào!");
     }
 
@@ -98,29 +97,32 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Optional<Boolean> update(Long idInput, AdminCampaignDtoInput adminCampaignDtoInput) {
         try {
-            Campaign objUpdate = campaignRepos.findById(idInput).get();
-            if (idInput != null && adminCampaignDtoInput != null && objUpdate != null) {
-                objUpdate.setBanner(adminCampaignDtoInput.getBanner());
-                objUpdate.setContent(adminCampaignDtoInput.getContent());
-                objUpdate.setDescription(adminCampaignDtoInput.getDescription());
-                objUpdate.setStartDate(adminCampaignDtoInput.getStartDate());
-                objUpdate.setEndDate(adminCampaignDtoInput.getEndDate());
+            Optional<Campaign> objUpdateOptional = campaignRepos.findById(idInput);
+            if (objUpdateOptional.isPresent()) {
+                Campaign objUpdate = objUpdateOptional.get();
+                if (idInput != null && adminCampaignDtoInput != null && objUpdate != null) {
+                    objUpdate.setBanner(adminCampaignDtoInput.getBanner());
+                    objUpdate.setContent(adminCampaignDtoInput.getContent());
+                    objUpdate.setDescription(adminCampaignDtoInput.getDescription());
+                    objUpdate.setStartDate(adminCampaignDtoInput.getStartDate());
+                    objUpdate.setEndDate(adminCampaignDtoInput.getEndDate());
 
-                //add new image
-                for (String link : adminCampaignDtoInput.getImageCollection()) {
-                    Image image = Image.builder()
-                            .campaign(Campaign.builder().campaignId(idInput).build())
-                            .linkImage(link)
-                            .build();
-                    objUpdate.getImageCollection().add(image);
+                    //add new image
+                    for (String link : adminCampaignDtoInput.getImageCollection()) {
+                        Image image = Image.builder()
+                                .campaign(Campaign.builder().campaignId(idInput).build())
+                                .linkImage(link)
+                                .build();
+                        objUpdate.getImageCollection().add(image);
+                    }
+                    fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
+                    campaignRepos.save(objUpdate);
+                    //delete image
+                    for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
+                        imageRepos.deleteByLinkImage(link.trim());
+                    }
+                    return Optional.of(true);
                 }
-                fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
-                campaignRepos.save(objUpdate);
-                //delete image
-                for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
-                    imageRepos.deleteByLinkImage(link.trim());
-                }
-                return Optional.of(true);
             } else {
                 return Optional.of(false);
             }
@@ -175,7 +177,7 @@ public class CampaignServiceImpl implements CampaignService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Optional.of(false);
+            return Optional.of(false);
         }
         return Optional.of(false);
     }
@@ -183,7 +185,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
         if (campaignRegisterDtoInput != null) {
-            if (campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()) != null) {
+            if (campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()) == null) {
                 CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
                 campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
                 campaignRegisterRepos.save(campaignRegister);
