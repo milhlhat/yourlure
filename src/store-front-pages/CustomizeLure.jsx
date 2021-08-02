@@ -14,7 +14,9 @@ import "assets/scss/scss-pages/customize-lure.scss";
 import TabSelectCustomize from "components/tab-select-customize/TabSelectCustomize";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAvailableMid,
   getColorMaterialByName,
+  getDefaultMaterials,
   getMaterialsInfoBy,
   getNodesInfoBy,
   getVNNameMaterial,
@@ -34,6 +36,7 @@ import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DEFINELINK from "../routes/define-link";
 import AddNameCustomize from "components/orther/AddNameCustomize";
+import { Can } from "../ability/can";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -47,10 +50,20 @@ function RenderModel(props) {
   const captureModel = props.captureModel;
   const handleExportModel = props.handleExportModel;
   let customizeInfo = props.customizeInfo;
+  const modelUrl = `${BE_SERVER}${BE_FOLDER}${model3d}`;
+
+  //Load default 3d model
+
+  const [defaultMate, setDefaultMate] = useState();
+  useEffect(() => {
+    getDefaultMaterials(modelUrl).then((value) => {
+      setDefaultMate(value);
+      console.log("de", value);
+    });
+  }, [modelUrl]);
 
   //Load 3d model
-  // console.log(`${BE_SERVER}${BE_FOLDER}${model3d}`);
-  const { nodes, materials } = useGLTF(`${BE_SERVER}${BE_FOLDER}${model3d}`);
+  const { nodes, materials } = useGLTF(modelUrl);
   console.log(nodes);
   const [meshs, setMeshs] = useState([]);
 
@@ -75,7 +88,7 @@ function RenderModel(props) {
       .then((result) => {
         for (let i = 0; i < result.length; i++) {
           const r = result[i];
-          console.log(r);
+
           if (r) {
             textureLoader.load(r, (textureResult) => {
               textureResult.flipY = false;
@@ -84,6 +97,7 @@ function RenderModel(props) {
               const material = new THREE.MeshPhysicalMaterial({
                 map: textureResult,
                 color: customizeInfo[i].color,
+                name: customizeInfo[i].defaultName,
               });
               ref.current.children[i].material = material;
             });
@@ -92,13 +106,12 @@ function RenderModel(props) {
           if (customizeInfo[i].color && customizeInfo[i].color !== "") {
             const material = new THREE.MeshPhysicalMaterial({
               color: customizeInfo[i].color,
+              name: customizeInfo[i].defaultName,
             });
             ref.current.children[i].material = material;
+          } else if (defaultMate) {
+            ref.current.children[i].material = defaultMate[i];
           }
-          // else {
-          //   const material = new THREE.MeshPhysicalMaterial({ map: null });
-          //   ref.current.children[i].material = material;
-          // }
         }
       })
       .catch((err) => console.log(err));
@@ -114,12 +127,6 @@ function RenderModel(props) {
         material: listMaterials[i],
       };
 
-      // if (customizeInfo[i] && customizeInfo[i].img !== "") {
-      //   item = { ...item, ["material-map"]: textures[i] };
-      // }
-      // if (customizeInfo[i] && customizeInfo[i].color !== "") {
-      //   item = { ...item, ["material-color"]: customizeInfo[i].color };
-      // }
       listMesh.push(item);
     }
     setMeshs(listMesh);
@@ -152,8 +159,6 @@ function RenderModel(props) {
       rerender.render(scene, camera);
       let imgCapture = rerender.domElement.toDataURL("image/jpg", 0.5);
 
-      // w.document.body.appendChild(img);
-
       let submitParams = {
         model3dId: captureModel.modelId,
         customizeId: captureModel.customizeId,
@@ -178,7 +183,7 @@ function RenderModel(props) {
     const cursor = `<svg width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path fill="rgba(255, 255, 255, 0.5)" d="M29.5 54C43.031 54 54 43.031 54 29.5S43.031 5 29.5 5 5 15.969 5 29.5 15.969 54 29.5 54z" stroke="#000"/><g filter="url(#filter0_d)"><path d="M29.5 47C39.165 47 47 39.165 47 29.5S39.165 12 29.5 12 12 19.835 12 29.5 19.835 47 29.5 47z" fill="${getColorMaterialByName(
       customizeInfo,
       hovered
-    )}"/></g><path d="M2 2l11 2.947L4.947 13 2 2z" fill="#000"/><text fill="#000" style="white-space:pre" font-family="Inter var, sans-serif" font-size="10" letter-spacing="-.01em"><tspan x="35" y="63">${getVNNameMaterial(
+    )}"/></g><path d="M2 2l11 2.947L4.947 13 2 2z" fill="#000"  /><text fill="#000" style="white-space:pre" font-family="Inter var, sans-serif" font-size="10" letter-spacing="-.01em"><tspan x="15" y="63">${getVNNameMaterial(
       customizeInfo,
       hovered
     )}</tspan></text></g><defs><clipPath id="clip0"><path fill="#fff" d="M0 0h64v64H0z"/></clipPath><filter id="filter0_d" x="6" y="8" width="47" height="47" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset dy="2"/><feGaussianBlur stdDeviation="3"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/><feBlend in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter></defs></svg>`;
@@ -319,26 +324,27 @@ function ExportCustomInformation(props) {
   };
   return (
     <div className="export d-flex gap-1">
-      {" "}
       <YLButton
         variant="warning"
         to={DEFINELINK.product + DEFINELINK.productShowCustomizes}
       >
         Hủy
       </YLButton>
-      <YLButton
-        variant="primary"
-        onClick={() => onCapture()}
-        type={"button"}
-        disabled={exportStt.isLoading}
-        width={"70px"}
-      >
-        {exportStt.isLoading ? (
-          <CircularProgress size={20} className="circle-progress" />
-        ) : (
-          "Xong"
-        )}
-      </YLButton>
+      <Can do={"read-write"} on={"customer"}>
+        <YLButton
+          variant="primary"
+          onClick={() => onCapture()}
+          type={"button"}
+          disabled={exportStt.isLoading}
+          width={"70px"}
+        >
+          {exportStt.isLoading ? (
+            <CircularProgress size={20} className="circle-progress" />
+          ) : (
+            "Xong"
+          )}
+        </YLButton>
+      </Can>
       <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
@@ -365,7 +371,7 @@ export default function Customize(props) {
   const fetchMaterialInfo = async (productId, isEdit) => {
     try {
       let response = {};
-      if (String(isEdit).toLowerCase() == "true") {
+      if (String(isEdit).toLowerCase() === "true") {
         response = await ProductAPI.getMaterialsCustomizeId(customizeId);
       } else {
         response = await ProductAPI.getMaterialsInfoByProdId(productId);
@@ -386,7 +392,7 @@ export default function Customize(props) {
       );
 
       const selectMIdAction = setMaterialId(
-        response.defaultMaterials[0]?.materialId
+        getAvailableMid(response.defaultMaterials, 0)
       );
 
       const captureAction = setCaptureModel({

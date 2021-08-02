@@ -123,10 +123,11 @@
     }
 
     & .img-option {
-      display: flex;
+      display: inline-flex;
       flex-direction: row;
       flex-wrap: wrap;
-      width: 100%;
+      flex-basis: auto;
+
 
       & .img-active {
         border: 2px solid #95a790;

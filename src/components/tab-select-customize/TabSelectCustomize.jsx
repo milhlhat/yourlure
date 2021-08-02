@@ -11,7 +11,10 @@ import {
   getMaterialByMId,
   getPositionSelectedByMId,
   getSelectMatNameByMatId,
+  getDecreaseId,
+  getIncreaseId,
 } from "utils/product";
+import CustomizePrice from "./CustomizePrice";
 
 function TabSelectCustomize(props) {
   const [tabSelect, setTabSelect] = useState(0);
@@ -29,12 +32,16 @@ function TabSelectCustomize(props) {
   }, [materials, mId]);
   const tablist = [
     {
+      name: "Màu",
+      component: <ColorChoices mId={mId} currentMaterial={currentMaterial} />,
+    },
+    {
       name: "Ảnh",
       component: <AddTextToModelTab />,
     },
     {
-      name: "Màu",
-      component: <ColorChoices mId={mId} currentMaterial={currentMaterial} />,
+      name: "Giá",
+      component: <CustomizePrice />,
     },
   ];
 
@@ -81,17 +88,25 @@ function SwitchMaterial(props) {
   function decreaseMId() {
     const currentPosition = getPositionSelectedByMId(mId, materials);
     const tempMaterialSelect =
-      currentPosition <= 0 ? materials.length - 1 : currentPosition - 1;
-    const action = setMaterialId(materials[tempMaterialSelect].materialId);
-    dispatch(action);
+      currentPosition <= 0
+        ? getDecreaseId(materials, materials.length - 1)
+        : getDecreaseId(materials, currentPosition - 1);
+    if (tempMaterialSelect) {
+      const action = setMaterialId(materials[tempMaterialSelect].materialId);
+      dispatch(action);
+    }
   }
 
   function increaseMId() {
     const currentPosition = getPositionSelectedByMId(mId, materials);
     const tempMaterialSelect =
-      currentPosition >= materials.length - 1 ? 0 : currentPosition + 1;
-    const action = setMaterialId(materials[tempMaterialSelect].materialId);
-    dispatch(action);
+      currentPosition >= materials.length - 1
+        ? getIncreaseId(materials, 0)
+        : getIncreaseId(materials, currentPosition + 1);
+    if (tempMaterialSelect) {
+      const action = setMaterialId(materials[tempMaterialSelect].materialId);
+      dispatch(action);
+    }
   }
 
   return (
@@ -100,14 +115,14 @@ function SwitchMaterial(props) {
         className="border-0 bg-transparent pointer switch-button"
         onClick={() => decreaseMId()}
       >
-        <i className="fa fa-angle-left" />
+        {mId && <i className="fa fa-angle-left" />}
       </button>
       <span className="mx-3">{getSelectMatNameByMatId(mId, materials)}</span>
       <button
         className="border-0 bg-transparent pointer switch-button"
         onClick={() => increaseMId()}
       >
-        <i className="fa fa-angle-right" />
+        {mId && <i className="fa fa-angle-right" />}
       </button>
     </div>
   );

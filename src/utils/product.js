@@ -7,6 +7,8 @@ import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
 import { setIsCapture } from "../redux/customize-action/capture-model";
 import { parseString2Boolean } from "./common";
 import dumyImg from "assets/images/g1.jpg";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -91,6 +93,54 @@ export const {
 } = productUtils;
 
 let customizeUtils = {
+  checkCanCustom: (materials) => {
+    const check = materials.find((item) => item.canAddColor || item.canAddImg);
+    return check;
+  },
+  getAvailableMid: (materials, from) => {
+    const curIndex = materials[from];
+    if (!checkCanCustom(materials)) {
+      return false;
+    }
+    if (!curIndex.canAddColor && !curIndex.canAddImg) {
+      console.log("run");
+      return getAvailableMid(
+        materials,
+        from >= materials.length - 1 ? 0 : from + 1
+      );
+    } else {
+      return curIndex.materialId;
+    }
+  },
+  getDecreaseId: (materials, from) => {
+    const curIndex = materials[from];
+    if (!checkCanCustom(materials)) {
+      return false;
+    }
+    if (!curIndex.canAddColor && !curIndex.canAddImg) {
+      return getDecreaseId(
+        materials,
+        from <= 0 ? materials.length - 1 : from - 1
+      );
+    } else {
+      return from;
+    }
+  },
+
+  getIncreaseId: (materials, from) => {
+    const curIndex = materials[from];
+    if (!checkCanCustom(materials)) {
+      return false;
+    }
+    if (!curIndex.canAddColor && !curIndex.canAddImg) {
+      return getIncreaseId(
+        materials,
+        from >= materials.length - 1 ? 0 : from + 1
+      );
+    } else {
+      return from;
+    }
+  },
   getPositionSelectedByMId: (id, materials) => {
     if (materials.length > 0) {
       for (let i = 0; i < materials.length; i++) {
@@ -157,6 +207,22 @@ let customizeUtils = {
 
     return tempMaterials;
   },
+  getDefaultMaterials: async (url) => {
+    const materials = [];
+    let loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("/examples/js/libs/draco/");
+    loader.setDRACOLoader(dracoLoader);
+    await loader.load(url, function (gltf) {
+      const scene = gltf.scene;
+
+      scene.traverse(function (object) {
+        if (object.material) materials.push(object.material);
+      });
+      console.log("travel", materials);
+    });
+    return materials;
+  },
   validateTexture: async (currentMaterial) => {
     let imgLink = currentMaterial.img;
     if (imgLink === "") {
@@ -210,6 +276,11 @@ export const {
   getImgTexturesByImgId,
   submitCustomize,
   validateTexture,
+  checkCanCustom,
+  getDecreaseId,
+  getIncreaseId,
+  getAvailableMid,
+  getDefaultMaterials,
 } = customizeUtils;
 
 const canvasUtils = {

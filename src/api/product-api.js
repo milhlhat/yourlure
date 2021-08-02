@@ -58,6 +58,10 @@ const ProductAPI = {
     const url = `/model3d/delete-custom?customizeId=${id}`;
     return AxiosClient.delete(url);
   },
+  getCustomizePrice: () => {
+    const url = `/model3d/customize-price`;
+    return AxiosClient.get(url);
+  },
 };
 export const {
   getBestSeller,
@@ -68,5 +72,6 @@ export const {
   getMaterialsCustomizeId,
   createCustomizeByModelId,
   updateCustomizeByModelId,
+  getCustomizePrice,
 } = ProductAPI;
 export default ProductAPI;

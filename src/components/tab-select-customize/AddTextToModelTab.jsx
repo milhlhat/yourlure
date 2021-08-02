@@ -84,6 +84,7 @@ function AddTextToModelTab() {
       if (list[i].materialId === mId) {
         list[i].img = "";
         list[i].imgId = "";
+        list[i].text = "";
       }
     }
 
@@ -121,16 +122,16 @@ function AddTextToModelTab() {
               // </>
             ))}
           </div>
-          {/*<div className="d-flex flex-column mt-3 align-items-center">*/}
-          {/*  <YLButton*/}
-          {/*    variant="negative"*/}
-          {/*    type="button"*/}
-          {/*    value="Không dùng ảnh"*/}
-          {/*    onClick={() => removeImg()}*/}
-          {/*  />*/}
+          <div className="d-flex flex-column mt-3 align-items-center">
+            <YLButton
+              variant="negative"
+              type="button"
+              value="Không dùng ảnh"
+              onClick={() => removeImg()}
+            />
 
-          {/*   <YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
-          {/*</div>*/}
+            {/*<YLButton variant="primary" type="button" value="Upload ảnh" disabled /> */}
+          </div>
           {currentMaterial?.canAddText && (
             <div className="w-100 d-flex align-items-center flex-column px-1 gap-3">
               <hr className="hr my-3" />
