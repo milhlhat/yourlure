@@ -49,9 +49,9 @@ function ShowCustomizes(props) {
     if (isLoggedIn) fetchCustomize();
   }, []);
   return (
-    <>
+    <div className="container-lg">
       {isLoggedIn ? (
-        <div className="show-customize container-lg">
+        <div className="show-customize">
           <div className="bg-box bg-shadow my-4">
             <h6>Danh sách tùy biến của bạn</h6>
             {customizes.isLoading ? (
@@ -75,26 +75,25 @@ function ShowCustomizes(props) {
               </div>
             )}
           </div>
-          <div className="bg-box bg-shadow my-4">
-            <h6>Danh sách sản phẩm có thể tùy biến</h6>
-            <div className="d-flex flex-wrap">
-              {products?.productOutList?.map((item, i) => (
-                <CardProduct
-                  canCustom={true}
-                  product={item}
-                  key={`card-product-${i}`}
-                />
-              ))}
-            </div>
-          </div>
         </div>
       ) : (
-        <div className="d-flex justify-content-center mt-5">
-          <Link to="/login">Đăng nhập</Link>&nbsp; để có thể sử dụng chức năng
-          tùy biến
+        <div className="d-flex justify-content-center mt-5 bg-box bg-shadow">
+          <Link to="/login">Đăng nhập</Link>&nbsp; để có thể lưu lại sản phẩm tùy biến của bạn.
         </div>
       )}
-    </>
+      <div className="bg-box bg-shadow my-4">
+        <h6>Danh sách sản phẩm có thể tùy biến</h6>
+        <div className="d-flex flex-wrap">
+          {products?.productOutList?.map((item, i) => (
+            <CardProduct
+              canCustom={true}
+              product={item}
+              key={`card-product-${i}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
