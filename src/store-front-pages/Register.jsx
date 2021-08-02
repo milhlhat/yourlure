@@ -17,6 +17,7 @@ import PhoneAPI from "api/phone-number-api";
 import { CircularProgress } from "@material-ui/core";
 
 const EXISTED_PHONE_STATUS = 422;
+
 function Register(props) {
   const [info, setInfo] = useState();
   const ability = useContext(AbilityContext);
@@ -141,21 +142,21 @@ function RegisterBase({ ability, changeTab }) {
                   component={InputField}
                   label="Số điện thoại"
                   placeholder="Nhập số điện thoại"
-                ></FastField>
+                />
                 <FastField
                   name="password"
                   type="password"
                   component={InputField}
                   label="Mật khẩu"
                   placeholder="Nhập mật khẩu"
-                ></FastField>
+                />
                 <FastField
                   name="rePassword"
                   type="password"
                   component={InputField}
                   label="Nhập lại mật khẩu"
                   placeholder="Nhập lại mật khẩu"
-                ></FastField>
+                />
                 <div className="my-2">
                   <YLButton
                     type="submit"
@@ -206,7 +207,7 @@ function RegisterOTP({ ability, changeTab, info }) {
           userConfig.LOCAL_STORE_LOGIN_AT,
           new Date().toLocaleString()
         );
-        updateRoles(ability, history);
+        await updateRoles(ability, history);
         toast.success("Đăng ký thành công");
       }
     } catch (error) {
@@ -280,7 +281,7 @@ function RegisterOTP({ ability, changeTab, info }) {
                     name="otp"
                     component={InputField}
                     placeholder="Nhập OTP"
-                  ></FastField>
+                  />
                   <div className="ms-2">
                     <YLButton
                       onClick={sentOTP}
@@ -290,21 +291,17 @@ function RegisterOTP({ ability, changeTab, info }) {
                       }`}
                       disabled={isDisableSendOtp}
                       type="button"
-                    ></YLButton>
+                    />
                   </div>
                 </div>
                 <div className="otp-form">
-                  <YLButton
-                    type="submit"
-                    variant="primary"
-                    value="Xác nhận"
-                  ></YLButton>
+                  <YLButton type="submit" variant="primary" value="Xác nhận" />
 
                   <YLButton
                     variant="link"
                     value="Hủy"
                     onClick={() => changeTab(0)}
-                  ></YLButton>
+                  />
                 </div>
               </Form>
             );
@@ -314,4 +311,5 @@ function RegisterOTP({ ability, changeTab, info }) {
     </div>
   );
 }
+
 export default Register;

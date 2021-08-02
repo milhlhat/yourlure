@@ -81,13 +81,16 @@ export const {
   fetchRoles,
 } = userUtils;
 
-export async function updateRoles(ability, history) {
+export async function updateRoles(ability, history, backPath = null) {
   try {
     const response = await UserApi.getRoles();
 
-    if (response?.includes(ROLE_ADMIN) || response?.includes(ROLE_STAFF)) {
+    if (
+      (response?.includes(ROLE_ADMIN) || response?.includes(ROLE_STAFF)) &&
+      !backPath
+    ) {
       history.push(DEFINELINK.manager);
-    } else {
+    } else if (!backPath) {
       history.push(DEFINELINK.store);
     }
     await ability.update(defineAbilityFor(response));

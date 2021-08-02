@@ -30,24 +30,37 @@ export function RenderRoutes({ routes, properties }) {
           passThrough
         >
           {(allowed) => (
-            <Route exact={item.exact} key={item.path + index} path={item.path}>
-              {allowed ? (
-                <item.component properties={properties} />
-              ) : (
-                <NoPermistion hasLayout />
-              )}
-            </Route>
+            <Route
+              exact={item.exact}
+              key={item.path + index}
+              path={item.path}
+              render={(props) =>
+                allowed ? (
+                  <item.component properties={properties} {...props} />
+                ) : (
+                  <NoPermistion hasLayout />
+                )
+              }
+            />
           )}
         </Can>
       ))}
     </React.Fragment>
   );
 }
+
 /**
- * utils to remove all XSS  attacks potential
- * @param {String} html
- * @return {Object}
- */
+* utils to remove all XSS  attacks potential
+* @param
+{
+    String
+}
+html
+* @return
+{
+    Object
+}
+*/
 export const safeContent = (html) => {
   const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 

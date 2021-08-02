@@ -1,4 +1,10 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, {
+  Suspense,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as Base64 from "js-base64";
 import {
@@ -36,7 +42,8 @@ import { useHistory } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DEFINELINK from "../routes/define-link";
 import AddNameCustomize from "components/orther/AddNameCustomize";
-import { Can } from "../ability/can";
+import { AbilityContext, Can } from "../ability/can";
+import ConfirmPopupV2 from "../components/confirm-popup/ConfirmPopupV2";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -315,9 +322,14 @@ function ListActionMaterials(props) {
 }
 
 function ExportCustomInformation(props) {
-  const dispatch = props.dispatch;
-  const exportStt = props.exportStt;
+  const captureModel = useSelector((state) => state.captureModel);
 
+  const ability = useContext(AbilityContext);
+  const isLoggedInAsCustomer = ability.can("read-write", "customer");
+  const exportStt = props.exportStt;
+  const history = useHistory();
+  const [notifyNotCustomer, setNotifyNotCustomer] =
+    useState(isLoggedInAsCustomer);
   const [openDialog, setOpenDialog] = useState(false);
   const onCapture = () => {
     setOpenDialog(true);
@@ -345,7 +357,27 @@ function ExportCustomInformation(props) {
           )}
         </YLButton>
       </Can>
+
       <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
+      <ConfirmPopupV2
+        children={<i />}
+        title={"Bạn chưa đăng nhập"}
+        content={
+          "Mọi tuỳ chỉnh của bạn sẽ không được lưu lại, bạn cần đăng nhập để lưu lại tuỳ chỉnh của mình."
+        }
+        positiveText={"Đăng nhập"}
+        negativeText={"Tiếp tục"}
+        isOpenNow={!notifyNotCustomer}
+        onConfirm={() =>
+          history.push({
+            pathname: DEFINELINK.login,
+            search: "",
+            state: {
+              backPath: `/product/customize?productId=${captureModel.productId}`,
+            },
+          })
+        }
+      />
     </div>
   );
 }
@@ -411,9 +443,6 @@ export default function Customize(props) {
 
   useEffect(async () => {
     await fetchMaterialInfo(productId, isEdit);
-    // await fetchProduct();
-
-    document.getElementById("footer").style.display = "none";
   }, [productId, isEdit]);
   if (product.isLoading) {
     return <Loading hasLayout />;

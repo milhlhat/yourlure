@@ -15,11 +15,22 @@ ConfirmPopupV2.propTypes = {
   content: PropTypes.string,
   negativeText: PropTypes.string,
   positiveText: PropTypes.string,
+  isOpenNow: PropTypes.bool,
+};
+ConfirmPopupV2.defaultProps = {
+  isOpenNow: false,
 };
 export default function ConfirmPopupV2(props) {
-  const { onConfirm, title, content, negativeText, positiveText, children } =
-    props;
-  const [open, setOpen] = React.useState(false);
+  const {
+    onConfirm,
+    title,
+    content,
+    negativeText,
+    positiveText,
+    children,
+    isOpenNow,
+  } = props;
+  const [open, setOpen] = React.useState(isOpenNow);
 
   const handleClickOpen = () => {
     setOpen(true);

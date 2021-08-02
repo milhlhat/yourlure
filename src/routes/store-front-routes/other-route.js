@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import { RenderRoutes } from "utils/common";
+
 const Campaign = React.lazy(() => import("store-front-pages/Campaign"));
 const About = React.lazy(() => import("store-front-pages/About"));
 const HomePage = React.lazy(() => import("store-front-pages/Home"));

@@ -1,6 +1,6 @@
 import InputField from "components/custom-field/YLInput.jsx";
 import YLButton from "components/custom-field/YLButton.jsx";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
 import { FastField, Form, Formik } from "formik";
@@ -12,12 +12,13 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import UserApi from "api/user-api";
 import userConfig from "constant/user-config";
 import { AbilityContext } from "ability/can";
-import defineAbilityFor from "ability/ability";
-import { useContext } from "react";
-import { fetchRoles, updateRoles } from "utils/user";
+import { updateRoles } from "utils/user";
 import DEFINELINK from "routes/define-link";
 import Fishing from "assets/images/fishing.jpg";
-function Login() {
+
+function Login(props) {
+  console.log(props);
+  const backPath = props?.location?.state?.backPath;
   const history = useHistory();
   //context
   const ability = useContext(AbilityContext);
@@ -48,6 +49,7 @@ function Login() {
         new Date().toLocaleString()
       );
       await updateRoles(ability, history);
+      if (backPath) history.push(backPath);
     } catch (error) {
       if (error.response) {
         // Request made and server responded
@@ -99,6 +101,7 @@ function Login() {
 
     setOpen({ ...open, isOpen: false });
   };
+
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -106,10 +109,7 @@ function Login() {
   return (
     <div className="container login">
       <div className="login-big-image">
-        <img
-          src={Fishing}
-          alt="bg"
-        />
+        <img src={Fishing} alt="bg" />
       </div>
       <div className="login-form">
         <Snackbar
@@ -141,14 +141,14 @@ function Login() {
                     component={InputField}
                     label="Số điện thoại"
                     placeholder="Nhập số điện thoại"
-                  ></FastField>
+                  />
                   <FastField
                     name="password"
                     type="password"
                     component={InputField}
                     label="Mật khẩu"
                     placeholder="Nhập mật khẩu"
-                  ></FastField>
+                  />
                   <div className="mt-2">
                     <YLButton
                       type="submit"
@@ -168,7 +168,6 @@ function Login() {
                   <div className="mt-2 ">
                     <YLButton
                       variant="warning"
-                      // onClick={() => history.push("/register")}
                       to={DEFINELINK.register}
                       value="Đăng ký"
                       width="100%"

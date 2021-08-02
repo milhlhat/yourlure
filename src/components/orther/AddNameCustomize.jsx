@@ -79,7 +79,7 @@ function AddNameCustomize(props) {
     setOpen(false);
   };
   const setInitialValue = () => {
-    setValue("customName", captureModel?.name?captureModel?.name:"");
+    setValue("customName", captureModel?.name ? captureModel?.name : "");
   };
 
   useEffect(() => {
@@ -100,7 +100,7 @@ function AddNameCustomize(props) {
               Nhập tên sản phẩm của bạn
             </DialogTitle>
           </div>
-          {console.log(captureModel)}
+
           <DialogContent>
             <DialogContentText>
               <div className="dialog-content">
