@@ -248,7 +248,6 @@ function Campaign() {
                     placeholder={"Nhập số điện thoại"}
                     label={"Số điện thoại"}
                     methods={methods}
-                    type={"number"}
                   />
                   <br />
                   <YlInputFormHook

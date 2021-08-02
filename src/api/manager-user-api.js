@@ -1,5 +1,4 @@
 import AxiosClient from "./axios-client";
-import queryString from "query-string";
 
 const ManagerUserApi = {
   getAll: (param) => {
@@ -18,15 +17,15 @@ const ManagerUserApi = {
     const url = `/admin/user/staff/save`;
     return AxiosClient.post(url, param);
   },
-  getOrderByUserId:(param)=>{
+  getOrderByUserId: (param) => {
     const url = `/admin/order/user-orders`;
     return AxiosClient.post(url, param);
   },
-  getUserById:(param)=>{
+  getUserById: (param) => {
     const url = `/admin/user/find-by-id?id=${param}`;
     return AxiosClient.get(url);
   },
-  getAddressByUserId:(param)=>{
+  getAddressByUserId: (param) => {
     const url = `/admin/user/get-address-user/${param}`;
     return AxiosClient.get(url);
   },

@@ -21,6 +21,10 @@ const ManagerCampaignAPI = {
     const url = `/admin/campaign/update?id=${campaignId}`;
     return AxiosClient.post(url, params);
   },
+  filterCampaign: (params) => {
+    const url = `/admin/campaign/admin-register-all`;
+    return AxiosClient.post(url, params);
+  },
 };
 export const {
   addCampaign,
@@ -28,5 +32,6 @@ export const {
   getAllCampaign,
   getCampaignById,
   updateCampaign,
+  filterCampaign,
 } = ManagerCampaignAPI;
 export default ManagerCampaignAPI;

@@ -56,7 +56,17 @@ let productUtils = {
     if (listmaterial.length > 0) {
       for (const i in listmaterial) {
         const element = listmaterial[i];
-        if (element.name === name) return element.color;
+        if (element.defaultName === name) return element.color;
+      }
+    }
+    return "";
+  },
+  getVNNameMaterial: (materials, name) => {
+    if (materials.length > 0) {
+      for (const i in materials) {
+        const element = materials[i];
+
+        if (element.defaultName === name) return element.vnName;
       }
     }
     return "";
@@ -77,6 +87,7 @@ export const {
   getColorMaterialByName,
   saveFilter,
   fetchFilter,
+  getVNNameMaterial,
 } = productUtils;
 
 let customizeUtils = {

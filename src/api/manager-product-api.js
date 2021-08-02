@@ -1,5 +1,4 @@
 import AxiosClient from "./axios-client";
-import queryString from "query-string";
 
 const ManagerProductAPI = {
   getProductByID: (id) => {

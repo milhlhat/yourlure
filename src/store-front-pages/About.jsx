@@ -136,7 +136,7 @@ function About() {
         </div>
         <div className={" d-flex flex-wrap"}>
           {TEAMPROFILES.slice(1).map((item, index) => (
-            <CardProfile item={item} />
+            <CardProfile item={item} key={index} />
           ))}
         </div>
       </div>

@@ -173,7 +173,7 @@ function ColorChoices(props) {
           <div className="text-center mt-3">
             <YLButton
               variant="negative"
-              value="Không màu"
+              value="Xoá màu"
               onClick={handleRemoveColor}
             />
           </div>

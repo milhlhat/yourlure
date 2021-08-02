@@ -222,7 +222,7 @@ function ManagerCampaign(props) {
                 itemClass="page-item"
                 linkClass="page-link"
                 activePage={activePage}
-                itemsCountPerPage={totalItem}
+                itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
                 totalItemsCount={campaignList?.data?.totalItem}
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                 onChange={handlePageChange}

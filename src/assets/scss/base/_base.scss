@@ -159,3 +159,12 @@ body {
 .content-fit {
   object-fit: contain;
 }
+
+.page-item.active .page-link {
+  background-color: $primary;
+  border-color: $primary;
+  color: white !important;
+}
+.page-link {
+  color: $primary !important;
+}
