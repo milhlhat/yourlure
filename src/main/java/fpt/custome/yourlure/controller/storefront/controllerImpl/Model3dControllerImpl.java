@@ -131,4 +131,14 @@ public class Model3dControllerImpl implements Model3dController {
     public ResponseEntity<Object> deleteCustomize(HttpServletRequest rq, Long customizeId) {
         return new ResponseEntity<>(customizeModelService.deleteCustomizeModel(rq, customizeId), HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Object> getCustomizePrice() {
+        try{
+           return new ResponseEntity<>(customizeModelService.getCustomizePrice(), HttpStatus.OK);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

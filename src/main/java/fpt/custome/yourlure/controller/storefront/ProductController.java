@@ -30,11 +30,6 @@ public interface ProductController {
     @PostMapping("/product-filter")
     ResponseEntity<Optional<ProductsFilterDtoOut>> getProductFilter(@RequestBody Filter filter);
 
-//    @PostMapping("/find-by-name")
-//    ResponseEntity<List<ProductsDtoOut>> getProductByName(@RequestBody Filter filter);
-
-    //TODO: getmapping customize
-
     @GetMapping("/download")
     ResponseEntity<Resource> download(String path);
 

@@ -57,6 +57,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     private UserRepos userRepos;
 
     @Autowired
+    private CustomPriceRepos customPriceRepos;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -336,6 +339,11 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
 
         return results;
+    }
+
+    @Override
+    public List<CustomPrice> getCustomizePrice() {
+        return customPriceRepos.findAll();
     }
 
 }

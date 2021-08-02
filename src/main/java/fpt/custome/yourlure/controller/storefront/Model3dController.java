@@ -104,4 +104,7 @@ public interface Model3dController {
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     ResponseEntity<Object> deleteCustomize(HttpServletRequest rq, @RequestParam @Valid Long customizeId);
 
+    @GetMapping("/customize-price")
+    ResponseEntity<Object> getCustomizePrice();
+
 }
