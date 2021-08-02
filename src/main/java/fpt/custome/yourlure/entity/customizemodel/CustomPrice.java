@@ -20,6 +20,7 @@ public class CustomPrice {
     private Long customPriceId;
 
     private String name;
+    private String vnName;
 
     private Float price;
 
