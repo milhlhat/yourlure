@@ -5,6 +5,7 @@ import DEFINELINK from "routes/define-link";
 import UserApi from "api/user-api";
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 function EditCustomerAccount(props) {
   const { properties } = props;
@@ -25,12 +26,12 @@ function EditCustomerAccount(props) {
       if (response.error) {
         throw new Error(response.error);
       } else {
-        alert("update thành công");
+        toast.success("Cập nhật thành công");
         properties();
         history.push("/customer/account");
       }
     } catch (error) {
-      alert("update thất bại");
+      toast.error("update thất bại");
       console.log("fail to fetch customer list");
     }
   };
@@ -54,7 +55,7 @@ function EditCustomerAccount(props) {
                   {...register("username", {
                     required: "Trường bắt buộc",
                   })}
-                ></input>
+                />
                 {errors.name && (
                   <span className="text-danger">(*){errors.name.message}</span>
                 )}
