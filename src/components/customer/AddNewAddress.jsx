@@ -6,6 +6,7 @@ import { Prompt, useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import UserApi from "api/user-api";
+import { toast } from "react-toastify";
 
 function AddNewAddress() {
   const methods = useForm();
@@ -27,7 +28,7 @@ function AddNewAddress() {
         history.push("/customer/address");
       }
     } catch (error) {
-      alert("Thêm địa chỉ thất bại");
+      toast.error("Thêm địa chỉ thất bại");
       console.log("fail to fetch add address");
     }
   };

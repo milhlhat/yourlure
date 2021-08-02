@@ -6,6 +6,7 @@ import UserApi from "api/user-api";
 import DEFINELINK from "routes/define-link";
 import { useHistory, useLocation } from "react-router-dom";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
+import { toast } from "react-toastify";
 
 function ChangeAddress(props) {
   const location = useLocation();
@@ -26,11 +27,11 @@ function ChangeAddress(props) {
       if (response.error) {
         throw new Error(response.error);
       } else {
-        alert("update thành công");
+        toast.success("Cập nhật địa chỉ thành công");
         history.push("/customer/address");
       }
     } catch (error) {
-      alert("update thất bại");
+      toast.error("Cập nhật thất bại");
       console.log("fail to fetch customer list");
     }
   };

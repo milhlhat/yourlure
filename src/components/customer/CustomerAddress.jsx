@@ -42,7 +42,7 @@ function CustomerAddress(props) {
     try {
       const response = await UserApi.setAddressDefault(id);
     } catch (error) {
-      alert("Đặt địa chỉ mặc định thất bại");
+      toast.error("Đặt địa chỉ mặc định thất bại");
       console.log("fail to fetch customer list");
     }
     fetchCustomAddress();
