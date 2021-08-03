@@ -1,10 +1,11 @@
 import { AbilityContext, Can } from "ability/can";
 import logo from "assets/images/logo/logo-social.png";
+import logoText from "assets/images/logo/text-1628010004845.png";
 import "assets/scss/scss-components/header.scss";
 import { filterConfig } from "constant/filter-setting";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from "reactstrap";
 import { setFilter } from "redux/product-action/fetch-filter";
 import DEFINELINK from "routes/define-link";
@@ -104,9 +105,10 @@ function Header(props) {
       <div className="container">
         <Navbar light expand="md" className="p-2 nav-bar-light ">
           <div className="me-auto">
-            <Link to="/">
+            <NavLink to="/">
               <img src={logo} alt="your lure logo" className="logo" />
-            </Link>
+              <img src={logoText} alt="your lure logo" className="logo-text " />
+            </NavLink>
           </div>
           <div ref={wrapperRef}>
             <NavbarToggler onClick={toggle} />

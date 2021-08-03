@@ -16,7 +16,7 @@ function AddNewAddress() {
     handleSubmit,
     setError,
     setValue,
-    formState: { errors, isDirty, isSubmitted },
+    formState: { errors, isDirty, isSubmitSuccessful },
   } = methods;
   const onSubmit = async (data) => {
     console.log(data);
@@ -29,7 +29,6 @@ function AddNewAddress() {
       }
     } catch (error) {
       toast.error("Thêm địa chỉ thất bại");
-      console.log("fail to fetch add address");
     }
   };
   useEffect(() => {
@@ -45,18 +44,9 @@ function AddNewAddress() {
     fetchCustomAccount();
     return fetchCustomAccount();
   }, []);
-  useEffect(() => {
-    return () => {
-      // console.log("dirty and submitted", isDirty, isSubmitted);
-      if (isDirty && !isSubmitted) return (window.onbeforeunload = () => true);
-    };
-  }, []);
+
   return (
     <div className="bg-box bg-shadow">
-      <Prompt
-        when={isDirty && !isSubmitted}
-        message="Changes you made may not be saved."
-      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <table className="add-address-table">
           <tbody>

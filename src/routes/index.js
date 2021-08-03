@@ -9,6 +9,7 @@ import { AbilityContext } from "ability/can";
 import { buildAbilityFor } from "ability/ability";
 
 import { fetchRoles } from "utils/user";
+import { Helmet } from "react-helmet";
 
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));

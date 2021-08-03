@@ -10,13 +10,25 @@ import store, { persistor } from "redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { Helmet } from "react-helmet";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <Helmet>
+          <title>Yourlure</title>
+          <meta
+            name="description"
+            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
+          />
+        </Helmet>
         <AppRouter />
-        <ToastContainer autoClose={2000} pauseOnFocusLoss={false} pauseOnHover={false}/>
+        <ToastContainer
+          autoClose={2000}
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+        />
       </PersistGate>
     </Provider>
   </React.StrictMode>,
