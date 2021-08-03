@@ -37,7 +37,7 @@ function ManagerCampaign(props) {
   const setBack = {
     canBack: true,
     path: location,
-    label: "Chiến dịch",
+    label: "Sự kiện",
   };
   //option sort
   const options = [
@@ -80,15 +80,15 @@ function ManagerCampaign(props) {
       console.log(response);
       if (response === true) {
         fetchManagerCampaign();
-        toast.success("Xóa chiến dịch thành công");
+        toast.success("Xóa sự kiện thành công");
       } else {
         toast.error(
-          `Xóa chiến dịch thất bại! 
-          Chiến dịch đang thực hiện không thể xóa!`
+          `Xóa sự kiện thất bại! 
+          Sự kiện đang thực hiện không thể xóa!`
         );
       }
     } catch (error) {
-      toast.error(`Xóa chiến dịch thất bại! 
+      toast.error(`Xóa sự kiện thất bại! 
         Lỗi hệ thống`);
     }
   };
@@ -127,7 +127,7 @@ function ManagerCampaign(props) {
     return (
       <>
         <div className="staff-head-row d-flex justify-content-between">
-          <h3>Chiến dịch</h3>
+          <h3>Sự kiện</h3>
           <div className="staff-add-new">
             <YLButton
               variant="primary"
@@ -140,7 +140,7 @@ function ManagerCampaign(props) {
           </div>
         </div>
         <div className="manager-show mt-3 bg-white bg-shadow">
-          <span>Tất cả chiến dịch</span>
+          <span>Tất cả sự kiện</span>
           <hr />
           <ManagerSort
             filter={filter}
@@ -148,12 +148,12 @@ function ManagerCampaign(props) {
             options={options}
           />
 
-          {campaignList?.data?.length <= 0 && <p>Chưa có chiến dịch </p>}
+          {campaignList?.data?.length <= 0 && <p>Chưa có sự kiện </p>}
           <table className="table">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Tên chiến dịch</th>
+                <th>Tên sự kiện</th>
                 <th>Ngày bắt đầu</th>
                 <th>Ngày kết thúc</th>
 
@@ -205,7 +205,7 @@ function ManagerCampaign(props) {
                       height="25px"
                       btnText={<img src={Trash} />}
                       title="Xóa"
-                      content="Bạn chắc chắn muốn xóa chiến dịch?"
+                      content="Bạn chắc chắn muốn xóa sự kiện?"
                       onConfirm={(e) => handleDelete(item.campaignId)}
                     />
                   </td>
@@ -214,7 +214,7 @@ function ManagerCampaign(props) {
             </tbody>
           </table>
           {campaignList?.data?.discountVouchers?.length <= 0 && (
-            <p>Không có chiến dịch nào! </p>
+            <p>Không có sự kiện nào! </p>
           )}
           <div className="m-auto p-4 d-flex justify-content-center">
             {campaignList?.data?.totalPage >= 1 && (

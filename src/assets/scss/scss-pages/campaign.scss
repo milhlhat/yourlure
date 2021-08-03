@@ -9,7 +9,7 @@
     font-weight: 500;
   }
 
-  & .banner {
+  & .campaign-banner {
 
     & .banner-container {
       position: relative;
@@ -89,7 +89,7 @@
 }
 
 @media screen and (max-width: $mobile-width - 1px) {
-  & .banner {
+  & .campaign-banner {
     & .img-banner {
       height: 200px;
     }
@@ -117,7 +117,7 @@
 }
 
 @media screen and (min-width: $mobile-width - 1px) {
-  & .banner {
+  & .campaign-banner {
     & .img-banner {
       height: 300px;
     }
@@ -148,7 +148,7 @@
 }
 
 @media screen and (min-width: $tablet-width - 1px) {
-  & .banner {
+  & .campaign-banner {
     & .img-banner {
       height: 400px;
     }
@@ -179,7 +179,7 @@
 }
 
 @media screen and (min-width: $desktop-width - 1px) {
-  & .banner {
+  & .campaign-banner {
     & .img-banner {
       height: 500px;
     }

@@ -1,12 +1,11 @@
-import ManagerCategoryAPI from "api/manager-category-api";
+import ManagerFishAPI from "api/manager-fish-api";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import "./scss/manager-fish-detail.scss";
-import ErrorLoad from "components/error-notify/ErrorLoad";
-import Loading from "components/Loading";
-import ManagerFishAPI from "api/manager-fish-api";
 
 function ManagerFishDetail(props) {
   const canBack = props.location.canBack;
@@ -67,48 +66,49 @@ function ManagerFishDetail(props) {
           <span>Tất cả sản phẩm</span>
           <hr />
           {/* <ManagerSort /> */}
-          {fish?.data?.products?.length <= 0 && (
-            <p>Không có sản phẩm </p>
-          )}
-          <table className="table">
-            <tbody>
-              <tr>
-                <th>#</th>
-                <th>Tên sản phẩm</th>
-                <th className="text-center">Trạng thái</th>
-                <th className="text-center">Giá</th>
-                <th></th>
-              </tr>
-              {fish?.data?.products?.map((item, i) => (
-                <tr key={i} className="hover-background">
-                  <td>{i + 1}</td>
-                  <td
-                    className="pointer"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/manager/product/detail/" + item?.productID,
-                        canBack: setBack,
-                      })
-                    }
-                  >
-                    {item?.productName}
-                  </td>
-                  <td className="text-center">
-                    {item.visibleInStorefront == null
-                      ? "-"
-                      : item.visibleInStorefront
+          {fish?.data?.products?.length <= 0 ? (
+            <p className="text-center">Không có sản phẩm </p>
+          ) : (
+            <table className="table">
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>Tên sản phẩm</th>
+                  <th className="text-center">Trạng thái</th>
+                  <th className="text-center">Giá</th>
+                  <th></th>
+                </tr>
+                {fish?.data?.products?.map((item, i) => (
+                  <tr key={i} className="hover-background">
+                    <td>{i + 1}</td>
+                    <td
+                      className="pointer"
+                      onClick={() =>
+                        history.push({
+                          pathname:
+                            "/manager/product/detail/" + item?.productID,
+                          canBack: setBack,
+                        })
+                      }
+                    >
+                      {item?.productName}
+                    </td>
+                    <td className="text-center">
+                      {item.visibleInStorefront == null
+                        ? "-"
+                        : item.visibleInStorefront
                         ? "Đang kinh doanh"
                         : "Ngừng kinh doanh"}
-                  </td>
-                  <td className="text-end pe-4">
-                    {!item
-                      ? "N/A"
-                      : Number(item.defaultPrice).toLocaleString(undefined, {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      })}
-                  </td>
-                  {/* <td>
+                    </td>
+                    <td className="text-end pe-4">
+                      {!item
+                        ? "N/A"
+                        : Number(item.defaultPrice).toLocaleString(undefined, {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                          })}
+                    </td>
+                    {/* <td>
                     <img
                       src={Editor}
                       className="pointer"
@@ -118,10 +118,12 @@ function ManagerFishDetail(props) {
                   <td>
                     <img src={Trash} />
                   </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
           {/* <div className="m-auto p-4 d-flex justify-content-center">
             {products.totalPage > 1 && (
               <Pagination

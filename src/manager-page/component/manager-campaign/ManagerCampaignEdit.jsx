@@ -37,7 +37,7 @@ function ManagerCampignEdit(props) {
       then: yup.mixed().nullable(),
       otherwise: yup
         .array()
-        .min(1, "Vui lòng chọn ảnh chiến dịch")
+        .min(1, "Vui lòng chọn ảnh sự kiện")
         .test("prodImgType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
           for (const file of value) {
             if (!SUPPORTED_IMAGE_FORMATS.includes(file.type)) {
@@ -118,10 +118,10 @@ function ManagerCampignEdit(props) {
       }
 
       await updateCampaign(campaignId, data);
-      toast.success("Cập nhật chiến dịch thành công");
+      toast.success("Cập nhật sự kiện thành công");
       history.push(DEFINELINK.manager + DEFINELINK.campaign);
     } catch (error) {
-      toast.error("Cập nhật chiến dịch thất bại");
+      toast.error("Cập nhật sự kiện thất bại");
     }
   };
   if (campaign.isLoading) {
@@ -131,12 +131,12 @@ function ManagerCampignEdit(props) {
   } else
     return (
       <div>
-        <h3>Thông Tin Chiến Dịch Mới</h3>
+        <h3>Thông Tin sự kiện Mới</h3>
         <form onSubmit={handleSubmit(onsubmit)}>
           <div className=" add-new-form row">
             <div className=" bg-box bg-shadow col-12  mb-md-5 mb-2 pb-2 pb-md-5 mt-md-3">
               <div className="px-3 pt-3">
-                <h5>Chi tiết chiến dịch</h5>
+                <h5>Chi tiết sự kiện</h5>
               </div>
               <hr />
               <div className="px-3">
@@ -147,8 +147,8 @@ function ManagerCampignEdit(props) {
                         <YlInputFormHook
                           name={"banner"}
                           methods={methods}
-                          label={"Tên chiến dịch"}
-                          placeholder={"Tên chiến dịch"}
+                          label={"Tên sự kiện"}
+                          placeholder={"Tên sự kiện"}
                           isRequired
                         />
                       </td>

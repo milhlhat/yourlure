@@ -13,9 +13,9 @@ function ManagerCategoryDetail(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [category, setCategory] = useState({
-    data:null,
-    isLoading:false,
-    isSuccess:true,
+    data: null,
+    isLoading: false,
+    isSuccess: true,
   });
 
   const fetchCategory = async () => {
@@ -65,48 +65,49 @@ function ManagerCategoryDetail(props) {
           <span>Tất cả sản phẩm</span>
           <hr />
           {/* <ManagerSort /> */}
-          {category?.data?.productOutputList?.length <= 0 && (
-            <p>Không có sản phẩm </p>
-          )}
-          <table className="table">
-            <tbody>
-              <tr>
-                <th>#</th>
-                <th>Tên sản phẩm</th>
-                <th className="text-center">Trạng thái</th>
-                <th className="text-center">Giá</th>
-                <th></th>
-              </tr>
-              {category?.data?.productCollection?.map((item, i) => (
-                <tr key={i} className="hover-background">
-                  <td>{i + 1}</td>
-                  <td
-                    className="pointer"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/manager/product/detail/" + item?.productID,
-                        canBack: setBack,
-                      })
-                    }
-                  >
-                    {item?.productName}
-                  </td>
-                  <td className="text-center">
-                    {item.visibleInStorefront == null
-                      ? "-"
-                      : item.visibleInStorefront
-                      ? "Đang kinh doanh"
-                      : "Ngừng kinh doanh"}
-                  </td>
-                  <td className="text-end pe-4">
-                    {!item
-                      ? "N/A"
-                      : Number(item.defaultPrice).toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 2,
-                        })}
-                  </td>
-                  {/* <td>
+          {category?.data?.productCollection?.length <= 0 ? (
+            <p className="text-center">Không có sản phẩm </p>
+          ) : (
+            <table className="table">
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>Tên sản phẩm</th>
+                  <th className="text-center">Trạng thái</th>
+                  <th className="text-center">Giá</th>
+                  <th></th>
+                </tr>
+                {category?.data?.productCollection?.map((item, i) => (
+                  <tr key={i} className="hover-background">
+                    <td>{i + 1}</td>
+                    <td
+                      className="pointer"
+                      onClick={() =>
+                        history.push({
+                          pathname:
+                            "/manager/product/detail/" + item?.productID,
+                          canBack: setBack,
+                        })
+                      }
+                    >
+                      {item?.productName}
+                    </td>
+                    <td className="text-center">
+                      {item.visibleInStorefront == null
+                        ? "-"
+                        : item.visibleInStorefront
+                        ? "Đang kinh doanh"
+                        : "Ngừng kinh doanh"}
+                    </td>
+                    <td className="text-end pe-4">
+                      {!item
+                        ? "N/A"
+                        : Number(item.defaultPrice).toLocaleString(undefined, {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                          })}
+                    </td>
+                    {/* <td>
                     <img
                       src={Editor}
                       className="pointer"
@@ -116,10 +117,12 @@ function ManagerCategoryDetail(props) {
                   <td>
                     <img src={Trash} />
                   </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
           {/* <div className="m-auto p-4 d-flex justify-content-center">
             {products.totalPage > 1 && (
               <Pagination

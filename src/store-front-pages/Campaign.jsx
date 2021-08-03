@@ -199,7 +199,7 @@ function Campaign() {
   } else
     return (
       <div className="container campaign">
-        <div className="banner d-block ">
+        <div className="campaign-banner d-block ">
           <Carousel
             responsive={responsiveBanner}
             removeArrowOnDeviceType={["all"]}

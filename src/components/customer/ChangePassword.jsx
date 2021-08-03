@@ -8,9 +8,12 @@ import { FastField, Form, Formik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
 
-
 function ChangePassword(props) {
-  const [open, setOpen] = useState({ isOpen: false, content: "" ,severity:"success"});
+  const [open, setOpen] = useState({
+    isOpen: false,
+    content: "",
+    severity: "success",
+  });
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -26,36 +29,41 @@ function ChangePassword(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     oldPassword: Yup.string()
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu cũ không được để trống."),
     password: Yup.string()
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu mới không được để trống."),
     rePassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu mới không được để trống."),
   });
 
   const handleSubmit = async (data) => {
     delete data.rePassword;
     console.log(data);
     try {
-			const response = await UserApi.changePassword(data);
+      const response = await UserApi.changePassword(data);
       console.log(response);
-			if (response.error) {
-				throw new Error(response.error);
-			} else {
-        setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
-			}
-		} catch (error) {
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        setOpen({ ...open, isOpen: true, content: "Đổi mật khẩu thành công" });
+      }
+    } catch (error) {
       console.log(error);
-      setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu không thành công", severity:"error"});
-			console.log('fail to fetch customer list');
-		}
+      setOpen({
+        ...open,
+        isOpen: true,
+        content: "Đổi mật khẩu không thành công",
+        severity: "error",
+      });
+      console.log("fail to fetch customer list");
+    }
     // setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
   };
   return (

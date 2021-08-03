@@ -34,7 +34,13 @@ function ManagerProduct(props) {
   });
   const SORT_OPTIONS = [
     {
-      display: "Id sản phẩm",
+      display: "Cũ nhất",
+      isAsc: true,
+      sortBy: "productId",
+      value: "SORT_PRODUCT_ID",
+    },
+    {
+      display: "Mới nhất",
       isAsc: false,
       sortBy: "productId",
       value: "SORT_PRODUCT_ID",

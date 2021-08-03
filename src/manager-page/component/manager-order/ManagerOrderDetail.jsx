@@ -249,7 +249,7 @@ function ManagerOrderDetail(props) {
                     <YLButton
                       variant="link"
                       value="Xem hồ sơ"
-                      to={`/manager/user/detail/8`}
+                      to={`/manager/user/detail/${order?.data?.userId}`}
                     />
                   </div>
                 )}

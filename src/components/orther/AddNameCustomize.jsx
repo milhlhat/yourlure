@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -6,17 +6,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { default as MuiDialogTitle } from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-import { withStyles } from "@material-ui/core/styles";
+import { useTheme, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
-import UserApi from "api/user-api";
+import YLButton from "components/custom-field/YLButton";
 import "manager-page/component/header/scss/header-dialog.scss";
-import { setCaptureModel } from "redux/customize-action/capture-model";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { setCaptureModel } from "redux/customize-action/capture-model";
+import * as yup from "yup";
 
 const styles = (theme) => ({
   root: {
@@ -81,6 +80,11 @@ function AddNameCustomize(props) {
   const setInitialValue = () => {
     setValue("customName", captureModel?.name ? captureModel?.name : "");
   };
+  function onChangeTextSearch(e) {
+    if (e.key === "Enter") {
+      onsubmit();
+    }
+  }
 
   useEffect(() => {
     setInitialValue();
@@ -111,6 +115,7 @@ function AddNameCustomize(props) {
                   type="text"
                   id="name"
                   placeholder="Tên tùy biến"
+                  onKeyDown={(e) => onChangeTextSearch(e)}
                 />
                 {errors?.customName && (
                   <span className="error-message text-danger">
@@ -126,9 +131,9 @@ function AddNameCustomize(props) {
               <Button autoFocus color="primary" onClick={() => setOpen(false)}>
                 Hủy
               </Button>
-              <button type="submit" className="btn btn-light">
+              <YLButton variant="primary" type="submit" className="btn btn-light">
                 Xong
-              </button>
+              </YLButton>
             </>
           </DialogActions>
         </form>

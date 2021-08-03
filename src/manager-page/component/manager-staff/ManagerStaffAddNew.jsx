@@ -95,7 +95,7 @@ function ManagerStaffAddNew(props) {
             {...register("phone")}
             type="text"
             id="phone"
-            placeholder="Nhập tên "
+            placeholder="Nhập số điện thoại "
           />
           {errors?.phone && (
             <span className="error-message">

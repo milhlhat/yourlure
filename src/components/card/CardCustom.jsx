@@ -1,13 +1,12 @@
-import React from "react";
-import "assets/scss/scss-components/card-product.scss";
-import { useHistory } from "react-router";
-import { createImageUrlByLinkOrFile } from "utils/manager-product";
-import { convertToVND } from "utils/format-string";
-import YLButton from "components/custom-field/YLButton";
-import DEFINELINK from "routes/define-link";
-import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
 import ProductAPI from "api/product-api";
+import "assets/scss/scss-components/card-product.scss";
+import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
+import YLButton from "components/custom-field/YLButton";
+import React from "react";
+import { useHistory } from "react-router";
 import { toast } from "react-toastify";
+import { convertToVND } from "utils/format-string";
+import { createImageUrlByLinkOrFile } from "utils/manager-product";
 CardCustom.propTypes = {};
 
 function CardCustom(props) {
@@ -67,7 +66,7 @@ function CardCustom(props) {
               <div onClick={(e) => e.stopPropagation()} className="">
                 <YLButton
                   variant="primary"
-                  to={`/product/customize?productID=${product.productId}&isEdit=true&customizeId=${product.customizeId}`}
+                  to={`/product/customize?productId=${product.productId}&isEdit=true&customizeId=${product.customizeId}`}
                 >
                   Chỉnh sửa
                 </YLButton>

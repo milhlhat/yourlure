@@ -85,18 +85,18 @@ function ManagerChangePassWord(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     oldPassword: Yup.string()
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu cũ không được để trống."),
     password: Yup.string()
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu mới không được để trống."),
     rePassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
-      .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Không được để trống."),
+      .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+      .max(32, "Mật khẩu không được vượt quá 32 ký tự")
+      .required("Mật khẩu mới không được để trống."),
   });
 
   const handleSubmit = async (data) => {

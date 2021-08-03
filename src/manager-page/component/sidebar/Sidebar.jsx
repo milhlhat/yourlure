@@ -143,7 +143,7 @@ function Sidebar(props) {
                   }`}
                 >
                   <i className="fal fa-box-heart" />
-                  <span className="text-side-bar"> Chiến dịch</span>
+                  <span className="text-side-bar"> Sự kiện</span>
                 </Link>
               </li>
               <Can do={"read-write"} on={"customer"}>

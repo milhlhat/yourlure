@@ -52,7 +52,7 @@ function ManagerFishAddNew(props) {
     }, [canBack]);
     return (
         <div>
-            <h3>Tạo danh cá</h3>
+            <h3>Tạo loại cá</h3>
             {console.log('hihihi')}
             <div className="bg-box bg-shadow">
                 <h3>Thông tin cá</h3>

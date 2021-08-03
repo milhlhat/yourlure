@@ -10,7 +10,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
-import ManagerSort from "./ManagerSort";
+// import ManagerSort from "./ManagerSort";
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 import "./scss/manager-fish.scss";
 
 ManagerFish.propTypes = {};
@@ -64,7 +65,7 @@ function ManagerFish(props) {
   const setBack = {
     canBack: true,
     path: location,
-    label: "Fish",
+    label: "Loại cá",
   };
 
   function handlePageChange(newPage) {
