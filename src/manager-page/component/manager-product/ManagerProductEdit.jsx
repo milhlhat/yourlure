@@ -318,7 +318,7 @@ function ManagerProductEdit(props) {
               defaultName: object.material.name,
               textureBeforeUpload: [],
               listIdTexturesRemove: [],
-              canAddColor : true
+              canAddColor: true,
             });
         });
 
@@ -845,7 +845,11 @@ function ManagerProductEdit(props) {
             {/*end variants*/}
             <div className={"sticky-bar-bottom"}>
               <div className="col-12 bg-white bg-shadow submit-button-form">
-                <YLButton variant="danger" type="submit" value="Hủy" />
+                <YLButton
+                  variant="danger"
+                  to={DEFINELINK.manager + DEFINELINK.managementProduct}
+                  value="Hủy"
+                />
                 {continuesAdd && (
                   <HorizontalStepper
                     steps={ADD_PRODUCT_STEPS}

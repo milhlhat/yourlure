@@ -57,6 +57,7 @@ function Header(props) {
 
   useEffect(() => {
     if (path !== "/product/search") {
+      setKeyword("");
       const action = setFilter({
         listCateId: [],
         listFishId: [],
@@ -177,6 +178,7 @@ function Header(props) {
                       className="search "
                       placeholder="Tìm kiếm..."
                       name="keyword"
+                      value={keyword}
                       onKeyDown={(e) => onChangeTextSearch(e)}
                       onChange={(e) => setKeyword(e.target.value)}
                     />

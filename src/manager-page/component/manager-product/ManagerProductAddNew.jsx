@@ -302,6 +302,7 @@ function ManagerProductAddNew(props) {
                         methods={methods}
                         label={"Chiều dài"}
                         type={"number"}
+                        step={"any"}
                         placeholder={"(cm)"}
                         isRequired
                       />
@@ -484,7 +485,11 @@ function ManagerProductAddNew(props) {
           </div>
           <div className={"sticky-bar-bottom"}>
             <div className="col-12 bg-white bg-shadow submit-button-form">
-              <YLButton variant="danger" type="submit" value="Hủy" />
+              <YLButton
+                variant="danger"
+                to={DEFINELINK.manager + DEFINELINK.managementProduct}
+                value="Hủy"
+              />
               <Stepper steps={ADD_PRODUCT_STEPS} />
               <YLButton
                 variant="primary"
