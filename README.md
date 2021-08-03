@@ -111,3 +111,8 @@
             sudo sudo systemctl daemon-reload
             sudo systemctl start yourlure-be
 ```
+
+Watch which service are eating ram:
+```
+ps aux --sort=-%mem | head
+```
