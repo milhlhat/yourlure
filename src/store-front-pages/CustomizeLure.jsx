@@ -44,6 +44,8 @@ import DEFINELINK from "../routes/define-link";
 import AddNameCustomize from "components/orther/AddNameCustomize";
 import { AbilityContext, Can } from "../ability/can";
 import ConfirmPopupV2 from "../components/confirm-popup/ConfirmPopupV2";
+import NoPermistion from "../components/error-notify/NoPermistion";
+import { logout } from "../utils/user";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
@@ -326,6 +328,7 @@ function ExportCustomInformation(props) {
 
   const ability = useContext(AbilityContext);
   const isLoggedInAsCustomer = ability.can("read-write", "customer");
+  const isLoginAsManager = ability.can("read-write", "admin-staff");
   const exportStt = props.exportStt;
   const history = useHistory();
   const [notifyNotCustomer, setNotifyNotCustomer] =
@@ -334,6 +337,45 @@ function ExportCustomInformation(props) {
   const onCapture = () => {
     setOpenDialog(true);
   };
+
+  const getTitleNotAllowRoles = () => {
+    if (isLoginAsManager) {
+      return "Bạn đang đăng nhập với vai trò là quản lý";
+    }
+    if (!isLoggedInAsCustomer) {
+      return "Bạn chưa đăng nhập";
+    }
+  };
+  const getMessagesNotAllowRoles = () => {
+    if (isLoginAsManager) {
+      return "Mọi tuỳ chỉnh của bạn sẽ không được lưu lại, bạn cần đăng xuất và đăng nhập với vai trò khách hàng để lưu lại tuỳ chỉnh của mình.";
+    }
+    if (!isLoggedInAsCustomer) {
+      return "Mọi tuỳ chỉnh của bạn sẽ không được lưu lại, bạn cần đăng nhập để lưu lại tuỳ chỉnh của mình.";
+    }
+  };
+  const getOnConfirmActionNotAllowRoles = () => {
+    if (isLoginAsManager) {
+      logout(ability);
+      history.push({
+        pathname: DEFINELINK.login,
+        search: "",
+        state: {
+          backPath: `/product/customize?productId=${captureModel.productId}`,
+        },
+      });
+    }
+    if (!isLoggedInAsCustomer) {
+      return history.push({
+        pathname: DEFINELINK.login,
+        search: "",
+        state: {
+          backPath: `/product/customize?productId=${captureModel.productId}`,
+        },
+      });
+    }
+  };
+
   return (
     <div className="export d-flex gap-1">
       <YLButton
@@ -361,22 +403,12 @@ function ExportCustomInformation(props) {
       <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
       <ConfirmPopupV2
         children={<i />}
-        title={"Bạn chưa đăng nhập"}
-        content={
-          "Mọi tuỳ chỉnh của bạn sẽ không được lưu lại, bạn cần đăng nhập để lưu lại tuỳ chỉnh của mình."
-        }
-        positiveText={"Đăng nhập"}
+        title={getTitleNotAllowRoles()}
+        content={getMessagesNotAllowRoles()}
+        positiveText={isLoginAsManager ? "Đăng xuất" : "Đăng nhập"}
         negativeText={"Tiếp tục"}
         isOpenNow={!notifyNotCustomer}
-        onConfirm={() =>
-          history.push({
-            pathname: DEFINELINK.login,
-            search: "",
-            state: {
-              backPath: `/product/customize?productId=${captureModel.productId}`,
-            },
-          })
-        }
+        onConfirm={() => getOnConfirmActionNotAllowRoles()}
       />
     </div>
   );
@@ -398,6 +430,7 @@ export default function Customize(props) {
     data: "",
     isLoading: true,
     isSuccess: false,
+    noPermission: false,
   });
 
   const fetchMaterialInfo = async (productId, isEdit) => {
@@ -437,6 +470,22 @@ export default function Customize(props) {
       dispatch(action);
       dispatch(selectMIdAction);
     } catch (error) {
+      if (error.response?.status === 403) {
+        setProduct({
+          ...product,
+          noPermission: true,
+          isSuccess: false,
+          isLoading: false,
+        });
+      } else {
+        setProduct({
+          ...product,
+          isSuccess: false,
+          isLoading: false,
+        });
+      }
+
+      console.log(error.response);
       console.log("fail to fetch data");
     }
   };
@@ -446,6 +495,8 @@ export default function Customize(props) {
   }, [productId, isEdit]);
   if (product.isLoading) {
     return <Loading hasLayout />;
+  } else if (product.noPermission) {
+    return <NoPermistion />;
   } else if (!product.isSuccess) {
     return <ErrorLoad hasLayout />;
   } else

@@ -11,6 +11,9 @@ const Register = React.lazy(() => import("store-front-pages/Register"));
 const FogotPassWord = React.lazy(() =>
   import("store-front-pages/ForgotPassWord")
 );
+const ViewCustomizeOrder = React.lazy(() =>
+  import("manager-page/component/manager-order/ViewCustomizeOrder")
+);
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
 
 export default function OtherRoute() {
@@ -37,6 +40,7 @@ export default function OtherRoute() {
       exact: false,
     },
     { path: DEFINELINK.home, component: HomePage },
+    { path: DEFINELINK.viewCustomizeOrder, component: ViewCustomizeOrder },
   ];
   return (
     <Switch>

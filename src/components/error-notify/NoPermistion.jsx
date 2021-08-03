@@ -16,7 +16,7 @@ function NoPermistion(props) {
       }`}
     >
       <h1>
-        <i className="far fa-frown"></i>
+        <i className="far fa-frown" />
       </h1>
       {isLoggedIn && (
         <>

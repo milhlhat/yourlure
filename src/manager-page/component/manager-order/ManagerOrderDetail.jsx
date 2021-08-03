@@ -1,21 +1,22 @@
 import ManagerOrderAPI from "api/manager-order-api";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import YLButton from "components/custom-field/YLButton";
 import "./scss/manager-order-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { convertToVND, getShipping } from "utils/format-string";
-import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
-import { get, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
 import DEFINELINK from "routes/define-link";
-import ExportGlb from "./ExportGLB";
+
+import { copyToClipboard } from "../../../utils/common";
 
 function ManagerOrderDetail(props) {
+  console.log(props);
   const canBack = props.location.canBack;
   const orderId = props.match.params.id;
   const dispatch = useDispatch();
@@ -61,13 +62,13 @@ function ManagerOrderDetail(props) {
     { value: "DONE", lable: "Xong" },
     { value: "DONED", lable: "Đã hoàn tất" },
   ];
+
   function totalPrice(list) {
     let total = list.reduce((sum, product) => {
       return sum + product.price * product.quantity;
     }, 0);
     return total;
   }
-  const onConfirm = () => {};
 
   const fetchOrder = async () => {
     setOrder((prevState) => {
@@ -122,7 +123,7 @@ function ManagerOrderDetail(props) {
                 {order?.data?.items?.length <= 0 && <p>Không có sản phẩm </p>}
                 <table className="table">
                   <tbody>
-                    <tr>
+                    <tr className={"primary-color"}>
                       <th>#</th>
                       <th>Tên sản phẩm</th>
                       <th>Tùy biến</th>
@@ -132,11 +133,12 @@ function ManagerOrderDetail(props) {
                       <th>Trạng thái</th>
                       <th className="text-center">Giá</th>
                       <th className="text-center">Tổng</th>
-                      <th className="text-center">Xuất File</th>
+                      <th className="text-center">Sao chép đường dẫn</th>
+                      <th className="text-center">Xem tuỳ biến</th>
                     </tr>
                     {order?.data?.items?.map((item, i) => (
                       <tr
-                        className="pointer hover-background"
+                        className="pointer hover-background align-middle"
                         onClick={() => {
                           history.push({
                             pathname:
@@ -148,13 +150,7 @@ function ManagerOrderDetail(props) {
                       >
                         <td>{i + 1}</td>
                         <td>{item.productName}</td>
-                        <td>
-                          {item.customizeId == null
-                            ? item.customizeId
-                              ? "Có"
-                              : "Không"
-                            : "-"}
-                        </td>
+                        <td>{item.customModelId ? "Có" : "Không"}</td>
                         <td className="text-center">{item?.variantName}</td>
                         <td>{item.categoryName}</td>
                         <td className="text-center">{item.quantity}</td>
@@ -173,10 +169,30 @@ function ManagerOrderDetail(props) {
                         </td>
                         <td
                           className="text-center"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            copyToClipboard(
+                              `${
+                                window.location.host +
+                                DEFINELINK.viewCustomizeOrder
+                              }?customizeId=${item.customModelId}`
+                            );
+                          }}
+                        >
+                          <i className="fad fa-copy text-success" />
+                        </td>
+                        <td
+                          className="text-center"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {item.customModelId && (
-                            <ExportGlb customModelId={item.customModelId} />
+                            <Link
+                              to={`${DEFINELINK.viewCustomizeOrder}?customizeId=${item.customModelId}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <i className="fad fa-eye text-success" />
+                            </Link>
                           )}
                         </td>
                       </tr>
@@ -210,7 +226,7 @@ function ManagerOrderDetail(props) {
                           }
                           title="Bạn có chắc chắn muốn hủy đơn?"
                           onConfirm={() => handleSubmitStatus(options[2].lable)}
-                        ></ConfirmPopupV2>
+                        />
                       )}
                       <div className="ms-2">
                         <YLButton

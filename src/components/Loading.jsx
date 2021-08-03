@@ -5,7 +5,6 @@ import proptypes from "prop-types";
 
 Loading.propTypes = {
   hasLayout: proptypes.bool,
-  message: proptypes.string,
 };
 function Loading(props) {
   const { hasLayout } = props;
@@ -16,4 +15,4 @@ function Loading(props) {
   );
 }
 
-export default Loading;
+export default React.memo(Loading, () => true);

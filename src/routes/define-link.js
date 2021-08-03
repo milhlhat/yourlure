@@ -7,6 +7,7 @@ const DEFINELINK = {
   forgotPassword: "/fogot-password",
   about: "/about",
   campaign: "/campaign",
+  viewCustomizeOrder: "/view-customize-order",
 
   customer: "/customer",
   account: "/account",

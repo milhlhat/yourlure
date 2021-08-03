@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import NoPermistion from "components/error-notify/NoPermistion";
 import { Can } from "ability/can";
+import { toast } from "react-toastify";
 
 const CommonUtils = {
   scrollTop: () => {
@@ -14,8 +15,18 @@ const CommonUtils = {
       return true;
     }
   },
+
+  copyToClipboard: (str) => {
+    const el = document.createElement("textarea");
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    toast.success("Sao chép thành công");
+  },
 };
-export const { parseString2Boolean } = CommonUtils;
+export const { parseString2Boolean, copyToClipboard, scrollTop } = CommonUtils;
 export default CommonUtils;
 
 export function RenderRoutes({ routes, properties }) {
