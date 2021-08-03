@@ -260,14 +260,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AdminProductDetailDtoOut adminGetById(Long id) {
         Optional<Product> findProduct = productJPARepos.findById(id);
-        List<Long> listFishId = new ArrayList<>();
-        if (findProduct.isPresent()) {
-            for (Fish fish : findProduct.get().getFishList()) {
-                listFishId.add(fish.getFishId());
-            }
-        }
         AdminProductDetailDtoOut result = findProduct.map(product -> mapper.map(product, AdminProductDetailDtoOut.class)).orElse(null);
-        result.setListFishId(listFishId);
         return result;
     }
 
