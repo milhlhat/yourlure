@@ -143,16 +143,15 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = whoami(rq);
+
+        // authenticate để check oldPwd nhập vào có giống mk trong db hay ko
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
-        if (!passwordEncoder.encode(oldPwd).equals(user.getPassword())) {
-            throw new ValidationException("Mật khẩu cũ không đúng!");
-        }
         if (authenticate.isAuthenticated()) {
             user.setPassword(passwordEncoder.encode(newPwd));
             userRepos.save(user);
             return true;
         } else {
-            throw new ValidationException("Người dùng chưa đăng nhập!");
+            throw new ValidationException("Mật khẩu cũ không đúng!");
         }
     }
 
