@@ -80,86 +80,90 @@ function CustomerAddress(props) {
           </YLButton>
         </div>
         <div className="list-my-address">
-          {address?.data?.length <= 0 && (
+          {address?.data?.length <= 0 ||
+          address?.data === "Không tồn tại địa chỉ nào!" ? (
             <div className="bg-box mt-3">
-              <p className="mx-2">Không có địa chỉ nào</p>
+              <p className="mx-2 text-center">Không có địa chỉ nào</p>
             </div>
+          ) : (
+            <>
+              {address?.data?.map((address, i) => (
+                <div className="address-row " key={"address-row" + i}>
+                  <div className="col-sm-12 col-md-8 ">
+                    <table className="address-info">
+                      <tbody>
+                        <tr>
+                          <td className="address-title">Họ và Tên</td>
+                          <td className="address-value">
+                            {address?.userName}
+                            {address?.isDefault && (
+                              <span className="default-address"> Mặc định</span>
+                            )}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="address-title">Số điện thoại</td>
+                          <td className="address-value">{address?.phone}</td>
+                        </tr>
+                        <tr>
+                          <td className="address-title">Địa chỉ</td>
+                          <td className="address-value">
+                            {formatAddress(address)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="address-action col-sm-12 col-md-4">
+                    <div className="d-flex gap-1 justify-content-center">
+                      <YLButton
+                        variant="primary"
+                        width="70px"
+                        height="25px"
+                        to={{
+                          pathname:
+                            DEFINELINK.customer +
+                            "/address/edit/" +
+                            address.userAddressID,
+                          state: {
+                            address: address,
+                          },
+                        }}
+                      >
+                        Sửa
+                      </YLButton>
+                      <ConfirmPopup
+                        variant="danger"
+                        width="70px"
+                        height="25px"
+                        btnText="Xóa"
+                        title="Xóa"
+                        content="Bạn chắc chắn muốn xóa địa chỉ?"
+                        onConfirm={() => onConfirm(address.userAddressID)}
+                        // onConfirm={onConfirm}
+                      />
+                    </div>
+                    <div
+                    // onClick={() => handleSetDefaultAddress(address.userAddressID)}
+                    >
+                      <YLButton
+                        type="submit"
+                        variant="light"
+                        disabled={address.isDefault}
+                        height="25px"
+                        width="145px"
+                        onClick={() =>
+                          handleSetDefaultAddress(address.userAddressID)
+                        }
+                      >
+                        Đặt làm mặc định
+                      </YLButton>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </>
           )}
-          {address?.data?.map((address, i) => (
-            <div className="address-row " key={"address-row" + i}>
-              <div className="col-sm-12 col-md-8 ">
-                <table className="address-info">
-                  <tbody>
-                    <tr>
-                      <td className="address-title">Họ và Tên</td>
-                      <td className="address-value">
-                        {address?.userName}
-                        {address?.isDefault && (
-                          <span className="default-address"> Mặc định</span>
-                        )}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="address-title">Số điện thoại</td>
-                      <td className="address-value">{address?.phone}</td>
-                    </tr>
-                    <tr>
-                      <td className="address-title">Địa chỉ</td>
-                      <td className="address-value">
-                        {formatAddress(address)}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="address-action col-sm-12 col-md-4">
-                <div className="d-flex gap-1 justify-content-center">
-                  <YLButton
-                    variant="primary"
-                    width="70px"
-                    height="25px"
-                    to={{
-                      pathname:
-                        DEFINELINK.customer +
-                        "/address/edit/" +
-                        address.userAddressID,
-                      state: {
-                        address: address,
-                      },
-                    }}
-                  >
-                    Sửa
-                  </YLButton>
-                  <ConfirmPopup
-                    variant="danger"
-                    width="70px"
-                    height="25px"
-                    btnText="Xóa"
-                    title="Xóa"
-                    content="Bạn chắc chắn muốn xóa địa chỉ?"
-                    onConfirm={() => onConfirm(address.userAddressID)}
-                    // onConfirm={onConfirm}
-                  />
-                </div>
-                <div
-                // onClick={() => handleSetDefaultAddress(address.userAddressID)}
-                >
-                  <YLButton
-                    type="submit"
-                    variant="light"
-                    disabled={address.isDefault}
-                    height="25px"
-                    width="145px"
-                    onClick={() =>
-                      handleSetDefaultAddress(address.userAddressID)
-                    }
-                  >
-                    Đặt làm mặc định
-                  </YLButton>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </>
     );

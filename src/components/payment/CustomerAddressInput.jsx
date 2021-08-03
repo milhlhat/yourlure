@@ -41,7 +41,6 @@ function CustomerAddressInput(props) {
         setInfo(null);
       } else setInfo(response?.find((e) => e.isDefault === true));
     } catch (error) {
-      console.log(error);
       setAddress({ data: null, isLoading: false, isSuccess: false });
       console.log("fail to fetch address");
     }
@@ -49,7 +48,6 @@ function CustomerAddressInput(props) {
   const setInfo = (item) => {
     setValue("phone", item?.phone);
     setValue("receiverName", item?.userName);
-    console.log(item);
   };
   useEffect(() => {
     fetchCustomAddress();
@@ -66,7 +64,7 @@ function CustomerAddressInput(props) {
           <h5>
             <i className="fas fa-map-marker-check"></i> ĐỊA CHỈ GIAO HÀNG
           </h5>
-          {address?.data?.length > 0 && (
+          {(address?.data?.length > 0&&address?.data!=="Không tồn tại địa chỉ nào!") && (
             <PaymentAddNewAddress
               fetchCustomAddress={fetchCustomAddress}
               noAddress={false}

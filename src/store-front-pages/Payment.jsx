@@ -1,30 +1,27 @@
-import { CircularProgress, Dialog, DialogContentText } from "@material-ui/core";
-import { isFulfilled } from "@reduxjs/toolkit";
+import { CircularProgress } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { AbilityContext, Can } from "ability/can";
 import OrderAPI from "api/order-api";
 import UserApi from "api/user-api";
 import "assets/scss/scss-pages/payment.scss";
+import CartProduct from "components/cart/CartProduct";
 import CartRowProduct from "components/cart/CartRowProduct";
 import BillLine from "components/payment/BillLine";
 import CustomerAddressInput from "components/payment/CustomerAddressInput";
 import GusestAddressInput from "components/payment/GuestAddressInput";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import { updateAfterBuy } from "redux/cart/cart-guest";
 import YLButton from "../components/custom-field/YLButton";
 import DEFINELINK from "../routes/define-link";
 import { convertToVND, getShipping, totalPrice } from "../utils/format-string";
-import { useTheme } from "@material-ui/core/styles";
-import DialogContent from "@material-ui/core/DialogContent";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { toast } from "react-toastify";
-import CartProduct from "components/cart/CartProduct";
-import { setCartGuest, updateAfterBuy } from "redux/cart/cart-guest";
 
 function Payment(props) {
   const cartData = props.location.cart;
-  console.log(cartData);
   // const cartData = useSelector((state) => state.cartGuest.carts);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -164,7 +161,6 @@ function Payment(props) {
         }
         setCompleteLoad(false);
       }
-      console.log(data);
     }
     // guest payment
     else {
@@ -193,7 +189,6 @@ function Payment(props) {
         console.log("fail to fetch guest payment");
       }
       setCompleteLoad(false);
-      console.log(data);
     }
   };
 

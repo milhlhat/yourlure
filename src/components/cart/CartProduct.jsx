@@ -133,7 +133,6 @@ function CartProduct(props) {
     if (isLoggedIn) {
       fetchCart();
     } else {
-      console.log(state);
       fetchCartGuest(state);
     }
   }, [state]);
@@ -167,7 +166,7 @@ function CartProduct(props) {
   return (
     <div className="container">
       {/* {console.log(cart)} */}
-      {cart?.data?.length ? (
+      {cart?.data?(cart?.data?.length ? (
         <>
           <div className="cart-product mt-5 ">
             <div className="cart-left col-lg-8  col-md-7 col-sm-12 bg-box bg-shadow  p-3">
@@ -270,6 +269,8 @@ function CartProduct(props) {
             Trở về trang chủ
           </Link>
         </div>
+      )):(
+        <Loading/>
       )}
     </div>
   );

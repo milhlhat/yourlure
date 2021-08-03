@@ -14,12 +14,12 @@
 	& .text-color-primary {
 		color: $primary;
 	}
-	& .text-name-product {
-		text-transform: lowercase;
-	}
-	& .text-name-product::first-letter {
-		text-transform: uppercase;
-	}
+	// & .text-name-product {
+	// 	text-transform: lowercase;
+	// }
+	// & .text-name-product::first-letter {
+	// 	text-transform: uppercase;
+	// }
 	& .thumb{
 		height: 12rem;
 		display: flex;

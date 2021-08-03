@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import UserApi from "api/user-api";
@@ -6,6 +7,7 @@ import YLButton from "components/custom-field/YLButton";
 import InputField from "components/custom-field/YLInput";
 import { FastField, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 function ChangePassword(props) {
@@ -43,28 +45,27 @@ function ChangePassword(props) {
       .required("Mật khẩu mới không được để trống."),
   });
 
+  const [changeProcess, setChangeProcess] = useState(false);
   const handleSubmit = async (data) => {
-    delete data.rePassword;
-    console.log(data);
+    setChangeProcess(true);
     try {
       const response = await UserApi.changePassword(data);
-      console.log(response);
       if (response.error) {
         throw new Error(response.error);
+      } else if (response?.data === true || response === true) {
+        setChangeProcess(false);
+        toast.success("Đổi mật khẩu thành công");
       } else {
-        setOpen({ ...open, isOpen: true, content: "Đổi mật khẩu thành công" });
+        throw new Error(response);
       }
     } catch (error) {
-      console.log(error);
-      setOpen({
-        ...open,
-        isOpen: true,
-        content: "Đổi mật khẩu không thành công",
-        severity: "error",
-      });
+      setChangeProcess(false);
+      toast.error(error?.response?.data);
+      if(!error?.response){
+        toast.error("Đổi mật khẩu thất bại");
+      }
       console.log("fail to fetch customer list");
     }
-    // setOpen({ ...open, isOpen: true,content:"Đổi mật khẩu thành công" });
   };
   return (
     <div className="bg-box d-flex flex-column align-items-center">
@@ -77,7 +78,6 @@ function ChangePassword(props) {
       >
         {(formikProps) => {
           const { values, errors, touched } = formikProps;
-          // console.log({ values, errors, touched });
           return (
             <Form className="w-50 my-4">
               <FastField
@@ -105,23 +105,18 @@ function ChangePassword(props) {
                 <YLButton
                   type="submit"
                   variant="primary"
-                  value="Lưu thay đổi"
-                ></YLButton>
+                  disabled={changeProcess}
+                >
+                  Lưu thay đổi{" "}
+                  {changeProcess && (
+                    <CircularProgress size={15} className="circle-progress" />
+                  )}{" "}
+                </YLButton>
               </div>
             </Form>
           );
         }}
       </Formik>
-      <Snackbar
-        open={open.isOpen}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleClose} severity={open.severity}>
-          {open.content}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

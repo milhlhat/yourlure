@@ -9,6 +9,7 @@ import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
 import { toast } from "react-toastify";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
+import { CircularProgress } from "@material-ui/core";
 
 function ProductAction(props) {
   const { product, setBigImgLink, productCustomize } = props;
@@ -68,6 +69,7 @@ function ProductAction(props) {
       variantName: variantName,
       weight: getValues("weight"),
       variantImg: variantImg,
+      thumbnailUrl:customize ? customize.thumbnailUrl : null,
     };
     if (
       (product.maxWeight && data.weight > product.maxWeight) ||
@@ -80,7 +82,9 @@ function ProductAction(props) {
       history.push({ pathname: "/cart/payment", cart: [data] });
     }
   };
+  const [addCart, setAddCart] = useState(false);
   const handleAddToCart = async () => {
+    setAddCart(true);
     let data = {
       customModelId: customize ? customize.customizeId : null,
       // productId: product.productId,
@@ -98,6 +102,7 @@ function ProductAction(props) {
     ) {
       toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
+      setAddCart(false);
     } else {
       if (isLoggedIn) {
         //add customize product to cart
@@ -137,6 +142,7 @@ function ProductAction(props) {
         toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
       }
       setQuantity(1);
+      setAddCart(false);
     }
   };
 
@@ -311,17 +317,22 @@ function ProductAction(props) {
           <YLButton
             variant="light"
             type="button"
-            disabled={takeOut <= 0 || !product?.visibleInStorefront}
-            value="Mua ngay"
-          ></YLButton>
+            disabled={takeOut <= 0 || !product?.visibleInStorefront||addCart}
+          >
+            Mua ngay
+          </YLButton>
         </div>
         <div className="ms-2" onClick={() => handleAddToCart()}>
           <YLButton
             variant="primary"
             type="button"
-            disabled={takeOut <= 0 || !product?.visibleInStorefront}
-            value="Thêm vào giỏ hàng"
-          ></YLButton>
+            disabled={takeOut <= 0 || !product?.visibleInStorefront || addCart}
+          >
+            Thêm vào giỏ hàng{" "}
+            {addCart && (
+              <CircularProgress size={15} className="circle-progress" />
+            )}
+          </YLButton>
         </div>
       </div>
     </div>

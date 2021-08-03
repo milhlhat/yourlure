@@ -3,7 +3,13 @@ import CartAPI from "api/user-cart-api";
 import "assets/scss/scss-components/cart/cart-row.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import ChangeQuantity from "components/orther/ChangeQuantity";
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -89,7 +95,6 @@ function CartRowProduct(props) {
 
   return (
     <div className="bg-white row-cart text-small">
-      {/* {console.log(item)} */}
       <table>
         <tbody>
           <tr>
@@ -109,7 +114,7 @@ function CartRowProduct(props) {
               <img
                 className="content-fit pointer"
                 src={createImageUrlByLinkOrFile(
-                  item?.variantImg ? item?.variantImg : item?.thumbnailUrl
+                  item?.thumbnailUrl ? item?.thumbnailUrl : item?.variantImg
                 )}
                 width={canChange ? 100 : 50}
                 height={canChange ? 100 : 50}
@@ -157,27 +162,34 @@ function CartRowProduct(props) {
               <div className="d-flex float-end">
                 {canChange &&
                   (item?.thumbnailUrl ? (
-                    <span>
-                      <ChangeQuantity
-                        quantity={item?.quantity}
-                        setQuantity={setQuantity}
-                      />
-                    </span>
-                  ) : item?.visibleInStorefront ? (
-                    item?.variantQuantity > 0 ? (
+                    <>
                       <span>
                         <ChangeQuantity
                           quantity={item?.quantity}
                           setQuantity={setQuantity}
                         />
                       </span>
+
+                      <span className="mx-3">{convertToVND(sumPrice())}</span>
+                    </>
+                  ) : item?.visibleInStorefront ? (
+                    item?.variantQuantity > 0 ? (
+                      <>
+                        <span>
+                          <ChangeQuantity
+                            quantity={item?.quantity}
+                            setQuantity={setQuantity}
+                          />
+                        </span>
+
+                        <span className="mx-3">{convertToVND(sumPrice())}</span>
+                      </>
                     ) : (
-                      <span className="text-danger">Hết hàng</span>
+                      <span className="text-danger me-3">Hết hàng</span>
                     )
                   ) : (
-                    <span className="text-danger">Ngừng kinh doanh</span>
+                    <span className="text-danger me-3">Ngừng kinh doanh</span>
                   ))}
-                <span className="mx-3">{convertToVND(sumPrice())}</span>
                 {canChange && (
                   <ConfirmPopup
                     variant="light"
