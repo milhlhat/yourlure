@@ -136,22 +136,24 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public Boolean changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
-        try {
-            User user = whoami(rq);
-            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
+    public Object changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
 
-            if (authenticate.isAuthenticated()) {
-                user.setPassword(passwordEncoder.encode(newPwd));
-                userRepos.save(user);
-                return true;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (oldPwd.equals(newPwd)) {
+            throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
         }
-        return false;
 
+        User user = whoami(rq);
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
+        if (!passwordEncoder.encode(oldPwd).equals(user.getPassword())) {
+            throw new ValidationException("Mật khẩu cũ không đúng!");
+        }
+        if (authenticate.isAuthenticated()) {
+            user.setPassword(passwordEncoder.encode(newPwd));
+            userRepos.save(user);
+            return true;
+        } else {
+            throw new ValidationException("Người dùng chưa đăng nhập!");
+        }
     }
 
     @Override
@@ -173,7 +175,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         phone = verifyPhone(phone);
-        if(userRepos.existsByPhone(phone)){
+        if (userRepos.existsByPhone(phone)) {
             throw new ValidationException("Số điện thoại đã tồn tại trong hệ thống!");
         }
         return otpService.generateOtp(phone);
