@@ -39,9 +39,9 @@ public class Variant {
     @Column(name = "imageUrl")
     private String imageUrl;
 
-    @Nullable
-    @Column(name = "visibleInStorefront")
-    private Boolean visibleInStorefront;
+//    @NotNull
+//    @Column(name = "visibleInStorefront", nullable = false)
+//    private Boolean visibleInStorefront;
 
     @JsonIgnore
     @ManyToOne

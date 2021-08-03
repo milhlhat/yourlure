@@ -329,7 +329,7 @@ public class OrderServiceImpl implements OrderService {
 //                    item.setProductName(var.getProduct().getProductName());
 //                    item.setVariantName(var.getVariantName());
                     item.setThumbnailUrl(var.getImageUrl());
-                    item.setVisibleInStorefront(var.getVisibleInStorefront());
+                    item.setVisibleInStorefront(var.getProduct().getVisibleInStorefront());
                 });
             }
 
@@ -540,7 +540,7 @@ public class OrderServiceImpl implements OrderService {
         orderDtoOut.setPaymentName(order.getPayment().getPayment());
         orderDtoOut.setItems(getOrderItemsDto(order));
         orderDtoOut.setActivities(getOrderActivities(order));
-        orderDtoOut.setUserId(order.getOrderId());
+        orderDtoOut.setUserId(order.getUser().getUserId());
         return orderDtoOut;
     }
 
