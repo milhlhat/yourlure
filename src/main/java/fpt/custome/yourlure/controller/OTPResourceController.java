@@ -27,20 +27,20 @@ public class OTPResourceController {
         // generate OTP.
         Boolean isGenerated = otpService.generateOtp(phoneNumber);
         if (!isGenerated) {
-            return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Không thể tạo mã OTP!", HttpStatus.BAD_REQUEST);
         }
 
         // success message
-        return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+        return new ResponseEntity<>("Mã OTP đã được gửi, vui lòng kiểm tra điện thoại của bạn.", HttpStatus.OK);
     }
 
     @PostMapping(value = "/validate-otp")
     public ResponseEntity<String> validateOTP(@RequestParam @Valid String phone, @RequestParam @Valid Integer otp){
         Boolean isValid = otpService.validateOTP(phone, otp);
         if (!isValid) {
-            return new ResponseEntity<>("fail to validate otp!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Mã OTP sai!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("validated success!", HttpStatus.OK);
+        return new ResponseEntity<>("Bạn đã nhập chính xác mã OTP!", HttpStatus.OK);
     }
 
 
