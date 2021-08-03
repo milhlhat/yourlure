@@ -8,6 +8,7 @@ import ErrorLoad from "components/error-notify/ErrorLoad";
 import banner from "assets/images/urban-fishing-in-boston-social.jpg";
 import { Can } from "ability/can";
 import DEFINELINK from "routes/define-link";
+import { Helmet } from "react-helmet";
 
 function Home() {
   const [productListBestSeller, setProductListBestSeller] = useState({
@@ -59,6 +60,25 @@ function Home() {
   } else
     return (
       <div className="container home-page">
+        <Helmet>
+          <title>Yourlure | Trang chủ</title>
+          <meta
+            name="description"
+            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
+          />
+          <meta
+            property="og:title"
+            content="How to Become an SEO Expert (8 Steps)"
+          />
+          <meta
+            property="og:description"
+            content="Get from SEO newbie to SEO pro in 8 simple steps."
+          />
+          <meta
+            property="og:image"
+            content="https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png"
+          />
+        </Helmet>
         <div className="home-banner ">
           <div className="img-banner bg-shadow">
             <img src={banner} alt="banner yourlure" />

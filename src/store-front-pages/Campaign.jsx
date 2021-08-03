@@ -54,7 +54,8 @@ function Campaign() {
         "Đăng ký sự kiện thành công, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất"
       );
     } catch (e) {
-      toast.error("Hệ thống gặp lỗi lạ, thử lại sau");
+      if (e.response?.data) toast.error(e.response?.data);
+      else toast.error("Hệ thống gặp lỗi lạ");
     }
   };
 
