@@ -66,6 +66,15 @@ function Home() {
             name="description"
             content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
           />
+          <meta property="og:title" content="Yourlure | Trang chủ" />
+          <meta
+            property="og:description"
+            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
+          />
+          <meta
+            property="og:image"
+            content="https://i.imgur.com/KQA6KRQ.jpeg"
+          />
         </Helmet>
         <div className="home-banner ">
           <div className="img-banner bg-shadow">

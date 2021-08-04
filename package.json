@@ -33,6 +33,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
+    "react-snap": "^1.23.0",
     "react-toastify": "^7.0.4",
     "reactstrap": "^8.9.0",
     "redux-persist": "^6.0.0",
@@ -44,7 +45,8 @@
     "start": "react-scripts --max_old_space_size=4096 start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
-    "deploy": "sh ./deploy.sh"
+    "deploy": "sh ./deploy.sh",
+    "postbuild": "react-snap"
   },
   "eslintConfig": {
     "extends": [

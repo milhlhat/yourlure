@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import YlInputFormHook from "../components/custom-field/YLInputFormHook";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Helmet } from "react-helmet";
 
 function Campaign() {
   //constructor value for formik field
@@ -196,6 +197,16 @@ function Campaign() {
   } else
     return (
       <div className="container campaign">
+        <Helmet>
+          <title>Yourlure | Sự kiện</title>
+          <meta name="description" content={campaign?.data?.banner} />
+          <meta property="og:title" content="Yourlure | Sự kiện" />
+          <meta property="og:description" content={campaign?.data?.banner} />
+          <meta
+            property="og:image"
+            content="https://i.imgur.com/TlB0Rld.jpeg"
+          />
+        </Helmet>
         <div className="campaign-banner d-block ">
           <Carousel
             responsive={responsiveBanner}

@@ -1,39 +1,39 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { hydrate, render } from "react-dom";
 import { Provider } from "react-redux";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import AppRouter from "routes";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/scss/map.scss";
+import "./assets/scss/base/_base.scss";
 import store, { persistor } from "redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import { Helmet } from "react-helmet";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Helmet>
-          <title>Yourlure</title>
-          <meta
-            name="description"
-            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
-          />
-        </Helmet>
-        <AppRouter />
-        <ToastContainer
-          autoClose={2000}
-          pauseOnFocusLoss={false}
-          pauseOnHover={false}
-        />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+const rootElement = document.getElementById("root");
+if (rootElement.hasChildNodes()) {
+  hydrate(
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppRouter />
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>,
+    rootElement
+  );
+} else {
+  render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppRouter />
+        </PersistGate>
+      </Provider>
+    </React.StrictMode>,
+    rootElement
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
