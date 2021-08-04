@@ -72,7 +72,7 @@ function Campaign() {
         setCampaignList({ ...campaignList, failFetch: true });
         throw new Error(response.error);
       } else {
-        await setCampaignList({
+        setCampaignList({
           list: response,
           isLoading: false,
           isSuccess: true,
@@ -87,21 +87,19 @@ function Campaign() {
     isLoading: true,
     isSuccess: false,
   });
+  const [isAvailable, setIsAvailable] = useState(true);
   const fetchNewestCampaign = async () => {
     try {
       const response = await getNewestCampaignGuest();
-      if (response.error) {
-        throw new Error(response.error);
-      } else {
-        await setCampaign({
-          data: response,
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
+
+      setCampaign({
+        data: response,
+        isLoading: false,
+        isSuccess: true,
+      });
+      setIsAvailable(new Date(response.endDate) - new Date() > 0);
     } catch (error) {
       setCampaign({ data: null, isLoading: false, isSuccess: false });
-      console.log("fail to fetch customer list");
     }
   };
 
@@ -109,15 +107,13 @@ function Campaign() {
     setCampaign({ data: null, isLoading: true, isSuccess: false });
     try {
       const response = await getCampaignGuestById(id);
-      if (response.error) {
-        throw new Error(response.error);
-      } else {
-        await setCampaign({
-          data: response,
-          isLoading: false,
-          isSuccess: true,
-        });
-      }
+
+      setCampaign({
+        data: response,
+        isLoading: false,
+        isSuccess: true,
+      });
+      setIsAvailable(new Date(response.endDate) - new Date() > 0);
     } catch (error) {
       setCampaign({ data: null, isLoading: false, isSuccess: false });
       toast.error("Hệ thống gặp lỗi lạ");
@@ -233,39 +229,45 @@ function Campaign() {
             </p>
           </article>
           <div className={"d-flex flex-wrap"}>
-            <div className="campain-information col-12 col-md-6 pe-md-3">
-              <h3 className={"pb-3 content"}>Thông tin sự kiện</h3>
+            <div
+              className={`campain-information col-12 pe-md-3 ${
+                isAvailable && " col-md-6"
+              }`}
+            >
+              <h3 className={"pb-3 content text-center"}>Thông tin sự kiện</h3>
               <p className={"content"}>
                 {campaign ? campaign?.data?.content : "null"}
               </p>
             </div>
             <div className="campaign-register col-12 col-md-6 ps-md-3">
-              <div className="campaign-register-form">
-                <h2 className={"pb-3"}>Đăng ký tham gia sự kiện</h2>
-                <form onSubmit={handleSubmit(campaignRegister)}>
-                  <YlInputFormHook
-                    name={"phone"}
-                    isRequired
-                    placeholder={"Nhập số điện thoại"}
-                    label={"Số điện thoại"}
-                    methods={methods}
-                  />
-                  <br />
-                  <YlInputFormHook
-                    name={"username"}
-                    isRequired
-                    placeholder={"Họ tên"}
-                    label={"Nhập họ tên"}
-                    methods={methods}
-                  />
-                  <br />
-                  <YLButton
-                    type={"submit"}
-                    variant={"primary"}
-                    value={"Đăng ký"}
-                  />
-                </form>
-              </div>
+              {isAvailable && (
+                <div className="campaign-register-form">
+                  <h2 className={"pb-3"}>Đăng ký tham gia sự kiện</h2>
+                  <form onSubmit={handleSubmit(campaignRegister)}>
+                    <YlInputFormHook
+                      name={"phone"}
+                      isRequired
+                      placeholder={"Nhập số điện thoại"}
+                      label={"Số điện thoại"}
+                      methods={methods}
+                    />
+                    <br />
+                    <YlInputFormHook
+                      name={"username"}
+                      isRequired
+                      placeholder={"Họ tên"}
+                      label={"Nhập họ tên"}
+                      methods={methods}
+                    />
+                    <br />
+                    <YLButton
+                      type={"submit"}
+                      variant={"primary"}
+                      value={"Đăng ký"}
+                    />
+                  </form>
+                </div>
+              )}
             </div>
           </div>
         </div>

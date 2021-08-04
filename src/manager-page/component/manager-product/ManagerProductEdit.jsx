@@ -63,19 +63,51 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     is: false,
     then: yup.mixed().nullable(),
     otherwise: yup
-      .number()
-      .typeError("Trọng lượng không được để trống")
-      .max(yup.ref("defaultWeight"), "Nhỏ hơn hoặc bằng trọng lượng mặc định")
-      .lessThan(yup.ref("maxWeight"), `Nhỏ hơn trọng lượng tối đa`),
+      .mixed()
+      .required("Trọng lượng không được để trống")
+      .test(
+        "maxDefault",
+        "Nhỏ hơn hơn hoặc bằng trọng lượng mặc định",
+        (value, context) => {
+          const defaultWeight = context.parent.defaultWeight;
+          if (!defaultWeight) return false;
+          return value <= defaultWeight;
+        }
+      )
+      .test(
+        "lessThanMaxWeight",
+        "Nhỏ hơn trọng lượng tối đa",
+        (value, context) => {
+          const maxWeight = context.parent.maxWeight;
+          if (!maxWeight) return false;
+          return value < maxWeight;
+        }
+      ),
   }),
   maxWeight: yup.mixed().when("isCustomizeWeight", {
     is: false,
     then: yup.mixed().nullable(),
     otherwise: yup
-      .number()
-      .typeError("Trọng lượng không được để trống")
-      .min(yup.ref("defaultWeight"), "Lớn hơn hoặc bằng trọng lượng mặc định")
-      .moreThan(yup.ref("minWeight"), `Lớn hơn trọng lượng tối thiểu`),
+      .mixed()
+      .required("Trọng lượng không được để trống")
+      .test(
+        "maxDefault",
+        "Lớn hơn hoặc bằng trọng lượng mặc định",
+        (value, context) => {
+          const defaultWeight = context.parent.defaultWeight;
+          if (!defaultWeight) return false;
+          return value >= defaultWeight;
+        }
+      )
+      .test(
+        "lessThanMaxWeight",
+        "Lớn hơn trọng lượng tối thiểu",
+        (value, context) => {
+          const minWeight = context.parent.minWeight;
+          if (!minWeight) return false;
+          return value > minWeight;
+        }
+      ),
   }),
   description: yup.string().required("Mô tả không được để trống"),
 };
@@ -257,7 +289,7 @@ function ManagerProductEdit(props) {
         setFormValues(response);
         //check to fish list
         responseFish.forEach((item, index) => {
-          if (response.listFishId.includes(item.fishID)) {
+          if (response.listFishId?.includes(item.fishID)) {
             setValue(`listFishId[${index}]`, item.fishID);
           }
         });
@@ -284,6 +316,7 @@ function ManagerProductEdit(props) {
         );
       } catch (error) {
         console.log(error);
+        setProduct({ loading: false, success: false });
       }
     };
 
