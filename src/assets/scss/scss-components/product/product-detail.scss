@@ -2,6 +2,7 @@
 .gallery {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   & .small-images {
     max-width: 100px;
   }

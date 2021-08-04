@@ -103,7 +103,7 @@ function ProductDetail(props) {
     window.scrollTo(0, 0);
     fetchProduct();
     fetchProductSame();
-    fetchFilter(dispatch, { ...filter, listCateId: [1] });
+    fetchFilter(dispatch, { ...filter, listCateId: [productDetail?.list?.category?.categoryId] });
   }, [productId]);
   if (productDetail.isLoading) {
     return <Loading hasLayout />;

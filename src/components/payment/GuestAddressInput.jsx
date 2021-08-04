@@ -13,7 +13,7 @@ function GusestAddressInput(props) {
         <i className="fas fa-map-marker-check"></i> ĐỊA CHỈ GIAO HÀNG
       </h5>
       <input
-        className="form-control mb-3"
+        className="form-control"
         placeholder={"*Họ và Tên"}
         {...register("receiverName", {
           required: "Tên người nhận không được để trống",
@@ -26,7 +26,7 @@ function GusestAddressInput(props) {
       <YLSelectAddress {...methods}  />
 
       <input
-        className="form-control my-3"
+        className="form-control mt-3"
         placeholder={"*Địa chỉ, số nhà, tên đường"}
         {...register("address", {
           required: "Chi tiết địa chỉ không được để trống",
@@ -36,7 +36,7 @@ function GusestAddressInput(props) {
         <span className="text-danger">(*){errors.address.message}</span>
       )}
       <input
-        className="form-control my-3"
+        className="form-control mt-3"
         placeholder={"*Số điện thoại"}
         {...register("phone", {
           required: "Số điện thoại không được để trống",
@@ -46,7 +46,7 @@ function GusestAddressInput(props) {
       {errors.phone && (
         <span className="text-danger">(*){errors.phone.message}</span>
       )}
-      <input className="form-control my-3" placeholder={"Lưu ý"} />
+      <input className="form-control mt-3" placeholder={"Lưu ý"} />
       {errors.note && (
         <span className="text-danger">{errors.note.message}</span>
       )}

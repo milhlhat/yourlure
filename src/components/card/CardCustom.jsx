@@ -55,7 +55,7 @@ function CardCustom(props) {
           <div className="d-flex flex-column card-info w-100 thum p-2 pb-4">
             <span className="text-color text-small">{product.brand}</span>
             <span className="mt-2 text-name-product text-ellipsis">
-              {product.productName ? product.productName : ""}
+              {product?.name}
             </span>
             <span className="text-color-primary">
               {!product

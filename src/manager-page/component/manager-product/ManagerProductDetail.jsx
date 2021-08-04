@@ -49,6 +49,14 @@ function ManagerProductDetail(props) {
     path: location,
     label: "Chi tiết sản phẩm",
   };
+  const fishListName = (list) => {
+    if (!list) return null;
+    let rs = list.reduce((sum, fish) => {
+      return sum + fish.fishName + ", ";
+    }, "");
+    console.log(rs);
+    return rs;
+  };
   useEffect(() => {
     if (canBack) {
       const action = setIsBack({
@@ -65,130 +73,156 @@ function ManagerProductDetail(props) {
   if (productDetail.loading) {
     return <Loading />;
   } else if (!productDetail.success) {
-    return <ErrorLoad message={'Id sản phẩm không hợp lệ'}/>;
+    return <ErrorLoad message={"Id sản phẩm không hợp lệ"} />;
   } else
-  return (
-    <div className="bg-white bg-shadow manager-product-detail p-3">
-        {console.log(productDetail?.list)}
-      <div className="manager-product-edit mb-3 mb-md-5 float-end">
-        <YLButton
-          variant="warning"
-          value="Chỉnh sửa"
-          to={{ pathname: "/manager/product/edit/"+productId, canBack: setBack }}
-        />
-      </div>
+    return (
+      <div className="bg-white bg-shadow manager-product-detail p-3">
+        <div className="manager-product-edit mb-3 mb-md-5 float-end">
+          <YLButton
+            variant="warning"
+            value="Chỉnh sửa"
+            to={{
+              pathname: "/manager/product/edit/" + productId,
+              canBack: setBack,
+            }}
+          />
+        </div>
 
-      <div className="manager-product-info">
-        <table>
-          <tbody>
-            <tr>
-              <th>ID</th>
-              <td>{productDetail?.list?.productId}</td>
-            </tr>
-            <tr>
-              <th>Tên sản phẩm</th>
-              <td>{productDetail?.list?.productName}</td>
-              <th>Danh mục</th>
-              <td>{productDetail?.list?.category?.categoryName}</td>
-            </tr>
-            <tr>
-              <th>Giá</th>
-              <td>
-                {!productDetail?.list?.defaultPrice
-                  ? "N/A"
-                  : Number(productDetail.list.defaultPrice).toLocaleString(
-                      undefined,
-                      {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                      }
-                    )}
-              </td>
-              <th>Trạng thái</th>
-              <td>
-                {productDetail?.list?.visibleInStorefront
-                  ? productDetail?.list?.visibleInStorefront?'Đang kinh doanh':'Ngừng kinh doanh'
-                  : "NaN"}
-              </td>
-            </tr>
-            
-            <tr>
-              <th>Số móc</th>
-              <td>{productDetail?.list?.hookSize}</td>
-              <th>Độ nặng mặc định</th>
-              <td>{productDetail?.list?.defaultWeight} (g)</td>
-            </tr>
-            <tr>
-              <th>Chiều dài</th>
-              <td>{productDetail?.list?.length} (cm)</td>
-              <th>Nhãn hiệu</th>
-              <td>{productDetail?.list?.brand?productDetail?.list?.brand:'-'}</td>
-            </tr>
-            <tr>
-              <th>Lặn sâu(m)</th>
-              <td>{productDetail?.list?.deepDiving}</td>
-              <th>Chất liệu</th>
-              <td>{productDetail?.list?.material}</td>
-            </tr>
-            <tr>
-              <th>Có thể tùy biến</th>
-              <td>{productDetail?.list?.customizable?'Có':'Không'}</td>
-              <th>Giới hạn độ nặng</th>
-              <td>{productDetail?.list?.minWeight} (g) - {productDetail?.list?.maxWeight} (g)</td>
-            </tr>
-            <tr>
-              <th>Loại cá</th>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th>Hình ảnh</th>
-              <td className="product-detail-image">
-                {productDetail?.list?.imageCollection.map((images, i) => (
-                  <img src={createImageUrlByLinkOrFile(images.linkImage)} key={"img" + i}  />
-                ))}
-              </td>
-              <td colSpan="2">
-                <caption>Variant</caption>
-                <table>
-                  <tbody>
-                    <tr>
-                      <th>Tên</th>
-                      <th>Số lượng</th>
-                      <th>Giá</th>
-                      <th>Hình ảnh</th>
-                    </tr>
-                    {productDetail?.list?.variantCollection.map(
-                      (variant, i) => (
-                        <tr key={"variant" + i} className="border-bottom-0">
-                          <td>{variant.variantName}</td>
-                          <td>{variant.quantity}</td>
-                          <td>
-                            {variant.newPrice
-                              ? variant.newPrice
-                              : productDetail.list.defaultPrice}
-                          </td>
-                          <td><img src={createImageUrlByLinkOrFile(variant.imageUrl)} width={50} /> </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <th>Mô tả</th>
-              <td colSpan="3">
-                <div className={`${productDetail?.list?.description?'detail-description m-2 p-1':''}`}>
-                  
-                  {productDetail?.list?.description}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="manager-product-info">
+          <table>
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{productDetail?.list?.productId}</td>
+              </tr>
+              <tr>
+                <th>Tên sản phẩm</th>
+                <td>{productDetail?.list?.productName}</td>
+                <th>Danh mục</th>
+                <td>{productDetail?.list?.category?.categoryName}</td>
+              </tr>
+              <tr>
+                <th>Giá</th>
+                <td>
+                  {!productDetail?.list?.defaultPrice
+                    ? "N/A"
+                    : Number(productDetail.list.defaultPrice).toLocaleString(
+                        undefined,
+                        {
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 2,
+                        }
+                      )}
+                </td>
+                <th>Trạng thái</th>
+                <td>
+                  {productDetail?.list?.visibleInStorefront
+                    ? productDetail?.list?.visibleInStorefront
+                      ? "Đang kinh doanh"
+                      : "Ngừng kinh doanh"
+                    : "NaN"}
+                </td>
+              </tr>
+
+              <tr>
+                <th>Số móc</th>
+                <td>{productDetail?.list?.hookSize}</td>
+                <th>Độ nặng mặc định</th>
+                <td>{productDetail?.list?.defaultWeight} (g)</td>
+              </tr>
+              <tr>
+                <th>Chiều dài</th>
+                <td>{productDetail?.list?.length} (cm)</td>
+                <th>Nhãn hiệu</th>
+                <td>
+                  {productDetail?.list?.brand
+                    ? productDetail?.list?.brand
+                    : "-"}
+                </td>
+              </tr>
+              <tr>
+                <th>Lặn sâu(m)</th>
+                <td>{productDetail?.list?.deepDiving}</td>
+                <th>Chất liệu</th>
+                <td>{productDetail?.list?.material}</td>
+              </tr>
+              <tr>
+                <th>Có thể tùy biến</th>
+                <td>{productDetail?.list?.customizable ? "Có" : "Không"}</td>
+                <th>Giới hạn độ nặng</th>
+                <td>
+                  {productDetail?.list?.minWeight} (g) -{" "}
+                  {productDetail?.list?.maxWeight} (g)
+                </td>
+              </tr>
+              <tr>
+                <th>Loại cá</th>
+                <td>{fishListName(productDetail?.list?.fishList)}</td>
+              </tr>
+              <tr>
+                <th>Hình ảnh</th>
+                <td className="product-detail-image">
+                  {productDetail?.list?.imageCollection.map((images, i) => (
+                    <img
+                      src={createImageUrlByLinkOrFile(images.linkImage)}
+                      key={"img" + i}
+                    />
+                  ))}
+                </td>
+                <td colSpan="2">
+                  <caption>Variant</caption>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <th>Tên</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Hình ảnh</th>
+                      </tr>
+                      {productDetail?.list?.variantCollection.map(
+                        (variant, i) => (
+                          <tr key={"variant" + i} className="border-bottom-0">
+                            <td>{variant.variantName}</td>
+                            <td>{variant.quantity}</td>
+                            <td>
+                              {variant.newPrice
+                                ? variant.newPrice
+                                : productDetail.list.defaultPrice}
+                            </td>
+                            <td>
+                              <img
+                                src={createImageUrlByLinkOrFile(
+                                  variant.imageUrl
+                                )}
+                                width={50}
+                              />{" "}
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <th>Mô tả</th>
+                <td colSpan="3">
+                  <div
+                    className={`${
+                      productDetail?.list?.description
+                        ? "detail-description m-2 p-1"
+                        : ""
+                    }`}
+                  >
+                    {productDetail?.list?.description}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default ManagerProductDetail;

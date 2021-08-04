@@ -66,7 +66,7 @@ function AddNewAddress() {
                 <input
                   className="form-control"
                   {...register("userName", {
-                    required: "Trường bắt buộc",
+                    required: "Họ và tên không được để trống",
                   })}
                 />
                 {errors.userName && (
@@ -106,7 +106,7 @@ function AddNewAddress() {
                 )}
               </td>
             </tr>
-            <td className="text-end title-table">Địa chỉ(*)</td>
+            <td className="text-end title-table pt-3">Địa chỉ(*)</td>
             <td>
               <YLSelectAddress {...methods} />
             </td>
@@ -117,7 +117,7 @@ function AddNewAddress() {
                 <input
                   className="form-control"
                   {...register("description", {
-                    required: "Trường bắt buộc",
+                    required: "Địa chỉ cụ thể không được để trống",
                   })}
                 />
                 {errors.description && (

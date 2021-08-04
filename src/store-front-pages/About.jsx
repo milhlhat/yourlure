@@ -69,7 +69,7 @@ const TEAMPROFILES = [
   {
     name: "Bùi Hữu Đạt",
     title: "Member front-end",
-    content: "Bị thiếu muối",
+    content: "Nickname: Đỗ Ngèo Khỉ",
     facebook: "https://www.fb.com/dat375",
     instagram: "",
     mail: "",

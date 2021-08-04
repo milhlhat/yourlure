@@ -322,6 +322,7 @@ function Payment(props) {
                   open={open}
                   setOpen={setOpen}
                   billLine={billLine}
+                  isLoggedIn={isLoggedIn}
                 ></BillLine>
               </div>
             </div>

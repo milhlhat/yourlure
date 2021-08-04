@@ -17,7 +17,7 @@ import {
 import DEFINELINK from "routes/define-link";
 
 function BillLine(props) {
-  const { open, setOpen, billLine } = props;
+  const { open, setOpen, billLine , isLoggedIn} = props;
 
   const history = useHistory();
   const handleClickOutSide = () => {
@@ -101,7 +101,7 @@ function BillLine(props) {
                       <th className="text-start">Lưu ý</th>
                       <td className="text-end">{billLine?.note}</td>
                     </tr>
-                    <tr>
+                    {isLoggedIn&&<tr>
                       <td colspan="2" className="text-center">
                         <Link
                           className="primary-color pointer back-to-home bold mb-4"
@@ -110,7 +110,7 @@ function BillLine(props) {
                           <i className="fal fa-arrow-left"></i> &nbsp; Xem đơn hàng
                         </Link>
                       </td>
-                    </tr>
+                    </tr>}
                   </tbody>
                 </table>
               </div>

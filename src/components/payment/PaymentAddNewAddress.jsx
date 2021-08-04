@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
+import { toast } from "react-toastify";
 
 const styles = (theme) => ({
   root: {
@@ -53,17 +54,9 @@ const DialogTitle = withStyles(styles)((props) => {
     </MuiDialogTitle>
   );
 });
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 function ManagerChangePassWord(props) {
   const { fetchCustomAddress, noAddress, setNewAddress } = props;
-  const [openAlert, setOpenAlert] = useState({
-    isOpen: false,
-    content: "",
-    severity: "success",
-  });
   const [open, setOpen] = useState(false);
 
   const handleChangePassword = () => {
@@ -78,13 +71,6 @@ function ManagerChangePassWord(props) {
       userName: "",
     });
     setOpen(false);
-  };
-  const handleCloseAlert = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenAlert({ ...openAlert, isOpen: false });
   };
   const methods = useForm();
   const {
@@ -108,13 +94,18 @@ function ManagerChangePassWord(props) {
       const response = await UserApi.addAddress(data);
       if (response.error) {
         throw new Error(response.error);
-      } else {
+      }
+      else if(response===false||response?.data===false){
+        throw new Error();
+      }
+       else {
         fetchCustomAddress();
         handleClose();
         setNewAddress(data);
+        toast.success("Thêm địa chỉ thành công")
       }
     } catch (error) {
-      alert("Thêm địa chỉ thất bại");
+      toast.error("Thêm địa chỉ thất bại");
       console.log("fail to fetch add address");
     }
   };
@@ -167,8 +158,9 @@ function ManagerChangePassWord(props) {
                       <input
                         className="form-control"
                         {...register("userName", {
-                          required: "Trường bắt buộc",
+                          required: "Họ tên không được để trống",
                         })}
+                        placeholder="Nhập họ tên"
                       />
                       {errors.userName && (
                         <span className="text-danger">
@@ -198,6 +190,7 @@ function ManagerChangePassWord(props) {
                           },
                         })}
                         type="text"
+                        placeholder="Nhập số điện thoại"
                       />
                       {errors.phone && (
                         <span className="text-danger">
@@ -213,13 +206,14 @@ function ManagerChangePassWord(props) {
                   </td>
 
                   <tr>
-                    <td className="text-end title-table">Địa Chỉ(*)</td>
+                    <td className="text-end title-table">Địa Chỉ cụ thể(*)</td>
                     <td>
                       <input
                         className="form-control"
                         {...register("description", {
-                          required: "Trường bắt buộc",
+                          required: "Địa chỉ cụ thể không được để trống",
                         })}
+                        placeholder="Địa chỉ cụ thể"
                       />
                       {errors.description && (
                         <span className="text-danger">
@@ -235,26 +229,19 @@ function ManagerChangePassWord(props) {
         </DialogContent>
         <DialogActions>
           <>
-            <Button autoFocus color="primary" onClick={handleClose}>
+            <Button color="primary" onClick={handleClose}>
               Hủy
             </Button>
-            <Button type="button" color="primary" onClick={onSubmit}>
+            <Button color="primary" onClick={onSubmit}>
               Thêm
             </Button>
+            {/* <YLButton type="submit" variant="primary">
+              Thêm
+            </YLButton> */}
           </>
         </DialogActions>
         {/* </form> */}
       </Dialog>
-      <Snackbar
-        open={openAlert.isOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseAlert} severity={openAlert.severity}>
-          {openAlert.content}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

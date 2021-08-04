@@ -139,7 +139,7 @@ function YLSelectAddress(props) {
         <td className="text-end title-table">Tỉnh/TP(*)</td> */}
       <div>
         <select
-          className="form-select"
+          className="form-select mt-3"
           aria-label="province select "
           {...register("province", {
             validate: (value) => {
