@@ -9,10 +9,13 @@ import { AbilityContext } from "ability/can";
 import { buildAbilityFor } from "ability/ability";
 
 import { fetchRoles } from "utils/user";
+import { Helmet } from "react-helmet";
+import { ToastContainer } from "react-toastify";
 
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));
 const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+
 function AppRouter() {
   const [ability, setAbility] = useState(buildAbilityFor([]));
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +28,6 @@ function AppRouter() {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        throw error;
       }
     };
     setRoles();
@@ -35,6 +37,18 @@ function AppRouter() {
   } else
     return (
       <AbilityContext.Provider value={ability}>
+        <Helmet>
+          <title>Yourlure</title>
+          <meta
+            name="description"
+            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
+          />
+        </Helmet>
+        <ToastContainer
+          autoClose={2000}
+          pauseOnFocusLoss={false}
+          pauseOnHover={false}
+        />
         <Suspense fallback={<Loading />}>
           <BrowserRouter>
             <Switch>

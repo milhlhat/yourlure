@@ -39,34 +39,40 @@ function ProductByCate(props) {
     <div className="product-by-cate">
       {cates &&
         cates.data.map((cate, index) => (
-          <div key={index} className=" bg-white mb-5 p-2 bg-shadow">
-            <div className="d-flex justify-content-between align-items-center flex-wrap px-2">
-              <span className=" title">{cate.categoryName}</span>
+          <>
+            {cate.productCollection?.length > 0 && (
+              <div key={index} className=" bg-white mb-5 p-2 bg-shadow">
+                <div className="d-flex justify-content-between align-items-center flex-wrap px-2">
+                  <span className=" title">{cate.categoryName}</span>
 
-              <div>
-                <YLButton
-                  variant="link"
-                  onClick={() => viewMoreCategory(cate.categoryID)}
-                >
-                  Xem thêm &#160;<i className="fad fa-angle-double-right"></i>
-                </YLButton>
-              </div>
-            </div>
-            <div className="flex-card-row">
-              <div className="product-card-row mx-xl-5">
-                
-            {/* {cate.productCollection.length > 0 && (
+                  <div>
+                    <YLButton
+                      variant="link"
+                      onClick={() => viewMoreCategory(cate.categoryID)}
+                    >
+                      Xem thêm &#160;
+                      <i className="fad fa-angle-double-right"></i>
+                    </YLButton>
+                  </div>
+                </div>
+                <div className="flex-card-row">
+                  <div className="product-card-row mx-xl-5">
+                    {/* {cate.productCollection.length > 0 && (
               <Carosel
                 products={cate.productCollection}
                 caroselId="newproduct"
               />
             )} */}
-                {cate.productCollection.slice(0, 4).map((product, indexx) => (
-                  <CardProduct product={product} key={indexx} />
-                ))}
+                    {cate.productCollection
+                      .slice(0, 4)
+                      .map((product, indexx) => (
+                        <CardProduct product={product} key={indexx} />
+                      ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </>
         ))}
     </div>
   );
