@@ -198,14 +198,10 @@ function Campaign() {
     return (
       <div className="container campaign">
         <Helmet>
-          <title>Yourlure | Sự kiện</title>
+          <title>Yourlure | Sự kiện</title>{" "}
+          <meta name="title" content="Sự kiện" />
           <meta name="description" content={campaign?.data?.banner} />
-          <meta property="og:title" content="Yourlure | Sự kiện" />
-          <meta property="og:description" content={campaign?.data?.banner} />
-          <meta
-            property="og:image"
-            content="https://i.imgur.com/TlB0Rld.jpeg"
-          />
+
         </Helmet>
         <div className="campaign-banner d-block ">
           <Carousel

@@ -1,5 +1,5 @@
 import React from "react";
-import { hydrate, render } from "react-dom";
+import { render } from "react-dom";
 import { Provider } from "react-redux";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -11,29 +11,17 @@ import { PersistGate } from "redux-persist/integration/react";
 import "react-toastify/dist/ReactToastify.min.css";
 
 const rootElement = document.getElementById("root");
-if (rootElement.hasChildNodes()) {
-  hydrate(
-    <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <AppRouter />
-        </PersistGate>
-      </Provider>
-    </React.StrictMode>,
-    rootElement
-  );
-} else {
-  render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <AppRouter />
-        </PersistGate>
-      </Provider>
-    </React.StrictMode>,
-    rootElement
-  );
-}
+
+render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AppRouter />
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>,
+  rootElement
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

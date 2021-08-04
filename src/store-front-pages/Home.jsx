@@ -62,19 +62,14 @@ function Home() {
       <div className="container home-page">
         <Helmet>
           <title>Yourlure | Trang chủ</title>
+
+          <meta name="title" content="Trang chủ" />
+
           <meta
             name="description"
             content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
           />
-          <meta property="og:title" content="Yourlure | Trang chủ" />
-          <meta
-            property="og:description"
-            content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
-          />
-          <meta
-            property="og:image"
-            content="https://i.imgur.com/KQA6KRQ.jpeg"
-          />
+
         </Helmet>
         <div className="home-banner ">
           <div className="img-banner bg-shadow">
