@@ -53,11 +53,11 @@ function EditCustomerAccount(props) {
                 <input
                   className="form-control"
                   {...register("username", {
-                    required: "Trường bắt buộc",
+                    required: "Họ và tên không được để trống",
                   })}
                 />
-                {errors.name && (
-                  <span className="text-danger">(*){errors.name.message}</span>
+                {errors.username && (
+                  <span className="text-danger">(*){errors.username.message}</span>
                 )}
               </td>
             </tr>

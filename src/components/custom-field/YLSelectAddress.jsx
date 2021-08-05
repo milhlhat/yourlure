@@ -158,7 +158,7 @@ function YLSelectAddress(props) {
           ))}
         </select>
         {errors.province && (
-          <span className="text-danger">(*) Chọn Tỉnh/TP</span>
+          <span className="text-danger">(*) Vui lòng chọn Tỉnh/TP</span>
         )}
       </div>
       {/* </tr> */}
@@ -187,7 +187,7 @@ function YLSelectAddress(props) {
           ))}
         </select>
         {errors.district && (
-          <span className="text-danger">(*) Chọn Quận/Huyện</span>
+          <span className="text-danger">(*) Vui lòng chọn Quận/Huyện</span>
         )}
       </div>
       {/* </tr> */}
@@ -215,7 +215,7 @@ function YLSelectAddress(props) {
           ))}
         </select>
         {errors.userWardId && (
-          <span className="text-danger">(*) Chọn Chọn Phường/Xã</span>
+          <span className="text-danger">(*) Vui lòng chọn Phường/Xã</span>
         )}
       </div>
       {/* </tr> */}

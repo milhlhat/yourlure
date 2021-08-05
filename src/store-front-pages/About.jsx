@@ -5,6 +5,7 @@ import nhatAvt from "assets/images/about/nhat.jpg";
 import sonAvt from "assets/images/about/sonAvt.jpg";
 import thangAvt from "assets/images/about/thangAvt.jpg";
 import datAvt from "assets/images/about/dat.jpg";
+import lanAvt from "assets/images/about/lan.jpg";
 import supervisor from "assets/images/about/supervisor.jpg";
 
 import CardProfile from "../components/card/CardProfile";
@@ -78,11 +79,11 @@ const TEAMPROFILES = [
   {
     name: "Phùng Thị Lan",
     title: "Tester",
-    content: "",
+    content: "Nữ thần tự do",
     facebook: "",
     instagram: "",
     mail: "",
-    image: nhatAvt,
+    image: lanAvt,
   },
 ];
 function About() {
@@ -90,13 +91,29 @@ function About() {
     <div className={"component about "}>
       <article className={"bg-box first-content"}>
         <h3 className={"text-center mb-4"}>YOURLURE</h3>
-        <p className={"text-center content"}>
-          Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
-          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.
-          Sed egestas, ante et vulputate volutpat, uctus metus libero eu augue.
-          Morbi purus libero, faucibus adipiscing, commodo quis, gravida id,
-          est. Sed lectus. Praesent elementum hendrerit tortor. Sed semper lorem
-          at felis.
+        <p className={"content "}>
+          Câu cá là một hoạt động giải trí ngoài trời phổ biến ở Việt Nam trong
+          thời gian gần đây. Khi mua mồi câu, cần thủ thường mua mồi câu đẹp,
+          kiểu dáng bắt mắt, nhưng rất tiếc, các cửa hàng trực tuyến hiện nay
+          chỉ cung cấp một số mẫu mồi câu cá, người đi câu cần chọn một trong
+          những mẫu này và họ không thể tự tùy chỉnh. Họ tốn rất nhiều thời gian
+          để chọn mẫu mà họ thích nhất.
+          <br />
+          <br /> Nhiều cần thủ muốn sở hữu một số loại mồi câu cá độc đáo để
+          thỏa mãn bản thân. Vì mỗi người có một sở thích cá nhân khác nhau. Khi
+          họ chọn một loại mồi câu cá, thật khó để chọn được một mẫu mồi câu cá
+          phù hợp nhất. Mặc dù nhiều mẫu mồi câu cá đã được tạo ra nhưng vẫn
+          chưa đủ cho những người câu cá lựa chọn. Ngoài ra, việc tạo ra nhiều
+          mô hình mồi chài sẽ làm tăng chi phí thiết kế.
+          <br />
+          <br />
+          Đối với những người chơi mồi lure và muốn mua mồi trực tuyến thì hệ
+          thống YourLure là website chuyên bán các loại mồi. Không giống như các
+          trang web bán mồi hiện nay, trong trang web có phần lựa chọn tùy chỉnh
+          cho phép người mua tự thiết kế cho mồi của mình, giúp nâng cao sự lựa
+          chọn cho khách hàng. Mục đích chính là giúp khách hàng tự thiết kế,
+          chọn mồi và đặt hàng nhanh chóng. YourLure luôn muốn mang đến cho
+          người dùng những trải nhiệm mới thú vị và hấp dẫn
         </p>
         <p className={"sign text-center"}>Yourlure Team</p>
         <img
@@ -121,7 +138,7 @@ function About() {
         <h3 className={"text-center mb-3"}>Tuỳ biến chuyên nghiệp</h3>
         <iframe
           className={"youtube-frame"}
-          src="https://www.youtube.com/embed/mf4upAPwHEo"
+          src="https://www.youtube.com/embed/wKPwJtC8eO0"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

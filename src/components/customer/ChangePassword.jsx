@@ -1,6 +1,4 @@
 import { CircularProgress } from "@material-ui/core";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 import UserApi from "api/user-api";
 import "assets/scss/scss-pages/login.scss";
 import YLButton from "components/custom-field/YLButton";
@@ -121,7 +119,4 @@ function ChangePassword(props) {
   );
 }
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 export default ChangePassword;

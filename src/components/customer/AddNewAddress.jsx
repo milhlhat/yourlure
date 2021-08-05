@@ -7,10 +7,12 @@ import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import UserApi from "api/user-api";
 import { toast } from "react-toastify";
+import { CircularProgress } from "@material-ui/core";
 
 function AddNewAddress() {
   const methods = useForm();
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,13 +23,17 @@ function AddNewAddress() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
+      setLoading(true);
       const response = await UserApi.addAddress(data);
       if (response.error) {
         throw new Error(response.error);
       } else {
+        toast.success("Thêm địa chỉ thành công");
         history.push("/customer/address");
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       toast.error("Thêm địa chỉ thất bại");
     }
   };
@@ -122,13 +128,17 @@ function AddNewAddress() {
                 <YLButton
                   variant="warning"
                   to={DEFINELINK.customer + DEFINELINK.address}
+                  disabled={loading}
                 >
                   Hủy
                 </YLButton>
               </td>
               <td>
-                <YLButton variant="primary" type="submit">
+                <YLButton variant="primary" type="submit" disabled={loading}>
                   Thêm
+                  {loading && (
+                    <CircularProgress size={15} className="circle-progress" />
+                  )}
                 </YLButton>
               </td>
             </tr>

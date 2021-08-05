@@ -5,17 +5,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { default as MuiDialogTitle } from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
-import Snackbar from "@material-ui/core/Snackbar";
 import { useTheme, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import MuiAlert from "@material-ui/lab/Alert";
 import UserApi from "api/user-api";
 import InputField from "components/custom-field/YLInput";
 import { FastField, Form, Formik } from "formik";
-import React, { useState } from "react";
-import * as Yup from "yup";
 import "manager-page/component/header/scss/header-dialog.scss";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 const styles = (theme) => ({
   root: {
@@ -48,16 +47,8 @@ const DialogTitle = withStyles(styles)((props) => {
     </MuiDialogTitle>
   );
 });
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 function ManagerChangePassWord(props) {
-  const [openAlert, setOpenAlert] = useState({
-    isOpen: false,
-    content: "",
-    severity: "success",
-  });
   const [open, setOpen] = useState(false);
 
   const handleChangePassword = () => {
@@ -69,13 +60,6 @@ function ManagerChangePassWord(props) {
 
   const handleClose = () => {
     setOpen(false);
-  };
-  const handleCloseAlert = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenAlert({ ...openAlert, isOpen: false });
   };
   const initialValues = {
     oldPassword: "",
@@ -100,30 +84,18 @@ function ManagerChangePassWord(props) {
   });
 
   const handleSubmit = async (data) => {
-    delete data.rePassword;
     try {
-              const response = await UserApi.changePassword(data);
-              if (response.error) {
-                throw new Error(response.error);
-              } else {
-                alert("Đổi mật khẩu thành công");
-                // setOpenAlert({
-                //   ...open,
-                //   isOpen: true,
-                //   content: "Đổi mật khẩu thành công",
-                // });
-                setOpen(false);
-              }
-            } catch (error) {
-              alert("Đổi mật khẩu không thành công");
-              //   setOpenAlert({
-              //     ...open,
-              //     isOpen: true,
-              //     content: "Đổi mật khẩu không thành công",
-              //     severity: "error",
-              //   });
-              console.log("fail to fetch password change");
-            }
+      const response = await UserApi.changePassword(data);
+      if (response.error) {
+        throw new Error(response.error);
+      } else {
+        toast.success("Đổi mật khẩu thành công");
+        setOpen(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data);
+      console.log("fail to fetch password change");
+    }
   };
 
   return (
@@ -196,16 +168,6 @@ function ManagerChangePassWord(props) {
           }}
         </Formik>
       </Dialog>
-      <Snackbar
-        open={openAlert.isOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseAlert} severity={openAlert.severity}>
-          {openAlert.content}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }
