@@ -97,14 +97,19 @@ public class UserServiceImpl implements UserService {
     public String signin(String phone, String password) {
         try {
             User findUser = userRepos.findByPhone(phone);
-            if (findUser != null && findUser.getEnabled()) {
+            if (findUser != null) {
                 phone = verifyPhone(phone);
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
+                if(!findUser.getEnabled()){
+                    throw new ValidationException("Tài khoản của bạn đã bị khoá.");
+                }
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
+            }else{
+                throw new ValidationException("Sai số điện thoại hoặc mật khẩu! xin thử lại.");
             }
-            throw new ValidationException("Tài khoản của bạn đã bị khoá.");
+
         } catch (AuthenticationException e) {
-            throw new ValidationException("Sai tài khoản hoặc mật khẩu! xin thử lại.");
+            throw new ValidationException("Sai số điện thoại hoặc mật khẩu! xin thử lại.");
         }
     }
 
