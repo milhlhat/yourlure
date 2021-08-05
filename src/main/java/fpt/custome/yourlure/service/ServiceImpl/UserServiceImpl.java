@@ -102,9 +102,9 @@ public class UserServiceImpl implements UserService {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
             }
-            throw new CustomException("This account was disabled", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidationException("Tài khoản của bạn đã bị khoá.");
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidationException("Sai tài khoản hoặc mật khẩu! xin thử lại.");
         }
     }
 
@@ -200,6 +200,7 @@ public class UserServiceImpl implements UserService {
             if (!findUser.get().getRoles().contains(Role.ROLE_ADMIN)) {
                 findUser.get().setEnabled(!findUser.get().getEnabled());
                 userRepos.save(findUser.get());
+
                 return true;
             }
             return false;

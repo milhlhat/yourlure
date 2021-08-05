@@ -159,10 +159,19 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public String login(UserDataDTO user) {
+    public ResponseEntity<Object> login(UserDataDTO user) {
         String phone = user.getPhone();
         String password = user.getPassword();
-        return userService.signin(phone, password);
+        try{
+            return new ResponseEntity<>(userService.signin(phone, password), HttpStatus.OK);
+        }catch (ValidationException e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @Override
