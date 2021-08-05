@@ -106,19 +106,15 @@ function Header(props) {
         <Navbar light expand="md" className="p-2 nav-bar-light ">
           <div className="me-auto">
             <NavLink to="/">
-              <img src={logo} alt="your lure logo" className="logo" />
-              <img src={logoText} alt="your lure logo" className="logo-text " />
+              <img src={logo} alt="#1 Tuỳ biến mồi lure" className="logo" />
+              <img src={logoText} className="logo-text " />
             </NavLink>
           </div>
           <div ref={wrapperRef}>
             <NavbarToggler onClick={toggle} />
           </div>
           <Collapse isOpen={isOpen} navbar>
-            <Nav
-              className="me-auto"
-              navbar
-              className="d-flex justify-content-between"
-            >
+            <Nav navbar className="d-flex justify-content-between me-auto">
               <div className="group-link">
                 <div
                   className={`group-link-item ${

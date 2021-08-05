@@ -165,6 +165,15 @@ body {
   border-color: $primary;
   color: white !important;
 }
+
 .page-link {
   color: $primary !important;
+}
+
+.react-multiple-carousel__arrow:hover {
+  background: rgba(140, 250, 124, 0.4);
+}
+
+.react-multiple-carousel__arrow {
+  background: rgba(230, 243, 229, 0.5);
 }

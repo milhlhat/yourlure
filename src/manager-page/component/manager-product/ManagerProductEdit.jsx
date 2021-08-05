@@ -288,8 +288,11 @@ function ManagerProductEdit(props) {
         //set initial form value
         setFormValues(response);
         //check to fish list
+        const fishIds = response.fishList?.map((fish) => {
+          return fish.fishId;
+        });
         responseFish.forEach((item, index) => {
-          if (response.listFishId?.includes(item.fishID)) {
+          if (fishIds?.includes(item.fishID)) {
             setValue(`listFishId[${index}]`, item.fishID);
           }
         });
@@ -568,8 +571,7 @@ function ManagerProductEdit(props) {
                             id="customize-weight"
                             name={"isCustomizeWeight"}
                             {...register("isCustomizeWeight")}
-                            // onChange={handleChangeCustomWeight}
-                            defaultChecked={product.data.customizable}
+                            defaultChecked={product.data.isCustomizeWeight}
                           />
                           <label
                             htmlFor="customize-weight"

@@ -4,8 +4,6 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import * as Yup from "yup";
 import { FastField, Form, Formik } from "formik";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 import "assets/scss/scss-pages/login.scss";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -15,6 +13,7 @@ import { AbilityContext } from "ability/can";
 import { updateRoles } from "utils/user";
 import DEFINELINK from "routes/define-link";
 import Fishing from "assets/images/fishing.jpg";
+import { toast } from "react-toastify";
 
 function Login(props) {
   console.log(props);
@@ -23,18 +22,12 @@ function Login(props) {
   //context
   const ability = useContext(AbilityContext);
 
-  const INVALID_PHONE = 400;
-  const INVALID_PASSWORD = 422;
-  const FORBIDDEN = 403;
-  const [open, setOpen] = useState({ isOpen: false, content: "" });
   const [userLogin, setUserLogin] = useState({
     loading: false,
     success: false,
   });
 
   const getLogin = async (values) => {
-    let content = "";
-
     setUserLogin({ ...userLogin, loading: true, success: false });
 
     try {
@@ -51,27 +44,13 @@ function Login(props) {
       await updateRoles(ability, history);
       if (backPath) history.push(backPath);
     } catch (error) {
-      if (error.response) {
-        // Request made and server responded
-        const status = error.response.status;
-        if (status === INVALID_PHONE || status === INVALID_PASSWORD) {
-          content = "Tài khoản hoặc mật khẩu không chính xác";
-        } else if (status === FORBIDDEN) {
-          content = "Bạn đã đăng nhập trước đó, đăng xuất để đăng nhập lại";
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log(error.request);
-        if (error.request.status === 0) {
-          content = "Mất kết nối máy chủ";
-        }
+      setUserLogin({ loading: false, success: false });
+      const data = error.response?.data;
+      if (data) {
+        toast.error(data);
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log("Error", error.message);
-        content = error.message;
+        toast.error("Hệ thống gặp lỗi lạ");
       }
-      setOpen({ isOpen: true, content: content });
-      setUserLogin({ ...userLogin, loading: false, success: false });
     }
   };
 
@@ -94,34 +73,12 @@ function Login(props) {
       .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
   });
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen({ ...open, isOpen: false });
-  };
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
   return (
     <div className="container login">
       <div className="login-big-image">
         <img src={Fishing} alt="bg" />
       </div>
       <div className="login-form">
-        <Snackbar
-          open={open.isOpen}
-          autoHideDuration={3000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Alert onClose={handleClose} severity="error">
-            {open.content}
-          </Alert>
-        </Snackbar>
         <div className="login-form-input">
           <h1>Đăng Nhập</h1>
           <Formik
