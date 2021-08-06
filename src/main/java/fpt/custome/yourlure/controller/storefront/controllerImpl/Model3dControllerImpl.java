@@ -92,8 +92,10 @@ public class Model3dControllerImpl implements Model3dController {
         try {
             CustomModelDtoOut customizeModel = customizeModelService.createCustomizeModel(rq, customModelDtoInput);
             return new ResponseEntity<>(customizeModel, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (IOException e){
             return new ResponseEntity<>("Tạo tuỳ biến thất bại", HttpStatus.BAD_REQUEST);
         }
     }
@@ -102,8 +104,10 @@ public class Model3dControllerImpl implements Model3dController {
     public ResponseEntity<Object> updateCustomModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) {
         try {
             return new ResponseEntity<>(customizeModelService.updateCustomizeModel(rq, customModelDtoInput), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
     }

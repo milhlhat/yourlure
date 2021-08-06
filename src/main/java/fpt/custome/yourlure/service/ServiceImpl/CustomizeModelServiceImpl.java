@@ -234,7 +234,10 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
-
+        boolean duplicateName = user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customModelDtoInput.getName()));
+        if (duplicateName){
+            throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
+        }
         // init customize model
         CustomizeModel customizeModel = CustomizeModel.builder()
                 .name(customModelDtoInput.getName())
@@ -270,7 +273,11 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             }
         }
         if (!isModelBelongTo) {
-            throw new Exception("this model doesn't belong to current user!");
+            throw new ValidationException("Đã xảy ra lỗi! Tuỳ biến này không phải của bạn.");
+        }
+        boolean duplicateName = user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customModelDtoInput.getName()));
+        if (duplicateName){
+            throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
         }
 
 
