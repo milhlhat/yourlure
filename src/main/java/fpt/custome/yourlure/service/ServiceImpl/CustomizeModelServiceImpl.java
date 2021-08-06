@@ -275,14 +275,18 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         if (!isModelBelongTo) {
             throw new ValidationException("Đã xảy ra lỗi! Tuỳ biến này không phải của bạn.");
         }
-        boolean duplicateName = user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customModelDtoInput.getName()));
-        if (duplicateName){
-            throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
-        }
+
 
 
         CustomizeModel customizeModel = customizeModelRepos.getById(customModelDtoInput.getCustomizeId());
-        customizeModel.setName(customizeModel.getName());
+        if(!customizeModel.getName().equals(customModelDtoInput.getName())){
+            boolean duplicateName = user.getCustomizeModels().stream().anyMatch(cus -> cus.getName().equals(customModelDtoInput.getName()));
+            if (duplicateName){
+                throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
+            }
+        }
+
+        customizeModel.setName(customModelDtoInput.getName());
         // TODO: delete old thumbnail
         fileService.deleteFile(customizeModel.getThumbnailUrl());
         // TODO: create new thumbnail
