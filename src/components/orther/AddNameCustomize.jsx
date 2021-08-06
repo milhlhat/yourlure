@@ -72,7 +72,7 @@ function AddNameCustomize(props) {
     resolver: yupResolver(schema),
   });
   const dispatch = useDispatch();
-  const onsubmit = async (data) => {
+  const onsubmit = (data) => {
     const action = setCaptureModel({ isCapture: true, name: data.customName });
     dispatch(action);
     setOpen(false);
@@ -131,7 +131,11 @@ function AddNameCustomize(props) {
               <Button autoFocus color="primary" onClick={() => setOpen(false)}>
                 Hủy
               </Button>
-              <YLButton variant="primary" type="submit" className="btn btn-light">
+              <YLButton
+                variant="primary"
+                type="submit"
+                className="btn btn-light"
+              >
                 Xong
               </YLButton>
             </>

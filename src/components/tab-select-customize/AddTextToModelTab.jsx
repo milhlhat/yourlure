@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMaterialByMId } from "utils/product";
 import { setCustomizeInfo } from "redux/customize-action/customize-info";
 import { HexColorPicker } from "react-colorful";
+import { FONTS_CUSTOMIZE } from "../../constant/product-config";
 
 function AddTextToModelTab() {
   const BE_SERVER = process.env.REACT_APP_API_URL;
@@ -24,14 +25,6 @@ function AddTextToModelTab() {
 
   const imgRef = React.useRef(new Image());
 
-  const fonts = [
-    "Big Shoulders Display",
-    "Festive",
-    "Grenze Gotisch",
-    "Qwigley",
-    "Dancing Script",
-    "Sriracha",
-  ];
   const textSizes = [20, 40, 60, 80, 100, 120, 150, 200];
 
   let img = imgRef.current;
@@ -68,7 +61,7 @@ function AddTextToModelTab() {
         }
         list[i].textColor = textColor;
 
-        list[i].textFont = textFont !== "" ? textFont : fonts[0];
+        list[i].textFont = textFont !== "" ? textFont : FONTS_CUSTOMIZE[0];
 
         list[i].textSize = textSize;
       }
@@ -153,7 +146,7 @@ function AddTextToModelTab() {
                   style={{
                     fontFamily: textAttribute.textFont
                       ? textAttribute.textFont
-                      : fonts[0],
+                      : FONTS_CUSTOMIZE[0],
                   }}
                   onChange={(e) =>
                     // handleChangeTextAttribute(null, e.target.value, null)
@@ -163,7 +156,7 @@ function AddTextToModelTab() {
                     })
                   }
                 >
-                  {fonts.map((item, i) => (
+                  {FONTS_CUSTOMIZE.map((item, i) => (
                     <option
                       key={`fontFamily-${i}`}
                       value={item}

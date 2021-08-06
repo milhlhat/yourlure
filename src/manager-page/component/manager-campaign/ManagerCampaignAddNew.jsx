@@ -188,7 +188,7 @@ export const VALIDATE_CAMPAIGN_SCHEMA = {
     .max(yup.ref("endDate"), "Ngày bắt đầu phải trước ngày kết thúc"),
   endDate: yup
     .date()
-    .typeError("Ngày bắt đầu không được để trống")
+    .typeError("Ngày kết thúc không được để trống")
     .min(yup.ref("startDate"), "Ngày kết thúc phải sau ngày bắt đầu"),
 };
 export default ManagerVoucherAddNew;

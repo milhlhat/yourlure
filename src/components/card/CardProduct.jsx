@@ -46,10 +46,11 @@ function CardProduct(props) {
               {!product ? "N/A" : convertToVND(product.defaultPrice)}
             </span>
             {canCustom && (
-              <div onClick={(e) => e.stopPropagation()}>
+              <div onClick={(e) => e.stopPropagation()} className={"mt-3"}>
                 <YLButton
                   variant="primary"
                   to={`/product/customize?productId=${product.productID}&isEdit=false`}
+                  width={"100%"}
                 >
                   Tùy biến ngay
                 </YLButton>

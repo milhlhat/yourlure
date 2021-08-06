@@ -327,7 +327,7 @@ const canvasUtils = {
     // write text to canvas
     ctx.fillStyle = textColor;
     //  "50px 'Kirang Haerang'";
-    ctx.font = textSize + "px " + fontFamily;
+    ctx.font = `${textSize}px ${fontFamily}`;
     console.log(ctx.font);
     let textString = currentMaterial.text ? currentMaterial.text : "";
 

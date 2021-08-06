@@ -10,7 +10,7 @@ import { createImageUrlByLinkOrFile } from "utils/manager-product";
 CardCustom.propTypes = {};
 
 function CardCustom(props) {
-  const { product, canCustom ,fetchCustomize} = props;
+  const { product, canCustom, fetchCustomize } = props;
   const history = useHistory();
   const handleClick = (id) => {
     history.push(`/product/detail/${id}`);
@@ -19,7 +19,7 @@ function CardCustom(props) {
   const onConfirm = async (id) => {
     try {
       const response = await ProductAPI.deleteCustomize(id);
-      if(response.error){
+      if (response.error) {
         throw new Error();
       }
       toast.success("Xóa tùy biến thành công");
@@ -48,7 +48,7 @@ function CardCustom(props) {
               <ConfirmPopupV2
                 children={<i className="fad fa-times-circle"></i>}
                 title={`Xóa "${product?.name}"`}
-                onConfirm={()=>onConfirm(product.customizeId)}
+                onConfirm={() => onConfirm(product.customizeId)}
               />
             </div>
           </div>
@@ -63,10 +63,11 @@ function CardCustom(props) {
                 : convertToVND(product?.defaultPrice + product?.customPrice)}
             </span>
             {canCustom && (
-              <div onClick={(e) => e.stopPropagation()} className="">
+              <div onClick={(e) => e.stopPropagation()} className="mt-3">
                 <YLButton
                   variant="primary"
                   to={`/product/customize?productId=${product.productId}&isEdit=true&customizeId=${product.customizeId}`}
+                  width={"100%"}
                 >
                   Chỉnh sửa
                 </YLButton>

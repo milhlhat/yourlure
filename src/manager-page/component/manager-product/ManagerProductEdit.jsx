@@ -901,7 +901,7 @@ function ManagerProductEdit(props) {
                   {isSubmitting ? (
                     <CircularProgress size={20} className="circle-progress" />
                   ) : (
-                    "Xong"
+                    "Lưu"
                   )}
                 </YLButton>
               </div>
