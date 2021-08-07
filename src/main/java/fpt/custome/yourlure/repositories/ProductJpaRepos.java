@@ -43,7 +43,6 @@ public interface ProductJpaRepos extends JpaRepository<Product, Long> {
             "sumQuantity DESC, product_id DESC\n", nativeQuery = true)
     List<Product> bestSellerProductByCategory(Long id);
 
-
     Page<Product> findAllByProductNameContainsIgnoreCase(String productName, Pageable pageable);
 
     Page<Product> findAllByVisibleInStorefront(Boolean visibleInStorefront, Pageable pageable);

@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper mapper;
 
     @Override
-    public Optional<AdminProductDtoOut> getAll(String keyword, Pageable pageable) {
+    public Object getAll(String keyword, Pageable pageable) {
         List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
         try {
             int numberOfProduct = 0;
@@ -123,25 +123,43 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductsFilterDtoOut> getProductFilter(Filter filter) {
+    public Object getProductFilter(Filter filter, Boolean isAdmin) {
         try {
             Query query = productRepos.getProductFilter(filter);
             int totalProduct = query.getResultList().size();
             query.setFirstResult(filter.getLimit() * filter.getPage());
             query.setMaxResults(filter.getLimit());
-            List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
             List<Product> list = query.getResultList();
-            for (Product item : list) {
-                ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
-                productOutList.add(dtoOut);
+            if (!isAdmin) {
+                List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
+                for (Product item : list) {
+                    ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
+                    productOutList.add(dtoOut);
+                }
+                ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
+                        .productOutList(productOutList)
+                        .totalProduct(totalProduct)
+                        .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
+                        .build();
+                return Optional.of(result);
+            } else {
+                int numberOfProduct = 0;
+                List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
+                for (Product item : list) {
+                    AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
+                    for (Variant variant : item.getVariantCollection()) {
+                        numberOfProduct += variant.getQuantity();
+                    }
+                    dtoOut.setNumberOfVariantProduct(numberOfProduct);
+                    listResult.add(dtoOut);
+                }
+                AdminProductDtoOut results = AdminProductDtoOut.builder()
+                        .productOutputList(listResult)
+                        .totalProduct(totalProduct)
+                        .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
+                        .build();
+                return Optional.of(results);
             }
-
-            ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
-                    .productOutList(productOutList)
-                    .totalProduct(totalProduct)
-                    .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
-                    .build();
-            return Optional.of(result);
         } catch (Exception e) {
             e.printStackTrace();
             return Optional.empty();

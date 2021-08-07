@@ -3,7 +3,6 @@ package fpt.custome.yourlure.controller.admin.impl;
 import fpt.custome.yourlure.controller.admin.AdminProductController;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.AdminProductDetailDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.AdminProductDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.ProductService;
@@ -37,7 +36,7 @@ public class AdminProductControllerImpl implements AdminProductController {
                 filter.getLimit(),
                 filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending());
 
-        Optional<AdminProductDtoOut> result = productService.getAll(filter.getKeyword(), pageable);
+        Object result = productService.getProductFilter(filter, true);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
