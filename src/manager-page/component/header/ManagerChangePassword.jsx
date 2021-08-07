@@ -15,6 +15,7 @@ import "manager-page/component/header/scss/header-dialog.scss";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = (theme) => ({
   root: {
@@ -50,6 +51,7 @@ const DialogTitle = withStyles(styles)((props) => {
 
 function ManagerChangePassWord(props) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = () => {
     setOpen(true);
@@ -84,6 +86,7 @@ function ManagerChangePassWord(props) {
   });
 
   const handleSubmit = async (data) => {
+    setLoading(true);
     try {
       const response = await UserApi.changePassword(data);
       if (response.error) {
@@ -91,8 +94,10 @@ function ManagerChangePassWord(props) {
       } else {
         toast.success("Đổi mật khẩu thành công");
         setOpen(false);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response.data);
       console.log("fail to fetch password change");
     }
@@ -158,8 +163,14 @@ function ManagerChangePassWord(props) {
                     <Button autoFocus color="primary" onClick={handleClose}>
                       Hủy
                     </Button>
-                    <Button type="submit" color="primary">
+                    <Button type="submit" color="primary" disabled={loading}>
                       Cập nhật
+                      {loading && (
+                        <CircularProgress
+                          size={15}
+                          className="circle-progress"
+                        />
+                      )}
                     </Button>
                   </>
                 </DialogActions>
