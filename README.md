@@ -116,3 +116,8 @@ Watch which service are eating ram:
 ```
 ps aux --sort=-%mem | head
 ```
+
+Restart postgresql when it eat too much ram:
+```
+sudo systemctl restart postgresql.service
+```
