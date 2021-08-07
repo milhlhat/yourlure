@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import CardProduct from "components/card/CardProduct";
 import ProductImage from "components/product/product-detail/ProductMedia";
 import ProductAction from "components/product/product-detail/ProductAction";
-import data from "assets/dumy-data/data-product.js";
 import ProductAPI from "api/product-api";
 import Carosel from "components/card/Carosel";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilter } from "utils/product";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
+import { useHistory } from "react-router-dom";
+import slugify from "slugify";
 
 ProductDetail.propTypes = {};
 
 function ProductDetail(props) {
   const productId = props.match.params.id;
+  const currentPath = props.match.url;
   const dispatch = useDispatch();
   const productByCateId = useSelector((state) => state.productFilter.data);
   const filter = useSelector((state) => state.productFilter.filter);
-
+  const history = useHistory();
   const [bigImgLink, setBigImgLink] = useState();
   const [productDetail, setProductDetail] = useState({
     list: null,
@@ -103,8 +104,19 @@ function ProductDetail(props) {
     window.scrollTo(0, 0);
     fetchProduct();
     fetchProductSame();
-    fetchFilter(dispatch, { ...filter, listCateId: [productDetail?.list?.category?.categoryId] });
+    fetchFilter(dispatch, {
+      ...filter,
+      listCateId: [productDetail?.list?.category?.categoryId],
+    });
   }, [productId]);
+
+  useEffect(() => {
+    console.log(props);
+    const slugPath = `${currentPath}/${slugify(
+      productDetail?.list?.productName || ""
+    )}`;
+    history.replace(slugPath);
+  }, [productDetail]);
   if (productDetail.isLoading) {
     return <Loading hasLayout />;
   } else if (!productDetail.isSuccess) {
@@ -112,8 +124,8 @@ function ProductDetail(props) {
   } else
     return (
       <div className="container-lg .container-fluid">
-        <div className="d-flex my-2 mx-md-2  row">
-          <div className=" col-md-6 col-sm-12  mt-4">
+        <div className="my-2 row">
+          <div className=" col-md-6 col-sm-12  mt-4 ">
             <ProductImage
               product={productDetail.list}
               bigImgLink={bigImgLink}
@@ -131,33 +143,27 @@ function ProductDetail(props) {
           </div>
         </div>
         <div
-          className="product-info-detail bg-white bg-shadow m-md-2 my-3 py-3 p-md-4"
+          className="product-info-detail bg-white bg-shadow  my-3 py-3 p-md-4"
           id="more-description"
         >
-          <div className="title-detail-description bg-body">
+          <div className="title-detail-description ">
             <h3>Chi tiết sản phẩm</h3>
           </div>
-          <div className="descrip-content">
+          <p className="descrip-content">
             {productDetail.list
               ? productDetail.list.description
               : "description null"}
-          </div>
+          </p>
         </div>
-        <div className="owl-policy my-md-4 my-3 bg-white bg-shadow row mx-md-2 p-md-4 py-2">
+        <div className="owl-policy my-md-4 my-3 bg-white bg-shadow  p-md-4 py-2">
           <div className="col-md-3 col-6 item">
-            <i className="fa fa-truck"></i>
+            <i className="fa fa-truck" />
             <p>Vận chuyển toàn quốc</p>
-            <span>
-              Chúng tôi giao hàng bằng hình thức COD. Thanh toán khi nhận hàng.
-            </span>
+            <span>Thanh toán khi nhận hàng.</span>
           </div>
-          {/* <div className="col-md-3 col-6 item">
-          <i className="fa fa-question-circle-o"></i>
-          <p>Hỗ trợ 24/7</p>
-          <span>Liên hệ hỗ trợ 24h/ngày.</span>
-        </div> */}
+
           <div className="col-md-3 col-6 item">
-            <i className="fa fa-download"></i>
+            <i className="fa fa-download" />
             <p>Xử lý đơn hàng</p>
             <span>
               Đợn hàng thường được xác nhận trong 2h, và giao hàng trong 3-6
@@ -165,20 +171,20 @@ function ProductDetail(props) {
             </span>
           </div>
           <div className="col-md-3 col-6 item">
-            <i className="fas fa-sync-alt"></i>
+            <i className="fas fa-sync-alt" />
             <p>Quy định đổi trả</p>
-            <span>Thủ tục đổi trả đơn giản và rễ ràng.</span>
+            <span>Thủ tục đổi trả đơn giản và dễ ràng.</span>
           </div>
           <div className="col-md-3 col-6 item">
-            <i className="fa fa-shield"></i>
+            <i className="fa fa-shield" />
             <p>Bảo mật</p>
             <span>Mọi thông tin khách hàng đều được bảo mật.</span>
           </div>
         </div>
-        <div className="row bg-white bg-shadow product-similar d-flex m-md-2 my-2">
-          <h3 className="col-12 -ms-md-4 ms-2">Sản phẩm tương tự </h3>
+        <div className="bg-white bg-shadow py-3 my-2 mt-3">
+          <h3 className="col-12 ms-md-4 ms-2">Sản phẩm tương tự </h3>
 
-          <div className="top-product-show mt-5 mb-3">
+          <div className="top-product-show mt-5 mb-3 d-block">
             {productByCateId.productOutList && (
               <Carosel
                 products={productByCateId.productOutList}
@@ -187,10 +193,10 @@ function ProductDetail(props) {
             )}
           </div>
         </div>
-        <div className="row bg-white bg-shadow product-similar d-flex m-md-2 my-2 mt-5">
+        <div className=" bg-white bg-shadow py-3 my-2 mt-3">
           <h3 className="col-12 ms-md-4 ms-2">Sản phẩm phổ biến </h3>
 
-          <div className="top-product-show mt-5 mb-3">
+          <div className="top-product-show mt-5 mb-3 d-block">
             {productSame.list && (
               <Carosel
                 products={productSame.list}

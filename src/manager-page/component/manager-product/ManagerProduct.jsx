@@ -6,86 +6,99 @@ import YLButton from "components/custom-field/YLButton";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
-import ManagerSort from "manager-page/component/sort/ManagerSort";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { convertToVND } from "utils/format-string";
 import ConfirmPopupV2 from "../../../components/confirm-popup/ConfirmPopupV2";
 import { toast } from "react-toastify";
+import ManagerSortQueryString from "../sort/ManagerSortQueryString";
+import "./scss/filter-manage-product.scss";
+import queryString from "query-string";
 
 ManagerProduct.propTypes = {};
 
 function ManagerProduct(props) {
-  const [activePage, setActivePage] = useState(1);
-  const [productFilter, setProductFilter] = useState({
+  console.log(props);
+  const rootPath = props.location.pathname;
+  let params = new URLSearchParams(props.location.search);
+  console.log("search", props.location.search);
+
+  let isAsc = params.get("isAsc") || false;
+  let keyword = params.get("keyword") || "";
+  let limit = params.get("limit") || filterConfig.LIMIT_DATA_PER_PAGE;
+  let page = params.get("page") || filterConfig.PAGE_NUMBER_DEFAULT;
+  let sortBy = params.get("sortBy") || "product_id";
+  let custom = params.get("custom") || false;
+  let visibleInStorefront = params.get("visibleInStorefront") || "null";
+  const currentFilter = {
+    isAsc,
+    keyword,
+    limit,
+    page,
+    sortBy,
+    custom,
+    visibleInStorefront,
     listCateId: [],
     listFishId: [],
-    page: filterConfig.PAGE_NUMBER_DEFAULT,
-    limit: filterConfig.LIMIT_DATA_PER_PAGE,
-    isAsc: false,
-    sortBy: "productId",
-    keyword: "",
-  });
+  };
+
   const [products, setProducts] = useState({
     data: [],
-    isLoading: false,
-    success: true,
+    isLoading: true,
+    success: false,
   });
   const SORT_OPTIONS = [
     {
       display: "Cũ nhất",
       isAsc: true,
-      sortBy: "productId",
+      sortBy: "product_id",
       value: "SORT_PRODUCT_ID",
     },
     {
       display: "Mới nhất",
       isAsc: false,
-      sortBy: "productId",
+      sortBy: "product_id",
       value: "SORT_PRODUCT_ID",
     },
     {
       display: "Tên giảm dần",
       isAsc: false,
-      sortBy: "productName",
+      sortBy: "product_name",
       value: "SORT_NAME_PRODUCT_ASC",
     },
     {
       display: "Tên sản phẩm tăng dần",
       isAsc: true,
-      sortBy: "productName",
+      sortBy: "product_name",
       value: "SORT_NME_PRODUCT_DESC",
     },
     {
       display: "Giá tăng dần",
       isAsc: true,
-      sortBy: "defaultPrice",
+      sortBy: "default_price",
       value: "SORT_PRICE_PRODUCT_DESC",
     },
     {
       display: "Giá giảm dần",
       isAsc: false,
-      sortBy: "defaultPrice",
+      sortBy: "default_price",
       value: "SORT_PRICE_PRODUCT_ASC",
     },
   ];
+
   const fetchManagerProduct = async () => {
-    setProducts((prevState) => {
-      return { ...prevState, isLoading: true };
-    });
     try {
       const response = await ManagerProductAPI.getProductByFilter(
-        productFilter
+        currentFilter
       );
       setProducts({ data: response, isLoading: false, success: true });
     } catch (error) {
       setProducts({ data: null, isLoading: false, success: false });
-      console.log("fail to fetch product");
+      toast.error("Hệ thống gặp lỗi lạ!");
     }
   };
   const history = useHistory();
-  const location = useLocation();
 
   const handleEditClicked = (e, data) => {
     e.stopPropagation();
@@ -95,8 +108,8 @@ function ManagerProduct(props) {
   };
 
   function handlePageChange(newPage) {
-    setProductFilter({ ...productFilter, page: newPage - 1 });
-    setActivePage(newPage);
+    const query = queryString.stringify({ currentFilter, page: newPage - 1 });
+    history.push(`${rootPath}?${query}`);
   }
 
   const handleDeleteProduct = async (productId) => {
@@ -110,7 +123,8 @@ function ManagerProduct(props) {
   };
   useEffect(() => {
     fetchManagerProduct();
-  }, [productFilter]);
+  }, [props.location]);
+
   if (products.isLoading) {
     return <Loading />;
   } else if (!products.success) {
@@ -130,12 +144,14 @@ function ManagerProduct(props) {
           </div>
         </div>
         <div className="manager-product-show mt-3 bg-white bg-shadow">
-          <span>Tất cả sản phẩm</span>
+          <span>Tất cả sản phẩms</span>
           <hr />
-          <ManagerSort
-            filter={productFilter}
-            setFilter={setProductFilter}
+
+          <ManagerSortQueryString
             options={SORT_OPTIONS}
+            defaultFilter={currentFilter}
+            rootPath={rootPath}
+            plugin={CheckBoxFilter}
           />
           {products?.data?.productOutputList?.length <= 0 && (
             <p>Không có sản phẩm </p>
@@ -147,18 +163,7 @@ function ManagerProduct(props) {
                 <th>Tên sản phẩm</th>
                 <th>Danh mục</th>
                 <th className="text-center">Trạng thái</th>
-                <th
-                  onClick={() =>
-                    setProductFilter({
-                      ...productFilter,
-                      isAsc: !productFilter.isAsc,
-                      sortBy: "defaultPrice",
-                    })
-                  }
-                  className="text-center pointer"
-                >
-                  Giá
-                </th>
+                <th className="text-center pointer">Giá</th>
                 <th />
                 <th />
               </tr>
@@ -172,11 +177,7 @@ function ManagerProduct(props) {
                     })
                   }
                 >
-                  <td>
-                    {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
-                      i +
-                      1}
-                  </td>
+                  <td>{page * limit + i + 1}</td>
                   <td>{item.productName}</td>
                   <td>{item.category.categoryName}</td>
                   <td className="text-center py-2">
@@ -210,7 +211,7 @@ function ManagerProduct(props) {
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
-                activePage={activePage}
+                activePage={Number(page) + 1}
                 itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
                 totalItemsCount={products?.data?.totalProduct}
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
@@ -223,4 +224,71 @@ function ManagerProduct(props) {
     );
 }
 
+const CheckBoxFilter = ({ filter, setFilter, rootPath }) => {
+  const history = useHistory();
+  console.log(filter);
+  const OPTION_VISIBLE = [
+    {
+      display: "Tất cả",
+      value: "null",
+    },
+    {
+      display: "Đang kinh doanh",
+      value: true,
+    },
+    {
+      display: "Ngừng kinh doanh",
+      value: false,
+    },
+  ];
+
+  function handleSelectVisible(e) {
+    let value = e.target.value;
+    let temp = { ...filter };
+
+    temp = { ...temp, visibleInStorefront: value };
+
+    setFilter(temp);
+    const query = queryString.stringify(temp);
+    history.push(`${rootPath}?${query}`);
+  }
+
+  function handleCheckCustom(e) {
+    const checked = e.target.checked;
+    console.log(checked);
+    let temp = { ...filter };
+    temp = { ...temp, custom: checked };
+    setFilter(temp);
+    const query = queryString.stringify(temp);
+    history.push(`${rootPath}?${query}`);
+  }
+
+  return (
+    <div
+      className={
+        "d-flex flex-wrap my-3 align-items-center justify-content-end w-100"
+      }
+    >
+      <div className={"col-8 text-end"}>
+        <input
+          type={"checkbox"}
+          id={"custom"}
+          name={"custom"}
+          className={"form-check-input pointer me-2"}
+          onChange={handleCheckCustom}
+        />
+        <label htmlFor={"custom"}>Có tuỳ biến</label>
+      </div>
+      <div className={"col-4 ps-3"}>
+        <select className={"form-select "} onChange={handleSelectVisible}>
+          {OPTION_VISIBLE.map(({ display, value }, i) => (
+            <option key={"visible" + i} value={value}>
+              {display}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
 export default ManagerProduct;

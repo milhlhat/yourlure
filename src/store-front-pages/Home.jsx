@@ -69,7 +69,6 @@ function Home() {
             name="description"
             content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
           />
-
         </Helmet>
         <div className="home-banner ">
           <div className="img-banner bg-shadow">
@@ -86,7 +85,7 @@ function Home() {
               <YLButton
                 value="Khám phá"
                 // disabled={!allowed}
-                to={DEFINELINK.product}
+                to={DEFINELINK.product + DEFINELINK.productShowCustomizes}
                 variant="primary"
                 width={"150px"}
               />

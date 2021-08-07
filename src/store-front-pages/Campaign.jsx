@@ -201,13 +201,11 @@ function Campaign() {
           <title>Yourlure | Sự kiện</title>{" "}
           <meta name="title" content="Sự kiện" />
           <meta name="description" content={campaign?.data?.banner} />
-
         </Helmet>
         <div className="campaign-banner d-block ">
           <Carousel
             responsive={responsiveBanner}
             removeArrowOnDeviceType={["all"]}
-            showDots
             autoPlay
             infinite
             draggable={false}

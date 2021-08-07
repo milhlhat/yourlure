@@ -20,6 +20,7 @@ import DEFINELINK from "../../../routes/define-link";
 function ManagerCampaign(props) {
   const totalItem = 10;
   const history = useHistory();
+
   const [filter, setFilter] = useState({
     isAsc: true,
     keyword: "",

@@ -2,8 +2,8 @@ import { AbilityContext } from "ability/can";
 import CartAPI from "api/user-cart-api";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { setCartGuest } from "redux/cart/cart-guest";
 import { convertToVND } from "utils/format-string";
 import YLButton from "../../custom-field/YLButton";
@@ -21,7 +21,7 @@ function ProductAction(props) {
   const [variantName, setVariantName] = useState();
   const [variantImg, setVariantImg] = useState();
   const [price, setPrice] = useState();
-  const [disount, setDiscount] = useState();
+
   const [takeOut, setTakeOut] = useState(
     product?.variantCollection[0]?.quantity
   );
@@ -69,7 +69,7 @@ function ProductAction(props) {
       variantName: variantName,
       weight: getValues("weight"),
       variantImg: variantImg,
-      thumbnailUrl:customize ? customize.thumbnailUrl : null,
+      thumbnailUrl: customize ? customize.thumbnailUrl : null,
     };
     if (
       (product.maxWeight && data.weight > product.maxWeight) ||
@@ -166,44 +166,61 @@ function ProductAction(props) {
   }, [product]);
   return (
     <div className="bg-white bg-shadow product-action p-4">
-      <span className="title">
+      <h1 className="title">
         {product == null ? "name" : product.productName}
-      </span>
-      <div className="">{product == null ? "price" : convertToVND(price)}</div>
+      </h1>
+      <h2 className="price primary-color">
+        {product == null ? "price" : convertToVND(price)}
+      </h2>
       <div className="tab py-3">
-        <div className="buy-tab p-1">
+        <div className="buy-tab">
           <span>MUA HÀNG</span>
         </div>
-        <div className="detail-tab p-1">
+        <div className="detail-tab ">
           <a href="#more-description">CHI TIẾT</a>
         </div>
       </div>
       <div className="product-description">
         {product ? product.description : ""}
       </div>
-      <div className="product-parameter my-md-5 my-3">
-        <h3>Thông số:</h3>
-        <span>Chiều dài: {product ? product.length : ""} cm</span>
-        <br />
-        <span>
-          Trọng lượng(g):{" "}
-          {!product?.maxWeight || !product?.minWeight ? (
-            product?.defaultWeight + "(g)"
-          ) : (
-            <input
-              {...register("weight")}
-              type="number"
-              defaultValue={product?.defaultWeight}
-              min={product ? product.minWeight : ""}
-              max={product ? product.maxWeight : ""}
-            />
-          )}
-        </span>
-        <br />
-        <span>Lặn sâu: {product ? product.deepDiving : ""}</span>
+      <hr />
+      <div className="product-parameter  ">
+        <h4>Thông số:</h4>
+        <table className={"table-param"}>
+          <tr>
+            <th>Chiều dài:</th>
+            <td className={"ps-3"}>{product ? product.length : ""} cm</td>
+          </tr>{" "}
+          <tr>
+            <th>Trọng lượng(g): </th>
+            <td className={"ps-3"}>
+              {" "}
+              {!product?.maxWeight || !product?.minWeight ? (
+                product?.defaultWeight + "(g)"
+              ) : (
+                <input
+                  id={"weight"}
+                  {...register("weight")}
+                  type="number"
+                  defaultValue={product?.defaultWeight}
+                  min={product ? product.minWeight : ""}
+                  max={product ? product.maxWeight : ""}
+                  className={"form-control input-weight"}
+                />
+              )}
+            </td>
+          </tr>{" "}
+          <tr>
+            <th>Lặn sâu:</th>
+            <td className={"ps-3"}>{product ? product.deepDiving : ""}</td>
+          </tr>
+        </table>
       </div>
+      <hr />
       <div className="product-choose-color">
-        <h5>Mã màu: {variantName}</h5>
+        <div className={"d-flex align-items-center"}>
+          <h4>Mã màu:</h4> <p className={"m-0 ms-2"}> {variantName}</p>
+        </div>
         <div className="choose-color">
           {product?.variantCollection?.map((value, index) => (
             <div
@@ -296,7 +313,7 @@ function ProductAction(props) {
           <h5>Số lượng:</h5>
           <div className="product-details-quantity d-flex">
             <button className="quantity-input" onClick={decrement}>
-              <i className="fal fa-minus"></i>
+              <i className="fal fa-minus" />
             </button>
             <input
               {...register("quantity")}
@@ -306,7 +323,7 @@ function ProductAction(props) {
               required
             />
             <button className="quantity-input" onClick={increment}>
-              <i className="fal fa-plus"></i>
+              <i className="fal fa-plus" />
             </button>
           </div>
         </div>
@@ -317,7 +334,7 @@ function ProductAction(props) {
           <YLButton
             variant="light"
             type="button"
-            disabled={takeOut <= 0 || !product?.visibleInStorefront||addCart}
+            disabled={takeOut <= 0 || !product?.visibleInStorefront || addCart}
           >
             Mua ngay
           </YLButton>

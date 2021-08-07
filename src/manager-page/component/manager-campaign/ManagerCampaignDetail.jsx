@@ -185,7 +185,7 @@ function ManagerCampaignDetail(props) {
         <tbody>
           {registerUsers.data?.campaignDtoOuts?.map((item, i) => (
             <tr key={i}>
-              <td>{i + 1}</td>
+              <td>{page * limit + i + 1}</td>
               <td>{item.username}</td>
               <td>{item.phone}</td>
             </tr>

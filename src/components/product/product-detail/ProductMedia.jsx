@@ -4,7 +4,7 @@ import "assets/scss/scss-components/product/product-detail.scss";
 import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 import { AbilityContext } from "ability/can";
-import LoadingBall from 'assets/images/loading-ball.gif';
+import LoadingBall from "assets/images/loading-ball.gif";
 
 function ProductImage(props) {
   let { product, setBigImgLink, bigImgLink } = props;
@@ -22,7 +22,7 @@ function ProductImage(props) {
     setBigImgLink(null);
   };
   return (
-    <div className="bg-white bg-shadow product-media d-flex flex-column">
+    <div className="bg-white bg-shadow product-media d-flex flex-column sticky-bar-top">
       <div className="big-image object-fit p-md-3 p-1">
         <button
           className={`big-image-edit ${

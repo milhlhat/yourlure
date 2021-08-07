@@ -16,10 +16,11 @@ ManagerSortQueryString.propTypes = {
   }).isRequired,
   options: PropTypes.array.isRequired,
   rootPath: PropTypes.string,
+  plugin: PropTypes.any,
 };
 
 function ManagerSortQueryString(props) {
-  const { defaultFilter, options, rootPath } = props;
+  const { defaultFilter, options, rootPath, plugin } = props;
   const history = useHistory();
   const [filter, setFilter] = useState(defaultFilter);
 
@@ -50,7 +51,7 @@ function ManagerSortQueryString(props) {
 
   return (
     <form onSubmit={handleSubmit(onsubmit)} className={"w-100"}>
-      <div className="row">
+      <div className="d-flex flex-wrap ">
         <div className="col-12 col-md-8">
           <div className="row">
             <div className="col-3">
@@ -67,13 +68,16 @@ function ManagerSortQueryString(props) {
                 type="text"
                 {...register("keyWord")}
                 placeholder="Tìm kiếm"
-                defaultValue={""}
+                // value={filter.keyword}
+                // onChange={(e) =>
+                //   setFilter({ ...filter, keyword: e.target.value })
+                // }
               />
             </div>
           </div>
         </div>
 
-        <div className="col-4 mt-2 mt-md-0">
+        <div className="col-4 mt-2 mt-md-0 ps-3">
           <select
             className="form-select select-sort pointer"
             onChange={(e) => handleSelectSort(e)}
@@ -91,9 +95,12 @@ function ManagerSortQueryString(props) {
             ))}
           </select>
         </div>
+        {plugin && plugin({ filter, setFilter, rootPath })}
       </div>
     </form>
   );
 }
 
-export default ManagerSortQueryString;
+export default React.memo(ManagerSortQueryString, (prevProps, nextProps) => {
+  return (prevProps.defaultFilter.page = nextProps.defaultFilter.page);
+});
