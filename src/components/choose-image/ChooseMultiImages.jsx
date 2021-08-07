@@ -30,7 +30,7 @@ function ChooseMultiImages(props) {
       let temp = [...newImages];
       const newFiles = getUniqueFiles(temp.concat(files));
       setnewImages(newFiles);
-      setValue("newImages", newFiles);
+      setValue("newImages", newFiles, { shouldDirty: true });
     }
   };
   const handleDeleteOldImage = (e) => {
@@ -87,7 +87,7 @@ function ChooseMultiImages(props) {
 
   const fetchImgByProductId = async () => {
     try {
-      remove();
+      // remove();
       // const response = await ManagerProductAPI.getProductByID(productId);
       const response = await getOldImage();
       append(response);

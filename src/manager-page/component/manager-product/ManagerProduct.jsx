@@ -19,10 +19,8 @@ import queryString from "query-string";
 ManagerProduct.propTypes = {};
 
 function ManagerProduct(props) {
-  console.log(props);
   const rootPath = props.location.pathname;
   let params = new URLSearchParams(props.location.search);
-  console.log("search", props.location.search);
 
   let isAsc = params.get("isAsc") || false;
   let keyword = params.get("keyword") || "";
@@ -144,7 +142,7 @@ function ManagerProduct(props) {
           </div>
         </div>
         <div className="manager-product-show mt-3 bg-white bg-shadow">
-          <span>Tất cả sản phẩms</span>
+          <span>Tất cả sản phẩm</span>
           <hr />
 
           <ManagerSortQueryString
@@ -226,7 +224,6 @@ function ManagerProduct(props) {
 
 const CheckBoxFilter = ({ filter, setFilter, rootPath }) => {
   const history = useHistory();
-  console.log(filter);
   const OPTION_VISIBLE = [
     {
       display: "Tất cả",

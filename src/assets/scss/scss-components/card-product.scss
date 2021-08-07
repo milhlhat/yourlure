@@ -6,11 +6,12 @@
 	flex-direction: column;
 	min-width: 0;
 	word-wrap: break-word;
-	background-color: #ffffff;
+	background-color: #f3f3f3;
 	background-clip: border-box;
-	border: 1px solid #e5e5e5;
+	border: 1px solid #f3f3f3;
 	transition: 0.5s;
 	position: relative;
+
 	& .text-color-primary {
 		color: $primary;
 	}
@@ -47,6 +48,9 @@
 	& .text-name-product {
 		text-decoration: underline;
 	}
+}
+.card-info{
+	background-color: white;
 }
 @media screen and (max-width: $mobile-width - 1px) {
 	.card-product {

@@ -37,7 +37,7 @@ function CardProduct(props) {
             />
           </div>
 
-          <div className="d-flex flex-column card-info w-100 thum p-2 pb-4">
+          <div className="d-flex flex-column card-info w-100  p-2 pb-4">
             <span className="text-color text-small">{product.brand}</span>
             <span className="mt-2 text-name-product text-ellipsis">
               {product.productName ? product.productName : ""}

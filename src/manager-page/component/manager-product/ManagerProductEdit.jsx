@@ -34,6 +34,7 @@ import {
 } from "../../../constant/product-config";
 
 import HorizontalStepper from "./stepper/Stepper";
+import useUnsavedChangeWarning from "../../../utils/custom-hook/useUnsavedChangeWarning";
 
 export const VALIADATE_SCHEMA_PRODUCT_BASE = {
   productName: yup
@@ -223,18 +224,16 @@ function ManagerProductEdit(props) {
     register,
     watch,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     handleSubmit,
     setValue,
   } = methods;
-  console.log(errors);
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "defaultMaterials", // unique name for your Field Array
-      // keyName: "id", default to "id", you can change the key name
-    }
-  );
+
+  const { fields, append, prepend, remove } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "defaultMaterials", // unique name for your Field Array
+    // keyName: "id", default to "id", you can change the key name
+  });
   const watchDefaultMaterials = useWatch({
     control,
     name: "defaultMaterials",
@@ -273,9 +272,13 @@ function ManagerProductEdit(props) {
       { name: "imgListInput", value: [] },
       { name: "newImages", value: [] },
     ];
-    defauValues.forEach(({ name, value }) => setValue(name, value));
+    defauValues.forEach(({ name, value }) =>
+      setValue(name, value, { shouldDirty: false })
+    );
   };
-
+  useEffect(() => {
+    setIsDirty(true);
+  }, [isDirty]);
   const [hasModel, setHasModel] = useState(false);
   useEffect(() => {
     const fetchDataByProductId = async (productId) => {
@@ -293,7 +296,9 @@ function ManagerProductEdit(props) {
         });
         responseFish.forEach((item, index) => {
           if (fishIds?.includes(item.fishID)) {
-            setValue(`listFishId[${index}]`, item.fishID);
+            setValue(`listFishId[${index}]`, item.fishID, {
+              shouldDirty: false,
+            });
           }
         });
         //fill value to model fields
@@ -315,8 +320,10 @@ function ManagerProductEdit(props) {
         //fill value to material field
         setValue(
           "defaultMaterials",
-          currentModel?.materials ? currentModel.materials : []
+          currentModel?.materials ? currentModel.materials : [],
+          { shouldDirty: false }
         );
+        setIsDirty(false);
       } catch (error) {
         console.log(error);
         setProduct({ loading: false, success: false });
@@ -376,7 +383,10 @@ function ManagerProductEdit(props) {
     }
   };
   // console.log(watch());
+  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
+
   const onSubmit = async (data) => {
+    setIsDirty(false);
     console.log("form submit", data);
     try {
       //====product======
@@ -465,6 +475,7 @@ function ManagerProductEdit(props) {
   } else
     return (
       <div>
+        {Prompt}
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <div className=" product-add-new-form row">
             <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">

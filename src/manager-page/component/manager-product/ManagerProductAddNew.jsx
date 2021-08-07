@@ -24,6 +24,7 @@ import {
 } from "../../../constant/product-config";
 import Stepper from "./stepper/Stepper";
 import { getUniqueFiles } from "utils/prototype";
+import useUnsavedChangeWarning from "../../../utils/custom-hook/useUnsavedChangeWarning";
 
 ManagerProductAddNew.propTypes = {};
 
@@ -149,13 +150,17 @@ function ManagerProductAddNew(props) {
   const {
     register,
     unregister,
-    formState: { errors },
-    getValues,
+    formState: { errors, isDirty },
     handleSubmit,
-    trigger,
   } = methods;
   console.log(errors);
+  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
+  useEffect(() => {
+    setIsDirty(isDirty);
+  }, [isDirty]);
+
   const onSubmit = async (data) => {
+    setIsDirty(false);
     if (data.listFishId === false) {
       data.listFishId = [];
     }
@@ -252,6 +257,7 @@ function ManagerProductAddNew(props) {
 
   return (
     <div>
+      {Prompt}
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)} autocomplete="off">
         <div className=" product-add-new-form row">
