@@ -100,11 +100,11 @@ public class UserServiceImpl implements UserService {
             if (findUser != null) {
                 phone = verifyPhone(phone);
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phone, password));
-                if(!findUser.getEnabled()){
+                if (!findUser.getEnabled()) {
                     throw new ValidationException("Tài khoản của bạn đã bị khoá.");
                 }
                 return jwtTokenProvider.createToken(phone, userRepos.findByPhone(phone).getRoles());
-            }else{
+            } else {
                 throw new ValidationException("Sai số điện thoại hoặc mật khẩu! xin thử lại.");
             }
 
@@ -142,20 +142,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Object changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
-
-        if (oldPwd.equals(newPwd)) {
-            throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
-        }
-
         User user = whoami(rq);
-
-        // authenticate để check oldPwd nhập vào có giống mk trong db hay ko
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
-        if (authenticate.isAuthenticated()) {
-            user.setPassword(passwordEncoder.encode(newPwd));
-            userRepos.save(user);
-            return true;
-        } else {
+        try {
+            // authenticate để check oldPwd nhập vào có giống mk trong db hay ko
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
+            if (oldPwd.equals(newPwd)) {
+                throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
+            }
+            if (authenticate.isAuthenticated()) {
+                user.setPassword(passwordEncoder.encode(newPwd));
+                userRepos.save(user);
+                return true;
+            } else {
+                throw new ValidationException("Mật khẩu cũ không đúng!");
+            }
+        } catch (Exception e) {
             throw new ValidationException("Mật khẩu cũ không đúng!");
         }
     }
