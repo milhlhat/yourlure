@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { CircularProgress } from "@material-ui/core";
 import UserApi from "api/user-api";
 
+const TIME_COUNT_DOWN=60;
+
 function FogotPassWord(props) {
   const [onTab, setOnTab] = useState(0);
   const [info, setInfo] = useState();
@@ -141,9 +143,9 @@ function OTPForm(props) {
   const sentOTP = async () => {
     console.log("send OTP");
     setDisableSendOtp(true);
-    setCountTime(30);
+    setCountTime(TIME_COUNT_DOWN);
     let sendCountTime;
-    let time = 30;
+    let time = TIME_COUNT_DOWN;
     const runtime = () => {
       if (time <= 0) {
         setDisableSendOtp(false);

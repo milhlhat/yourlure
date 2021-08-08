@@ -17,6 +17,7 @@ import PhoneAPI from "api/phone-number-api";
 import { CircularProgress } from "@material-ui/core";
 
 const EXISTED_PHONE_STATUS = 422;
+const TIME_COUNT_DOWN = 60;
 
 function Register(props) {
   const [info, setInfo] = useState();
@@ -221,9 +222,9 @@ function RegisterOTP({ ability, changeTab, info }) {
   const sentOTP = async () => {
     console.log("send OTP");
     setDisableSendOtp(true);
-    setCountTime(30);
+    setCountTime(TIME_COUNT_DOWN);
     let sendCountTime;
-    let time = 30;
+    let time = TIME_COUNT_DOWN;
     const runtime = () => {
       if (time <= 0) {
         setDisableSendOtp(false);
