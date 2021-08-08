@@ -159,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
                     variant = variantRepos.save(variant);
 
                 } else {
-                    throw new Exception("Variant out of stock!");
+                    throw new Exception("Mã màu này đã hết hàng!");
                 }
             } else {
                 throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
@@ -240,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
         // TODO: create order line
         Cart cart = cartRepos.findCartByUserUserId(user.getUserId()).orElse(null);
         if (cart == null) {
-            throw new Exception("can't process order because cart is empty!");
+            throw new Exception("Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành đặt hàng!");
         }
 
         List<CartItem> items = cart.getCartItemCollection().stream()
@@ -502,7 +502,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword, pageable);
             if (list.getContent().isEmpty()) {
-                throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
+                throw new CustomException("Không tìm thấy đơn hàng nào", HttpStatus.NOT_FOUND);
             } else {
                 // map data vao AdminOrderDtoOut.OrderDtoOut
                 List<AdminOrderDtoOut.OrderDtoOut> orderDtoOuts = mapCustomData(list.getContent());

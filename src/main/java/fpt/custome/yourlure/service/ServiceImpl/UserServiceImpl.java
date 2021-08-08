@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
                 userRepos.save(user);
                 return jwtTokenProvider.createToken(user.getPhone(), user.getRoles());
             } else {
-                throw new ValidationException("Username or phone is already in use");
+                throw new ValidationException("Số điện thoại này đã có người sử dụng!");
             }
 
         }
@@ -223,7 +223,7 @@ public class UserServiceImpl implements UserService {
             Page<User> list;
             list = userRepos.findAllUser("%" + keyword.trim() + "%", pageable);
             if (list.getContent().isEmpty()) {
-                throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
+                throw new CustomException("Không tìm thấy kết quả nào!", HttpStatus.NOT_FOUND);
             } else {
                 for (User item : list.getContent()) {
                     if (item.getRoles().contains(Role.ROLE_CUSTOMER)) {
@@ -254,7 +254,7 @@ public class UserServiceImpl implements UserService {
             Page<User> list;
             list = userRepos.findAllStaff("%" + keyword.trim() + "%", pageable);
             if (list.getContent().isEmpty()) {
-                throw new CustomException("Doesn't exist", HttpStatus.NOT_FOUND);
+                throw new CustomException("Không tìm thấy kết quả nào!", HttpStatus.NOT_FOUND);
             } else {
                 for (User item : list.getContent()) {
                     if (item.getRoles().contains(Role.ROLE_STAFF) || item.getRoles().contains(Role.ROLE_ADMIN)) {

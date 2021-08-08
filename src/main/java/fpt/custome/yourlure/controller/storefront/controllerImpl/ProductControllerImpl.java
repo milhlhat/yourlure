@@ -115,10 +115,10 @@ public class ProductControllerImpl implements ProductController {
             if (resource.exists()) {
                 return resource;
             } else {
-                System.out.println("File not found " + fileName);
+                System.out.println("Không tìm thấy file " + fileName);
             }
         } catch (MalformedURLException ex) {
-            System.out.println("File not found " + fileName);
+            System.out.println("Không tìm thấy file " + fileName);
         }
         return null;
     }
@@ -133,7 +133,7 @@ public class ProductControllerImpl implements ProductController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
+            System.out.println("File không đúng định dạng!");
         }
 
         // Fallback to the default content type if type could not be determined

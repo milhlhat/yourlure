@@ -193,7 +193,7 @@ public class CampaignServiceImpl implements CampaignService {
                 throw new ValidationException("Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!");
             }
         } else {
-            throw new ValidationException("Data input is null!");
+            throw new ValidationException("Vui lòng nhập dữ liệu!");
         }
         return "Đăng ký tham gia thành công!";
     }

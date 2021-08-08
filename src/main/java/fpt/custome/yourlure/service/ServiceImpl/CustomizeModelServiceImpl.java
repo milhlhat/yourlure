@@ -79,7 +79,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         String model3dUrl = m3dIn.getUrl();
 
         if (fileService.isFileExist(model3dUrl)) {
-            throw new FileNotFoundException("the 3d model wasn't uploaded yet!");
+            throw new FileNotFoundException("Bạn chưa upload 3d model! vui lòng kiểm tra lại");
         }
 
         Model3d m3d = Model3d.builder()

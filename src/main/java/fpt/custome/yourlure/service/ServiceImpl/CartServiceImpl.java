@@ -175,7 +175,7 @@ public class CartServiceImpl implements CartService {
 
         CustomizeModel myCustom = getMyCustom(user, addToCartDto.getCustomModelId());
         if (myCustom == null) {
-            throw new Exception("this custom model isn't yours!");
+            throw new Exception("Tuỳ biến không tồn tại! vui lòng kiểm tra lại");
         }
 
         // if exist -> just increase quantity

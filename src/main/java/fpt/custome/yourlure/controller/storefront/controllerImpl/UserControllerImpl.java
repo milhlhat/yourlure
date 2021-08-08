@@ -191,10 +191,10 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<Object> forgotPassword(String phone) {
         if (userService.forgotPwd(phone)) {
             // success
-            return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+            return new ResponseEntity<>("Mã OTP đã được gửi, vui lòng kiểm tra điện thoại của bạn.", HttpStatus.OK);
         }
         // failure message
-        return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Không thể tạo gửi mã OTP! vui long kiểm tra lại.", HttpStatus.BAD_REQUEST);
 
     }
 
@@ -203,9 +203,9 @@ public class UserControllerImpl implements UserController {
         try {
             if (userService.sendOTPRegister(phone)) {
                 // success
-                return new ResponseEntity<>("OTP successfully generated. Please check your phone!", HttpStatus.OK);
+                return new ResponseEntity<>("Mã OTP đã được gửi, vui lòng kiểm tra điện thoại của bạn.", HttpStatus.OK);
             }
-            return new ResponseEntity<>("OTP can not be generated.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Không thể tạo gửi mã OTP! vui long kiểm tra lại.", HttpStatus.BAD_REQUEST);
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
@@ -229,9 +229,9 @@ public class UserControllerImpl implements UserController {
     @Override
     public ResponseEntity<Object> resetPwd(String phone, String newPwd, Integer otp) {
         if (userService.resetPwd(phone, newPwd, otp)) {
-            return new ResponseEntity<>("reset password successfully.", HttpStatus.OK);
+            return new ResponseEntity<>("Thành công", HttpStatus.OK);
         }
-        return new ResponseEntity<>("fail to reset password!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Không thể tạo lại mật khẩu! vui lòng kiểm tra lại.", HttpStatus.BAD_REQUEST);
     }
 
 }
