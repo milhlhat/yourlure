@@ -127,9 +127,12 @@ input[type="search"]:focus::-webkit-search-cancel-button {
   }
 }
 
-@include mq('md','max'){
+@include mq('md','max' ){
+  .logo{
+    height: 50px !important;
+  }
   .logo-text{
-    display: none;
+    width: 100px !important;
   }
 }
 @media screen and (min-width: $tablet-width+1) {

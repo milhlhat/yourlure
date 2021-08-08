@@ -1,0 +1,16 @@
+@import "../mixin/breakpoint";
+
+.grid-card-product {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-items: center;
+  grid-gap: 10px;
+}
+@include mq('sm', 'max') {
+  .grid-card-product {
+    grid-template-columns: repeat(2,  minmax(100px, 1fr));
+  }
+
+}
+ 
+

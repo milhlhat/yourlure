@@ -7,9 +7,8 @@ import { filterConfig } from "constant/filter-setting";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setFilter } from "redux/product-action/fetch-filter";
 import { fetchFilter } from "utils/product";
-
+import "assets/scss/scss-pages/show-customizies.scss";
 function ShowCustomizes(props) {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.productFilter.data); //getAllCustomizeconst
@@ -62,7 +61,7 @@ function ShowCustomizes(props) {
               </span>
             ) : (
               <div>
-                <div className="d-flex flex-wrap">
+                <div className="grid-card-product w-100">
                   {customizes?.data?.map((item, i) => (
                     <CardCustom
                       canCustom={true}
@@ -78,12 +77,13 @@ function ShowCustomizes(props) {
         </div>
       ) : (
         <div className="d-flex justify-content-center mt-5 bg-box bg-shadow">
-          <Link to="/login">Đăng nhập</Link>&nbsp; để có thể lưu lại sản phẩm tùy biến của bạn.
+          <Link to="/login">Đăng nhập</Link>&nbsp; để có thể lưu lại sản phẩm
+          tùy biến của bạn.
         </div>
       )}
       <div className="bg-box bg-shadow my-4">
         <h6>Danh sách sản phẩm có thể tùy biến</h6>
-        <div className="d-flex flex-wrap">
+        <div className="grid-card-product w-100">
           {products?.productOutList?.map((item, i) => (
             <CardProduct
               canCustom={true}
