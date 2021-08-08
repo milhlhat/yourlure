@@ -66,7 +66,7 @@ function ManagerProduct(props) {
       value: "SORT_NAME_PRODUCT_ASC",
     },
     {
-      display: "Tên sản phẩm tăng dần",
+      display: "Tên tăng dần",
       isAsc: true,
       sortBy: "product_name",
       value: "SORT_NME_PRODUCT_DESC",
