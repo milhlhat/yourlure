@@ -226,6 +226,10 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         return output;
     }
 
+    public boolean isDuplicatedCustomName(User user, String customName){
+        return user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customName));
+    }
+
     @Override
     public CustomModelDtoOut createCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws IOException {
 
@@ -234,8 +238,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
-        boolean duplicateName = user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customModelDtoInput.getName()));
-        if (duplicateName){
+        if(isDuplicatedCustomName(user, customModelDtoInput.getName())){
             throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
         }
         // init customize model
@@ -280,8 +283,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         CustomizeModel customizeModel = customizeModelRepos.getById(customModelDtoInput.getCustomizeId());
         if(!customizeModel.getName().equals(customModelDtoInput.getName())){
-            boolean duplicateName = user.getCustomizeModels().stream().anyMatch(cus -> cus.getName().equals(customModelDtoInput.getName()));
-            if (duplicateName){
+            if (isDuplicatedCustomName(user, customModelDtoInput.getName())){
                 throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
             }
         }

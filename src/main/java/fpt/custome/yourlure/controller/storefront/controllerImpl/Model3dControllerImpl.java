@@ -5,9 +5,11 @@ import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import fpt.custome.yourlure.repositories.Model3dRepos;
 import fpt.custome.yourlure.service.CustomizeModelService;
+import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,9 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Autowired
     private CustomizeModelService customizeModelService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private Model3dRepos model3dRepos;
@@ -82,6 +87,17 @@ public class Model3dControllerImpl implements Model3dController {
             System.out.println(validationException.getMessage());
             return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name) {
+        try{
+            User user = userService.whoami(rq);
+            return new ResponseEntity<>(customizeModelService.isDuplicatedCustomName(user, name), HttpStatus.OK);
+        }catch (Exception e){
             e.printStackTrace();
         }
         return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);

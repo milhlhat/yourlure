@@ -4,6 +4,7 @@ import fpt.custome.yourlure.dto.dtoInp.AdminModel3dDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.CustomModelDtoInput;
 import fpt.custome.yourlure.dto.dtoInp.Model3dDtoInput;
 import fpt.custome.yourlure.dto.dtoOut.CustomModelDtoOut;
+import fpt.custome.yourlure.entity.User;
 import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ public interface CustomizeModelService {
     List<CustomModelDtoOut> getCustomModelsByProductId(HttpServletRequest rq, Long productId);
 
     CustomModelDtoOut createCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws IOException;
+
+    boolean isDuplicatedCustomName(User user, String name);
 
     @Transactional
     CustomModelDtoOut updateCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws Exception;

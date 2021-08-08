@@ -60,6 +60,9 @@ public interface Model3dController {
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
     ResponseEntity<Object> findCustomModelByProductId(HttpServletRequest rq, @PathVariable(name = "productId") Long productId);
 
+    @GetMapping(value = "/custom-name-duplicate")
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, @RequestParam String name);
 
     @PostMapping(value = "/create-custom")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
