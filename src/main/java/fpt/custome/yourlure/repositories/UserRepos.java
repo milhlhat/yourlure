@@ -12,7 +12,7 @@ public interface UserRepos extends JpaRepository<User, Long> {
 
     User findByPhone(String phone);
 
-    @Query(value = " SELECT u.* \n" +
+    @Query(value = " SELECT u.*, COUNT(o.order_id) AS number_of_order \n" +
             "from tbl_users u\n" +
             "LEFT JOIN user_roles ur on u.user_id = ur.user_user_id\n" +
             "LEFT JOIN tbl_orders o on u.user_id = o.user_id\n " +
