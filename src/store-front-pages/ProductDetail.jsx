@@ -47,6 +47,11 @@ function ProductDetail(props) {
           isSuccess: true,
           isLoading: false,
         });
+
+        fetchFilter(dispatch, {
+          ...filter,
+          listCateId: [response?.category?.categoryId],
+        });
         if (response.customizable) {
           fetchProductCustomize();
         }
@@ -104,10 +109,6 @@ function ProductDetail(props) {
     window.scrollTo(0, 0);
     fetchProduct();
     fetchProductSame();
-    fetchFilter(dispatch, {
-      ...filter,
-      listCateId: [productDetail?.list?.category?.categoryId],
-    });
   }, [productId]);
 
   useEffect(() => {

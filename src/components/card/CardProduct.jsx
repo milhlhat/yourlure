@@ -45,7 +45,7 @@ function CardProduct(props) {
             <span className="text-color-primary">
               {!product ? "N/A" : convertToVND(product.defaultPrice)}
             </span>
-            {canCustom && (
+            {canCustom ? (
               <div onClick={(e) => e.stopPropagation()} className={"mt-3"}>
                 <YLButton
                   variant="primary"
@@ -53,6 +53,16 @@ function CardProduct(props) {
                   width={"100%"}
                 >
                   Tùy biến ngay
+                </YLButton>
+              </div>
+            ):(
+              <div onClick={(e) => e.stopPropagation()} className={"mt-3"}>
+                <YLButton
+                  variant="primary"
+                  to={`/product/detail/${product.productID}`}
+                  width={"100%"}
+                >
+                  Xem ngay
                 </YLButton>
               </div>
             )}

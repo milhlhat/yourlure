@@ -12,15 +12,19 @@ function Carosel(props) {
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 1500 },
+      breakpoint: { max: 5000, min: 2601 },
+      items: 6,
+    },
+    largeDesktop: {
+      breakpoint: { max: 2600, min: 1028 },
       items: 5,
     },
     desktop: {
-      breakpoint: { max: 1500, min: 1024 },
+      breakpoint: { max: 1027, min: 768 },
       items: 4,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
+      breakpoint: { max: 767, min: 464 },
       items: 3,
     },
     mobile: {
