@@ -25,10 +25,23 @@ public interface CampaignRepos extends JpaRepository<Campaign, Long> {
             "ORDER BY tbl_campaign.end_date DESC LIMIT 10", nativeQuery = true)
     List<Campaign> findAllOrderByEndDateLimit10();
 
-    @Query(value = "SELECT *\n" +
+//    @Query(value = "SELECT *\n" +
+//            "FROM tbl_campaign\n" +
+//            "WHERE tbl_campaign.start_date < CURRENT_DATE\n" +
+//            "    AND tbl_campaign.end_date > CURRENT_DATE\n" +
+//            "ORDER BY tbl_campaign.start_date DESC LIMIT 1", nativeQuery = true)
+//    Optional<Campaign> findNewest();
+
+    @Query(value = "(SELECT *,(tbl_campaign.end_date - CURRENT_DATE) as end_nearest\n" +
             "FROM tbl_campaign\n" +
-            "WHERE tbl_campaign.start_date < CURRENT_DATE\n" +
-            "    AND tbl_campaign.end_date > CURRENT_DATE\n" +
-            "ORDER BY tbl_campaign.start_date DESC LIMIT 1", nativeQuery = true)
+            "WHERE CURRENT_DATE <= tbl_campaign.end_date\n" +
+            "ORDER BY (end_nearest))\n" +
+            "UNION ALL\n" +
+            "(SELECT *,(tbl_campaign.end_date - CURRENT_DATE) as end_nearest\n" +
+            "FROM tbl_campaign\n" +
+            "WHERE CURRENT_DATE > tbl_campaign.end_date\n" +
+            "ORDER BY (end_nearest) DESC)\n" +
+            "LIMIT 1", nativeQuery = true)
     Optional<Campaign> findNewest();
+
 }

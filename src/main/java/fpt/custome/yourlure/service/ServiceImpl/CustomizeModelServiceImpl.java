@@ -192,9 +192,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         User user = userService.whoami(rq);
         CustomizeModel customizeModel;
 
-        if(user.getRoles().contains(Role.ROLE_ADMIN) || user.getRoles().contains(Role.ROLE_STAFF)){
-            customizeModel= customizeModelRepos.findById(customModelId).orElse(null);
-        }else{
+        if (user.getRoles().contains(Role.ROLE_ADMIN) || user.getRoles().contains(Role.ROLE_STAFF)) {
+            customizeModel = customizeModelRepos.findById(customModelId).orElse(null);
+        } else {
             customizeModel = customizeModelRepos.findAllByCustomizeIdAndUserUserIdIs(customModelId, user.getUserId());
         }
 
@@ -226,7 +226,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         return output;
     }
 
-    public boolean isDuplicatedCustomName(User user, String customName){
+    public boolean isDuplicatedCustomName(User user, String customName) {
         return user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customName));
     }
 
@@ -238,7 +238,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
-        if(isDuplicatedCustomName(user, customModelDtoInput.getName())){
+        if (isDuplicatedCustomName(user, customModelDtoInput.getName())) {
             throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
         }
         // init customize model
@@ -279,11 +279,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             throw new ValidationException("Đã xảy ra lỗi! Tuỳ biến này không phải của bạn.");
         }
 
-
-
         CustomizeModel customizeModel = customizeModelRepos.getById(customModelDtoInput.getCustomizeId());
-        if(!customizeModel.getName().equals(customModelDtoInput.getName())){
-            if (isDuplicatedCustomName(user, customModelDtoInput.getName())){
+        if (!customizeModel.getName().equals(customModelDtoInput.getName())) {
+            if (isDuplicatedCustomName(user, customModelDtoInput.getName())) {
                 throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
             }
         }
@@ -322,7 +320,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
             if (customizeModel.getCustomizeId().equals(customizeModelId)) {
                 // check customize is in order
                 List<OrderLine> orderLines = orderLineRepos.findAllByCustomModelId(customizeModelId);
-                if(!orderLines.isEmpty()){
+                if (!orderLines.isEmpty()) {
                     // just remove user_id in customize table
                     customizeModel.setUser(null);
                     customizeModel = customizeModelRepos.save(customizeModel);
