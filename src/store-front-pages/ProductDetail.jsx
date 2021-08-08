@@ -109,6 +109,7 @@ function ProductDetail(props) {
     window.scrollTo(0, 0);
     fetchProduct();
     fetchProductSame();
+    setBigImgLink(null)
   }, [productId]);
 
   useEffect(() => {

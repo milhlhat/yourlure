@@ -1,10 +1,8 @@
-import React, { useContext, useState } from "react";
-
 import "assets/scss/scss-components/product/product-detail.scss";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
-import { AbilityContext } from "ability/can";
-import LoadingBall from "assets/images/loading-ball.gif";
+
 
 function ProductImage(props) {
   let { product, setBigImgLink, bigImgLink } = props;
