@@ -16,7 +16,7 @@ public interface CampaignService {
 
     Optional<AdminCampaignDtoOut> adminGetAll(String keyword, Pageable pageable);
 
-    CampaignDtoOut newest();
+    Optional<CampaignDtoOut> newest();
 
     Optional<CampaignDtoOut> getById(Long id);
 

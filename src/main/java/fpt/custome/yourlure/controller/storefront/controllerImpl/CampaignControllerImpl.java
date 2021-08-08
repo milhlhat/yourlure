@@ -33,8 +33,8 @@ public class CampaignControllerImpl implements CampaignController {
     @Override
     public ResponseEntity<Object> newest() {
         try {
-            CampaignDtoOut campaign = campaignService.newest();
-            return new ResponseEntity<>(campaign, HttpStatus.OK);
+            Optional<CampaignDtoOut> campaign = campaignService.newest();
+            return campaign.<ResponseEntity<Object>>map(campaignDtoOut -> new ResponseEntity<>(campaignDtoOut, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(Optional.empty(), HttpStatus.OK));
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());

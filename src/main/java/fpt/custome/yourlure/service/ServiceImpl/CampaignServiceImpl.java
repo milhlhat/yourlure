@@ -71,13 +71,13 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public CampaignDtoOut newest() {
+    public Optional<CampaignDtoOut> newest() {
         Optional<Campaign> campaign = campaignRepos.findNewest();
         if (campaign.isPresent()) {
             CampaignDtoOut dtoOut = mapper.map(campaign.get(), CampaignDtoOut.class);
-            return dtoOut;
+            return Optional.of(dtoOut);
         }
-        throw new ValidationException("Không tìm thấy campain nào!");
+        return Optional.empty();
     }
 
     @Override
