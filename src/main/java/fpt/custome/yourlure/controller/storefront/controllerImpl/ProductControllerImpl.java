@@ -3,7 +3,6 @@ package fpt.custome.yourlure.controller.storefront.controllerImpl;
 import fpt.custome.yourlure.controller.storefront.ProductController;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDetailDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.ProductsDtoOut;
-import fpt.custome.yourlure.dto.dtoOut.ProductsFilterDtoOut;
 import fpt.custome.yourlure.entity.Filter;
 import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.ProductService;
@@ -78,8 +77,8 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<Optional<ProductsFilterDtoOut>> getProductFilter(Filter filter) {
-        Optional<ProductsFilterDtoOut> dtoOuts = productService.getProductFilter(filter);
+    public ResponseEntity<Object> getProductFilter(Filter filter) {
+        Object dtoOuts = productService.getProductFilter(filter,false);
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 

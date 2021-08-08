@@ -14,6 +14,7 @@ public class Filter {
 
     private String keyword;
     private Boolean custom;
+    private Boolean visibleInStorefront;
     private int page;
     @Min(1)
     private int limit;

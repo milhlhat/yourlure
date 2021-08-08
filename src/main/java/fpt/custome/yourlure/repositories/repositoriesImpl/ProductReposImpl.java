@@ -24,7 +24,12 @@ public class ProductReposImpl implements ProductRepos {
         query.append("LEFT JOIN tbl_order_line ON tbl_order_line.variant_id = tbl_variants.variant_id \n");
         query.append("LEFT JOIN tbl_orders ON tbl_orders.order_id = tbl_order_line.order_id \n");
         query.append("where 1 = 1 \n");
-        query.append("and tbl_products.visible_in_storefront = true \n");
+        if (filter.getVisibleInStorefront() != null && filter.getVisibleInStorefront() == true) {
+            query.append("and tbl_products.visible_in_storefront = true \n");
+        }
+        if (filter.getVisibleInStorefront() != null && filter.getVisibleInStorefront() == false) {
+            query.append("and tbl_products.visible_in_storefront = false \n");
+        }
         if (!filter.getListCateId().isEmpty()) {
             query.append(" and tbl_category.category_id IN (:cateIds) \n");
         }
@@ -37,7 +42,7 @@ public class ProductReposImpl implements ProductRepos {
         if (!filter.getKeyword().trim().isEmpty()) {
             query.append("and to_tsvector('simple',COALESCE(lower(unaccent(tbl_products.product_name)),'')\n" +
                     " ) @@ \n" +
-                    "to_tsquery('simple',lower(unaccent('''" + filter.getKeyword().trim()+" '':*'))) \n");
+                    "to_tsquery('simple',lower(unaccent('''" + filter.getKeyword().trim() + " '':*'))) \n");
         }
         query.append(" GROUP BY tbl_products.product_id,tbl_products.product_name \n");
 

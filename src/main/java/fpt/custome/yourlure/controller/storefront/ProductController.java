@@ -28,7 +28,7 @@ public interface ProductController {
     ResponseEntity<List<ProductsDtoOut>> getNewestProduct();
 
     @PostMapping("/product-filter")
-    ResponseEntity<Optional<ProductsFilterDtoOut>> getProductFilter(@RequestBody Filter filter);
+    ResponseEntity<Object> getProductFilter(@RequestBody Filter filter);
 
     @GetMapping("/download")
     ResponseEntity<Resource> download(String path);

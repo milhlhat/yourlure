@@ -20,13 +20,13 @@ public interface ProductService {
 
     List<ProductsDtoOut> getNewestProduct();
 
-    Optional<ProductsFilterDtoOut> getProductFilter(Filter filter);
+    Object getProductFilter(Filter filter, Boolean isAdmin);
 
 //    List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable);
 
     // Admin front **************************
 
-    Optional<AdminProductDtoOut> getAll(String keyword, Pageable pageable);
+    Object getAll(String keyword, Pageable pageable);
 
     Long save(ProductsDtoInp productsDtoInp);
 
