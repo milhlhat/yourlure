@@ -4,6 +4,7 @@ import { useFieldArray } from "react-hook-form";
 import { createImageUrlByLinkOrFile } from "../../utils/manager-product";
 import PropTypes from "prop-types";
 import "./scss/choose-multi-images.scss";
+
 ChooseMultiImages.propTypes = {
   name: PropTypes.string.isRequired,
   removeName: PropTypes.string.isRequired,
@@ -15,9 +16,9 @@ ChooseMultiImages.propTypes = {
 function ChooseMultiImages(props) {
   const { name, methods, removeName, getOldImage, fieldNameImgFromOldList } =
     props;
-  const { setValue, control, register } = methods;
+  const { setValue, control } = methods;
 
-  const { fields, append, remove } = useFieldArray({ control, name: name });
+  const { fields, remove } = useFieldArray({ control, name: name });
 
   const [newImages, setnewImages] = useState([]);
   const [removeImages, setRemoveImages] = useState([]);
@@ -88,9 +89,9 @@ function ChooseMultiImages(props) {
   const fetchImgByProductId = async () => {
     try {
       // remove();
-      // const response = await ManagerProductAPI.getProductByID(productId);
       const response = await getOldImage();
-      append(response);
+      // append(response);
+      setValue(name, response, { shouldDirty: false });
     } catch (error) {}
   };
 

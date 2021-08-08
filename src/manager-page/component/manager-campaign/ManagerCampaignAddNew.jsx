@@ -15,6 +15,7 @@ import { SUPPORTED_IMAGE_FORMATS } from "../../../constant/product-config";
 import { toast } from "react-toastify";
 import { uploadMultiFiles } from "../../../api/manager-product-api";
 import { addCampaign } from "../../../api/manager-campaign-api";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function ManagerVoucherAddNew(props) {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function ManagerVoucherAddNew(props) {
   const {
     register,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = methods;
   console.log(errors);
@@ -164,7 +165,13 @@ function ManagerVoucherAddNew(props) {
 
       <div className="col-12 bg-white  submit-button-form">
         <YLButton variant="danger" to="/manager/campaign" value="Hủy" />
-        <YLButton variant="primary" type="submit" value="Xong" />
+        <YLButton variant="primary" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <CircularProgress size={20} className="circle-progress" />
+          ) : (
+            "Xong"
+          )}
+        </YLButton>
       </div>
     </form>
   );

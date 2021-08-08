@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { SUPPORTED_IMAGE_FORMATS } from "../../../constant/product-config";
 import { uploadMultiFiles } from "../../../api/manager-product-api";
 import DEFINELINK from "../../../routes/define-link";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function ManagerCampignEdit(props) {
   const canBack = props.location.canBack;
@@ -59,7 +60,7 @@ function ManagerCampignEdit(props) {
   });
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     setValue,
   } = methods;
@@ -131,7 +132,7 @@ function ManagerCampignEdit(props) {
   } else
     return (
       <div>
-        <h3>Thông Tin sự kiện Mới</h3>
+        <h3>Thông Tin sự kiện</h3>
         <form onSubmit={handleSubmit(onsubmit)}>
           <div className=" add-new-form row">
             <div className=" bg-box bg-shadow col-12  mb-md-5 mb-2 pb-2 pb-md-5 mt-md-3">
@@ -227,7 +228,13 @@ function ManagerCampignEdit(props) {
                 to={DEFINELINK.manager + DEFINELINK.campaign}
                 value="Hủy"
               />
-              <YLButton variant="primary" type="submit" value="Xong" />
+              <YLButton variant="primary" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <CircularProgress size={20} className="circle-progress" />
+                ) : (
+                  "Xong"
+                )}
+              </YLButton>
             </div>
           </div>
         </form>

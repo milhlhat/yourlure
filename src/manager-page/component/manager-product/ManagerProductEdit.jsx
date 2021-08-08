@@ -265,7 +265,7 @@ function ManagerProductEdit(props) {
       { name: "minWeight", value: product.minWeight },
       { name: "maxWeight", value: product.maxWeight },
       { name: "productName", value: product.productName },
-      { name: "imgList", value: product.imageCollection },
+      // { name: "imgList", value: product.imageCollection },
       { name: "variantCollection", value: product.variantCollection },
       { name: "visibleInStorefront", value: product.visibleInStorefront },
       { name: "imgListRemove", value: [] },
@@ -276,7 +276,9 @@ function ManagerProductEdit(props) {
       setValue(name, value, { shouldDirty: false })
     );
   };
+  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
   useEffect(() => {
+    console.log("isDirty", isDirty);
     setIsDirty(true);
   }, [isDirty]);
   const [hasModel, setHasModel] = useState(false);
@@ -383,7 +385,6 @@ function ManagerProductEdit(props) {
     }
   };
   // console.log(watch());
-  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
 
   const onSubmit = async (data) => {
     setIsDirty(false);
