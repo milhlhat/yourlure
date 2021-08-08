@@ -79,7 +79,7 @@ function ManagerSortQueryString(props) {
 
         <div className="col-4 mt-2 mt-md-0 ps-3">
           <select
-            className="form-select select-sort pointer"
+            className="form-select pointer"
             onChange={(e) => handleSelectSort(e)}
           >
             {options.map((item, i) => (
