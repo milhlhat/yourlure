@@ -45,7 +45,7 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
   defaultPrice: yup
     .number()
     .min(1, "Giá lớn hơn 0")
-    .typeError("Giá không được để trông"),
+    .typeError("Giá không được để trống"),
   length: yup
     .number()
     .min(1, "Chiều dài lớn hơn 0")

@@ -205,10 +205,11 @@ function Campaign() {
         <div className="campaign-banner d-block ">
           <Carousel
             responsive={responsiveBanner}
-            removeArrowOnDeviceType={["all"]}
+            // removeArrowOnDeviceType={["all"]}
             autoPlay
             infinite
-            draggable={false}
+            keyBoardControl={true}
+            pauseOnHover={true}
             customTransition="all 1s"
             transitionDuration={1000}
           >
