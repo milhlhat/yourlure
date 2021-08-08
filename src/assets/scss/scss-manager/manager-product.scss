@@ -1,11 +1,11 @@
-@import "assets/scss/base/_variable.scss";
+@import "src/assets/scss/base/_variable.scss";
 .product-head-row {
   display: flex;
   justify-content: space-between;
 }
 .manager-product-show {
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   & span {
     border-bottom: 4px solid $bottom-line;
     padding: 15px 0;

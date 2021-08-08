@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 
-
 function ProductImage(props) {
   let { product, setBigImgLink, bigImgLink } = props;
   const [selectImg, setSelectImg] = useState(0);
@@ -38,7 +37,6 @@ function ProductImage(props) {
               ? product.imageCollection[selectImg]?.linkImage
               : ""
           )}
-          height={350}
           alt={`Ảnh sản phẩm ${product?.productName}`}
         />
       </div>
@@ -46,16 +44,13 @@ function ProductImage(props) {
         {product &&
           product.imageCollection.map((item, i) => (
             <div
-              className={`me-1 small-images ' ${
+              className={`me-1 small-images ${
                 selectImg == i ? "border-gallery" : ""
               } `}
               key={i}
               onClick={() => handleChangeImg(i)}
             >
-              <img
-                width={60}
-                src={createImageUrlByLinkOrFile(item.linkImage)}
-              />
+              <img src={createImageUrlByLinkOrFile(item.linkImage)} />
             </div>
           ))}
       </div>

@@ -13,20 +13,17 @@ const TOPPOINT = [
   {
     icon: "fal fa-send-back",
     name: "Giao diện thân thiện",
-    content: `Sed pretium, ligula sollicitu r libero
-          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.`,
+    content: `Ngôn ngữ thiết kế trực quan, dễ dàng thao tác`,
   },
   {
     icon: "fal fa-heart",
     name: "Nhiệt huyết",
-    content: `Sed pretium, 
-          sodales leo, eget blandit nunc tortor eu nibh. Suspendisse potenti.`,
+    content: `Sản phẩm được tạo nên bởi những kỹ sư phần mềm với 100% năng lượng`,
   },
   {
     icon: "fal fa-chart-network",
     name: "Chuyên nghiệp",
-    content: `Sed pretium, ligula sollicitudin laoreet viverra, tortor libero
-          `,
+    content: `Sử dụng những công nghệ cao cấp và quy trình chặt chẽ`,
   },
 ];
 

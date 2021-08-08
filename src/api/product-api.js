@@ -62,6 +62,10 @@ const ProductAPI = {
     const url = `/model3d/customize-price`;
     return AxiosClient.get(url);
   },
+  checkDuplicateCustomName: (name) => {
+    const url = `/model3d/custom-name-duplicate?name=${name}`;
+    return AxiosClient.get(url); // true là trùng
+  },
 };
 export const {
   getBestSeller,
@@ -73,5 +77,6 @@ export const {
   createCustomizeByModelId,
   updateCustomizeByModelId,
   getCustomizePrice,
+  checkDuplicateCustomName,
 } = ProductAPI;
 export default ProductAPI;

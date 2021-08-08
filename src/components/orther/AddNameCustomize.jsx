@@ -11,11 +11,14 @@ import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import YLButton from "components/custom-field/YLButton";
 import "manager-page/component/header/scss/header-dialog.scss";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { setCaptureModel } from "redux/customize-action/capture-model";
 import * as yup from "yup";
+import { checkDuplicateCustomName } from "../../api/product-api";
+import { parseString2Boolean, safeContent } from "../../utils/common";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const styles = (theme) => ({
   root: {
@@ -42,7 +45,7 @@ const DialogTitle = withStyles(styles)((props) => {
           className={classes.closeButton}
           onClick={onClose}
         >
-          <i className="fal fa-times"></i>
+          <i className="fal fa-times" />
         </IconButton>
       ) : null}
     </MuiDialogTitle>
@@ -65,26 +68,37 @@ function AddNameCustomize(props) {
   });
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     handleSubmit,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
+  console.log("err", errors);
   const dispatch = useDispatch();
-  const onsubmit = (data) => {
-    const action = setCaptureModel({ isCapture: true, name: data.customName });
-    dispatch(action);
-    setOpen(false);
+  const onsubmit = async (data) => {
+    const name = data.customName;
+    const isDuplicateName = await checkDuplicateCustomName(name);
+    console.log(isDuplicateName);
+    if (parseString2Boolean(isDuplicateName.data)) {
+      setError(
+        "customName",
+        {
+          type: "duplicate",
+          message: `Tên <b>${name}</b> đã được bạn đặt cho sản phẩm khác.`,
+        },
+        { shouldFocus: true }
+      );
+    } else {
+      const action = setCaptureModel({ isCapture: true, name: name });
+      dispatch(action);
+      setOpen(false);
+    }
   };
   const setInitialValue = () => {
     setValue("customName", captureModel?.name ? captureModel?.name : "");
   };
-  function onChangeTextSearch(e) {
-    if (e.key === "Enter") {
-      onsubmit();
-    }
-  }
 
   useEffect(() => {
     setInitialValue();
@@ -115,28 +129,39 @@ function AddNameCustomize(props) {
                   type="text"
                   id="name"
                   placeholder="Tên tùy biến"
-                  onKeyDown={(e) => onChangeTextSearch(e)}
                 />
                 {errors?.customName && (
-                  <span className="error-message text-danger">
-                    {errors?.customName?.message}
-                    <br />
-                  </span>
+                  <span
+                    className="error-message text-danger"
+                    dangerouslySetInnerHTML={safeContent(
+                      errors?.customName?.message
+                    )}
+                  />
                 )}
               </div>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <>
-              <Button autoFocus color="primary" onClick={() => setOpen(false)}>
+              <Button
+                autoFocus
+                color="primary"
+                onClick={() => setOpen(false)}
+                disabled={isSubmitting}
+              >
                 Hủy
               </Button>
               <YLButton
                 variant="primary"
                 type="submit"
                 className="btn btn-light"
+                disabled={isSubmitting}
               >
-                Xong
+                {isSubmitting ? (
+                  <CircularProgress size={20} className="circle-progress" />
+                ) : (
+                  "Xong"
+                )}
               </YLButton>
             </>
           </DialogActions>

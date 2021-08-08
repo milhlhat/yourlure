@@ -60,8 +60,8 @@ function ManagerUser(props) {
     },
     {
       display: "Số đơn hàng",
-      isAsc: true,
-      sortBy: "numberOfOrder",
+      isAsc: false,
+      sortBy: "number_of_order",
       value: "SORT_ORDER_DESC",
     },
   ];

@@ -109,7 +109,7 @@ function ProductDetail(props) {
     window.scrollTo(0, 0);
     fetchProduct();
     fetchProductSame();
-    setBigImgLink(null)
+    setBigImgLink(null);
   }, [productId]);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ function ProductDetail(props) {
     return <ErrorLoad hasLayout />;
   } else
     return (
-      <div className="container-lg .container-fluid">
+      <div className="container">
         <div className="my-2 row">
           <div className=" col-md-6 col-sm-12  mt-4 ">
             <ProductImage

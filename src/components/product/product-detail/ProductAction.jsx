@@ -339,7 +339,7 @@ function ProductAction(props) {
             Mua ngay
           </YLButton>
         </div>
-        <div className="ms-2" onClick={() => handleAddToCart()}>
+        <div onClick={() => handleAddToCart()}>
           <YLButton
             variant="primary"
             type="button"

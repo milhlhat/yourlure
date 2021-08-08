@@ -141,7 +141,7 @@ function ManagerProduct(props) {
             />
           </div>
         </div>
-        <div className="manager-product-show mt-3 bg-white bg-shadow">
+        <div className="manager-product-show mt-3 bg-white  bg-shadow">
           <span>Tất cả sản phẩm</span>
           <hr />
 

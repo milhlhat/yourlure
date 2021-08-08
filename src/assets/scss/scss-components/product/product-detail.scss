@@ -1,4 +1,5 @@
 @import "../../base/base";
+@import "src/assets/scss/mixin/breakpoint";
 
 .gallery {
   display: flex;
@@ -6,7 +7,12 @@
   justify-content: center;
 
   & .small-images {
-    max-width: 100px;
+    & img {
+      height: 60px;
+      width: 60px;
+      object-fit: cover;
+    }
+
   }
 }
 
@@ -15,19 +21,21 @@
 }
 
 .border-gallery {
-  border: 3px solid $primary;
-  padding: 3px;
+  border: 2px solid $primary;
+  border-radius: 2px;
 }
 
 .product-media {
   & .big-image {
     position: relative;
     align-items: center;
+    height: 400px;
+
     & img {
       width: 100%;
-      height: 300px;
+      height: 100%;
       object-fit: contain;
-    background-color: $background-box-color;
+      background-color: $background-box-color;
     }
 
     & .big-image-edit {
@@ -90,6 +98,7 @@
   & .tab {
     display: flex;
     align-items: center;
+
     & .buy-tab {
       font-weight: 500;
       margin-right: 10px;
@@ -191,7 +200,9 @@
 
   & .product-buy {
     display: flex;
-    height: 50px;
+    gap: 10px;
+    flex-wrap: wrap;
+
   }
 
   & .product-description {
@@ -243,3 +254,5 @@
 
   }
 }
+ 
+
