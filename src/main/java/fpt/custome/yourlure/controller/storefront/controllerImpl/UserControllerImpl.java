@@ -194,7 +194,7 @@ public class UserControllerImpl implements UserController {
             return new ResponseEntity<>("Mã OTP đã được gửi, vui lòng kiểm tra điện thoại của bạn.", HttpStatus.OK);
         }
         // failure message
-        return new ResponseEntity<>("Không thể tạo gửi mã OTP! vui long kiểm tra lại.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Không thể gửi mã OTP! vui lòng kiểm tra lại.", HttpStatus.BAD_REQUEST);
 
     }
 
@@ -205,7 +205,7 @@ public class UserControllerImpl implements UserController {
                 // success
                 return new ResponseEntity<>("Mã OTP đã được gửi, vui lòng kiểm tra điện thoại của bạn.", HttpStatus.OK);
             }
-            return new ResponseEntity<>("Không thể tạo gửi mã OTP! vui long kiểm tra lại.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Không thể gửi mã OTP! vui lòng kiểm tra lại.", HttpStatus.BAD_REQUEST);
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
