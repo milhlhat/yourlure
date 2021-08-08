@@ -27,7 +27,7 @@ let FormatUtils = {
   getStatus: (status, reject) => {
     if (!status) return null;
     if (status === "PENDING") return "Đang chờ xác nhận";
-    if (status === "ACCEPT") return "Đang giao";
+    if (status === "ACCEPT") return "Đã xác nhận";
     if (status === "CUSTOMER_REJECT") {
       if (reject === "CUSTOMER") {
         return "Đã hủy bởi bạn";

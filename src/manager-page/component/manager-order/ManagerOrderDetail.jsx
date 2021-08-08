@@ -56,10 +56,10 @@ function ManagerOrderDetail(props) {
 
   const options = [
     { value: "PENDING", lable: "Đang chờ xác nhận" },
-    { value: "ACCEPT", lable: "Xác nhận" },
+    { value: "ACCEPT", lable: "Đã xác nhận" },
     { value: "STAFF_REJECT", lable: "Đã hủy bởi cửa hàng" },
     { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
-    { value: "DONE", lable: "Xong" },
+    { value: "DONE", lable: "Đã xác nhận" },
     { value: "DONED", lable: "Đã hoàn tất" },
   ];
 
@@ -231,6 +231,7 @@ function ManagerOrderDetail(props) {
                       <div className="ms-2">
                         <YLButton
                           variant={
+                            handleSetValueStatus() === options[1].lable ||
                             handleSetValueStatus() === options[2].lable ||
                             handleSetValueStatus() === options[3].lable ||
                             handleSetValueStatus() === options[5].lable
@@ -242,6 +243,7 @@ function ManagerOrderDetail(props) {
                             handleSubmitStatus(handleSetValueStatus())
                           }
                           disabled={
+                            handleSetValueStatus() === options[1].lable ||
                             handleSetValueStatus() === options[2].lable ||
                             handleSetValueStatus() === options[3].lable ||
                             handleSetValueStatus() === options[5].lable
