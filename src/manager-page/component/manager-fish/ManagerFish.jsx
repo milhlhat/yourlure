@@ -61,12 +61,12 @@ function ManagerFish(props) {
       value: "SORT_NAME_DESC",
     },
   ];
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Loại cá",
-  };
+  // const location = useLocation();
+  // const setBack = {
+  //   canBack: true,
+  //   path: location,
+  //   label: "Loại cá",
+  // };
 
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -94,7 +94,6 @@ function ManagerFish(props) {
   const handleEditClicked = (id) => {
     history.push({
       pathname: "/manager/fish/edit/" + id,
-      canBack: setBack,
     });
   };
 
@@ -145,7 +144,7 @@ function ManagerFish(props) {
             <YLButton
               variant="primary"
               value="Thêm"
-              to={{ pathname: "/manager/fish/addnew", canBack: setBack }}
+              to={"/manager/fish/addnew"}
             />
           </div>
         </div>
@@ -173,7 +172,6 @@ function ManagerFish(props) {
                     onClick={() =>
                       history.push({
                         pathname: "/manager/fish/detail/" + item.fishID,
-                        canBack: setBack,
                       })
                     }
                   >

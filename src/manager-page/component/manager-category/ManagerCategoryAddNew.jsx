@@ -32,7 +32,11 @@ function ManagerCategoryAddNew(props) {
       
       if (response.error) {
         throw new Error(response.error);
-      } else {
+      }
+      else if(response===false||response?.data===false){
+        throw new Error();
+      } 
+      else {
         alert("Thêm danh mục thành công");
         history.push("/manager/category");
       }
