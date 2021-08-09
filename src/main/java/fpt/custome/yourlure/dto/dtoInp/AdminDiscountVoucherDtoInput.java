@@ -16,8 +16,8 @@ public class AdminDiscountVoucherDtoInput {
     private Integer usageLimit;
     private Date start_date;
     private Date end_date;
-    private Integer discountValue;
-    private Integer minSpentAmount;
+    private Float discountValue;
+    private Float minSpentAmount;
     private Float maxValue;
 
 }
