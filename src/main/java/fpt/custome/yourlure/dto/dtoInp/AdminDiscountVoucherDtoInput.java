@@ -15,6 +15,7 @@ public class AdminDiscountVoucherDtoInput {
     private String type;
     private String code;
     private Integer usageLimit;
+    private Float maxValue;
     private Integer used;
     private Date start_date;
     private Date end_date;
