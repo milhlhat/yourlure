@@ -22,7 +22,7 @@ public interface AdminDiscountVoucherController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> save(@RequestBody @Valid AdminDiscountVoucherDtoInput discountVoucherDtoInput);
+    ResponseEntity<Object> save(@RequestBody @Valid AdminDiscountVoucherDtoInput discountVoucherDtoInput);
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")

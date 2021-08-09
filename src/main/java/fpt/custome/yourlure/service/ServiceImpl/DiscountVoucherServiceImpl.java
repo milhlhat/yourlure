@@ -32,7 +32,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
 
         List<AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut> adminDiscountVoucherDtoOuts = new ArrayList<>();
         try {
-            Page<DiscountVoucher> list = discountVoucherRepos.searchAll("%"+keyword.trim()+"%", pageable);
+            Page<DiscountVoucher> list = discountVoucherRepos.searchAll("%" + keyword.trim() + "%", pageable);
             for (DiscountVoucher item : list.getContent()) {
                 AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut dtoOut = mapper.map(item, AdminDiscountVoucherDtoOut.DiscountVoucherDtoOut.class);
                 adminDiscountVoucherDtoOuts.add(dtoOut);
@@ -54,7 +54,7 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
         try {
             if (id != null) {
                 Optional<DiscountVoucher> discountVoucher = discountVoucherRepos.findById(id);
-                if (discountVoucher.isPresent()){
+                if (discountVoucher.isPresent()) {
                     AdminDiscountVoucherDetailDtoOut result = mapper.map(discountVoucher.get(), AdminDiscountVoucherDetailDtoOut.class);
                     return Optional.of(result);
                 }
@@ -68,15 +68,10 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
 
     @Override
     public Boolean saveVoucher(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
-        try {
-            DiscountVoucher save = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
-            String code = new RandomString(8, ThreadLocalRandom.current()).nextString();
-            save.setCode(code.toUpperCase());
-            discountVoucherRepos.save(save);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        DiscountVoucher save = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
+        String code = new RandomString(8, ThreadLocalRandom.current()).nextString();
+        save.setCode(code.toUpperCase());
+        discountVoucherRepos.save(save);
         return true;
     }
 

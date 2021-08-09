@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.util.Optional;
 
 @RestController
@@ -31,9 +32,17 @@ public class AdminDiscountVoucherControllerImpl implements AdminDiscountVoucherC
     }
 
     @Override
-    public ResponseEntity<Boolean> save(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
-        Boolean result = discountVoucherService.saveVoucher(discountVoucherDtoInput);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> save(AdminDiscountVoucherDtoInput discountVoucherDtoInput) {
+        try {
+            Boolean result = discountVoucherService.saveVoucher(discountVoucherDtoInput);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
