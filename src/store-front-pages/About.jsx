@@ -5,7 +5,7 @@ import nhatAvt from "assets/images/about/nhat.jpg";
 import sonAvt from "assets/images/about/sonAvt.jpg";
 import thangAvt from "assets/images/about/thangAvt.jpg";
 import datAvt from "assets/images/about/dat.jpg";
-import lanAvt from "assets/images/about/lan.jpg";
+import lanAvt from "assets/images/about/lan2.jpg";
 import supervisor from "assets/images/about/supervisor.jpg";
 
 import CardProfile from "../components/card/CardProfile";
