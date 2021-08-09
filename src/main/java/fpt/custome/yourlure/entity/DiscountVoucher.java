@@ -34,11 +34,11 @@ public class DiscountVoucher {
      * Miễn Phí Vận Chuyển
      */
     @NotNull
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @NotNull
-    @Column(name = "code", unique = true)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
 
     @Nullable
@@ -58,10 +58,11 @@ public class DiscountVoucher {
     private Date end_date;
 
     @NotNull
-    @Column(name = "discountValue")
+    @Column(name = "discountValue", nullable = false)
     private Float discountValue;
-    
-    @Column(name = "maxValue", nullable = false)
+
+    @Nullable
+    @Column(name = "maxValue")
     private Float maxValue;
 
     @NotNull
@@ -80,7 +81,7 @@ public class DiscountVoucher {
 
     @JsonIgnore
     @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
+    // MappedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
     //1 discountVoucher có nhiều DiscountVoucherCustomer
     private Collection<DiscountVoucherCustomer> discountVoucherCustomers;
 }
