@@ -63,6 +63,11 @@ function RegisterBase({ ability, changeTab }) {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const register = async (data) => {
+    data = {
+      phone: data.phone.trim(),
+      password: data.password.trim(),
+      rePassword: data.rePassword.trim(),
+    };
     // check phone exist
     try {
       setLoading(true);
@@ -108,19 +113,22 @@ function RegisterBase({ ability, changeTab }) {
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
       .required("Vui lòng nhập số điện thoại.")
+      .trim("Vui lòng nhập số điện thoại.")
       .matches(
         /((\+84|84|0)[35789][0-9]{8})\b/,
         "Vui lòng nhập đúng số điện thoại"
       ),
     password: Yup.string()
       .required("Vui lòng nhập mật khẩu")
+      .trim("Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có it nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
     rePassword: Yup.string()
+      .trim("Vui lòng nhập mật khẩu")
+      .required("Vui lòng nhập mật khẩu")
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
-      .required("Vui lòng nhập mật khẩu"),
+      .max(32, "Mật khẩu phải chứa từ 6-32 ký tự"),
   });
   return (
     <div className="register-form">
@@ -135,7 +143,7 @@ function RegisterBase({ ability, changeTab }) {
         >
           {(formikProps) => {
             const { values, errors, touched } = formikProps;
-            // console.log({ values, errors, touched });
+            console.log({ values });
             return (
               <Form>
                 <FastField

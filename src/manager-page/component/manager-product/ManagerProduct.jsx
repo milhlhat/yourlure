@@ -179,7 +179,7 @@ function ManagerProduct(props) {
                   }
                 >
                   <td>{page * limit + i + 1}</td>
-                  <td>{item.productName}</td>
+                  <td  className="m-w-450">{item.productName}</td>
                   <td>{item.category.categoryName}</td>
                   <td className="text-center py-2">
                     {item.visibleInStorefront == null

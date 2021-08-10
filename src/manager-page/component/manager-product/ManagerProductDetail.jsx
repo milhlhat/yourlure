@@ -97,7 +97,7 @@ function ManagerProductDetail(props) {
               </tr>
               <tr>
                 <th>Tên sản phẩm</th>
-                <td>{productDetail?.list?.productName}</td>
+                <td className="w-40">{productDetail?.list?.productName}</td>
                 <th>Danh mục</th>
                 <td>{productDetail?.list?.category?.categoryName}</td>
               </tr>

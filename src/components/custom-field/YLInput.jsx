@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
-import { ErrorMessage } from "formik";
+import { ErrorMessage, Formik } from "formik";
 import "assets/scss/scss-components/custom-field/InputField.scss";
 
 InputField.propTypes = {
@@ -31,6 +31,10 @@ function InputField(props) {
     setIsPassWord(isPassword === "text" ? "password" : "text");
   }
 
+  const handleOnBlur=(e)=>{
+    e.target.value=e.target.value.trim();
+    onBlur(e)
+  }
   return (
     <FormGroup>
       {label && <Label for={name}>{label}</Label>}
@@ -42,19 +46,20 @@ function InputField(props) {
           disabled={disabled}
           placeholder={placeholder}
           invalid={showError}
+          onBlur={handleOnBlur}
         />
         <div className={`display-eye ${type === "password" ? "" : "d-none"}`}>
           <div
             className={`${isPassword === "text" ? "d-none" : ""}`}
             onClick={handleChangeType}
           >
-          <i className="fad fa-eye text-success"></i>
+            <i className="fad fa-eye text-success"></i>
           </div>
           <div
             className={`${isPassword === "text" ? "" : "d-none"}`}
             onClick={handleChangeType}
           >
-          <i className="fad fa-eye-slash text-success"></i>
+            <i className="fad fa-eye-slash text-success"></i>
           </div>
         </div>
       </div>
