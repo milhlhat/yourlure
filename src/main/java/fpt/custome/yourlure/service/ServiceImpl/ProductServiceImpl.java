@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductsDtoOut> getBestSeller() {
+    public Object getBestSeller() {
         List<ProductsDtoOut> results = new ArrayList<>();
         List<Product> list = productJPARepos.bestSellerProduct();
         for (Product item : list) {
@@ -124,7 +124,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Object getProductFilter(Filter filter, Boolean isAdmin) {
-        try {
             Query query = productRepos.getProductFilter(filter);
             int totalProduct = query.getResultList().size();
             query.setFirstResult(filter.getLimit() * filter.getPage());
@@ -160,10 +159,6 @@ public class ProductServiceImpl implements ProductService {
                         .build();
                 return Optional.of(results);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
     }
 
 //    @Override
