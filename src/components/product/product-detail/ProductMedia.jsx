@@ -44,7 +44,7 @@ function ProductImage(props) {
         {product &&
           product.imageCollection.map((item, i) => (
             <div
-              className={`me-1 small-images ${
+              className={`me-1 small-images pointer ${
                 selectImg == i ? "border-gallery" : ""
               } `}
               key={i}

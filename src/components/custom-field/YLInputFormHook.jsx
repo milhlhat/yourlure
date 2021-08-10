@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 YlInputFormHook.propTypes = {
-  methods: PropTypes.any,
+  methods: PropTypes.any.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string,
   message: PropTypes.string,
@@ -11,10 +11,14 @@ YlInputFormHook.propTypes = {
   type: PropTypes.string,
   step: PropTypes.any,
   disabled: PropTypes.bool,
+  notTrim: PropTypes.bool,
 };
 YlInputFormHook.defaultProps = {
   disabled: false,
+  defaultValue: "",
+  notTrim: false,
 };
+
 function YlInputFormHook(props) {
   const {
     methods,
@@ -27,12 +31,21 @@ function YlInputFormHook(props) {
     defaultValue,
     step,
     disabled,
+    notTrim,
   } = props;
   const {
     register,
     formState: { errors },
   } = methods;
-
+  const [inputValue, setInputValue] = useState(defaultValue);
+  const handleOnChangeInput = (e) => {
+    setInputValue(e.target.value);
+  };
+  const handleOnBlurInput = (e) => {
+    if (!notTrim) {
+      setInputValue(e.target.value.trim());
+    }
+  };
   return (
     <>
       {label && (
@@ -47,9 +60,11 @@ function YlInputFormHook(props) {
         id={name}
         placeholder={placeholder}
         {...register(name)}
-        defaultValue={defaultValue}
         step={step || 1}
         disabled={disabled}
+        value={inputValue}
+        onChange={handleOnChangeInput}
+        onBlur={handleOnBlurInput}
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}

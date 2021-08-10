@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 import { convertToVND } from "utils/format-string";
 import YLButton from "components/custom-field/YLButton";
-import DEFINELINK from "routes/define-link";
+
 CardProduct.propTypes = {};
 
 function CardProduct(props) {
