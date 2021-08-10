@@ -370,7 +370,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
             float shippingFee = 25000;
-            float discount = 0;
+            float discount;
 
             switch (voucher.getType()) {
                 case "Free Ship":
@@ -389,7 +389,7 @@ public class OrderServiceImpl implements OrderService {
                 break;
             }
 
-            return discount;
+            return Math.min(totalAmount, discount);
         }
         return 0;
     }
