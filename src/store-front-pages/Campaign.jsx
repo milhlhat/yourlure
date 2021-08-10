@@ -233,7 +233,7 @@ function Campaign() {
             <h1 className={"text-center mt-3 pt-4 "}>
               {campaign?.data?.banner}
             </h1>
-            <p className={"text-center w-75 mx-auto mb-5"}>
+            <p className={"text-center w-75 mx-auto mb-5 text-color  "}>
               {campaign?.data?.description}
             </p>
           </article>
@@ -241,7 +241,7 @@ function Campaign() {
             <div className={`pe-md-3`}>
               <h3 className={"pb-3 text-center"}>Thông tin sự kiện</h3>
               <p
-                className={"campaign-content"}
+                className={"campaign-content text-color"}
                 dangerouslySetInnerHTML={safeContent(campaign?.data?.content)}
               />
             </div>

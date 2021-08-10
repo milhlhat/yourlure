@@ -86,9 +86,9 @@ function ManagerSortQueryString(props) {
               <option
                 key={"option-" + i}
                 className="pointer"
-                selected={
-                  filter.sortBy === item.sortBy && filter.isAsc === item.isAsc
-                }
+                // selected={
+                //   filter.sortBy === item.sortBy && filter.isAsc === item.isAsc
+                // }
               >
                 {item.display}
               </option>

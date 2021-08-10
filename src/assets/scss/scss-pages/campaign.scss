@@ -28,8 +28,7 @@
   & .campaign-main {
     & .campaign-content {
       text-align: justify; /* For Edge */
-      -moz-text-align-last: justify; /* For Firefox prior 58.0 */
-      text-align-last: justify;
+
     }
     & .campaign-register-form {
       display: flex;

@@ -37,15 +37,15 @@ function YlInputFormHook(props) {
     register,
     formState: { errors },
   } = methods;
-  const [inputValue, setInputValue] = useState(defaultValue);
-  const handleOnChangeInput = (e) => {
-    setInputValue(e.target.value);
-  };
-  const handleOnBlurInput = (e) => {
-    if (!notTrim) {
-      setInputValue(e.target.value.trim());
-    }
-  };
+  // const [inputValue, setInputValue] = useState(defaultValue);
+  // const handleOnChangeInput = (e) => {
+  //   setInputValue(e.target.value);
+  // };
+  // const handleOnBlurInput = (e) => {
+  //   if (!notTrim) {
+  //     setInputValue(e.target.value.trim());
+  //   }
+  // };
   return (
     <>
       {label && (
@@ -62,9 +62,10 @@ function YlInputFormHook(props) {
         {...register(name)}
         step={step || 1}
         disabled={disabled}
-        value={inputValue}
-        onChange={handleOnChangeInput}
-        onBlur={handleOnBlurInput}
+        defaultValue={defaultValue}
+        // value={inputValue}
+        // onChange={handleOnChangeInput}
+        // onBlur={handleOnBlurInput}
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}
