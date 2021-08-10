@@ -126,7 +126,7 @@ function ManagerVoucherAddNew(props) {
               <tr>
                 <td colSpan="2">
                   <label htmlFor="content" className="form-label">
-                    Mô chi tiết <span className="error-message"> (*)</span>
+                    Mô tả chi tiết <span className="error-message"> (*)</span>
                   </label>
                   <textarea
                     type="text"

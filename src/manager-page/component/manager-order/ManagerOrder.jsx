@@ -1,13 +1,13 @@
 import ManagerOrderAPI from "api/manager-order-api";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
-import { useHistory, useLocation } from "react-router-dom";
-import "./scss/manager-order.scss";
-import ErrorLoad from "components/error-notify/ErrorLoad";
-import Loading from "components/Loading";
+import { useHistory } from "react-router-dom";
 import { convertToVND, getStatus } from "utils/format-string";
 import ManagerSort from "../sort/ManagerSort";
+import "./scss/manager-order.scss";
 
 function ManagerOrder(props) {
   const totalItem = 10;
@@ -66,12 +66,12 @@ function ManagerOrder(props) {
     setActivePage(newPage);
     setFilterOrder({ ...filterOrder, page: newPage - 1 });
   }
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Đơn hàng",
-  };
+  // const location = useLocation();
+  // const setBack = {
+  //   canBack: true,
+  //   path: location,
+  //   label: "Đơn hàng",
+  // };
   const fetchManagerOrder = async () => {
     setOrderList((prevState) => {
       return { ...prevState, isLoading: true };
@@ -129,7 +129,6 @@ function ManagerOrder(props) {
                   onClick={() =>
                     history.push({
                       pathname: "/manager/order/detail/" + item.orderId,
-                      canBack: setBack,
                     })
                   }
                 >

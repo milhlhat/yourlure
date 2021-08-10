@@ -1,11 +1,17 @@
-import ManagerVoucher from "manager-page/component/manager-voucher/ManagerVoucher";
-import ManagerVoucherAddNew from "manager-page/component/manager-voucher/ManagerVoucherAddNew";
-import ManagerVoucherDetail from "manager-page/component/manager-voucher/ManagerVoucherDetail";
-import ManagerVoucherEdit from "manager-page/component/manager-voucher/ManagerVoucherEdit";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import NotFound from "store-front-pages/Notfound";
+
+const ManagerVoucher = React.lazy(() =>
+  import("manager-page/component/manager-voucher/ManagerVoucher")
+);
+const ManagerVoucherAddNew = React.lazy(() =>
+  import("manager-page/component/manager-voucher/ManagerVoucherAddNew")
+);
+const ManagerVoucherEdit = React.lazy(() =>
+  import("manager-page/component/manager-voucher/ManagerVoucherEdit")
+);
 ManagerVoucherRoute.propTypes = {};
 
 function ManagerVoucherRoute() {
@@ -22,10 +28,7 @@ function ManagerVoucherRoute() {
         path={path + DEFINELINK.managementVoucherEdit}
         component={ManagerVoucherEdit}
       />
-      <Route
-        path={path + DEFINELINK.managementVoucherDetail}
-        component={ManagerVoucherDetail}
-      />
+
       <Route component={NotFound} />
     </Switch>
   );

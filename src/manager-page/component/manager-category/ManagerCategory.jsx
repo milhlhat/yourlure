@@ -20,12 +20,12 @@ function ManagerCategory(props) {
     isLoading: false,
     isSuccess: true,
   });
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Danh mục",
-  };
+  // const location = useLocation();
+  // const setBack = {
+  //   canBack: true,
+  //   path: location,
+  //   label: "Danh mục",
+  // };
   const history = useHistory();
 
   const options = [
@@ -138,7 +138,6 @@ function ManagerCategory(props) {
               value="Thêm"
               to={{
                 pathname: "/manager/category/addnew",
-                canBack: setBack,
                 listName: listNameCategory(),
               }}
             />
@@ -176,7 +175,6 @@ function ManagerCategory(props) {
                         history.push({
                           pathname:
                             "/manager/category/detail/" + item.categoryID,
-                          canBack: setBack,
                         })
                       }
                     >
@@ -190,7 +188,6 @@ function ManagerCategory(props) {
                           history.push({
                             pathname:
                               "/manager/category/edit/" + item.categoryID,
-                            canBack: setBack,
                           })
                         }
                       />

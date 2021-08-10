@@ -66,7 +66,7 @@ function ManagerStaffAddNew(props) {
         <h3>Thêm nhân viên mới</h3>
         <hr />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-5">
-          <label htmlFor="username">Tên</label>
+          <label htmlFor="username">Tên(*)</label>
           <input
             className="form-control"
             {...register("username")}
@@ -89,7 +89,7 @@ function ManagerStaffAddNew(props) {
           </select>
           <span className="error-message">{errors?.gender?.message}</span>
 
-          <label htmlFor="phone">Số điện thoại</label>
+          <label htmlFor="phone">Số điện thoại(*)</label>
           <input
             className="form-control"
             {...register("phone")}
@@ -115,7 +115,7 @@ function ManagerStaffAddNew(props) {
           <span className="error-message">{errors?.role?.message}</span>
           <div className="mt-3 d-flex justify-content-center">
             <YLButton variant="primary" type="submit" value="Xong" />
-            <YLButton variant="link" to="/manager/category" value="Hủy" />
+            <YLButton variant="link" to="/manager/staff" value="Hủy" />
           </div>
         </form>
       </div>

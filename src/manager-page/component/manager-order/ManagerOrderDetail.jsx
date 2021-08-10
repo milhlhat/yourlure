@@ -1,19 +1,19 @@
+import CircularProgress from "@material-ui/core/CircularProgress";
 import ManagerOrderAPI from "api/manager-order-api";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
+import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
 import YLButton from "components/custom-field/YLButton";
-import "./scss/manager-order-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
-import { convertToVND, getShipping } from "utils/format-string";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import ConfirmPopupV2 from "components/confirm-popup/ConfirmPopupV2";
+import { setIsBack } from "redux/back-action/back-action";
 import DEFINELINK from "routes/define-link";
-
+import { convertToVND, getShipping } from "utils/format-string";
 import { copyToClipboard } from "../../../utils/common";
+import "./scss/manager-order-detail.scss";
 
 function ManagerOrderDetail(props) {
   console.log(props);
@@ -26,6 +26,8 @@ function ManagerOrderDetail(props) {
     isLoading: false,
     isSuccess: true,
   });
+  const [loading, setLoading] = useState(false);
+  const [cancel, setCancel] = useState(false);
 
   const { register, handleSubmit, setValue } = useForm();
   const handleSetValueStatus = () => {
@@ -41,6 +43,8 @@ function ManagerOrderDetail(props) {
   };
   const handleSubmitStatus = async (data) => {
     let option = options.find((o) => o.lable === data);
+    setLoading(option.value === "ACCEPT");
+    setCancel(option.value === "STAFF_REJECT");
     try {
       const response = await ManagerOrderAPI.changeStatusOrder(
         option.value,
@@ -48,7 +52,9 @@ function ManagerOrderDetail(props) {
       );
       toast.success("Thay đổi trạng thái thành công");
       fetchOrder();
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.success(error.response.data);
       console.log("fail to fetch address");
     }
@@ -56,10 +62,10 @@ function ManagerOrderDetail(props) {
 
   const options = [
     { value: "PENDING", lable: "Đang chờ xác nhận" },
-    { value: "ACCEPT", lable: "Xác nhận" },
+    { value: "ACCEPT", lable: "Xong" },
     { value: "STAFF_REJECT", lable: "Đã hủy bởi cửa hàng" },
     { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
-    { value: "DONE", lable: "Xong" },
+    { value: "DONE", lable: "Đã xác nhận" },
     { value: "DONED", lable: "Đã hoàn tất" },
   ];
 
@@ -90,12 +96,12 @@ function ManagerOrderDetail(props) {
     );
     setValue("status", stt?.lable);
   }, [orderId]);
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Chi tiết đơn hàng",
-  };
+  // const location = useLocation();
+  // const setBack = {
+  //   canBack: true,
+  //   path: location,
+  //   label: "Chi tiết đơn hàng",
+  // };
   useEffect(() => {
     if (canBack) {
       const action = setIsBack({
@@ -143,7 +149,6 @@ function ManagerOrderDetail(props) {
                           history.push({
                             pathname:
                               "/manager/product/detail/" + item.productId,
-                            canBack: setBack,
                           });
                         }}
                         key={"product-" + i}
@@ -220,8 +225,18 @@ function ManagerOrderDetail(props) {
                         options[0].value && (
                         <ConfirmPopupV2
                           children={
-                            <YLButton variant="warning" type="button">
+                            <YLButton
+                              variant="warning"
+                              type="button"
+                              disabled={cancel || loading}
+                            >
                               Hủy
+                              {cancel && (
+                                <CircularProgress
+                                  size={15}
+                                  className="circle-progress"
+                                />
+                              )}
                             </YLButton>
                           }
                           title="Bạn có chắc chắn muốn hủy đơn?"
@@ -231,6 +246,7 @@ function ManagerOrderDetail(props) {
                       <div className="ms-2">
                         <YLButton
                           variant={
+                            handleSetValueStatus() === options[4].lable ||
                             handleSetValueStatus() === options[2].lable ||
                             handleSetValueStatus() === options[3].lable ||
                             handleSetValueStatus() === options[5].lable
@@ -242,12 +258,21 @@ function ManagerOrderDetail(props) {
                             handleSubmitStatus(handleSetValueStatus())
                           }
                           disabled={
+                            handleSetValueStatus() === options[4].lable ||
                             handleSetValueStatus() === options[2].lable ||
                             handleSetValueStatus() === options[3].lable ||
-                            handleSetValueStatus() === options[5].lable
+                            handleSetValueStatus() === options[5].lable ||
+                            cancel ||
+                            loading
                           }
                         >
                           {handleSetValueStatus()}
+                          {loading && (
+                            <CircularProgress
+                              size={15}
+                              className="circle-progress"
+                            />
+                          )}
                         </YLButton>
                       </div>
                     </>

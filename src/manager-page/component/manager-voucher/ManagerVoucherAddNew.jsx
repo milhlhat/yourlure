@@ -19,7 +19,6 @@ function ManagerVoucherAddNew() {
     defaultValues: { type: TYPE_OPTION[2] },
   });
   const {
-    register,
     formState: { isSubmitting },
     handleSubmit,
     watch,

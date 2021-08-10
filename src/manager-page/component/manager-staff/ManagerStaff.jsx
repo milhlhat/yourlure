@@ -8,7 +8,7 @@ import Pagination from "react-js-pagination";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
-import ManagerSort from "./ManagerSort";
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 import "./scss/manager-staff.scss";
 
 
