@@ -71,7 +71,7 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<List<ProductsDtoOut>> getNewestProduct() {
+    public ResponseEntity<Object> getNewestProduct() {
         List<ProductsDtoOut> dtoOuts = productService.getNewestProduct();
         return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }

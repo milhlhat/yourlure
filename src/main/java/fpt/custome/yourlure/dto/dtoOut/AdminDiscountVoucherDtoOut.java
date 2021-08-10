@@ -30,6 +30,8 @@ public class AdminDiscountVoucherDtoOut {
         private Date start_date;
         private Date end_date;
         private Float discountValue;
+        private Float maxValue;
+
     }
 
 

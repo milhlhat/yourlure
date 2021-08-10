@@ -20,6 +20,7 @@ public class AdminDiscountVoucherDetailDtoOut {
     private Date start_date;
     private Date end_date;
     private Float discountValue;
+    private Float maxValue;
     private Float minSpentAmount;
     private Integer minCheckoutItemsQuantity;
 //    private Integer applyOncePerCustomer;
