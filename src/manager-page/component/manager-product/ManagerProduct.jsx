@@ -106,7 +106,10 @@ function ManagerProduct(props) {
   };
 
   function handlePageChange(newPage) {
-    const query = queryString.stringify({ currentFilter, page: newPage - 1 });
+    const query = queryString.stringify({
+      ...currentFilter,
+      page: newPage - 1,
+    });
     history.push(`${rootPath}?${query}`);
   }
 
