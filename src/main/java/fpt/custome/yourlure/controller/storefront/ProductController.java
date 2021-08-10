@@ -25,7 +25,7 @@ public interface ProductController {
     ResponseEntity<Object> getBestSeller();
 
     @GetMapping("/newest")
-    ResponseEntity<List<ProductsDtoOut>> getNewestProduct();
+    ResponseEntity<Object> getNewestProduct();
 
     @PostMapping("/product-filter")
     ResponseEntity<Object> getProductFilter(@RequestBody Filter filter);

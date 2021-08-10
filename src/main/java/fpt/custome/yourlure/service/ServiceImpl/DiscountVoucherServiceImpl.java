@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -81,11 +82,15 @@ public class DiscountVoucherServiceImpl implements DiscountVoucherService {
             if (id != null && discountVoucherDtoInput != null) {
                 DiscountVoucher update = discountVoucherRepos.findById(id).get();
                 if (update != null) {
-                    DiscountVoucher discountVoucher = mapper.map(discountVoucherDtoInput, DiscountVoucher.class);
-                    discountVoucher.setDiscountVoucherId(id);
-                    discountVoucher.setDiscountVoucherCustomers(update.getDiscountVoucherCustomers());
-//                    discountVoucher.setOrderCollection(update.getOrderCollection());
-                    discountVoucherRepos.save(discountVoucher);
+                    update.setName(discountVoucherDtoInput.getName());
+                    update.setType(discountVoucherDtoInput.getType());
+                    update.setUsageLimit(discountVoucherDtoInput.getUsageLimit());
+                    update.setStart_date(discountVoucherDtoInput.getStart_date());
+                    update.setEnd_date(discountVoucherDtoInput.getEnd_date());
+                    update.setDiscountValue(discountVoucherDtoInput.getDiscountValue());
+                    update.setMinSpentAmount(discountVoucherDtoInput.getMinSpentAmount());
+                    update.setMaxValue(discountVoucherDtoInput.getMaxValue());
+                    discountVoucherRepos.save(update);
                 }
 
             } else {

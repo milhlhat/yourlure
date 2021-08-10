@@ -25,7 +25,7 @@ public class DiscountVoucher {
     private Long discountVoucherId;
 
     @NotNull
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     /**
@@ -34,11 +34,11 @@ public class DiscountVoucher {
      * Miễn Phí Vận Chuyển
      */
     @NotNull
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     @NotNull
-    @Column(name = "code", unique = true)
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
 
     @Nullable
@@ -50,22 +50,23 @@ public class DiscountVoucher {
     private Integer used;
 
     @NotNull
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private Date start_date;
 
     @NotNull
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private Date end_date;
 
     @NotNull
-    @Column(name = "discountValue")
+    @Column(name = "discountValue", nullable = false)
     private Float discountValue;
-    
-    @Column(name = "maxValue", nullable = false)
+
+    @Nullable
+    @Column(name = "maxValue")
     private Float maxValue;
 
-    @NotNull
-    @Column(name = "minSpentAmount")
+    @Nullable
+    @Column(name = "minSpentAmount", columnDefinition = "float default 0")
     private Float minSpentAmount;
 
     @Nullable
@@ -80,7 +81,7 @@ public class DiscountVoucher {
 
     @JsonIgnore
     @OneToMany(mappedBy = "discountVoucher", cascade = CascadeType.ALL)
-    // MapopedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
+    // MappedBy trỏ tới tên biến discountVoucher ở trong DiscountVoucherCustomer.
     //1 discountVoucher có nhiều DiscountVoucherCustomer
     private Collection<DiscountVoucherCustomer> discountVoucherCustomers;
 }
