@@ -23,6 +23,7 @@ import YlInputFormHook from "../components/custom-field/YLInputFormHook";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Helmet } from "react-helmet";
+import { safeContent } from "../utils/common";
 
 function Campaign() {
   //constructor value for formik field
@@ -148,7 +149,7 @@ function Campaign() {
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
-      items: 2,
+      items: 1,
     },
   };
 
@@ -227,29 +228,33 @@ function Campaign() {
         <div className={"bg-box mt-4 text-center"}>
           <h2 className={"countdown"}>{countdown}</h2>
         </div>
-        <div className="campaign-main  mt-3 bg-box  ">
+        <div className="campaign-main  mt-3 bg-box ">
           <article>
-            <h1 className={"text-center mt-3"}>{campaign?.data?.banner}</h1>
+            <h1 className={"text-center mt-3 pt-4 "}>
+              {campaign?.data?.banner}
+            </h1>
             <p className={"text-center w-75 mx-auto mb-5"}>
               {campaign?.data?.description}
             </p>
           </article>
-          <div className={"d-flex flex-wrap"}>
-            <div
-              className={`campain-information col-12 pe-md-3 ${
-                isAvailable && " col-md-6"
-              }`}
-            >
-              <h3 className={"pb-3 content text-center"}>Thông tin sự kiện</h3>
-              <p className={"content"}>
-                {campaign ? campaign?.data?.content : "null"}
-              </p>
+          <div className={"py-4"}>
+            <div className={`pe-md-3`}>
+              <h3 className={"pb-3 text-center"}>Thông tin sự kiện</h3>
+              <p
+                className={"campaign-content"}
+                dangerouslySetInnerHTML={safeContent(campaign?.data?.content)}
+              />
             </div>
-            <div className="campaign-register col-12 col-md-6 ps-md-3">
+            <div>
               {isAvailable && (
-                <div className="campaign-register-form">
-                  <h2 className={"pb-3"}>Đăng ký tham gia sự kiện</h2>
-                  <form onSubmit={handleSubmit(campaignRegister)}>
+                <div>
+                  <h2 className={"pb-3 text-center"}>
+                    Đăng ký tham gia sự kiện
+                  </h2>
+                  <form
+                    onSubmit={handleSubmit(campaignRegister)}
+                    className="campaign-register-form"
+                  >
                     <YlInputFormHook
                       name={"phone"}
                       isRequired
@@ -279,7 +284,7 @@ function Campaign() {
         </div>
 
         <div className="campaign-orther-list my-md-5 my-2 bg-box">
-          <h3 className={"mb-3"}>Các sự kiện khác</h3>
+          <h3 className={"mb-3 ms-3"}>Các sự kiện khác</h3>
           <Carousel
             swipeable={false}
             draggable={false}
@@ -292,7 +297,7 @@ function Campaign() {
           >
             {campaignList.list.map((campaign, i) => (
               <div
-                className="campaign-list-card bg-white me-3 pointer"
+                className="campaign-list-card bg-white pointer"
                 key={i}
                 onClick={() => handleClickChangeCampaign(campaign.campaignId)}
               >

@@ -495,12 +495,14 @@ function ManagerProductAddNew(props) {
                 variant="danger"
                 to={DEFINELINK.manager + DEFINELINK.managementProduct}
                 value="Hủy"
+                height={"38px"}
               />
               <Stepper steps={ADD_PRODUCT_STEPS} />
               <YLButton
                 variant="primary"
                 type="submit"
                 disabled={submitStatus.isLoading}
+                height={"38px"}
               >
                 {submitStatus.isLoading ? (
                   <CircularProgress size={20} className="circle-progress" />
@@ -512,7 +514,6 @@ function ManagerProductAddNew(props) {
           </div>
         </div>
       </form>
-      {/*<Generate3DMaterial />*/}
     </div>
   );
 }

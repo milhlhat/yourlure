@@ -10,6 +10,10 @@ YlInputFormHook.propTypes = {
   isRequired: PropTypes.bool,
   type: PropTypes.string,
   step: PropTypes.any,
+  disabled: PropTypes.bool,
+};
+YlInputFormHook.defaultProps = {
+  disabled: false,
 };
 function YlInputFormHook(props) {
   const {
@@ -22,6 +26,7 @@ function YlInputFormHook(props) {
     type,
     defaultValue,
     step,
+    disabled,
   } = props;
   const {
     register,
@@ -44,6 +49,7 @@ function YlInputFormHook(props) {
         {...register(name)}
         defaultValue={defaultValue}
         step={step || 1}
+        disabled={disabled}
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}

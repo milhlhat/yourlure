@@ -75,7 +75,7 @@ function ManagerCampaign(props) {
   }
 
   //delete category
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (id) => {
     try {
       const response = await deleteCampaignById(id);
       console.log(response);

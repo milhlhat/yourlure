@@ -1,73 +1,43 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import ManagerVoucherAPI from "api/manager-voucher";
 import YLButton from "components/custom-field/YLButton";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
 import * as yup from "yup";
 import "./scss/manager-add-new-voucher.scss";
-function ManagerVoucherAddNew(props) {
-  const dispatch = useDispatch();
-  const canBack = props.location.canBack;
-  const [disabled, setDisabled] = useState(false);
+import YlInputFormHook from "../../../components/custom-field/YLInputFormHook";
+import { toast } from "react-toastify";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-  const handleChangeDisabled = (selectObject) => {
-    if (selectObject.target.value === "Free Ship") {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
-  };
+function ManagerVoucherAddNew() {
   const history = useHistory();
-  const schema = yup.object().shape({
-    name: yup.string().required("Tên mã giảm giá không được để trống"),
-    discountValue: yup
-      .mixed()
-      .test("discountErr", "Giá trị mã giảm giá không được để trống", () => {
-        return disabled;
-      }),
+  const schema = yup.object().shape(VOUCHER_VALIDATE_SCHEMA);
+
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: { type: TYPE_OPTION[2] },
   });
   const {
     register,
-    formState: { errors },
+    formState: { isSubmitting },
     handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    watch,
+  } = methods;
+  const watchForm = watch();
+  console.log(watchForm);
   const onsubmit = async (data) => {
     console.log(data);
     try {
-      let start_date = new Date(data?.start_date);
-      let end_date = new Date(data?.end_date);
-      if (start_date.getTime() > end_date.getTime()) {
-        alert("Ngày kết thúc phải lớn hơn ngày bắt đầu");
-      } else {
-        const response = await ManagerVoucherAPI.add(data);
-        if (response.error) {
-          throw new Error(response.error);
-        } else {
-          alert("Thêm mã giảm giá thành công");
-          history.push("/manager/voucher");
-        }
-      }
+      await ManagerVoucherAPI.add(data);
+      toast.success("Thêm mã giảm giá thành công");
+      history.push("/manager/voucher");
     } catch (error) {
-      alert("Thêm cá thất bại");
+      toast.error("Thêm mã giảm giá thất bại");
       console.log("fail to fetch add voucher");
     }
   };
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
+
   return (
     <div>
       <h3>Tạo mã giảm giá mới</h3>
@@ -82,143 +52,19 @@ function ManagerVoucherAddNew(props) {
             </div>
             <hr />
             <div className="px-3">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label for="name" className="form-label">
-                        Tên mã giảm giá{" "}
-                        <span className="error-message">(*)</span>
-                      </label>
-                      <input
-                        type="text"
-                        className={`form-control ${
-                          errors.name ? "outline-red" : ""
-                        }`}
-                        id="name"
-                        placeholder="Tên mã giảm giá"
-                        {...register("name")}
-                      />
-                      <span className="error-message">
-                        {errors.name?.message}
-                      </span>
-                    </td>
-                    <td>
-                      <label for="start-date" className="form-label">
-                        Bắt đầu từ ngày
-                      </label>
-                      <input
-                        type="date"
-                        className="form-control"
-                        id="start-date"
-                        placeholder="Ngày bắt đầu"
-                        {...register("start_date")}
-                      />
-                      <span className="error-message">
-                        {errors.code?.message}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="code" className="form-label">
-                        Mã giảm giá
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="code"
-                        disabled
-                        placeholder="Mã giảm giá"
-                        {...register("code")}
-                      />
-                    </td>
-                    <td>
-                      <label for="end-date" className="form-label">
-                        Ngày kết thúc
-                      </label>
-                      <input
-                        type="date"
-                        className="form-control"
-                        id="end-date"
-                        placeholder="Ngày kết thúc"
-                        {...register("end_date")}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="type" className="form-label">
-                        Cách giảm giá
-                      </label>
-                      <select
-                        type="text"
-                        className="form-control"
-                        {...register("type")}
-                        onChange={handleChangeDisabled}
-                      >
-                        <option value="Phần trăm">Phần trăm</option>
-                        <option value="Giá trị">Giá trị </option>
-                        <option value="Free Ship">Free Ship</option>
-                      </select>
-                    </td>
-                    <td>
-                      <label for="min-spent-amount" className="form-label">
-                        Số tiền thanh toán tối thiểu
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="min-spent-amount"
-                        placeholder="Số tiền thanh toán tối thiểu"
-                        {...register("minSpentAmount")}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label for="discount-value" className="form-label">
-                        Giá trị{" "}
-                        {!disabled && (
-                          <span className="error-message">(*)</span>
-                        )}
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="discount-value"
-                        placeholder="Giá trị"
-                        disabled={disabled}
-                        {...register("discountValue")}
-                      />
-                      <span className="error-message">
-                        {errors.discountValue?.message}
-                      </span>
-                    </td>
-                    <td>
-                      <label
-                        for="minCheckoutItemsQuantity"
-                        className="form-label"
-                      >
-                        Số lượng tối thiểu
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="minCheckoutItemsQuantity"
-                        placeholder="Số lượng tối thiểu"
-                        {...register("minCheckoutItemsQuantity")}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <FormTableVoucher methods={methods} watchForm={watchForm} />
             </div>
           </div>
 
           <div className="col-12 bg-white bg-shadow submit-button-form">
             <YLButton variant="danger" to="/manager/voucher" value="Hủy" />
-            <YLButton variant="primary" type="submit" value="Xong" />
+            <YLButton variant="primary" type="submit">
+              {isSubmitting ? (
+                <CircularProgress size={20} className="circle-progress" />
+              ) : (
+                "Xong"
+              )}
+            </YLButton>
           </div>
         </div>
       </form>
@@ -226,4 +72,156 @@ function ManagerVoucherAddNew(props) {
   );
 }
 
+export const TYPE_OPTION = ["Phần trăm", "Giá trị", "Free Ship"];
+export const VOUCHER_VALIDATE_SCHEMA = {
+  name: yup.string().required("Tên mã giảm giá không được để trống"),
+  start_date: yup
+    .date()
+    .typeError("Ngày bắt đầu không được để trống")
+    .max(yup.ref("end_date"), "Ngày bắt đầu phải trước ngày kết thúc"),
+  end_date: yup
+    .date()
+    .typeError("Ngày kết thúc không được để trống")
+    .min(yup.ref("start_date"), "Ngày kết thúc phải sau ngày bắt đầu"),
+  discountValue: yup
+    .mixed()
+    .when("type", {
+      is: (type) => type === TYPE_OPTION[0] || type === TYPE_OPTION[1],
+      then: yup
+        .number()
+        .typeError("Giá trị phải là số")
+        .min(0, "Giá trị lớn hơn 0"),
+    })
+    .when("type", {
+      is: (type) => type === TYPE_OPTION[2],
+      then: yup.mixed().nullable(),
+    }),
+  maxValue: yup
+    .mixed()
+    .when("type", {
+      is: (type) => type === TYPE_OPTION[0],
+      then: yup
+        .number()
+        .typeError("Số tiền phải là số")
+        .moreThan(
+          yup.ref("discountValue"),
+          "Số tiền giảm tối đa phải lớn hơn giá trị"
+        ),
+    })
+    .test(
+      "maxWhenFreeShipping",
+      "Số tiền giảm tối đa phải lớn hơn giá trị",
+      (value, context) => {
+        if (value || value === 0) {
+          return Number(value) > Number(context.parent.discountValue);
+        } else return true;
+      }
+    ),
+};
+
+export const FormTableVoucher = ({ methods, watchForm }) => {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <YlInputFormHook
+              name={"name"}
+              isRequired={true}
+              label={"Tên mã giảm giá"}
+              placeholder={"Tên mã giảm giá"}
+              methods={methods}
+            />
+          </td>
+          <td>
+            <YlInputFormHook
+              name={"start_date"}
+              label={"Ngày bắt đầu"}
+              type={"date"}
+              methods={methods}
+              isRequired
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label htmlFor="type" className="form-label">
+              Cách giảm giá
+              <span className="error-message"> (*)</span>
+            </label>
+            <select
+              type="text"
+              className="form-select"
+              {...methods.register("type")}
+            >
+              {TYPE_OPTION.map((item, i) => (
+                <option value={item} key={i}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </td>
+          <td>
+            <YlInputFormHook
+              name={"end_date"}
+              label={"Ngày kết thúc"}
+              type={"date"}
+              methods={methods}
+              isRequired
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <YlInputFormHook
+              name={"discountValue"}
+              label={"Giá trị"}
+              placeholder="0.5..."
+              methods={methods}
+              type={"number"}
+              step={"any"}
+              isRequired={watchForm.type && watchForm.type !== TYPE_OPTION[2]}
+              disabled={watchForm.type === TYPE_OPTION[2]}
+            />
+          </td>
+          <td>
+            <YlInputFormHook
+              name={"minSpentAmount"}
+              label={"Số tiền thanh toán tối thiểu"}
+              placeholder="Số tiền thanh toán tối thiểu"
+              methods={methods}
+              type={"number"}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <YlInputFormHook
+              name={"maxValue"}
+              label={"Số tiền giảm tối đa"}
+              placeholder="Số tiền giảm tối đa"
+              methods={methods}
+              type={"number"}
+              step={"any"}
+              isRequired={watchForm.type === TYPE_OPTION[0]}
+              disabled={
+                watchForm.type === TYPE_OPTION[1] ||
+                watchForm.type === TYPE_OPTION[2]
+              }
+            />
+          </td>
+          <td>
+            <YlInputFormHook
+              name={"minCheckoutItemsQuantity"}
+              label={"Số lượng tối thiểu"}
+              placeholder="Số lượng tối thiểu"
+              methods={methods}
+              type={"number"}
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  );
+};
 export default ManagerVoucherAddNew;

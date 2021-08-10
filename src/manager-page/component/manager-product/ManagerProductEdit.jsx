@@ -463,7 +463,11 @@ function ManagerProductEdit(props) {
       }
 
       history.push(DEFINELINK.manager + DEFINELINK.product);
-      toast.success("Thành công");
+      if (continuesAdd) {
+        toast.success("Thêm thành công");
+      } else {
+        toast.success("Sửa thành công");
+      }
     } catch (e) {
       toast.error("Cập nhật thất bại");
     }
@@ -894,6 +898,7 @@ function ManagerProductEdit(props) {
               <div className="col-12 bg-white bg-shadow submit-button-form">
                 <YLButton
                   variant="danger"
+                  height={"38px"}
                   to={DEFINELINK.manager + DEFINELINK.managementProduct}
                   value="Hủy"
                 />
@@ -909,6 +914,7 @@ function ManagerProductEdit(props) {
                   variant="primary"
                   type="submit"
                   disabled={isSubmitting}
+                  height={"38px"}
                 >
                   {isSubmitting ? (
                     <CircularProgress size={20} className="circle-progress" />
