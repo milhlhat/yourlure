@@ -39,7 +39,7 @@ public class Product {
     private Float nonColorPrice;
 
     @Nullable
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Nullable
