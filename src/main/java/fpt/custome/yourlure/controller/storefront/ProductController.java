@@ -22,7 +22,7 @@ public interface ProductController {
     ResponseEntity<Object> getById(@PathVariable Long id);
 
     @GetMapping("/best-seller")
-    ResponseEntity<Object> getBestSeller();
+    ResponseEntity<List<ProductsDtoOut>> getBestSeller();
 
     @GetMapping("/newest")
     ResponseEntity<Object> getNewestProduct();

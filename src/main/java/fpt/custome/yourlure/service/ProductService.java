@@ -16,7 +16,7 @@ public interface ProductService {
 
     ProductsDetailDtoOut getById(Long id);
 
-    Object getBestSeller();
+    List<ProductsDtoOut> getBestSeller();
 
     List<ProductsDtoOut> getNewestProduct();
 

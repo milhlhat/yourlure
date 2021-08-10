@@ -65,17 +65,9 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<Object> getBestSeller() {
-        try {
-            Object dtoOuts = productService.getBestSeller();
-            return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<List<ProductsDtoOut>> getBestSeller() {
+        List<ProductsDtoOut> dtoOuts = productService.getBestSeller();
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
     @Override
@@ -86,16 +78,8 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     public ResponseEntity<Object> getProductFilter(Filter filter) {
-        try {
-            Object dtoOuts = productService.getProductFilter(filter, false);
-            return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        Object dtoOuts = productService.getProductFilter(filter,false);
+        return new ResponseEntity<>(dtoOuts, HttpStatus.OK);
     }
 
 //    @Override
