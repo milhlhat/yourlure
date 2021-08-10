@@ -638,6 +638,10 @@ function ManagerProductEdit(props) {
                           id="description"
                           placeholder="Mô tả"
                           {...register("description")}
+                          onBlur={(e) => {
+                            e.target.value = e.target.value.trim();
+                            register("description").onBlur(e);
+                          }}
                         />
                         <span className={"error-message"}>
                           {errors.description?.message}
@@ -652,8 +656,12 @@ function ManagerProductEdit(props) {
                         <textarea
                           className="form-control"
                           id="content"
-                          placeholder="Mô tả chi tiết "
+                          placeholder="Mô tả chi tiết"
                           {...register("content")}
+                          onBlur={(e) => {
+                            e.target.value = e.target.value.trim();
+                            register("content").onBlur(e);
+                          }}
                         />
                       </td>
                     </tr>

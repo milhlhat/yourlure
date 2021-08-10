@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 YlInputFormHook.propTypes = {
@@ -37,15 +37,14 @@ function YlInputFormHook(props) {
     register,
     formState: { errors },
   } = methods;
-  // const [inputValue, setInputValue] = useState(defaultValue);
-  // const handleOnChangeInput = (e) => {
-  //   setInputValue(e.target.value);
-  // };
-  // const handleOnBlurInput = (e) => {
-  //   if (!notTrim) {
-  //     setInputValue(e.target.value.trim());
-  //   }
-  // };
+  const { onBlur, ...rest } = register(name);
+
+  const handleOnBlurInput = (e) => {
+    if (!notTrim) {
+      e.target.value = e.target.value.trim();
+      onBlur(e);
+    }
+  };
   return (
     <>
       {label && (
@@ -59,13 +58,11 @@ function YlInputFormHook(props) {
         className={`form-control ${errors[name] ? "outline-red" : ""}`}
         id={name}
         placeholder={placeholder}
-        {...register(name)}
+        {...rest}
         step={step || 1}
         disabled={disabled}
         defaultValue={defaultValue}
-        // value={inputValue}
-        // onChange={handleOnChangeInput}
-        // onBlur={handleOnBlurInput}
+        onBlur={handleOnBlurInput}
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}

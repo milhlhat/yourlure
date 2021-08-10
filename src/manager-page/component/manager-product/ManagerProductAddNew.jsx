@@ -29,9 +29,7 @@ import useUnsavedChangeWarning from "../../../utils/custom-hook/useUnsavedChange
 ManagerProductAddNew.propTypes = {};
 
 function ManagerProductAddNew(props) {
-  const canBack = props.location.canBack;
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const [submitStatus, setSubmitStatus] = useState({
     isLoading: false,
@@ -154,6 +152,7 @@ function ManagerProductAddNew(props) {
     handleSubmit,
   } = methods;
   console.log(errors);
+
   const [Prompt, setIsDirty] = useUnsavedChangeWarning();
   useEffect(() => {
     setIsDirty(isDirty);
@@ -259,7 +258,7 @@ function ManagerProductAddNew(props) {
     <div>
       {Prompt}
       <h3>Tạo sản phẩm mới</h3>
-      <form onSubmit={handleSubmit(onSubmit)} autocomplete="off">
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <div className=" product-add-new-form row">
           <div
             className="product-info bg-box bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2"
@@ -414,6 +413,10 @@ function ManagerProductAddNew(props) {
                         id="description"
                         placeholder="Mô tả"
                         {...register("description")}
+                        onBlur={(e) => {
+                          e.target.value = e.target.value.trim();
+                          register("description").onBlur(e);
+                        }}
                       />
                       <span className="error-message">
                         {errors.description?.message}
@@ -430,6 +433,10 @@ function ManagerProductAddNew(props) {
                         id="content"
                         placeholder="Mô tả chi tiết "
                         {...register("content")}
+                        onBlur={(e) => {
+                          e.target.value = e.target.value.trim();
+                          register("content").onBlur(e);
+                        }}
                       />
                       <span>{errors.descriptionMore?.message}</span>
                     </td>
