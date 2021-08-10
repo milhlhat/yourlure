@@ -9,11 +9,12 @@ import { filterConfig } from "constant/filter-setting";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
-import ManagerSort from "./ManagerSort";
+
 import "./scss/manager-discount-voucher.scss";
 import { convertToVND, formatDate } from "../../../utils/format-string";
 import { toast } from "react-toastify";
 import { TYPE_OPTION } from "./ManagerVoucherAddNew";
+import ManagerSort from "../sort/ManagerSort";
 
 ManagerVoucher.propTypes = {};
 
@@ -150,7 +151,6 @@ function ManagerVoucher() {
               value="Thêm"
               to={{
                 pathname: "/manager/voucher/addnew",
-                canBack: setBack,
               }}
             />
           </div>
