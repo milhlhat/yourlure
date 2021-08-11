@@ -66,7 +66,7 @@ public class CartServiceImpl implements CartService {
             });
             return cart.map(this::cartToCartDto).orElse(null);
         }
-        return null;
+        return new CartDtoOut();
 
     }
 

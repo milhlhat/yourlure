@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CartDtoOut {
 
-    private List<CartItemDtoOut> cartItems;
+    private List<CartItemDtoOut> cartItems = new ArrayList<>();
 
 
     @Data
