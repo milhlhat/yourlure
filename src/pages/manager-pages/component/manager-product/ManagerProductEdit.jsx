@@ -65,7 +65,6 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     then: yup.mixed().nullable(),
     otherwise: yup
       .mixed()
-
       .test(
         "minRequired",
         "Trọng lượng tối thiểu không được để trống",
@@ -79,7 +78,7 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
         (value, context) => {
           const defaultWeight = context.parent.defaultWeight;
           if (!defaultWeight) return false;
-          return value <= defaultWeight;
+          return Number(value) <= Number(defaultWeight);
         }
       )
       .test(
@@ -88,7 +87,7 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
         (value, context) => {
           const maxWeight = context.parent.maxWeight;
           if (!maxWeight) return false;
-          return value < maxWeight;
+          return Number(value) < Number(maxWeight);
         }
       ),
   }),
@@ -110,7 +109,7 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
         (value, context) => {
           const defaultWeight = context.parent.defaultWeight;
           if (!defaultWeight) return false;
-          return value >= defaultWeight;
+          return Number(value) >= Number(defaultWeight);
         }
       )
       .test(
@@ -119,7 +118,7 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
         (value, context) => {
           const minWeight = context.parent.minWeight;
           if (!minWeight) return false;
-          return value > minWeight;
+          return Number(value) > Number(minWeight);
         }
       ),
   }),
