@@ -56,7 +56,7 @@ public class ProductControllerImpl implements ProductController {
             return new ResponseEntity<>(Optional.of(dtoOut), HttpStatus.OK);
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
         }
