@@ -1,22 +1,16 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { AbilityContext } from "ability/can";
 import UserApi from "api/user-api";
 import "assets/scss/scss-manager/manager-header.scss";
+import ErrorLoad from "components/error-notify/ErrorLoad";
+import Loading from "components/Loading";
+import ManagerInformation from "manager-page/component/header/ManagerInformation";
 import React, { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { setIsBack } from "redux/back-action/back-action";
 import DEFINELINK from "routes/define-link";
 import { logout } from "utils/user";
-import * as yup from "yup";
-import YLButton from "components/custom-field/YLButton";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
-import ManagerInformation from "manager-page/component/header/ManagerInformation";
 import ManagerChangePassWord from "./ManagerChangePassword";
-import ErrorLoad from "components/error-notify/ErrorLoad";
-import Loading from "components/Loading";
 
 ManagerHeader.propTypes = {};
 

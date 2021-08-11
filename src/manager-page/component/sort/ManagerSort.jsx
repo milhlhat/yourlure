@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import { useForm } from "react-hook-form";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
 
 function ManagerSort(props) {
   const { filter, setFilter, options } = props;
@@ -14,8 +15,9 @@ function ManagerSort(props) {
       }
     }
   }
+  const methods = useForm();
 
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue } = methods;
   const onsubmit = (data) => {
     setFilter({ ...filter, keyword: data.keyWord });
   };
@@ -37,11 +39,16 @@ function ManagerSort(props) {
                 />
               </div>
               <div className="col-9">
-                <input
+                {/* <input
                   className="form-control"
                   type="text"
                   {...register("keyWord")}
                   placeholder="Tìm kiếm"
+                /> */}
+                <YlInputFormHook
+                  methods={methods}
+                  placeholder="Tìm kiếm"
+                  name="keyWord"
                 />
               </div>
             </div>

@@ -1,16 +1,12 @@
 import ManagerCategoryAPI from "api/manager-category-api";
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
-import "./scss/manager-category-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import "./scss/manager-category-detail.scss";
 
 function ManagerCategoryDetail(props) {
-  const canBack = props.location.canBack;
   const categoryId = props.match.params.id;
-  const dispatch = useDispatch();
   const history = useHistory();
   const [category, setCategory] = useState({
     data: null,
@@ -31,26 +27,10 @@ function ManagerCategoryDetail(props) {
     }
   };
 
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Danh mục",
-  };
   useEffect(() => {
     fetchCategory();
   }, [categoryId]);
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
   if (category.isLoading) {
     return <Loading />;
   } else if (!category.isSuccess) {
@@ -86,7 +66,6 @@ function ManagerCategoryDetail(props) {
                         history.push({
                           pathname:
                             "/manager/product/detail/" + item?.productID,
-                          canBack: setBack,
                         })
                       }
                     >

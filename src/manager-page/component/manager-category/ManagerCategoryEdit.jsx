@@ -1,37 +1,34 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import * as yup from "yup";
-import { setIsBack } from "redux/back-action/back-action";
-import YLButton from "components/custom-field/YLButton";
 import ManagerCategoryAPI from "api/manager-category-api";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import YLButton from "components/custom-field/YLButton";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import * as yup from "yup";
 
 function ManagerCategoryEdit(props) {
-  const canBack = props.location.canBack;
   const cateId = props.match.params.id;
   const history = useHistory();
-  const dispatch = useDispatch();
   const schema = yup.object().shape({
     categoryName: yup.string().required("Tên danh mục không được để trống"),
   });
   const [category, setCategory] = useState({
-    data:null,
-    isLoading:false,
-    isSuccess:true,
+    data: null,
+    isLoading: false,
+    isSuccess: true,
   });
 
-  const fetchCategoryById = async (id) => {
+  const fetchCategoryById = async () => {
     setCategory((prevState) => {
       return { ...prevState, isLoading: true };
     });
     try {
       const response = await ManagerCategoryAPI.getCategoryByID(cateId);
       setCategory({ data: response, isLoading: false, isSuccess: true });
+      setValue("categoryName", response?.categoryName);
     } catch (error) {
       setCategory({ data: null, isLoading: false, isSuccess: false });
       console.log("fail to fetch address");
@@ -42,25 +39,22 @@ function ManagerCategoryEdit(props) {
     fetchCategoryById();
   }, [cateId]);
 
-  useEffect(() => {
-    setValue("categoryName", category?.data?.categoryName);
-  }, [category]);
-
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  });
   const {
     register,
     formState: { errors },
     setValue,
     handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = methods;
+
   const onSubmit = async (data) => {
-      let param = {...data,categoryId:cateId}
+    let param = { ...data, categoryId: cateId };
     try {
       const response = await ManagerCategoryAPI.edit(param);
       if (response.error) {
-      }
-      else if (!response) {
+      } else if (!response) {
         throw new Error("response.error");
       } else {
         alert("Sửa danh mục thành công");
@@ -72,48 +66,36 @@ function ManagerCategoryEdit(props) {
     }
   };
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
   if (category.isLoading) {
     return <Loading />;
   } else if (!category.isSuccess) {
     return <ErrorLoad />;
   } else
-  return (
-    <div>
-      {/* <Prompt
+    return (
+      <div>
+        {/* <Prompt
                 when={isDirty && !isSubmitted}
                 message="Changes you made may not be saved."
             /> */}
-      <div className="bg-box bg-shadow">
-        <h3>Sửa danh mục</h3>
-        <hr />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="name">Tên danh mục</label>
-          <input
-            className="form-control"
-            {...register("categoryName")}
-            type="text"
-            id="name"
-            placeholder="Nhập tên sản phẩm"
-          />
-          <span className="error-message">{errors?.categoryName?.message}</span>
-          <div className="mt-3 d-flex justify-content-center">
-            <YLButton variant="primary" type="submit" value="Xong" />
-            <YLButton variant="link" to="/manager/category" value="Hủy" />
-          </div>
-        </form>
+        <div className="bg-box bg-shadow">
+          <h3>Sửa danh mục</h3>
+          <hr />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <YlInputFormHook
+              methods={methods}
+              placeholder="Nhập tên sản phẩm"
+              name="categoryName"
+              label="Tên danh mục(*)"
+              required={true}
+            />
+            <div className="mt-3 d-flex justify-content-center">
+              <YLButton variant="primary" type="submit" value="Xong" />
+              <YLButton variant="link" to="/manager/category" value="Hủy" />
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default ManagerCategoryEdit;

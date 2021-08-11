@@ -1,18 +1,13 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import YLButton from "components/custom-field/YLButton";
-import ManagerCategoryAPI from "api/manager-category-api";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setIsBack } from "redux/back-action/back-action";
 import ManagerUserApi from "api/manager-user-api";
+import YLButton from "components/custom-field/YLButton";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import * as yup from "yup";
 
 function ManagerStaffAddNew(props) {
-  const canBack = props.location.canBack;
-  const dispatch = useDispatch();
   const history = useHistory();
   const schema = yup.object().shape({
     phone: yup
@@ -24,16 +19,16 @@ function ManagerStaffAddNew(props) {
       ),
     username: yup.string().required("Vui lòng nhập tên."),
   });
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  });
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = methods;
   const onSubmit = async (data) => {
     let fin = { ...data, roles: [data.role] };
-    console.log(fin);
     try {
       const response = await ManagerUserApi.createAdminAccount(fin);
       console.log(response);
@@ -50,35 +45,19 @@ function ManagerStaffAddNew(props) {
       console.log("fail to fetch add staff");
     }
   };
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
   return (
     <div>
       <div className="bg-box bg-shadow">
         <h3>Thêm nhân viên mới</h3>
         <hr />
         <form onSubmit={handleSubmit(onSubmit)} className="mx-5">
-          <label htmlFor="username">Tên(*)</label>
-          <input
-            className="form-control"
-            {...register("username")}
-            type="text"
-            id="username"
-            placeholder="Nhập tên "
+          <YlInputFormHook
+            methods={methods}
+            placeholder="Nhập tên"
+            name="username"
+            label="Tên(*)"
+            required={true}
           />
-          {errors?.username && (
-            <span className="error-message">
-              {errors?.username?.message} <br />
-            </span>
-          )}
 
           <label htmlFor="gender">Giới tính</label>
           <select className="form-select" {...register("gender")} id="gender">
@@ -89,21 +68,13 @@ function ManagerStaffAddNew(props) {
           </select>
           <span className="error-message">{errors?.gender?.message}</span>
 
-          <label htmlFor="phone">Số điện thoại(*)</label>
-          <input
-            className="form-control"
-            {...register("phone")}
-            type="text"
-            id="phone"
-            placeholder="Nhập số điện thoại "
+          <YlInputFormHook
+            methods={methods}
+            placeholder="Nhập số điện thoại"
+            name="phone"
+            label="Số điện thoại(*)"
+            required={true}
           />
-          {errors?.phone && (
-            <span className="error-message">
-              {errors?.phone?.message}
-              <br />
-            </span>
-          )}
-
 
           <label htmlFor="role">Vị trí</label>
           <select className="form-select" {...register("role")} id="role">

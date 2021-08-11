@@ -2,15 +2,11 @@ import ManagerFishAPI from "api/manager-fish-api";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { setIsBack } from "redux/back-action/back-action";
+import { useHistory } from "react-router-dom";
 import "./scss/manager-fish-detail.scss";
 
 function ManagerFishDetail(props) {
-  const canBack = props.location.canBack;
   const fishId = props.match.params.id;
-  const dispatch = useDispatch();
   const history = useHistory();
   const [fish, setFish] = useState({
     data: null,
@@ -32,26 +28,10 @@ function ManagerFishDetail(props) {
     }
   };
 
-  const location = useLocation();
-  const setBack = {
-    canBack: true,
-    path: location,
-    label: "Cá",
-  };
   useEffect(() => {
     fetchCategory();
   }, [fishId]);
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
   if (fish.isLoading) {
     return <Loading />;
   } else if (!fish.isSuccess) {
@@ -87,7 +67,6 @@ function ManagerFishDetail(props) {
                         history.push({
                           pathname:
                             "/manager/product/detail/" + item?.productID,
-                          canBack: setBack,
                         })
                       }
                     >

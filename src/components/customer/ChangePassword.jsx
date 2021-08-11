@@ -29,14 +29,17 @@ function ChangePassword(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     oldPassword: Yup.string()
+      .trim()
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự")
       .required("Mật khẩu cũ không được để trống."),
     password: Yup.string()
+      .trim()
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự")
       .required("Mật khẩu mới không được để trống."),
     rePassword: Yup.string()
+      .trim()
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự")
@@ -59,7 +62,7 @@ function ChangePassword(props) {
     } catch (error) {
       setChangeProcess(false);
       toast.error(error?.response?.data);
-      if(!error?.response){
+      if (!error?.response) {
         toast.error("Đổi mật khẩu thất bại");
       }
       console.log("fail to fetch customer list");

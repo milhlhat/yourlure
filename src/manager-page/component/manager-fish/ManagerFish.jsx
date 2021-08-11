@@ -6,12 +6,12 @@ import YLButton from "components/custom-field/YLButton";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constant/filter-setting";
+// import ManagerSort from "./ManagerSort";
+import ManagerSort from "manager-page/component/sort/ManagerSort";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
-import { useHistory, useLocation } from "react-router-dom";
-// import ManagerSort from "./ManagerSort";
-import ManagerSort from "manager-page/component/sort/ManagerSort";
+import { useHistory } from "react-router-dom";
 import "./scss/manager-fish.scss";
 
 ManagerFish.propTypes = {};

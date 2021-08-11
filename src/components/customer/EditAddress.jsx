@@ -53,9 +53,13 @@ function ChangeAddress(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("userName", {
-                    required: "Vui lòng nhập họ tên",
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("userName", {
+                      required: "Vui lòng nhập họ tên",
+                    });
+                  }}
+                  placeholder="Nhập họ tên"
                 ></input>
                 {errors.userName && (
                   <span className="text-danger">
@@ -69,10 +73,14 @@ function ChangeAddress(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("phone", {
-                    required: true,
-                    pattern: /((\+84|84|0)[35789][0-9]{8})\b/,
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("phone", {
+                      required: true,
+                      pattern: /((\+84|84|0)[35789][0-9]{8})\b/,
+                    });
+                  }}
+                  placeholder="Nhập số điện thoại"
                   type="number"
                 ></input>
                 {errors.phone && (
@@ -92,9 +100,12 @@ function ChangeAddress(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("description", {
-                    required: "Vui lòng nhập địa chỉ cụ thể",
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("description", {
+                      required: "Vui lòng nhập địa chỉ cụ thể",
+                    });
+                  }}
                   placeholder="Số nhà, tên đường,.."
                 ></input>
                 {errors.description && (

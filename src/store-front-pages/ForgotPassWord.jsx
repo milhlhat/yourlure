@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { CircularProgress } from "@material-ui/core";
 import UserApi from "api/user-api";
 
-const TIME_COUNT_DOWN=60;
+const TIME_COUNT_DOWN = 60;
 
 function FogotPassWord(props) {
   const [onTab, setOnTab] = useState(0);
@@ -172,6 +172,7 @@ function OTPForm(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     otp: Yup.string()
+      .trim()
       .required("Vui lòng nhập mã OTP")
       .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
       .max(6, "Vui lòng nhập đúng mã OTP"),
@@ -250,10 +251,12 @@ function ResetPassForm(props) {
   //check validate for formik field
   const validationSchema = Yup.object().shape({
     password: Yup.string()
+      .trim()
       .required("Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có it nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
     rePassword: Yup.string()
+      .trim()
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
       .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")

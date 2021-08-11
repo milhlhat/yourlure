@@ -61,9 +61,13 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
-                  {...register("userName", {
-                    required: "Họ và tên không được để trống",
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("userName", {
+                      required: "Họ và tên không được để trống",
+                    });
+                  }}
+                  placeholder="Nhập họ tên"
                 />
                 {errors.userName && (
                   <span className="text-danger">
@@ -77,21 +81,25 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
-                  {...register("phone", {
-                    required: "Vui lòng nhập số điện thoại",
-                    pattern: {
-                      value: /((\+84|84|0)[35789][0-9]{8})\b/,
-                      message: "Vui lòng nhập đúng số điện thoại",
-                    },
-                    minLength: {
-                      value: 10,
-                      message: "Vui lòng nhập đúng số điện thoại",
-                    },
-                    maxLength: {
-                      value: 12,
-                      message: "Vui lòng nhập đúng số điện thoại",
-                    },
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("phone", {
+                      required: "Vui lòng nhập số điện thoại",
+                      pattern: {
+                        value: /((\+84|84|0)[35789][0-9]{8})\b/,
+                        message: "Vui lòng nhập đúng số điện thoại",
+                      },
+                      minLength: {
+                        value: 10,
+                        message: "Vui lòng nhập đúng số điện thoại",
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: "Vui lòng nhập đúng số điện thoại",
+                      },
+                    });
+                  }}
+                  placeholder="Nhập số điện thoại"
                   type="text"
                 />
                 {errors.phone && (
@@ -112,9 +120,13 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
-                  {...register("description", {
-                    required: "Địa chỉ cụ thể không được để trống",
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("description", {
+                      required: "Địa chỉ cụ thể không được để trống",
+                    });
+                  }}
+                  placeholder="Nhập địa chỉ cụ thể"
                 />
                 {errors.description && (
                   <span className="text-danger">

@@ -52,9 +52,13 @@ function EditCustomerAccount(props) {
               <td>
                 <input
                   className="form-control"
-                  {...register("username", {
-                    required: "Họ và tên không được để trống",
-                  })}
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("username", {
+                      required: "Họ và tên không được để trống",
+                    });
+                  }}
+                  placeholder="Nhập họ tên"
                 />
                 {errors.username && (
                   <span className="text-danger">(*){errors.username.message}</span>

@@ -20,12 +20,6 @@ function ManagerCategory(props) {
     isLoading: false,
     isSuccess: true,
   });
-  // const location = useLocation();
-  // const setBack = {
-  //   canBack: true,
-  //   path: location,
-  //   label: "Danh mục",
-  // };
   const history = useHistory();
 
   const options = [
