@@ -178,7 +178,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    protected String genOrderCode(){
+    protected String genOrderCode() {
         return new Date().getTime() + RandomStringUtils.randomAlphanumeric(8);
     }
 
@@ -540,7 +540,8 @@ public class OrderServiceImpl implements OrderService {
         orderDtoOut.setPaymentName(order.getPayment().getPayment());
         orderDtoOut.setItems(getOrderItemsDto(order));
         orderDtoOut.setActivities(getOrderActivities(order));
-        orderDtoOut.setUserId(order.getUser().getUserId());
+        User user = order.getUser();
+        orderDtoOut.setUserId(user != null ? user.getUserId() : null);
         return orderDtoOut;
     }
 
