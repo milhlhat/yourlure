@@ -65,7 +65,14 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     then: yup.mixed().nullable(),
     otherwise: yup
       .mixed()
-      .required("Trọng lượng không được để trống")
+
+      .test(
+        "minRequired",
+        "Trọng lượng tối thiểu không được để trống",
+        (value) => {
+          return value;
+        }
+      )
       .test(
         "maxDefault",
         "Nhỏ hơn hơn hoặc bằng trọng lượng mặc định",
@@ -90,7 +97,13 @@ export const VALIADATE_SCHEMA_PRODUCT_BASE = {
     then: yup.mixed().nullable(),
     otherwise: yup
       .mixed()
-      .required("Trọng lượng không được để trống")
+      .test(
+        "minRequired",
+        "Trọng lượng tối đa không được để trống",
+        (value) => {
+          return value;
+        }
+      )
       .test(
         "maxDefault",
         "Lớn hơn hoặc bằng trọng lượng mặc định",

@@ -32,9 +32,12 @@ function AddVariant(props) {
     quantity: yup.number().typeError("Số lượng là số dương"),
     file: yup
       .mixed()
+      .test("fileType", "Vui lòng chọn 1 ảnh", (value) => {
+        return value[0]?.type;
+      })
       .test("fileType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
         if (value) {
-          return SUPPORTED_IMAGE_FORMATS.includes(value[0].type);
+          return SUPPORTED_IMAGE_FORMATS.includes(value[0]?.type);
         } else {
           return false;
         }
@@ -91,7 +94,7 @@ function AddVariant(props) {
                   name={"variantName"}
                   methods={methods}
                   label={"Tên biến thể"}
-                  placeholder={""}
+                  placeholder={"Nhập tên biến thể"}
                   isRequired
                 />
               </td>
@@ -114,7 +117,7 @@ function AddVariant(props) {
                   methods={methods}
                   label={"Số lượng"}
                   type={"number"}
-                  placeholder={""}
+                  placeholder={"Nhập số lượng"}
                   isRequired
                 />
               </td>

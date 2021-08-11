@@ -129,7 +129,7 @@ function EditVariant(props) {
                   name={"variantName"}
                   methods={methods}
                   label={"Tên biến thể"}
-                  placeholder={""}
+                  placeholder={"Nhập tên biến thể"}
                   isRequired
                 />
               </td>
@@ -152,7 +152,7 @@ function EditVariant(props) {
                   methods={methods}
                   label={"Số lượng"}
                   type={"number"}
-                  placeholder={""}
+                  placeholder={"Nhập số lượng"}
                   isRequired
                 />
               </td>

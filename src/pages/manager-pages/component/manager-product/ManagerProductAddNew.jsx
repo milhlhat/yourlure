@@ -384,6 +384,7 @@ function ManagerProductAddNew(props) {
                               label={"Tối thiểu"}
                               placeholder={"(g)"}
                               type={"number"}
+                              step={"any"}
                               isRequired
                             />
                           </div>
@@ -393,6 +394,7 @@ function ManagerProductAddNew(props) {
                               methods={methods}
                               label={"Tối đa"}
                               placeholder={"(g)"}
+                              step={"any"}
                               type={"number"}
                               isRequired
                             />
