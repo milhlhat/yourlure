@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { setIsBack } from "store/back-action/back-action";
 import DEFINELINK from "routes/define-link";
 import { convertToVND, getShipping } from "utils/format-string";
 import { copyToClipboard } from "../../../../utils/common";
@@ -17,9 +16,9 @@ import "./scss/manager-order-detail.scss";
 
 function ManagerOrderDetail(props) {
   console.log(props);
-  const canBack = props.location.canBack;
+
   const orderId = props.match.params.id;
-  const dispatch = useDispatch();
+
   const history = useHistory();
   const [order, setOrder] = useState({
     data: null,
@@ -46,10 +45,7 @@ function ManagerOrderDetail(props) {
     setLoading(option.value === "ACCEPT");
     setCancel(option.value === "STAFF_REJECT");
     try {
-      const response = await ManagerOrderAPI.changeStatusOrder(
-        option.value,
-        orderId
-      );
+      await ManagerOrderAPI.changeStatusOrder(option.value, orderId);
       toast.success("Thay đổi trạng thái thành công");
       fetchOrder();
       setLoading(false);
@@ -96,22 +92,7 @@ function ManagerOrderDetail(props) {
     );
     setValue("status", stt?.lable);
   }, [orderId]);
-  // const location = useLocation();
-  // const setBack = {
-  //   canBack: true,
-  //   path: location,
-  //   label: "Chi tiết đơn hàng",
-  // };
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
+
   if (order.isLoading) {
     return <Loading />;
   } else if (!order.isSuccess) {

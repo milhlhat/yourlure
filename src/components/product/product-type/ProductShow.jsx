@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import "assets/scss/scss-components/product/product-type.scss";
 import { filterConfig } from "constants/filter-setting";
-import { findByFilter } from "store/product-action/fetch-filter";
+import { findByFilter, setFilter } from "store/product-action/fetch-filter";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 
@@ -17,9 +17,11 @@ function ProductShow(props) {
   const [activePage, setActivePage] = useState(1);
 
   function handlePageChange(newPage) {
-    setActivePage(newPage);
-    const filterAction = findByFilter({ ...productFilter, page: newPage - 1 });
-    dispatch(filterAction);
+    // setActivePage(newPage);
+    // const filterAction = findByFilter({ ...productFilter, page: newPage - 1 });
+    const action = setFilter({ ...productFilter, page: newPage - 1 });
+    dispatch(action);
+    // dispatch(filterAction);
   }
   if (isLoading) {
     return <Loading />;
@@ -31,7 +33,9 @@ function ProductShow(props) {
         <div className="flex-card-row">
           <div className="product-card-row">
             <div className="product-list">
-              {products?.productOutList?.length <= 0 && <p>Không có sản phẩm </p>}
+              {products?.productOutList?.length <= 0 && (
+                <p>Không có sản phẩm </p>
+              )}
               {products.productOutList &&
                 products.productOutList.map((item, i) => (
                   <CardProduct product={item} key={`card-prod-${i}`} />
@@ -39,19 +43,19 @@ function ProductShow(props) {
             </div>
           </div>
         </div>
-		<div className="m-auto p-4">
-        {products.totalPage > 1 && (
-          <Pagination
-            itemClass="page-item"
-            linkClass="page-link"
-            activePage={activePage}
-            itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
-            totalItemsCount={products.totalProduct}
-            pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
-            onChange={handlePageChange}
-          />
-        )}
-		</div>
+        <div className="m-auto p-4">
+          {products.totalPage > 1 && (
+            <Pagination
+              itemClass="page-item"
+              linkClass="page-link"
+              activePage={productFilter.page + 1}
+              itemsCountPerPage={filterConfig.LIMIT_DATA_PER_PAGE}
+              totalItemsCount={products.totalProduct}
+              pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
+              onChange={handlePageChange}
+            />
+          )}
+        </div>
       </div>
     );
 }

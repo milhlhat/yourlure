@@ -57,7 +57,7 @@ function Header(props) {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    if (path !== "/product/search") {
+    if (!path.startsWith("/product")) {
       setKeyword("");
       const action = setFilter({
         listCateId: [],
