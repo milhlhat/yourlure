@@ -11,6 +11,7 @@ import { buildAbilityFor } from "ability/ability";
 import { fetchRoles } from "utils/user";
 import { Helmet } from "react-helmet";
 import { ToastContainer } from "react-toastify";
+import userConfig from "../constant/user-config";
 
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));
@@ -28,6 +29,9 @@ function AppRouter() {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
+        if (error.response?.status === 403) {
+          localStorage.removeItem(userConfig.LOCAL_STORE_ACCESS_TOKEN);
+        }
       }
     };
     setRoles();

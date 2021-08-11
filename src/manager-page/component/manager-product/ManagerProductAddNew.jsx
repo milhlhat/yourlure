@@ -24,7 +24,7 @@ import {
 } from "../../../constant/product-config";
 import Stepper from "./stepper/Stepper";
 import { getUniqueFiles } from "utils/prototype";
-import useUnsavedChangeWarning from "../../../utils/custom-hook/useUnsavedChangeWarning";
+import useUnsavedChangeWarning from "../../../hook/useUnsavedChangeWarning";
 
 ManagerProductAddNew.propTypes = {};
 

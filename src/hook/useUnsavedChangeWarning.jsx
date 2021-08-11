@@ -16,7 +16,7 @@ function useUnsavedChangeWarning() {
     return () => {
       window.onbeforeunload = null;
     };
-  }, [isDirty]);
+  }, [isDirty, message]);
 
   const prompt = <Prompt when={isDirty} message={message} />;
   return [prompt, (value) => setIsDirty(value)];

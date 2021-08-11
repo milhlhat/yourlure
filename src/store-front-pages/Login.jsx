@@ -37,10 +37,6 @@ function Login(props) {
         success: true,
       });
       localStorage.setItem(userConfig.LOCAL_STORE_ACCESS_TOKEN, response);
-      localStorage.setItem(
-        userConfig.LOCAL_STORE_LOGIN_AT,
-        new Date().toLocaleString()
-      );
       await updateRoles(ability, history);
       if (backPath) history.push(backPath);
     } catch (error) {

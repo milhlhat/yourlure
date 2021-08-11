@@ -34,7 +34,7 @@ import {
 } from "../../../constant/product-config";
 
 import HorizontalStepper from "./stepper/Stepper";
-import useUnsavedChangeWarning from "../../../utils/custom-hook/useUnsavedChangeWarning";
+import useUnsavedChangeWarning from "../../../hook/useUnsavedChangeWarning";
 
 export const VALIADATE_SCHEMA_PRODUCT_BASE = {
   productName: yup
