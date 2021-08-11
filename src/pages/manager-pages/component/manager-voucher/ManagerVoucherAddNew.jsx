@@ -85,7 +85,15 @@ export const VOUCHER_VALIDATE_SCHEMA = {
   discountValue: yup
     .mixed()
     .when("type", {
-      is: (type) => type === TYPE_OPTION[0] || type === TYPE_OPTION[1],
+      is: (type) => type === TYPE_OPTION[0],
+      then: yup
+        .number()
+        .typeError("Giá trị phần trăm phải là số")
+        .min(0, "Giá trị phần trăm phải lớn hơn 0")
+        .max(1, "Giá trị  phần trăm không được lớn hơn 1"),
+    })
+    .when("type", {
+      is: (type) => type === TYPE_OPTION[1],
       then: yup
         .number()
         .typeError("Giá trị phải là số")
