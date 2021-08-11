@@ -8,6 +8,7 @@ import "./scss/manager-product-detail.scss";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
+import { safeContent } from "utils/common";
 
 ManagerProductDetail.propTypes = {};
 
@@ -216,6 +217,29 @@ function ManagerProductDetail(props) {
                   </div>
                 </td>
               </tr>
+              {productDetail?.list?.content && (
+                <tr>
+                  <th>Mô tả chi tiết</th>
+                  <td colSpan="3">
+                    <div
+                      className={`${
+                        productDetail?.list?.description
+                          ? "detail-description m-2 p-1"
+                          : ""
+                      }`}
+                    >
+                      <p
+                        className="descrip-content"
+                        dangerouslySetInnerHTML={safeContent(
+                          productDetail?.list?.content
+                            ? productDetail?.list?.content
+                            : productDetail?.list?.description
+                        )}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

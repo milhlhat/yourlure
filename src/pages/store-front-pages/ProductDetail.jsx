@@ -9,6 +9,7 @@ import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import { useHistory } from "react-router-dom";
 import slugify from "slugify";
+import { safeContent } from "utils/common";
 
 ProductDetail.propTypes = {};
 
@@ -151,11 +152,14 @@ function ProductDetail(props) {
           <div className="title-detail-description ">
             <h3>Chi tiết sản phẩm</h3>
           </div>
-          <p className="descrip-content">
-            {productDetail.list
-              ? productDetail.list.description
-              : "description null"}
-          </p>
+          <p
+            className="descrip-content"
+            dangerouslySetInnerHTML={safeContent(
+              productDetail?.list?.content
+                ? productDetail?.list?.content
+                : productDetail?.list?.description
+            )}
+          />
         </div>
         <div className="owl-policy my-md-4 my-3 bg-white bg-shadow  p-md-4 py-2">
           <div className="col-md-3 col-6 item">

@@ -152,13 +152,13 @@ function ManagerProductAddNew(props) {
   } = methods;
   console.log(errors);
 
-  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
-  useEffect(() => {
-    setIsDirty(isDirty);
-  }, [isDirty]);
+  // const [Prompt, setIsDirty] = useUnsavedChangeWarning();
+  // useEffect(() => {
+  //   setIsDirty(isDirty);
+  // }, [isDirty]);
 
   const onSubmit = async (data) => {
-    setIsDirty(false);
+    // setIsDirty(false);
     if (data.listFishId === false) {
       data.listFishId = [];
     }
@@ -255,7 +255,7 @@ function ManagerProductAddNew(props) {
 
   return (
     <div>
-      {Prompt}
+      {/* {Prompt} */}
       <h3>Tạo sản phẩm mới</h3>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <div className=" product-add-new-form row">
@@ -351,6 +351,7 @@ function ManagerProductAddNew(props) {
                         label={"Trọng lượng"}
                         type={"number"}
                         placeholder={"(g)"}
+                        step={"any"}
                         isRequired
                       />
                     </td>

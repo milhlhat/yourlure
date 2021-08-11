@@ -107,7 +107,10 @@ function ManagerOrder(props) {
           <ManagerSort  
             filter={filterOrder}
             setFilter={setFilterOrder}
-            options={options}/>
+            options={options}
+            setActivePage={setActivePage}
+            />
+            
           {orderList?.data?.orders?.length <= 0 && (
             <p>Không có đơn hàng</p>
           )}

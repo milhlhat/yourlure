@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import queryString from "query-string";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
+import { filterConfig } from "constants/filter-setting";
 
 ManagerSortQueryString.propTypes = {
   defaultFilter: PropTypes.shape({
@@ -33,6 +34,7 @@ function ManagerSortQueryString(props) {
         break;
       }
     }
+    temp.page=filterConfig.PAGE_NUMBER_DEFAULT
     setFilter(temp);
     const query = queryString.stringify(temp);
 
@@ -42,7 +44,7 @@ function ManagerSortQueryString(props) {
   const { register, handleSubmit } = useForm();
   const onsubmit = (data) => {
     let temp = { ...filter };
-    temp = { ...temp, keyword: data.keyWord.trim() };
+    temp = { ...temp, keyword: data.keyWord.trim(), page:filterConfig.PAGE_NUMBER_DEFAULT };
     setFilter(temp);
     const query = queryString.stringify(temp);
     console.log(query);

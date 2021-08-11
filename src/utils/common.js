@@ -73,6 +73,7 @@ html
 }
 */
 export const safeContent = (html) => {
+  if(!html) return html
   const SCRIPT_REGEX = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 
   //Removing the <script> tags

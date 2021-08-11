@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import YlInputFormHook from "components/custom-field/YLInputFormHook";
 
 function ManagerSort(props) {
-  const { filter, setFilter, options } = props;
+  const { filter, setFilter, options, setActivePage } = props;
 
   function handleSelectSort(e) {
     let sort = e.target.value;
     for (let o of options) {
       if (sort === o.display) {
-        setFilter({ ...filter, isAsc: o.isAsc, sortBy: o.sortBy });
+        setFilter({ ...filter, isAsc: o.isAsc, sortBy: o.sortBy ,page:0});
+        setActivePage(1);
         break;
       }
     }
@@ -19,7 +20,8 @@ function ManagerSort(props) {
 
   const { register, handleSubmit, setValue } = methods;
   const onsubmit = (data) => {
-    setFilter({ ...filter, keyword: data.keyWord });
+    setFilter({ ...filter, keyword: data.keyWord, page: 0 });
+    setActivePage(1);
   };
   useEffect(() => {
     setValue("keyWord", filter.keyword);

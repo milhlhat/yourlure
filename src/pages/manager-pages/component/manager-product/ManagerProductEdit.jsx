@@ -276,11 +276,11 @@ function ManagerProductEdit(props) {
       setValue(name, value, { shouldDirty: false })
     );
   };
-  const [Prompt, setIsDirty] = useUnsavedChangeWarning();
-  useEffect(() => {
-    console.log("isDirty", isDirty);
-    setIsDirty(true);
-  }, [isDirty]);
+  // const [Prompt, setIsDirty] = useUnsavedChangeWarning();
+  // useEffect(() => {
+  //   console.log("isDirty", isDirty);
+  //   setIsDirty(true);
+  // }, [isDirty]);
   const [hasModel, setHasModel] = useState(false);
   useEffect(() => {
     const fetchDataByProductId = async (productId) => {
@@ -325,7 +325,7 @@ function ManagerProductEdit(props) {
           currentModel?.materials ? currentModel.materials : [],
           { shouldDirty: false }
         );
-        setIsDirty(false);
+        // setIsDirty(false);
       } catch (error) {
         console.log(error);
         setProduct({ loading: false, success: false });
@@ -387,7 +387,7 @@ function ManagerProductEdit(props) {
   // console.log(watch());
 
   const onSubmit = async (data) => {
-    setIsDirty(false);
+    // setIsDirty(false);
     console.log("form submit", data);
     try {
       //====product======
@@ -480,7 +480,7 @@ function ManagerProductEdit(props) {
   } else
     return (
       <div>
-        {Prompt}
+        {/* {Prompt} */}
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <div className=" product-add-new-form row">
             <div className="product-info bg-white bg-shadow col-12 col-md-8 mb-md-5 mb-2 pb-2">

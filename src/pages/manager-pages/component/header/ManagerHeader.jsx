@@ -1,13 +1,11 @@
-import { AbilityContext } from "authorization/can";
 import UserApi from "api/user-api";
 import "assets/scss/scss-manager/manager-header.scss";
+import { AbilityContext } from "authorization/can";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import ManagerInformation from "pages/manager-pages/component/header/ManagerInformation";
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { setIsBack } from "store/back-action/back-action";
+import { useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import { logout } from "utils/user";
 import ManagerChangePassWord from "./ManagerChangePassword";
@@ -15,22 +13,7 @@ import ManagerChangePassWord from "./ManagerChangePassword";
 ManagerHeader.propTypes = {};
 
 function ManagerHeader(props) {
-  const canBack = useSelector((state) => state.backActionHistory.canBack);
-  const path = useSelector((state) => state.backActionHistory.path);
-  const label = useSelector((state) => state.backActionHistory.label);
   const history = useHistory();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  function handleBackOnclick(e) {
-    history.push(path);
-    //save
-    const action = setIsBack({
-      canBack: false,
-      path: null,
-      label: null,
-    });
-    dispatch(action);
-  }
   const [account, setAccount] = useState({
     data: null,
     isLoading: false,
@@ -59,14 +42,6 @@ function ManagerHeader(props) {
   useEffect(() => {
     fetchCustomAccount();
   }, []);
-  // useEffect(() => {
-  //   const action = setIsBack({
-  //     canBack: false,
-  //     path: null,
-  //     label: null,
-  //   });
-  //   dispatch(action);
-  // }, [location]);
 
   if (account.isLoading) {
     return <Loading />;
@@ -75,14 +50,6 @@ function ManagerHeader(props) {
   } else
     return (
       <div className="bg-white manager-header">
-        <div
-          className={`back-button ${canBack ? " ms-5 " : "d-none"}`}
-          onClick={handleBackOnclick}
-        >
-          <i className="far fa-arrow-left"></i>
-          <span className="ms-2">{label}</span>
-        </div>
-        <div className={`${canBack ? "d-none" : ""}`}></div>
         <div className="account">
           <div className="dropdown">
             <button

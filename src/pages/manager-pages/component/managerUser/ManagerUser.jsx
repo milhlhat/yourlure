@@ -1,16 +1,14 @@
+import { Tooltip } from "@material-ui/core";
 import ManagerUserApi from "api/manager-user-api";
+import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import Loading from "components/Loading";
 import { filterConfig } from "constants/filter-setting";
+import ManagerSort from "pages/manager-pages/component/sort/ManagerSort";
 import React, { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
-import { useDispatch } from "react-redux";
-import { setIsBack } from "store/back-action/back-action";
-import "./scss/manager-user.scss";
-import { Tooltip } from "@material-ui/core";
-import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
-import ManagerSort from "pages/manager-pages/component/sort/ManagerSort";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import "./scss/manager-user.scss";
 
 ManagerUser.propTypes = {};
 
@@ -36,15 +34,6 @@ function ManagerUser(props) {
     setFilterUser({ ...filterUser, page: newPage - 1 });
   }
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const action = setIsBack({
-      canBack: false,
-      path: "",
-      label: "",
-    });
-    dispatch(action);
-  }, []);
   const SORT_OPTIONS = [
     {
       display: "Tên A-Z",
@@ -117,6 +106,7 @@ function ManagerUser(props) {
             filter={filterUser}
             setFilter={setFilterUser}
             options={SORT_OPTIONS}
+            setActivePage={setActivePage}
           />
           {userList?.data?.userDtoOutList?.length <= 0 && (
             <p>Không có khách hàng</p>

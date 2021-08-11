@@ -155,6 +155,7 @@ function ManagerFish(props) {
             filter={filter}
             setFilter={setFilter}
             options={options}
+            setActivePage={setActivePage}
           />
           <table>
             <tbody>

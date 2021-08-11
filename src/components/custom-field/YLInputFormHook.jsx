@@ -38,9 +38,9 @@ function YlInputFormHook(props) {
     formState: { errors },
   } = methods;
   const { onBlur, ...rest } = register(name);
-
+  const ACCEPT_TYPE = ["text", "number", "password", "search"];
   const handleOnBlurInput = (e) => {
-    if (!notTrim) {
+    if (!notTrim && ACCEPT_TYPE.includes(e.target.type)) {
       e.target.value = e.target.value.trim();
       onBlur(e);
     }
