@@ -49,8 +49,8 @@ function ManagerHeader(props) {
     return <ErrorLoad />;
   } else
     return (
-      <div className="bg-white manager-header">
-        <div className="account">
+      <div className="bg-white manager-header  d-flex">
+        <div className="account ms-auto">
           <div className="dropdown">
             <button
               className="btn btn-light dropdown-toggle"

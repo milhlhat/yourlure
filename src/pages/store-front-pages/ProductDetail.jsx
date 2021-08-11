@@ -10,6 +10,7 @@ import ErrorLoad from "components/error-notify/ErrorLoad";
 import { useHistory } from "react-router-dom";
 import slugify from "slugify";
 import { safeContent } from "utils/common";
+import NotFound from "./Notfound";
 
 ProductDetail.propTypes = {};
 
@@ -36,6 +37,7 @@ function ProductDetail(props) {
     isLoading: false,
     isSuccess: true,
   });
+  const [notfound, setNotfound] = useState(false);
   const fetchProduct = async () => {
     setProductDetail({ ...productDetail, isLoading: true });
     try {
@@ -58,6 +60,9 @@ function ProductDetail(props) {
         }
       }
     } catch (error) {
+      if (error?.response?.status === 404) {
+        setNotfound(true);
+      }
       setProductDetail({
         ...productDetail,
         isSuccess: false,
@@ -120,7 +125,9 @@ function ProductDetail(props) {
     )}`;
     history.replace(slugPath);
   }, [productDetail]);
-  if (productDetail.isLoading) {
+  if (notfound) {
+    return <NotFound />;
+  } else if (productDetail.isLoading) {
     return <Loading hasLayout />;
   } else if (!productDetail.isSuccess) {
     return <ErrorLoad hasLayout />;
