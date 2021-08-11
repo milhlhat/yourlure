@@ -60,7 +60,7 @@ public class ProductControllerImpl implements ProductController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.NOT_FOUND);
 
     }
 
