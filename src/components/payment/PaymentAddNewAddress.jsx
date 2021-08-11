@@ -11,7 +11,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import UserApi from "api/user-api";
 import YLButton from "components/custom-field/YLButton";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
-import "manager-page/component/header/scss/header-dialog.scss";
+import "pages/manager-pages/component/header/scss/header-dialog.scss";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";

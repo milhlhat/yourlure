@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import DEFINELINK from "routes/define-link";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/error-notify/error-notify.scss";
-import { useContext } from "react";
-import { AbilityContext } from "ability/can";
+import { AbilityContext } from "authorization/can";
 
 function NoPermistion(props) {
   const { hasLayout } = props;

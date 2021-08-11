@@ -1,11 +1,12 @@
-import ManagerFishAddNew from "manager-page/component/manager-fish/ManagerFishAddNew";
-import ManagerFishEdit from "manager-page/component/manager-fish/ManagerFishEdit";
-import ManagerFishDetail from "manager-page/component/manager-fish/ManagerFishDetail";
+import ManagerFishAddNew from "pages/manager-pages/component/manager-fish/ManagerFishAddNew";
+import ManagerFishEdit from "pages/manager-pages/component/manager-fish/ManagerFishEdit";
+import ManagerFishDetail from "pages/manager-pages/component/manager-fish/ManagerFishDetail";
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
-const ManagerFish = React.lazy(() => import("manager-page/component/manager-fish/ManagerFish"));
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+
+const ManagerFish = React.lazy(() => import("pages/manager-pages/component/manager-fish/ManagerFish"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 export default function OtherRoute() {
     const match = useRouteMatch();

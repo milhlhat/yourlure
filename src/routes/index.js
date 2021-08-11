@@ -5,17 +5,17 @@ import Loading from "components/Loading";
 
 import DEFINELINK from "routes/define-link";
 
-import { AbilityContext } from "ability/can";
-import { buildAbilityFor } from "ability/ability";
+import { AbilityContext } from "authorization/can";
+import { buildAbilityFor } from "authorization/ability";
 
 import { fetchRoles } from "utils/user";
 import { Helmet } from "react-helmet";
 import { ToastContainer } from "react-toastify";
-import userConfig from "../constant/user-config";
+import userConfig from "../constants/user-config";
 
 const ManagementRouter = React.lazy(() => import("./manager-routes/index"));
 const StoreRoute = React.lazy(() => import("./store-front-routes/index"));
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function AppRouter() {
   const [ability, setAbility] = useState(buildAbilityFor([]));

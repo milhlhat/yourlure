@@ -1,16 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FormFeedback, FormGroup, Label } from 'reactstrap';
-import Select from 'react-select';
-import { ErrorMessage } from 'formik';
-SelectField.propTypes = {
-	field: PropTypes.object.isRequired,
-	form: PropTypes.object.isRequired,
+import React from "react";
+import PropTypes from "prop-types";
+import { FormFeedback, FormGroup, Label } from "reactstrap";
+import Select from "react-select";
+import { ErrorMessage } from "formik";
 
-	label: PropTypes.string,
-	placeholder: PropTypes.string,
-	disabled: PropTypes.bool,
-	options: PropTypes.array,
+SelectField.propTypes = {
+  field: PropTypes.object.isRequired,
+  form: PropTypes.object.isRequired,
+
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
+  options: PropTypes.array,
 };
 
 SelectField.defaultProps = {

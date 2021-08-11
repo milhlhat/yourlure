@@ -1,10 +1,11 @@
-import React from 'react';
-import DEFINELINK from 'routes/define-link';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import React from "react";
+import DEFINELINK from "routes/define-link";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+
 CartRoute.propTypes = {};
 const CartProduct = React.lazy(() => import('components/cart/CartProduct'));
-const Payment = React.lazy(() => import('store-front-pages/Payment'));
-const NotFound = React.lazy(() => import('store-front-pages/Notfound'));
+const Payment = React.lazy(() => import('pages/store-front-pages/Payment'));
+const NotFound = React.lazy(() => import('pages/store-front-pages/Notfound'));
 
 function CartRoute() {
 	const match = useRouteMatch();

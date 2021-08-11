@@ -7,6 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/confirm-popup/confirm-popup.scss";
+
 export default function ComfirmPopup(props) {
   const {
     onConfirm,

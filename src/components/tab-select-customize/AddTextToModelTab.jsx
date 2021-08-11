@@ -2,9 +2,9 @@ import YLButton from "components/custom-field/YLButton";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMaterialByMId } from "utils/product";
-import { setCustomizeInfo } from "redux/customize-action/customize-info";
+import { setCustomizeInfo } from "store/customize-action/customize-info";
 import { HexColorPicker } from "react-colorful";
-import { FONTS_CUSTOMIZE } from "../../constant/product-config";
+import { FONTS_CUSTOMIZE } from "../../constants/product-config";
 
 function AddTextToModelTab() {
   const BE_SERVER = process.env.REACT_APP_API_URL;

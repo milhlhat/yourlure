@@ -1,5 +1,5 @@
 import "assets/scss/scss-components/product/product-detail.scss";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 

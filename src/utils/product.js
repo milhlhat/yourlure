@@ -1,12 +1,9 @@
-import ProductAPI, {
+import {
   createCustomizeByModelId,
-  submitCustomizeByModelId,
   updateCustomizeByModelId,
 } from "api/product-api";
-import { findByFilter, setFilter } from "redux/product-action/fetch-filter";
-import { setIsCapture } from "../redux/customize-action/capture-model";
+import { findByFilter, setFilter } from "store/product-action/fetch-filter";
 import { parseString2Boolean } from "./common";
-import dumyImg from "assets/images/g1.jpg";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 

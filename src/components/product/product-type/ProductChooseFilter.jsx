@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import YLButton from 'components/custom-field/YLButton';
-import { getIsCheckedAll, handleChangeCheckbox, handleCheckAllCateOrFish } from 'utils/input';
-import { findByFilter, setFilter } from 'redux/product-action/fetch-filter';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { filterConfig } from 'constant/filter-setting';
-import { fetchCate, fetchFish } from 'redux/product-action/fetch-cate-fish';
+import React, { useEffect, useState } from "react";
+import YLButton from "components/custom-field/YLButton";
+import {
+  getIsCheckedAll,
+  handleChangeCheckbox,
+  handleCheckAllCateOrFish,
+} from "utils/input";
+import { setFilter } from "store/product-action/fetch-filter";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { filterConfig } from "constants/filter-setting";
+import { fetchCate, fetchFish } from "store/product-action/fetch-cate-fish";
 
 function ProductChooseFilter(props) {
 	const productFilter = useSelector((state) => state.productFilter.filter);

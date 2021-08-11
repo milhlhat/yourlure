@@ -1,17 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import data from "assets/dumy-data/data-product.js";
 import CartRowProduct from "./CartRowProduct";
 import "assets/scss/scss-pages/card.scss";
 import { Link } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLButon from "components/custom-field/YLButton";
-import { AbilityContext, Can } from "ability/can";
+import { AbilityContext, Can } from "authorization/can";
 import { useSelector } from "react-redux";
-import YLButton from "components/custom-field/YLButton";
 import { convertToVND, getShipping, totalPrice } from "utils/format-string";
 import CartAPI from "api/user-cart-api";
 import Loading from "components/Loading";
-import ErrorLoad from "components/error-notify/ErrorLoad";
+
 function CartProduct(props) {
   const cartData = props?.location?.cart;
   const ability = useContext(AbilityContext);

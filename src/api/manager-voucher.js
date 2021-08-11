@@ -1,9 +1,8 @@
-import AxiosClient from './axios-client';
+import AxiosClient from "./axios-client";
 
 const ManagerVoucherAPI = {
-
   getAll: (param) => {
-    const url = '/admin/discount-voucher/all';
+    const url = "/admin/discount-voucher/all";
     return AxiosClient.post(url, param);
   },
   getById: (id) => {
@@ -15,7 +14,7 @@ const ManagerVoucherAPI = {
     return AxiosClient.delete(url);
   },
   add: (param) => {
-    const url = '/admin/discount-voucher/add';
+    const url = "/admin/discount-voucher/add";
     return AxiosClient.post(url, param);
   },
   update: (voucher, id) => {

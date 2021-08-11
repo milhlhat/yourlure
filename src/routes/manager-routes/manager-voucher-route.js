@@ -1,16 +1,16 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
-import NotFound from "store-front-pages/Notfound";
+import NotFound from "pages/store-front-pages/Notfound";
 
 const ManagerVoucher = React.lazy(() =>
-  import("manager-page/component/manager-voucher/ManagerVoucher")
+  import("pages/manager-pages/component/manager-voucher/ManagerVoucher")
 );
 const ManagerVoucherAddNew = React.lazy(() =>
-  import("manager-page/component/manager-voucher/ManagerVoucherAddNew")
+  import("pages/manager-pages/component/manager-voucher/ManagerVoucherAddNew")
 );
 const ManagerVoucherEdit = React.lazy(() =>
-  import("manager-page/component/manager-voucher/ManagerVoucherEdit")
+  import("pages/manager-pages/component/manager-voucher/ManagerVoucherEdit")
 );
 ManagerVoucherRoute.propTypes = {};
 

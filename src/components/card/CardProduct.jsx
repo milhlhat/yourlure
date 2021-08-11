@@ -55,7 +55,7 @@ function CardProduct(props) {
                   Tùy biến ngay
                 </YLButton>
               </div>
-            ):(
+            ) : (
               <div onClick={(e) => e.stopPropagation()} className={"mt-3"}>
                 <YLButton
                   variant="primary"

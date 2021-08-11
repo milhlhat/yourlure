@@ -1,9 +1,8 @@
-import AxiosClient from './axios-client';
+import AxiosClient from "./axios-client";
 
 const ManagerFishAPI = {
-
   getAll: (param) => {
-    const url = '/admin/fish/searchAll';
+    const url = "/admin/fish/searchAll";
     return AxiosClient.post(url, param);
   },
   getById: (id) => {
@@ -15,7 +14,7 @@ const ManagerFishAPI = {
     return AxiosClient.delete(url);
   },
   add: (param) => {
-    const url = '/admin/fish/save';
+    const url = "/admin/fish/save";
     return AxiosClient.post(url, param);
   },
   update: (fish, id) => {

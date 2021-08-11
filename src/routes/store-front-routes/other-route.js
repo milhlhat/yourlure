@@ -1,20 +1,20 @@
 import React from "react";
-import { Route, Switch, Redirect, useRouteMatch } from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import { RenderRoutes } from "utils/common";
 
-const Campaign = React.lazy(() => import("store-front-pages/Campaign"));
-const About = React.lazy(() => import("store-front-pages/About"));
-const HomePage = React.lazy(() => import("store-front-pages/Home"));
-const Login = React.lazy(() => import("store-front-pages/Login"));
-const Register = React.lazy(() => import("store-front-pages/Register"));
+const Campaign = React.lazy(() => import("pages/store-front-pages/Campaign"));
+const About = React.lazy(() => import("pages/store-front-pages/About"));
+const HomePage = React.lazy(() => import("pages/store-front-pages/Home"));
+const Login = React.lazy(() => import("pages/store-front-pages/Login"));
+const Register = React.lazy(() => import("pages/store-front-pages/Register"));
 const FogotPassWord = React.lazy(() =>
-  import("store-front-pages/ForgotPassWord")
+  import("pages/store-front-pages/ForgotPassWord")
 );
 const ViewCustomizeOrder = React.lazy(() =>
-  import("manager-page/component/manager-order/ViewCustomizeOrder")
+  import("pages/manager-pages/component/manager-order/ViewCustomizeOrder")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 export default function OtherRoute() {
   const match = useRouteMatch();

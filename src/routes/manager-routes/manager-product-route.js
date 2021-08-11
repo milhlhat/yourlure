@@ -3,24 +3,24 @@ import DEFINELINK from "routes/define-link";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 const ManagerProduct = React.lazy(() =>
-  import("manager-page/component/manager-product/ManagerProduct")
+  import("pages/manager-pages/component/manager-product/ManagerProduct")
 );
-// const ManagerProductAddNew = React.lazy(() => import('manager-page/component/manager-product/ManagerProductAddNew'));
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+// const ManagerProductAddNew = React.lazy(() => import('pages/manager-pages/component/manager-product/ManagerProductAddNew'));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 const ManagerProductAddNew = React.lazy(() =>
-  import("manager-page/component/manager-product/ManagerProductAddNew")
+  import("pages/manager-pages/component/manager-product/ManagerProductAddNew")
 );
 const ManagerProductDetail = React.lazy(() =>
-  import("manager-page/component/manager-product/ManagerProductDetail")
+  import("pages/manager-pages/component/manager-product/ManagerProductDetail")
 );
 const ManagerProductEdit = React.lazy(() =>
-  import("manager-page/component/manager-product/ManagerProductEdit")
+  import("pages/manager-pages/component/manager-product/ManagerProductEdit")
 );
 const AddVariant = React.lazy(() =>
-  import("manager-page/component/manager-product/variant/AddVariant")
+  import("pages/manager-pages/component/manager-product/variant/AddVariant")
 );
 const EditVariant = React.lazy(() =>
-  import("manager-page/component/manager-product/variant/EditVariant")
+  import("pages/manager-pages/component/manager-product/variant/EditVariant")
 );
 
 function ManagerProductRoute() {

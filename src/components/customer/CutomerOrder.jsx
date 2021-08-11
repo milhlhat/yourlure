@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
-import YLButton from "components/custom-field/YLButton";
 import ComfirmPopup from "components/confirm-popup/ComfirmPopup";
 import "assets/scss/scss-components/customer/manage-order.scss";
 import OrderAPI from "api/order-api";
-import { filterConfig } from "constant/filter-setting";
+import { filterConfig } from "constants/filter-setting";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import { toast } from "react-toastify";
 
 import Pagination from "react-js-pagination";
-import { convertToVND, formatDate, getShipping, getStatus, totalPrice } from "utils/format-string";
+import {
+  convertToVND,
+  formatDate,
+  getShipping,
+  getStatus,
+  totalPrice,
+} from "utils/format-string";
 import { createImageUrlByLinkOrFile } from "utils/manager-product";
 import { useHistory } from "react-router-dom";
+
 function CutomerOrder(props) {
   const [page, setPage] = useState(0);
   const totalItemInPage = 12;

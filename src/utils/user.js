@@ -1,6 +1,6 @@
 import UserApi from "api/user-api";
-import userConfig, { ROLE_ADMIN, ROLE_STAFF } from "constant/user-config";
-import defineAbilityFor from "ability/ability";
+import userConfig, { ROLE_ADMIN, ROLE_STAFF } from "constants/user-config";
+import defineAbilityFor from "authorization/ability";
 import DEFINELINK from "routes/define-link";
 
 const userUtils = {

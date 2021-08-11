@@ -1,4 +1,4 @@
-import { Can } from "ability/can";
+import { Can } from "authorization/can";
 import NoPermistion from "components/error-notify/NoPermistion";
 import ManagerLayout from "layout/ManagerLayout";
 import React from "react";
@@ -13,7 +13,7 @@ const ManagerStaff = React.lazy(() => import("./manager-staff-route"));
 const ManagerVoucher = React.lazy(() => import("./manager-voucher-route"));
 const ManagerOrder = React.lazy(() => import("./manager-order-route"));
 const CampainRoute = React.lazy(() => import("./manager-campaign-route"));
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function ManagementRouter(props) {
   const match = useRouteMatch();
@@ -57,6 +57,7 @@ function ManagementRouter(props) {
                 path={path + DEFINELINK.managementCampaign}
                 component={CampainRoute}
               />
+              <Route component={NotFound}></Route>
             </Switch>
           </ManagerLayout>
         ) : (

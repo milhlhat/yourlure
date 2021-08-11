@@ -5,18 +5,18 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 ManagerCategoryRoute.propTypes = {};
 
 const ManagerCategoryDetail = React.lazy(() =>
-  import("manager-page/component/manager-category/ManagerCategoryDetail")
+  import("pages/manager-pages/component/manager-category/ManagerCategoryDetail")
 );
 const ManagerCategoryEdit = React.lazy(() =>
-  import("manager-page/component/manager-category/ManagerCategoryEdit")
+  import("pages/manager-pages/component/manager-category/ManagerCategoryEdit")
 );
 const ManagerCategoryAddNew = React.lazy(() =>
-  import("manager-page/component/manager-category/ManagerCategoryAddNew")
+  import("pages/manager-pages/component/manager-category/ManagerCategoryAddNew")
 );
 const ManagerCategory = React.lazy(() =>
-  import("manager-page/component/manager-category/ManagerCategory")
+  import("pages/manager-pages/component/manager-category/ManagerCategory")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function ManagerCategoryRoute() {
   const match = useRouteMatch();

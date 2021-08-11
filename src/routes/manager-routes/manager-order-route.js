@@ -1,16 +1,16 @@
-
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
+
 ManagerCategoryRoute.propTypes = {};
 
 const ManagerOrderDetail = React.lazy(() =>
-  import("manager-page/component/manager-order/ManagerOrderDetail")
+  import("pages/manager-pages/component/manager-order/ManagerOrderDetail")
 );
 const ManagerOrder = React.lazy(() =>
-  import("manager-page/component/manager-order/ManagerOrder")
+  import("pages/manager-pages/component/manager-order/ManagerOrder")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 function ManagerCategoryRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;

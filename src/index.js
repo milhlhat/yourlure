@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import AppRouter from "routes";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/scss/base/_base.scss";
-import store, { persistor } from "redux/store";
+import store, { persistor } from "store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import "react-toastify/dist/ReactToastify.min.css";
 

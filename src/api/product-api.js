@@ -1,6 +1,4 @@
 import AxiosClient from "./axios-client";
-import queryString from "query-string";
-import dumyCustomize from "store-front-pages/dumy";
 
 const ProductAPI = {
   getBestSeller: () => {

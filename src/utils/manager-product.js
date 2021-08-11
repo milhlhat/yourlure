@@ -1,11 +1,8 @@
 import {
   findByManagerFilter,
   setFilter,
-} from "redux/product-action/manager/fetch-manager-filter";
-import ManagerProductAPI, {
-  uploadMultiFiles,
-  uploadMultiTexture,
-} from "../api/manager-product-api";
+} from "store/product-action/manager/fetch-manager-filter";
+import { uploadMultiTexture } from "../api/manager-product-api";
 
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;

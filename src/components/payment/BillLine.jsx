@@ -3,9 +3,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import { useTheme } from "@material-ui/core/styles";
-import "manager-page/component/header/scss/header-dialog.scss";
-import React, { useState } from "react";
-import YLButton from "components/custom-field/YLButton";
+import "pages/manager-pages/component/header/scss/header-dialog.scss";
+import React from "react";
 import "./scss/bill-line.scss";
 import { Link, useHistory } from "react-router-dom";
 import {

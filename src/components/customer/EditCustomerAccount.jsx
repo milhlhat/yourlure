@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import YLButton from "components/custom-field/YLButton";
 import DEFINELINK from "routes/define-link";
 import UserApi from "api/user-api";
 import { useHistory, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 function EditCustomerAccount(props) {

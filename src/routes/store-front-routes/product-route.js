@@ -5,18 +5,18 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import { RenderRoutes } from "../../utils/common";
 
 ProductRoute.propTypes = {};
-const Product = React.lazy(() => import("store-front-pages/Product"));
+const Product = React.lazy(() => import("pages/store-front-pages/Product"));
 const ProductDetail = React.lazy(() =>
-  import("store-front-pages/ProductDetail")
+  import("pages/store-front-pages/ProductDetail")
 );
 const ProductCustomize = React.lazy(() =>
-  import("store-front-pages/CustomizeLure")
+  import("pages/store-front-pages/CustomizeLure")
 );
-const SearchProduct = React.lazy(() => import("store-front-pages/Search"));
+const SearchProduct = React.lazy(() => import("pages/store-front-pages/Search"));
 const ShowCustomizes = React.lazy(() =>
-  import("store-front-pages/ShowCustomizes")
+  import("pages/store-front-pages/ShowCustomizes")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function ProductRoute() {
   const match = useRouteMatch();

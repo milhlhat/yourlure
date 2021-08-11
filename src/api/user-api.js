@@ -1,5 +1,6 @@
 import AxiosClient from "./axios-client";
 import queryString from "query-string";
+
 const UserApi = {
   login: (user) => {
     const url = "/user/signin";
@@ -32,43 +33,43 @@ const UserApi = {
     const url = `/user/find-by-ward-id?${paramString}`;
     return AxiosClient.get(url);
   },
-  update:(user)=>{
+  update: (user) => {
     const url = "/user/update";
     return AxiosClient.post(url, user);
   },
-  getAddress:()=>{
+  getAddress: () => {
     const url = "/user/get-address-user";
     return AxiosClient.post(url);
   },
-  setAddressDefault:(userAddressId)=>{
+  setAddressDefault: (userAddressId) => {
     const url = `/user/default-address?userAddressId=${userAddressId}`;
     return AxiosClient.get(url);
   },
-  addAddress:(address)=>{
+  addAddress: (address) => {
     const url = `/user/add-address`;
-    return AxiosClient.post(url,address);
+    return AxiosClient.post(url, address);
   },
-  updateAddress:(address,id)=>{
+  updateAddress: (address, id) => {
     const url = `/user/update-address?userAddressId=${id}`;
-    return AxiosClient.post(url,address);
+    return AxiosClient.post(url, address);
   },
-  signup:(user)=>{
+  signup: (user) => {
     const url = `/user/signup?otp=${user.otp}&password=${user.password}&phone=${user.phone}`;
     return AxiosClient.post(url);
   },
-  changePassword:(param)=>{
+  changePassword: (param) => {
     const url = `/user/change-password?oldPassword=${param.oldPassword}&password=${param.password}`;
     return AxiosClient.post(url);
   },
-  deleteAddress:(id)=>{
+  deleteAddress: (id) => {
     const url = `/user/delete-address?userAddressId=${id}`;
     return AxiosClient.delete(url);
   },
-  getAddressFromWardId:(param)=>{
+  getAddressFromWardId: (param) => {
     const url = `/user/get-address-from-ward-id?id=${param}`;
     return AxiosClient.get(url);
   },
-  resetPassword:(param)=>{
+  resetPassword: (param) => {
     const url = `/user/reset-password?newPwd=${param.password}&otp=${param.otp}&phone=${param.phone}`;
     return AxiosClient.post(url);
   },

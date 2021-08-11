@@ -1,5 +1,5 @@
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
-import React, { useState } from "react";
+import React from "react";
 
 function GusestAddressInput(props) {
   let methods = props;
@@ -23,7 +23,7 @@ function GusestAddressInput(props) {
         <span className="text-danger">(*){errors.receiverName.message}</span>
       )}
 
-      <YLSelectAddress {...methods}  />
+      <YLSelectAddress {...methods} />
 
       <input
         className="form-control mt-3"
@@ -40,7 +40,10 @@ function GusestAddressInput(props) {
         placeholder={"*Số điện thoại"}
         {...register("phone", {
           required: "Số điện thoại không được để trống",
-          pattern: {value:/((\+84|84|0)[35789][0-9]{8})\b/,message:"Vui lòng nhập đúng số điện thoại"}
+          pattern: {
+            value: /((\+84|84|0)[35789][0-9]{8})\b/,
+            message: "Vui lòng nhập đúng số điện thoại",
+          },
         })}
       />
       {errors.phone && (

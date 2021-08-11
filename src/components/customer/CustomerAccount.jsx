@@ -1,4 +1,4 @@
-import { AbilityContext } from "ability/can";
+import { AbilityContext } from "authorization/can";
 import UserApi from "api/user-api";
 import YLButton from "components/custom-field/YLButton";
 import Loading from "components/Loading";
@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import { logout } from "utils/user";
+
 function CustomerAccount(props) {
   const history = useHistory();
   const ability = useContext(AbilityContext);

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import NoPermistion from "components/error-notify/NoPermistion";
-import { Can } from "ability/can";
+import { Can } from "authorization/can";
 import { toast } from "react-toastify";
 
 const CommonUtils = {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/add-new-addres.scss";
 import { useForm } from "react-hook-form";
-import { Prompt, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import UserApi from "api/user-api";

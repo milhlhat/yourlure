@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import YLButton from "components/custom-field/YLButton";
 
-import { setMaterialId } from "redux/customize-action/customize-id";
+import { setMaterialId } from "store/customize-action/customize-id";
 import { HexColorPicker } from "react-colorful";
-import { setCustomizeInfo } from "redux/customize-action/customize-info";
+import { setCustomizeInfo } from "store/customize-action/customize-info";
 import AddTextToModelTab from "./AddTextToModelTab";
 import {
+  getDecreaseId,
+  getIncreaseId,
   getMaterialByMId,
   getPositionSelectedByMId,
   getSelectMatNameByMatId,
-  getDecreaseId,
-  getIncreaseId,
 } from "utils/product";
 import CustomizePrice from "./CustomizePrice";
 

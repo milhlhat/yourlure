@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FormFeedback, FormGroup, Input, Label } from "reactstrap";
-import { ErrorMessage, Formik } from "formik";
+import { ErrorMessage } from "formik";
 import "assets/scss/scss-components/custom-field/InputField.scss";
 
 InputField.propTypes = {

@@ -4,7 +4,6 @@ import YLButton from "components/custom-field/YLButton";
 import "assets/scss/scss-components/customer/manage-address.scss";
 import ConfirmPopup from "components/confirm-popup/ComfirmPopup";
 import DEFINELINK from "routes/define-link";
-import { events } from "@react-three/fiber";
 import { toast } from "react-toastify";
 import Loading from "components/Loading";
 import ErrorLoad from "components/error-notify/ErrorLoad";

@@ -2,6 +2,7 @@ import React from "react";
 import "assets/scss/scss-components/footer.scss";
 import DEFINELINK from "routes/define-link";
 import { Link } from "react-router-dom";
+
 function Footer(props) {
   return (
     <div className="bg-white mt-4 footer" id="footer">

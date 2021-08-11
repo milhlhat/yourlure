@@ -3,18 +3,18 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 
 const ManagerCampaign = React.lazy(() =>
-  import("manager-page/component/manager-campaign/ManagerCampaign")
+  import("pages/manager-pages/component/manager-campaign/ManagerCampaign")
 );
 const ManagerCampaignAddNew = React.lazy(() =>
-  import("manager-page/component/manager-campaign/ManagerCampaignAddNew")
+  import("pages/manager-pages/component/manager-campaign/ManagerCampaignAddNew")
 );
 const ManagerCampaignEdit = React.lazy(() =>
-  import("manager-page/component/manager-campaign/ManagerCampaignEdit")
+  import("pages/manager-pages/component/manager-campaign/ManagerCampaignEdit")
 );
 const ManagerCampaignDetail = React.lazy(() =>
-  import("manager-page/component/manager-campaign/ManagerCampaignDetail")
+  import("pages/manager-pages/component/manager-campaign/ManagerCampaignDetail")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 function CampainRoute() {
   const match = useRouteMatch();
   const path = match.path === "/" ? "" : match.path;

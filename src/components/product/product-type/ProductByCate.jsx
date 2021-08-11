@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import CardProduct from "components/card/CardProduct";
 import "assets/scss/scss-components/product/product-by-cate.scss";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFilter, saveFilter } from "utils/product";
 import { useHistory } from "react-router-dom";
 import ErrorLoad from "components/error-notify/ErrorLoad";
-import Carosel from "components/card/Carosel";
+
 ProductByCate.propTypes = {};
 
 function ProductByCate(props) {

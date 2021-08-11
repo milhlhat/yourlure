@@ -1,9 +1,9 @@
 import React from "react";
-import { Route, Switch, useRouteMatch, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import CustomerInfoLayout from "components/customer/CustomerInfoLayout";
 import NoPermistion from "components/error-notify/NoPermistion";
-import { Can } from "ability/can";
+import { Can } from "authorization/can";
 import { RenderRoutes } from "../../utils/common";
 
 const CustomerAccount = React.lazy(() =>
@@ -27,7 +27,7 @@ const ChangeAddress = React.lazy(() =>
 const ChangePassword = React.lazy(() =>
   import("components/customer/ChangePassword")
 );
-const NotFound = React.lazy(() => import("store-front-pages/Notfound"));
+const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function CutomerInfoRoute() {
   const match = useRouteMatch();
