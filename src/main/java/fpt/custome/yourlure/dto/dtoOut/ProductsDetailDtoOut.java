@@ -20,6 +20,7 @@ public class ProductsDetailDtoOut {
     private String productName;
     private Float defaultPrice;
     private String description;
+    private String content;
     private Float minWeight;
     private Float defaultWeight;
     private Float maxWeight;
