@@ -157,7 +157,7 @@ function ManagerProduct(props) {
           {products?.data?.productOutputList?.length <= 0 && (
             <p>Không có sản phẩm </p>
           )}
-          (
+
           <table>
             <tbody>
               <tr>
@@ -208,7 +208,7 @@ function ManagerProduct(props) {
               ))}
             </tbody>
           </table>
-          )
+
           <div className="m-auto p-4 d-flex justify-content-center">
             {products?.data?.totalPage > 1 && (
               <Pagination
