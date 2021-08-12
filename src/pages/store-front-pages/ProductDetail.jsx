@@ -11,6 +11,7 @@ import { useHistory } from "react-router-dom";
 import slugify from "slugify";
 import { safeContent } from "utils/common";
 import NotFound from "./Notfound";
+import { Helmet } from "react-helmet";
 
 ProductDetail.propTypes = {};
 
@@ -134,6 +135,15 @@ function ProductDetail(props) {
   } else
     return (
       <div className="container">
+        <Helmet>
+          (<title> {`${productDetail.list?.productName} | Yourlure`}</title>
+          <meta
+            name="title"
+            content={`${productDetail.list?.productName} | Yourlure`}
+          />
+          <meta name="description" content={productDetail?.list?.description} />
+          )
+        </Helmet>
         <div className="my-2 row">
           <div className=" col-md-6 col-sm-12  mt-4 ">
             <ProductImage

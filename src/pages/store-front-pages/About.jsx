@@ -9,6 +9,7 @@ import lanAvt from "assets/images/about/lan2.jpg";
 import supervisor from "assets/images/about/supervisor.jpg";
 
 import CardProfile from "../../components/card/CardProfile";
+import { Helmet } from "react-helmet";
 
 const TOPPOINT = [
   {
@@ -87,6 +88,16 @@ const TEAMPROFILES = [
 function About() {
   return (
     <div className={"component about "}>
+      <Helmet>
+        <title>Giới Thiệu | Yourlure </title>
+
+        <meta name="title" content="Giới Thiệu" />
+
+        <meta
+          name="description"
+          content="Website tuỳ biến mồi lure đầu tiên Việt Nam"
+        />
+      </Helmet>
       <article className={"bg-box first-content"}>
         <h3 className={"text-center mb-4"}>YOURLURE</h3>
         <p className={"content "}>

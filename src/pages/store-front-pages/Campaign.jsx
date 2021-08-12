@@ -196,8 +196,8 @@ function Campaign() {
     return (
       <div className="container campaign">
         <Helmet>
-          <title>Yourlure | Sự kiện</title>{" "}
-          <meta name="title" content="Sự kiện" />
+          <title>{`${campaign?.data?.banner} - Sự kiện | Yourlure`}</title>{" "}
+          <meta name="title" content={campaign?.data?.banner || "Sự kiện"} />
           <meta name="description" content={campaign?.data?.banner} />
         </Helmet>
         <div className="campaign-banner d-block ">

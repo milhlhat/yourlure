@@ -60,7 +60,7 @@ function Home() {
     return (
       <div className="container home-page">
         <Helmet>
-          <title>Yourlure | Trang chủ</title>
+          <title>Trang chủ | Yourlure </title>
 
           <meta name="title" content="Trang chủ" />
 
