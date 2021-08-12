@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import DEFINELINK from "routes/define-link";
 import { logout } from "utils/user";
 import ManagerChangePassWord from "./ManagerChangePassword";
+import { Helmet } from "react-helmet";
 
 ManagerHeader.propTypes = {};
 
@@ -50,6 +51,9 @@ function ManagerHeader(props) {
   } else
     return (
       <div className="bg-white manager-header  d-flex">
+        <Helmet>
+          <title>{`Quản lý | Yourlure`}</title>
+        </Helmet>
         <div className="account ms-auto">
           <div className="dropdown">
             <button

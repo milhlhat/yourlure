@@ -31,10 +31,7 @@
 
     }
     & .campaign-register-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      margin: 10px auto;
     }
   }
 
@@ -167,10 +164,10 @@
   .campaign-register-form {
     width: 50%;
     margin: 10px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    //display: flex;
+    //flex-direction: column;
+    //justify-content: center;
+    //align-items: center;
   }
 }
 

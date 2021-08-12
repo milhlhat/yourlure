@@ -12,17 +12,18 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 ManagerCampaignDetail.propTypes = {};
 const options = [
   {
-    display: "Cũ nhất",
-    isAsc: true,
-    sortBy: "campaign_register_id",
-    value: "SORT_id_ASC",
-  },
-  {
     display: "Mới nhất",
     isAsc: false,
     sortBy: "campaign_register_id",
     value: "SORT_id_DESC",
   },
+  {
+    display: "Cũ nhất",
+    isAsc: true,
+    sortBy: "campaign_register_id",
+    value: "SORT_id_ASC",
+  },
+
   {
     display: "Tên từ A-Z",
     isAsc: true,
@@ -36,14 +37,6 @@ const options = [
     value: "SORT_NAME_DESC",
   },
 ];
-const defaultFilter = {
-  isAsc: false,
-  keyword: "",
-  limit: 15,
-  page: 0,
-  sortBy: "campaign_register_id",
-  typeSearch: "",
-};
 
 function ManagerCampaignDetail(props) {
   const campaignId = props.match.params.id;
@@ -57,6 +50,7 @@ function ManagerCampaignDetail(props) {
   let limit = params.get("limit") || 15;
   let page = params.get("page") || 0;
   let sortBy = params.get("sortBy") || "campaign_register_id";
+  let display = params.get("display") || "Mới nhất";
 
   const filterParams = {
     campaignId,
@@ -65,6 +59,7 @@ function ManagerCampaignDetail(props) {
     limit,
     page,
     sortBy,
+    display,
   };
 
   function handlePageChange(newActivePage) {
@@ -147,7 +142,7 @@ function ManagerCampaignDetail(props) {
       <div className={"d-flex justify-content-between gap-3 "}>
         <ManagerSortQueryString
           options={options}
-          defaultFilter={defaultFilter}
+          defaultFilter={filterParams}
           rootPath={rootPath}
         />
 

@@ -23,12 +23,6 @@ import { Helmet } from "react-helmet";
 import { safeContent } from "../../utils/common";
 
 function Campaign() {
-  //constructor value for formik field
-  const initialValues = {
-    phone: "",
-    fullname: "",
-  };
-  //check validate for formik field
   const validationSchema = Yup.object().shape({
     phone: Yup.string()
       .required("Vui lòng nhập số điện thoại.")
@@ -162,7 +156,7 @@ function Campaign() {
       const today = new Date();
       let ms = (endDate - today) % 86400000;
       if (ms < 1) clearInterval(countDownInterval);
-      const d = Math.floor((endDate - today) / 86400000) + 1;
+      const d = Math.floor((endDate - today) / 86400000);
       let h = Math.floor(ms / 3600000);
 
       let m = Math.floor((ms % 3600000) / 60000);
@@ -268,11 +262,13 @@ function Campaign() {
                       methods={methods}
                     />
                     <br />
-                    <YLButton
-                      type={"submit"}
-                      variant={"primary"}
-                      value={"Đăng ký"}
-                    />
+                    <div className="d-flex justify-content-center">
+                      <YLButton
+                        type={"submit"}
+                        variant={"primary"}
+                        value={"Đăng ký"}
+                      />
+                    </div>
                   </form>
                 </div>
               )}

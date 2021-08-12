@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import ManagerSortQueryString from "../sort/ManagerSortQueryString";
 import "./scss/filter-manage-product.scss";
 import queryString from "query-string";
+import { parseString2Boolean } from "../../../../utils/common";
 
 ManagerProduct.propTypes = {};
 
@@ -29,6 +30,7 @@ function ManagerProduct(props) {
   let sortBy = params.get("sortBy") || "product_id";
   let custom = params.get("custom") || false;
   let visibleInStorefront = params.get("visibleInStorefront") || "null";
+  let sortDisplay = params.get("sortDisplay") || "Mới nhất";
   const currentFilter = {
     isAsc,
     keyword,
@@ -39,6 +41,7 @@ function ManagerProduct(props) {
     visibleInStorefront,
     listCateId: [],
     listFishId: [],
+    sortDisplay,
   };
 
   const [products, setProducts] = useState({
@@ -48,14 +51,14 @@ function ManagerProduct(props) {
   });
   const SORT_OPTIONS = [
     {
-      display: "Cũ nhất",
-      isAsc: true,
+      display: "Mới nhất",
+      isAsc: false,
       sortBy: "product_id",
       value: "SORT_PRODUCT_ID",
     },
     {
-      display: "Mới nhất",
-      isAsc: false,
+      display: "Cũ nhất",
+      isAsc: true,
       sortBy: "product_id",
       value: "SORT_PRODUCT_ID",
     },
@@ -66,10 +69,10 @@ function ManagerProduct(props) {
       value: "SORT_NAME_PRODUCT_ASC",
     },
     {
-      display: "Tên tăng dần",
+      display: "Tên sản phẩm tăng dần",
       isAsc: true,
       sortBy: "product_name",
-      value: "SORT_NME_PRODUCT_DESC",
+      value: "SORT_NAME_PRODUCT_DESC",
     },
     {
       display: "Giá tăng dần",
@@ -126,9 +129,7 @@ function ManagerProduct(props) {
     fetchManagerProduct();
   }, [props.location]);
 
-  if (products.isLoading) {
-    return <Loading />;
-  } else if (!products.success) {
+  if (!products.success && !products.isLoading) {
     return <ErrorLoad />;
   } else
     return (
@@ -157,56 +158,60 @@ function ManagerProduct(props) {
           {products?.data?.productOutputList?.length <= 0 && (
             <p>Không có sản phẩm </p>
           )}
-          <table>
-            <tbody>
-              <tr>
-                <th>#</th>
-                <th>Tên sản phẩm</th>
-                <th>Danh mục</th>
-                <th className="text-center">Trạng thái</th>
-                <th className="text-center pointer">Giá</th>
-                <th />
-                <th />
-              </tr>
-              {products?.data?.productOutputList?.map((item, i) => (
-                <tr
-                  key={i}
-                  className="hover-background pointer"
-                  onClick={() =>
-                    history.push({
-                      pathname: "/manager/product/detail/" + item.productId,
-                    })
-                  }
-                >
-                  <td>{page * limit + i + 1}</td>
-                  <td  className="m-w-450">{item.productName}</td>
-                  <td>{item.category.categoryName}</td>
-                  <td className="text-center py-2">
-                    {item.visibleInStorefront == null
-                      ? "-"
-                      : item.visibleInStorefront
-                      ? "Đang kinh doanh"
-                      : "Ngừng kinh doanh"}
-                  </td>
-                  <td className="text-end pe-4">
-                    {!item ? "N/A" : convertToVND(item.defaultPrice)}
-                  </td>
-                  <td onClick={(e) => handleEditClicked(e, item.productId)}>
-                    <img src={Editor} className="pointer" />
-                  </td>
-                  <td onClick={(e) => e.stopPropagation()}>
-                    <ConfirmPopupV2
-                      onConfirm={() => handleDeleteProduct(item.productId)}
-                      title={"Xoá sản phẩm"}
-                      content={"Chắc chắn xoá: " + item.productName}
-                    >
-                      <img src={Trash} />
-                    </ConfirmPopupV2>
-                  </td>
+          {products.isLoading ? (
+            <Loading hasLayout />
+          ) : (
+            <table>
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Danh mục</th>
+                  <th className="text-center">Trạng thái</th>
+                  <th className="text-center pointer">Giá</th>
+                  <th />
+                  <th />
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                {products?.data?.productOutputList?.map((item, i) => (
+                  <tr
+                    key={i}
+                    className="hover-background pointer"
+                    onClick={() =>
+                      history.push({
+                        pathname: "/manager/product/detail/" + item.productId,
+                      })
+                    }
+                  >
+                    <td>{page * limit + i + 1}</td>
+                    <td className="m-w-450">{item.productName}</td>
+                    <td>{item.category.categoryName}</td>
+                    <td className="text-center py-2">
+                      {item.visibleInStorefront == null
+                        ? "-"
+                        : item.visibleInStorefront
+                        ? "Đang kinh doanh"
+                        : "Ngừng kinh doanh"}
+                    </td>
+                    <td className="text-end pe-4">
+                      {!item ? "N/A" : convertToVND(item.defaultPrice)}
+                    </td>
+                    <td onClick={(e) => handleEditClicked(e, item.productId)}>
+                      <img src={Editor} className="pointer" />
+                    </td>
+                    <td onClick={(e) => e.stopPropagation()}>
+                      <ConfirmPopupV2
+                        onConfirm={() => handleDeleteProduct(item.productId)}
+                        title={"Xoá sản phẩm"}
+                        content={"Chắc chắn xoá: " + item.productName}
+                      >
+                        <img src={Trash} />
+                      </ConfirmPopupV2>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           <div className="m-auto p-4 d-flex justify-content-center">
             {products?.data?.totalPage > 1 && (
               <Pagination
@@ -225,7 +230,7 @@ function ManagerProduct(props) {
     );
 }
 
-const CheckBoxFilter = ({ filter, setFilter, rootPath }) => {
+const CheckBoxFilter = ({ defaultFilter, rootPath }) => {
   const history = useHistory();
   const OPTION_VISIBLE = [
     {
@@ -244,21 +249,22 @@ const CheckBoxFilter = ({ filter, setFilter, rootPath }) => {
 
   function handleSelectVisible(e) {
     let value = e.target.value;
-    let temp = { ...filter };
 
-    temp = { ...temp, visibleInStorefront: value };
+    const temp = {
+      ...defaultFilter,
+      visibleInStorefront: value,
+      page: filterConfig.PAGE_NUMBER_DEFAULT,
+    };
 
-    setFilter(temp);
     const query = queryString.stringify(temp);
     history.push(`${rootPath}?${query}`);
   }
 
   function handleCheckCustom(e) {
     const checked = e.target.checked;
-    console.log(checked);
-    let temp = { ...filter };
-    temp = { ...temp, custom: checked };
-    setFilter(temp);
+
+    const temp = { ...defaultFilter, custom: checked };
+
     const query = queryString.stringify(temp);
     history.push(`${rootPath}?${query}`);
   }
@@ -276,11 +282,16 @@ const CheckBoxFilter = ({ filter, setFilter, rootPath }) => {
           name={"custom"}
           className={"form-check-input pointer me-2"}
           onChange={handleCheckCustom}
+          checked={parseString2Boolean(defaultFilter.custom)}
         />
         <label htmlFor={"custom"}>Có tuỳ biến</label>
       </div>
       <div className={"col-4 ps-3"}>
-        <select className={"form-select "} onChange={handleSelectVisible}>
+        <select
+          className={"form-select "}
+          onChange={handleSelectVisible}
+          value={defaultFilter.visibleInStorefront}
+        >
           {OPTION_VISIBLE.map(({ display, value }, i) => (
             <option key={"visible" + i} value={value}>
               {display}

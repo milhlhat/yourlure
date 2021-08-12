@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import YLButton from "components/custom-field/YLButton";
 import { useForm } from "react-hook-form";
 import queryString from "query-string";
@@ -19,37 +19,49 @@ ManagerSortQueryString.propTypes = {
   rootPath: PropTypes.string,
   plugin: PropTypes.any,
 };
+ManagerSortQueryString.defaultProps = {
+  defaultFilter: {
+    keyword: "",
+  },
+};
 
 function ManagerSortQueryString(props) {
   const { defaultFilter, options, rootPath, plugin } = props;
   const history = useHistory();
-  const [filter, setFilter] = useState(defaultFilter);
 
   function handleSelectSort(e) {
     let sort = e.target.value;
-    let temp = { ...filter };
+    let temp = defaultFilter;
     for (let o of options) {
       if (sort === o.display) {
-        temp = { ...temp, isAsc: o.isAsc, sortBy: o.sortBy };
+        temp = {
+          ...defaultFilter,
+          isAsc: o.isAsc,
+          sortBy: o.sortBy,
+          sortDisplay: sort,
+        };
         break;
       }
     }
-    temp.page=filterConfig.PAGE_NUMBER_DEFAULT
-    setFilter(temp);
+    temp.page = filterConfig.PAGE_NUMBER_DEFAULT;
     const query = queryString.stringify(temp);
-
     history.push(`${rootPath}?${query}`);
   }
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const onsubmit = (data) => {
-    let temp = { ...filter };
-    temp = { ...temp, keyword: data.keyWord.trim(), page:filterConfig.PAGE_NUMBER_DEFAULT };
-    setFilter(temp);
+    const temp = {
+      ...defaultFilter,
+      keyword: data.keyword.trim(),
+      page: filterConfig.PAGE_NUMBER_DEFAULT,
+    };
     const query = queryString.stringify(temp);
     console.log(query);
     history.push(`${rootPath}?${query}`);
   };
+  useEffect(() => {
+    setValue("keyword", defaultFilter.keyword);
+  }, [defaultFilter]);
 
   return (
     <form onSubmit={handleSubmit(onsubmit)} className={"w-100"}>
@@ -68,12 +80,8 @@ function ManagerSortQueryString(props) {
               <input
                 className="form-control"
                 type="text"
-                {...register("keyWord")}
+                {...register("keyword")}
                 placeholder="Tìm kiếm"
-                // value={filter.keyword}
-                // onChange={(e) =>
-                //   setFilter({ ...filter, keyword: e.target.value })
-                // }
               />
             </div>
           </div>
@@ -83,26 +91,19 @@ function ManagerSortQueryString(props) {
           <select
             className="form-select pointer"
             onChange={(e) => handleSelectSort(e)}
+            value={defaultFilter.sortDisplay}
           >
             {options.map((item, i) => (
-              <option
-                key={"option-" + i}
-                className="pointer"
-                // selected={
-                //   filter.sortBy === item.sortBy && filter.isAsc === item.isAsc
-                // }
-              >
+              <option key={"option-" + i} className="pointer">
                 {item.display}
               </option>
             ))}
           </select>
         </div>
-        {plugin && plugin({ filter, setFilter, rootPath })}
+        {plugin && plugin({ defaultFilter, rootPath })}
       </div>
     </form>
   );
 }
 
-export default React.memo(ManagerSortQueryString, (prevProps, nextProps) => {
-  return (prevProps.defaultFilter.page = nextProps.defaultFilter.page);
-});
+export default ManagerSortQueryString;
