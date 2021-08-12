@@ -128,8 +128,8 @@ function ManagerProduct(props) {
   useEffect(() => {
     fetchManagerProduct();
   }, [props.location]);
-
-  if (!products.success && !products.isLoading) {
+  if (products.isLoading) return <Loading hasLayout />;
+  else if (!products.success) {
     return <ErrorLoad />;
   } else
     return (
@@ -148,7 +148,6 @@ function ManagerProduct(props) {
         <div className="manager-product-show mt-3 bg-white  bg-shadow">
           <span>Tất cả sản phẩm</span>
           <hr />
-
           <ManagerSortQueryString
             options={SORT_OPTIONS}
             defaultFilter={currentFilter}
@@ -158,60 +157,58 @@ function ManagerProduct(props) {
           {products?.data?.productOutputList?.length <= 0 && (
             <p>Không có sản phẩm </p>
           )}
-          {products.isLoading ? (
-            <Loading hasLayout />
-          ) : (
-            <table>
-              <tbody>
-                <tr>
-                  <th>#</th>
-                  <th>Tên sản phẩm</th>
-                  <th>Danh mục</th>
-                  <th className="text-center">Trạng thái</th>
-                  <th className="text-center pointer">Giá</th>
-                  <th />
-                  <th />
+          (
+          <table>
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>Tên sản phẩm</th>
+                <th>Danh mục</th>
+                <th className="text-center">Trạng thái</th>
+                <th className="text-center pointer">Giá</th>
+                <th />
+                <th />
+              </tr>
+              {products?.data?.productOutputList?.map((item, i) => (
+                <tr
+                  key={i}
+                  className="hover-background pointer"
+                  onClick={() =>
+                    history.push({
+                      pathname: "/manager/product/detail/" + item.productId,
+                    })
+                  }
+                >
+                  <td>{page * limit + i + 1}</td>
+                  <td className="m-w-450">{item.productName}</td>
+                  <td>{item.category.categoryName}</td>
+                  <td className="text-center py-2">
+                    {item.visibleInStorefront == null
+                      ? "-"
+                      : item.visibleInStorefront
+                      ? "Đang kinh doanh"
+                      : "Ngừng kinh doanh"}
+                  </td>
+                  <td className="text-end pe-4">
+                    {!item ? "N/A" : convertToVND(item.defaultPrice)}
+                  </td>
+                  <td onClick={(e) => handleEditClicked(e, item.productId)}>
+                    <img src={Editor} className="pointer" />
+                  </td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <ConfirmPopupV2
+                      onConfirm={() => handleDeleteProduct(item.productId)}
+                      title={"Xoá sản phẩm"}
+                      content={"Chắc chắn xoá: " + item.productName}
+                    >
+                      <img src={Trash} />
+                    </ConfirmPopupV2>
+                  </td>
                 </tr>
-                {products?.data?.productOutputList?.map((item, i) => (
-                  <tr
-                    key={i}
-                    className="hover-background pointer"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/manager/product/detail/" + item.productId,
-                      })
-                    }
-                  >
-                    <td>{page * limit + i + 1}</td>
-                    <td className="m-w-450">{item.productName}</td>
-                    <td>{item.category.categoryName}</td>
-                    <td className="text-center py-2">
-                      {item.visibleInStorefront == null
-                        ? "-"
-                        : item.visibleInStorefront
-                        ? "Đang kinh doanh"
-                        : "Ngừng kinh doanh"}
-                    </td>
-                    <td className="text-end pe-4">
-                      {!item ? "N/A" : convertToVND(item.defaultPrice)}
-                    </td>
-                    <td onClick={(e) => handleEditClicked(e, item.productId)}>
-                      <img src={Editor} className="pointer" />
-                    </td>
-                    <td onClick={(e) => e.stopPropagation()}>
-                      <ConfirmPopupV2
-                        onConfirm={() => handleDeleteProduct(item.productId)}
-                        title={"Xoá sản phẩm"}
-                        content={"Chắc chắn xoá: " + item.productName}
-                      >
-                        <img src={Trash} />
-                      </ConfirmPopupV2>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+              ))}
+            </tbody>
+          </table>
+          )
           <div className="m-auto p-4 d-flex justify-content-center">
             {products?.data?.totalPage > 1 && (
               <Pagination
