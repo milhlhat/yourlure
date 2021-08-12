@@ -26,6 +26,7 @@ function ManagerStaffAddNew(props) {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = methods;
   const onSubmit = async (data) => {
     let fin = { ...data, roles: [data.role] };
@@ -56,9 +57,16 @@ function ManagerStaffAddNew(props) {
             placeholder="Nhập tên"
             name="username"
             label="Tên(*)"
-            required={true}
+            isRequired
+            onBlur={(e) => {
+              e.target.value = e.target.value.trim();
+              register("username", {
+                required: "Tên nhân viên không được để trống",
+              });
+              setValue("username", e.target.value.trim());
+            }}
           />
-
+          <br />
           <label htmlFor="gender">Giới tính</label>
           <select className="form-select" {...register("gender")} id="gender">
             <option value={true} selected>
@@ -73,9 +81,18 @@ function ManagerStaffAddNew(props) {
             placeholder="Nhập số điện thoại"
             name="phone"
             label="Số điện thoại(*)"
-            required={true}
+            isRequired
+            onBlur={(e) => {
+              e.target.value = e.target.value.trim();
+              register("username", {
+                required: "Số điện thoại",
+              });
+              setValue("username", e.target.value.trim());
+            }}
           />
-
+          
+          <br />
+          
           <label htmlFor="role">Vị trí</label>
           <select className="form-select" {...register("role")} id="role">
             <option value="ROLE_STAFF" selected>

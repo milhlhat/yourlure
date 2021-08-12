@@ -7,6 +7,7 @@ import DEFINELINK from "routes/define-link";
 import { useHistory, useLocation } from "react-router-dom";
 import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import { toast } from "react-toastify";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
 
 function ChangeAddress(props) {
   const location = useLocation();
@@ -51,8 +52,22 @@ function ChangeAddress(props) {
             <tr>
               <td className="text-end title-table align-top">Họ Và Tên(*)</td>
               <td>
-                <input
+                <YlInputFormHook
+                  methods={methods}
+                  placeholder="Nhập họ tên"
+                  name="userName"
+                  isRequired
+                  onBlur={(e) => {
+                    e.target.value = e.target.value.trim();
+                    register("userName", {
+                      required: "Vui lòng nhập họ tên",
+                    });
+                    setValue("userName", e.target.value.trim());
+                  }}
+                />
+                {/* <input
                   className="form-control"
+                  {...register("userName")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("userName", {
@@ -62,10 +77,8 @@ function ChangeAddress(props) {
                   placeholder="Nhập họ tên"
                 ></input>
                 {errors.userName && (
-                  <span className="text-danger">
-                    (*){errors.userName.message}
-                  </span>
-                )}
+                  <span className="text-danger">{errors.userName.message}</span>
+                )} */}
               </td>
             </tr>
             <tr>
@@ -73,20 +86,22 @@ function ChangeAddress(props) {
               <td>
                 <input
                   className="form-control"
+                  {...register("phone")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("phone", {
-                      required: true,
-                      pattern: /((\+84|84|0)[35789][0-9]{8})\b/,
+                      required: "Vui lòng nhập số điện thoại",
+                      pattern: {
+                        value: /((\+84|84|0)[35789][0-9]{8})\b/,
+                        message: "Vui lòng nhập đúng số điện thoại",
+                      },
                     });
                   }}
                   placeholder="Nhập số điện thoại"
                   type="number"
                 ></input>
                 {errors.phone && (
-                  <span className="text-danger">
-                    (*)Vui lòng nhập số điện thoại
-                  </span>
+                  <span className="text-danger">{errors.phone.message}</span>
                 )}
               </td>
             </tr>
@@ -100,6 +115,7 @@ function ChangeAddress(props) {
               <td>
                 <input
                   className="form-control"
+                  {...register("description")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("description", {

@@ -25,6 +25,7 @@ function ManagerCategoryAddNew(props) {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = methods;
   const onSubmit = async (data) => {
     try {
@@ -51,10 +52,17 @@ function ManagerCategoryAddNew(props) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <YlInputFormHook
             methods={methods}
-            placeholder="Nhập tên sản phẩm"
+            placeholder="Nhập tên danh mục"
             name="categoryName"
             label="Tên danh mục(*)"
-            required={true}
+            isRequired
+            onBlur={(e) => {
+              e.target.value = e.target.value.trim();
+              register("categoryName", {
+                required: "Tên danh mục không được để trống",
+              });
+              setValue("categoryName", e.target.value.trim());
+            }}
           />
           <div className="mt-3 d-flex justify-content-center">
             <YLButton variant="primary" type="submit" value="Xong" />

@@ -5,13 +5,13 @@ import DEFINELINK from "routes/define-link";
 import UserApi from "api/user-api";
 import { useHistory, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
 
 function EditCustomerAccount(props) {
   const { properties } = props;
   const location = useLocation();
   const { account } = location.state;
-  const defaultValues = {};
-  const methods = useForm({ defaultValues: defaultValues });
+  const methods = useForm();
   const history = useHistory();
   const {
     register,
@@ -36,7 +36,7 @@ function EditCustomerAccount(props) {
   };
   const initialData = () => {
     setValue("username", account?.data?.username);
-    setValue("gender", account?.data?.gender);
+    setValue("gender", account?.data?.gender===false?false:true);
   };
   useEffect(() => {
     initialData();
@@ -49,18 +49,28 @@ function EditCustomerAccount(props) {
             <tr>
               <td className="text-end title-table">Họ và Tên(*):</td>
               <td>
+                {/* <YlInputFormHook
+                  methods={methods}
+                  placeholder="Nhập họ tênnn"
+                  name="username"
+                  required={true}
+                /> */}
                 <input
                   className="form-control"
+                  {...register("username")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("username", {
                       required: "Họ và tên không được để trống",
                     });
+                    setValue("username",e.target.value.trim())
                   }}
                   placeholder="Nhập họ tên"
                 />
                 {errors.username && (
-                  <span className="text-danger">(*){errors.username.message}</span>
+                  <span className="text-danger">
+                    (*){errors.username.message}
+                  </span>
                 )}
               </td>
             </tr>

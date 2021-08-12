@@ -81,13 +81,20 @@ function ManagerCategoryEdit(props) {
           <h3>Sửa danh mục</h3>
           <hr />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <YlInputFormHook
-              methods={methods}
-              placeholder="Nhập tên sản phẩm"
-              name="categoryName"
-              label="Tên danh mục(*)"
-              required={true}
-            />
+          <YlInputFormHook
+            methods={methods}
+            placeholder="Nhập tên danh mục"
+            name="categoryName"
+            label="Tên danh mục(*)"
+            isRequired
+            onBlur={(e) => {
+              e.target.value = e.target.value.trim();
+              register("categoryName", {
+                required: "Tên danh mục không được để trống",
+              });
+              setValue("categoryName", e.target.value.trim());
+            }}
+          />
             <div className="mt-3 d-flex justify-content-center">
               <YLButton variant="primary" type="submit" value="Xong" />
               <YLButton variant="link" to="/manager/category" value="Hủy" />
