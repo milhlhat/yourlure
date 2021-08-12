@@ -238,6 +238,9 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
+        if(!m3d.isPresent()){
+            throw new ValidationException("Không tồn tại model này!");
+        }
         if (isDuplicatedCustomName(user, customModelDtoInput.getName())) {
             throw new ValidationException("Tên " + customModelDtoInput.getName() + " đã tồn tại! vui lòng chọn tên khác.");
         }
