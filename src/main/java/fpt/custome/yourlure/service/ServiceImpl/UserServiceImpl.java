@@ -143,12 +143,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object changePwd(HttpServletRequest rq, String oldPwd, String newPwd) {
         User user = whoami(rq);
-        try {
-            // authenticate để check oldPwd nhập vào có giống mk trong db hay ko
+
+        // authenticate để check oldPwd nhập vào có giống mk trong db hay ko
+        if (oldPwd.equals(newPwd)) {
+            throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
+        }
+        try{
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
-            if (oldPwd.equals(newPwd)) {
-                throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
-            }
             if (authenticate.isAuthenticated()) {
                 user.setPassword(passwordEncoder.encode(newPwd));
                 userRepos.save(user);
@@ -156,9 +157,11 @@ public class UserServiceImpl implements UserService {
             } else {
                 throw new ValidationException("Mật khẩu cũ không đúng!");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             throw new ValidationException("Mật khẩu cũ không đúng!");
         }
+
+
     }
 
     @Override
