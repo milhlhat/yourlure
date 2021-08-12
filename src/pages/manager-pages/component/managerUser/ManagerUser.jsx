@@ -37,13 +37,13 @@ function ManagerUser(props) {
   const SORT_OPTIONS = [
     {
       display: "Tên A-Z",
-      isAsc: true,
+      isAsc:  false,
       sortBy: "username",
       value: "SORT_NAME_ASC",
     },
     {
       display: "Tên Z-A",
-      isAsc: false,
+      isAsc: true,
       sortBy: "username",
       value: "SORT_NAME_DESC",
     },

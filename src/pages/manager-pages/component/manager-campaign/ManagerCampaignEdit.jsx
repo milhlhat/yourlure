@@ -177,7 +177,7 @@ function ManagerCampignEdit(props) {
                         <YlInputFormHook
                           name={"endDate"}
                           isRequired={true}
-                          label={"Ngày bắt đầu"}
+                          label={"Ngày kết thúc"}
                           type="date"
                           methods={methods}
                         />
@@ -186,7 +186,7 @@ function ManagerCampignEdit(props) {
                     <tr>
                       <td colSpan="2">
                         <label htmlFor="content" className="form-label">
-                          Mô chi tiết{" "}
+                          Mô tả chi tiết{" "}
                           <span className="error-message"> (*)</span>
                         </label>
                         <textarea
