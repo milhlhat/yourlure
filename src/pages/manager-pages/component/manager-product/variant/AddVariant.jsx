@@ -27,13 +27,16 @@ function AddVariant(props) {
     variantName: yup
       .string()
       .typeError("Tên không được để trống")
-      .required("Tên sản phẩm không được để trống"),
-    newPrice: yup.number().typeError("Giá là số dương"),
-    quantity: yup.number().typeError("Số lượng là số dương"),
+      .required("Tên biến thể không được để trống"),
+    newPrice: yup.number().typeError("Giá là số").moreThan(0, "Giá lớn hơn 0"),
+    quantity: yup
+      .number()
+      .typeError("Số lượng là số")
+      .moreThan(0, "Số lượng lơn hơn 0"),
     file: yup
       .mixed()
       .test("fileType", "Vui lòng chọn 1 ảnh", (value) => {
-        return value[0]?.type;
+        return value;
       })
       .test("fileType", "Vui lòng chọn ảnh .png, .jpg, .jpeg", (value) => {
         if (value) {
@@ -44,13 +47,8 @@ function AddVariant(props) {
       }),
   });
   const methods = useForm({ resolver: yupResolver(schema) });
-  const {
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
-
+  const { control, setValue, handleSubmit, watch } = methods;
+  console.log(watch());
   const history = useHistory();
   const watchFile = useWatch({ control, name: "file", defaultValue: null });
   const [product, setProduct] = useState({});

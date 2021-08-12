@@ -127,7 +127,7 @@ function ManagerProduct(props) {
   };
   useEffect(() => {
     fetchManagerProduct();
-  }, [props.location]);
+  }, [props.location.search]);
   if (products.isLoading) return <Loading hasLayout />;
   else if (!products.success) {
     return <ErrorLoad />;
