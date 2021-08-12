@@ -8,6 +8,7 @@ import YLSelectAddress from "components/custom-field/YLSelectAddress";
 import UserApi from "api/user-api";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@material-ui/core";
+import YlInputFormHook from "components/custom-field/YLInputFormHook";
 
 function AddNewAddress() {
   const methods = useForm();
@@ -59,21 +60,19 @@ function AddNewAddress() {
             <tr>
               <td className="text-end title-table align-top">Họ Và Tên(*)</td>
               <td>
-                <input
-                  className="form-control"
+                <YlInputFormHook
+                  methods={methods}
+                  placeholder="Nhập họ tên"
+                  name="userName"
+                  isRequired
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("userName", {
-                      required: "Họ và tên không được để trống",
+                      required: "Vui lòng nhập họ tên",
                     });
+                    setValue("userName", e.target.value.trim());
                   }}
-                  placeholder="Nhập họ tên"
                 />
-                {errors.userName && (
-                  <span className="text-danger">
-                    (*){errors.userName.message}
-                  </span>
-                )}
               </td>
             </tr>
             <tr>
@@ -81,6 +80,7 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
+                  {...register("phone")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("phone", {
@@ -120,6 +120,7 @@ function AddNewAddress() {
               <td>
                 <input
                   className="form-control"
+                  {...register("description")}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("description", {

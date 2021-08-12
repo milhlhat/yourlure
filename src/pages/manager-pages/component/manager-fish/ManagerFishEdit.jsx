@@ -84,7 +84,14 @@ function ManagerFishEdit(props) {
             placeholder="Nhập tên cá"
             name="fishName"
             label="Tên cá(*)"
-            required={true}
+            isRequired
+            onBlur={(e) => {
+              e.target.value = e.target.value.trim();
+              register("fishName", {
+                required: "Vui lòng nhập tên cá",
+              });
+              setValue("fishName", e.target.value.trim());
+            }}
           />
           <YLButton variant="primary" type="submit" value="Xong" />
         </form>

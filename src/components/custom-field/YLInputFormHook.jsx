@@ -14,9 +14,12 @@ YlInputFormHook.propTypes = {
   notTrim: PropTypes.bool,
 };
 YlInputFormHook.defaultProps = {
+  type:"text",
   disabled: false,
   defaultValue: "",
   notTrim: false,
+  placeholder:"",
+  step: 1,
 };
 
 function YlInputFormHook(props) {
@@ -25,26 +28,24 @@ function YlInputFormHook(props) {
     name,
     label,
     message,
-    placeholder,
     isRequired,
-    type,
-    defaultValue,
-    step,
-    disabled,
     notTrim,
   } = props;
   const {
     register,
     formState: { errors },
+    setValue,
   } = methods;
   const { onBlur, ...rest } = register(name);
   const ACCEPT_TYPE = ["text", "number", "password", "search"];
   const handleOnBlurInput = (e) => {
     if (!notTrim && ACCEPT_TYPE.includes(e.target.type)) {
       e.target.value = e.target.value.trim();
+      setValue(name,e.target.value.trim())
       onBlur(e);
     }
   };
+   
   return (
     <>
       {label && (
@@ -54,15 +55,11 @@ function YlInputFormHook(props) {
         </label>
       )}
       <input
-        type={type || "text"}
         className={`form-control ${errors[name] ? "outline-red" : ""}`}
         id={name}
-        placeholder={placeholder}
         {...rest}
-        step={step || 1}
-        disabled={disabled}
-        defaultValue={defaultValue}
         onBlur={handleOnBlurInput}
+         {...props}
       />
       <span className="error-message">
         {message ? message : errors[name]?.message}
