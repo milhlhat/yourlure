@@ -37,7 +37,7 @@ function ManagerUser(props) {
   const SORT_OPTIONS = [
     {
       display: "Tên A-Z",
-      isAsc:  false,
+      isAsc: false,
       sortBy: "username",
       value: "SORT_NAME_ASC",
     },
@@ -108,83 +108,85 @@ function ManagerUser(props) {
             options={SORT_OPTIONS}
             setActivePage={setActivePage}
           />
-          {userList?.data?.userDtoOutList?.length <= 0 && (
-            <p>Không có khách hàng</p>
-          )}
-          <div className="table-responsive">
-            <table className="table">
-              <tbody>
-                <tr>
-                  <th>#</th>
-                  <th>Tên</th>
-                  <th>Giới tính</th>
-                  <th>Số điện thoại</th>
-                  <th>Trạng thái</th>
-                  <th>Số đơn hàng</th>
-                  <th />
-                </tr>
-                {userList?.data?.userDtoOutList?.map((item, i) => (
-                  <tr key={"manager-user-" + i} className="hover-background">
-                    <td>{(activePage - 1) * totalItem + i + 1}</td>
-                    <td
-                      className="pointer"
-                      onClick={() =>
-                        history.push(`/manager/user/detail/${item?.userId}`)
-                      }
-                    >
-                      {item?.username ? item?.username : "-"}
-                    </td>
-                    <td>
-                      {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
-                    </td>
-                    <td>{item.phone}</td>
-                    <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
-                    <td>{item.numberOfOrder}</td>
-                    <td>
-                      {item.enabled ? (
-                        <Tooltip title="Chặn">
-                          <div>
-                            <ConfirmPopup
-                              variant="link"
-                              width="70px"
-                              height="25px"
-                              btnText={
-                                <i className="far fa-user-slash text-danger" />
-                              }
-                              content={`Bạn chắc chắn muốn chặn ${
-                                item.username ? item.username : item.phone
-                              } ?`}
-                              onConfirm={() => handleSwitchStatus(item)}
-                            />
-                          </div>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip title="Bỏ chặn">
-                          <div>
-                            <ConfirmPopup
-                              variant="link"
-                              width="70px"
-                              height="25px"
-                              btnText={
-                                <i className="far fa-user text-success" />
-                              }
-                              content={`Bạn chắc chắn muốn bỏ chặn ${
-                                item.username ? item.username : item.phone
-                              } ?`}
-                              onConfirm={() => handleSwitchStatus(item)}
-                            />
-                          </div>
-                        </Tooltip>
-                      )}
-                    </td>
+          {console.log(userList?.data)}
+          {userList?.data?.userDtoOutList?.length <= 0 ||
+          userList?.data?.data===null ? (
+            <p className="text-center mt-4">Không có dữ liệu</p>
+          ) : (
+            <div className="table-responsive">
+              <table className="table">
+                <tbody>
+                  <tr>
+                    <th>#</th>
+                    <th>Tên</th>
+                    <th>Giới tính</th>
+                    <th>Số điện thoại</th>
+                    <th>Trạng thái</th>
+                    <th>Số đơn hàng</th>
+                    <th />
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="m-auto p-4 d-flex justify-content-center">
-            {userList?.data?.totalPage >= 1 && (
+                  {userList?.data?.userDtoOutList?.map((item, i) => (
+                    <tr key={"manager-user-" + i} className="hover-background">
+                      <td>{(activePage - 1) * totalItem + i + 1}</td>
+                      <td
+                        className="pointer"
+                        onClick={() =>
+                          history.push(`/manager/user/detail/${item?.userId}`)
+                        }
+                      >
+                        {item?.username ? item?.username : "-"}
+                      </td>
+                      <td>
+                        {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
+                      </td>
+                      <td>{item.phone}</td>
+                      <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
+                      <td>{item.numberOfOrder}</td>
+                      <td>
+                        {item.enabled ? (
+                          <Tooltip title="Chặn">
+                            <div>
+                              <ConfirmPopup
+                                variant="link"
+                                width="70px"
+                                height="25px"
+                                btnText={
+                                  <i className="far fa-user-slash text-danger" />
+                                }
+                                content={`Bạn chắc chắn muốn chặn ${
+                                  item.username ? item.username : item.phone
+                                } ?`}
+                                onConfirm={() => handleSwitchStatus(item)}
+                              />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <Tooltip title="Bỏ chặn">
+                            <div>
+                              <ConfirmPopup
+                                variant="link"
+                                width="70px"
+                                height="25px"
+                                btnText={
+                                  <i className="far fa-user text-success" />
+                                }
+                                content={`Bạn chắc chắn muốn bỏ chặn ${
+                                  item.username ? item.username : item.phone
+                                } ?`}
+                                onConfirm={() => handleSwitchStatus(item)}
+                              />
+                            </div>
+                          </Tooltip>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {userList?.data?.totalPage >= 1 && (
+            <div className="m-auto p-4 d-flex justify-content-center">
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
@@ -194,8 +196,8 @@ function ManagerUser(props) {
                 pageRangeDisplayed={filterConfig.PAGE_RANGE_DISPLAYED}
                 onChange={handlePageChange}
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </>
     );

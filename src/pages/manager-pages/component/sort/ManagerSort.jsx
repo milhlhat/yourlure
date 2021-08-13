@@ -21,7 +21,7 @@ function ManagerSort(props) {
   const { register, handleSubmit, setValue } = methods;
   const onsubmit = (data) => {
     setFilter({ ...filter, keyword: data.keyWord, page: 0 });
-    setActivePage(1);
+    setActivePage&&setActivePage(1);
   };
   useEffect(() => {
     setValue("keyWord", filter.keyword);

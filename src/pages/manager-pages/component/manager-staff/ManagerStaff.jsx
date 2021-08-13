@@ -11,7 +11,6 @@ import { setIsBack } from "store/back-action/back-action";
 import ManagerSort from "pages/manager-pages/component/sort/ManagerSort";
 import "./scss/manager-staff.scss";
 
-
 function ManagerStaff(props) {
   const totalItem = 10;
   const history = useHistory();
@@ -72,20 +71,17 @@ function ManagerStaff(props) {
   }, []);
 
   const detectRole = (role) => {
-    let rs = '';
+    let rs = "";
     role.map((r) => {
       if (r === "ROLE_ADMIN") {
         rs += "-Quản lý-";
-      }
-      else if (r === "ROLE_STAFF") {
+      } else if (r === "ROLE_STAFF") {
         rs += "-Nhân viên-";
-      }
-      else if (r === "ROLE_CUSTOMER") {
+      } else if (r === "ROLE_CUSTOMER") {
         rs += "-Khách hàng-";
       }
-
-    })
-    return rs !== '' ? rs : "-"
+    });
+    return rs !== "" ? rs : "-";
   };
   const handleSwitchStatus = async (data) => {
     try {
@@ -99,8 +95,8 @@ function ManagerStaff(props) {
       data.enabled
         ? alert(`Chặn ${data.username ? data.username : data.phone} thất bại`)
         : alert(
-          `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
-        );
+            `Bỏ chặn ${data.username ? data.username : data.phone} thất bại`
+          );
       console.log("fail to switch status user");
     }
   };
@@ -142,64 +138,82 @@ function ManagerStaff(props) {
             filter={filter}
             setFilter={setFilter}
             options={options}
+            setActivePage={setActivePage}
           />
           {/* <ManagerSort /> */}
-          {staffList?.data?.userDtoOutList?.length <= 0 && (
-            <p>Không có sản phẩm </p>
-          )}
-          <table className="table">
-            <tbody>
-              <tr>
-                <th>#</th>
-                <th>Tên</th>
-                <th>Giới tính</th>
-                <th onClick={() => setFilter({ ...filter, sortBy: "phone", isAsc: !filter.isAsc })}>Số điện thoại</th>
-                <th>Trạng thái</th>
-                <th>Vị trí</th>
-                <th></th>
-              </tr>
-              {staffList?.data?.userDtoOutList?.map((item, i) => (
-                <tr key={"staff-" + i} className="hover-background">
-                  <td>{(activePage - 1) * totalItem + i + 1}</td>
-                  <td>{item?.username ? item?.username : "-"}</td>
-                  <td>
-                    {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
-                  </td>
-                  <td>{item.phone}</td>
-                  <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
-                  <td>{detectRole(item.roles)}</td>
-                  <td>
-                    {item.enabled ? (
-                      <ConfirmPopup
-                        variant="link"
-                        width="70px"
-                        height="25px"
-                        btnText={
-                          <i className="far fa-user-slash text-danger"></i>
-                        }
-                        title="Chặn"
-                        content={`Bạn chắc chắn muốn chặn ${item.username ? item.username : item.phone
-                          } ?`}
-                        onConfirm={() => handleSwitchStatus(item)}
-                      />
-                    ) : (
-                      <ConfirmPopup
-                        variant="link"
-                        width="70px"
-                        height="25px"
-                        title="Bỏ chặn"
-                        btnText={<i className="far fa-user text-success"></i>}
-                        content={`Bạn chắc chắn muốn bỏ chặn ${item.username ? item.username : item.phone
-                          } ?`}
-                        onConfirm={() => handleSwitchStatus(item)}
-                      />
-                    )}
-                  </td>
+          {(staffList?.data?.userDtoOutList?.length > 0 ||
+          staffList?.data?.data !== null) ? (
+            <table className="table">
+              <tbody>
+                <tr>
+                  <th>#</th>
+                  <th>Tên</th>
+                  <th>Giới tính</th>
+                  <th
+                    onClick={() =>
+                      setFilter({
+                        ...filter,
+                        sortBy: "phone",
+                        isAsc: !filter.isAsc,
+                      })
+                    }
+                  >
+                    Số điện thoại
+                  </th>
+                  <th>Trạng thái</th>
+                  <th>Vị trí</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          {staffList?.data?.discountVouchers?.length <= 0 && <p>Không có nhân viên nào! </p>}
+                {staffList?.data?.userDtoOutList?.map((item, i) => (
+                  <tr key={"staff-" + i} className="hover-background">
+                    <td>{(activePage - 1) * totalItem + i + 1}</td>
+                    <td>{item?.username ? item?.username : "-"}</td>
+                    <td>
+                      {item.gender == null ? "-" : item.gender ? "Nam" : "Nữ"}
+                    </td>
+                    <td>{item.phone}</td>
+                    <td>{item.enabled ? "Hoạt động" : "Không hoạt động"}</td>
+                    <td>{detectRole(item.roles)}</td>
+                    <td>
+                      {item.enabled ? (
+                        <ConfirmPopup
+                          variant="link"
+                          width="70px"
+                          height="25px"
+                          btnText={
+                            <i className="far fa-user-slash text-danger"></i>
+                          }
+                          title="Chặn"
+                          content={`Bạn chắc chắn muốn chặn ${
+                            item.username ? item.username : item.phone
+                          } ?`}
+                          onConfirm={() => handleSwitchStatus(item)}
+                        />
+                      ) : (
+                        <ConfirmPopup
+                          variant="link"
+                          width="70px"
+                          height="25px"
+                          title="Bỏ chặn"
+                          btnText={<i className="far fa-user text-success"></i>}
+                          content={`Bạn chắc chắn muốn bỏ chặn ${
+                            item.username ? item.username : item.phone
+                          } ?`}
+                          onConfirm={() => handleSwitchStatus(item)}
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className="text-center mt-4">Không có dữ liệu </p>
+          )}
+
+          {staffList?.data?.discountVouchers?.length <= 0 && (
+            <p>Không có nhân viên nào! </p>
+          )}
           <div className="m-auto p-4 d-flex justify-content-center">
             {staffList?.data?.totalPage >= 1 && (
               <Pagination
