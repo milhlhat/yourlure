@@ -12,6 +12,7 @@ import slugify from "slugify";
 import { safeContent } from "utils/common";
 import NotFound from "./Notfound";
 import { Helmet } from "react-helmet";
+import { NotEqualStencilFunc } from "three";
 
 ProductDetail.propTypes = {};
 
@@ -55,6 +56,10 @@ function ProductDetail(props) {
         fetchFilter(dispatch, {
           ...filter,
           listCateId: [response?.category?.categoryId],
+        });
+        setProductCustomize({
+          ...productCustomize,
+          list: null,
         });
         if (response.customizable) {
           fetchProductCustomize();
