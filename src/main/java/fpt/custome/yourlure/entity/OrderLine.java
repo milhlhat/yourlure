@@ -6,6 +6,8 @@ import com.sun.istack.Nullable;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
@@ -25,6 +27,8 @@ public class OrderLine {
 
     @Nullable
     @Column(name = "quantity")
+    @Min(value = 1)
+    @Max(value = 50)
     private Integer quantity;
 
     @Nullable
