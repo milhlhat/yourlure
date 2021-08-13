@@ -115,6 +115,14 @@ public class OrderServiceImpl implements OrderService {
         return payment.get();
     }
 
+    public boolean validateWeightCustom(Float weight, Float minWeight, Float maxWeight){
+        if (weight != null && minWeight != null && maxWeight != null
+                && weight >= minWeight && weight <= maxWeight) {
+            return true;
+        }
+        return false;
+    }
+
     @Transactional
     protected List<OrderLine> createOrderLines(Order order, List<CartItem> items) throws Exception {
         if (items.isEmpty()) {
@@ -130,7 +138,9 @@ public class OrderServiceImpl implements OrderService {
                 // TODO: calculate price of model
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
                 Product product = customizeModel.getModel3d().getProduct();
-
+                if(validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                    throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
+                }
                 Float defaultPrice = product.getDefaultPrice();
                 Float customAmount = calculateCustomizePrice(customizeModel);
                 Float totalPrice = defaultPrice + customAmount;
@@ -143,6 +153,10 @@ public class OrderServiceImpl implements OrderService {
             } else if (item.getVariantId() != null) {
                 // set price by variant
                 Variant variant = variantRepos.getById(item.getVariantId());
+                Product product = variant.getProduct();
+                if(validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                    throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
+                }
                 if (variant.getQuantity() > 0) {
                     if (variant.getNewPrice() == null) {
                         orderLine.setPrice(variant.getProduct().getDefaultPrice());

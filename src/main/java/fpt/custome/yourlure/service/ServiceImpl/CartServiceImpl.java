@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.util.*;
 
 @Service
@@ -121,6 +122,9 @@ public class CartServiceImpl implements CartService {
                     //get product information
                     Model3d m3d = customizeModel.getModel3d();
                     Product product = m3d.getProduct();
+                    if(orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                        throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
+                    }
                     itemDtoOut.setProductName(product.getProductName());
                     itemDtoOut.setProductId(product.getProductId());
                     itemDtoOut.setPrice(product.getDefaultPrice() + orderService.calculateCustomizePrice(customizeModel));
@@ -142,6 +146,9 @@ public class CartServiceImpl implements CartService {
                     itemDtoOut.setVariantQuantity(variant.getQuantity());
 
                     Product product = variant.getProduct();
+                    if(orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                        throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
+                    }
                     itemDtoOut.setVisibleInStorefront(product.getVisibleInStorefront());
                 }
             }

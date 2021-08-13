@@ -21,6 +21,8 @@ public interface OrderService {
 
     Order guestProcessOrder(OrderGuestDtoInput orderGuestDtoInput) throws Exception;
 
+    boolean validateWeightCustom(Float weight, Float minWeight, Float maxWeight);
+
     @Transactional
     Order userProcessOrder(HttpServletRequest rq, OrderUserDtoInput orderUserDtoInput) throws Exception;
 

@@ -46,8 +46,8 @@ public class Product {
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Nullable
-    @Column(name = "isCustomizeWeight")
+    @NotNull
+    @Column(name = "isCustomizeWeight", nullable = false)
     private Boolean isCustomizeWeight;
 
     @Nullable
