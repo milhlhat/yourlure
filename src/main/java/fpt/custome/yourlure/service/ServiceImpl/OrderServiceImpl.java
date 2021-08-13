@@ -365,7 +365,7 @@ public class OrderServiceImpl implements OrderService {
         if (code != null && !"".equals(code)) {
             DiscountVoucher voucher = verifyDiscountCode(code);
 
-            if (totalAmount < voucher.getMinSpentAmount()) {
+            if (voucher.getMinSpentAmount() != null && totalAmount < voucher.getMinSpentAmount()) {
                 throw new Exception("tổng tiền của đơn hàng không đủ để áp dụng mã giảm giá");
             }
 
