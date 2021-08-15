@@ -122,7 +122,7 @@ public class CartServiceImpl implements CartService {
                     //get product information
                     Model3d m3d = customizeModel.getModel3d();
                     Product product = m3d.getProduct();
-                    if (orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
+                    if (product.getIsCustomizeWeight() && orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
                         throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                     }
                     itemDtoOut.setProductName(product.getProductName());
