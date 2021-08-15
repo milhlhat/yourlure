@@ -16,7 +16,6 @@ public class AddToCartDto {
 
     private Long variantId;
     @Min(1)
-    @Max(50)
     private Integer quantity;
     private Float weight;
     private Long customModelId;
