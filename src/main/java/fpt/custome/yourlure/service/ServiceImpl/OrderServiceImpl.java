@@ -397,7 +397,7 @@ public class OrderServiceImpl implements OrderService {
                 case "Free Ship":
                     discount = shippingFee;
                     break;
-                case "Giá Trị":
+                case "Giá trị":
                     discount = voucher.getDiscountValue();
                     break;
                 default: { // Phần trăm
