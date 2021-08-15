@@ -127,7 +127,11 @@ function ManagerVoucher() {
         // } else return convertToVND(value) || "-";
         return "100% Phí vận chuyển";
       case TYPE_OPTION[0]:
-        return `${value * 100}%` || "-";
+         if (maxValue && maxValue > value) {
+          return convertToVND(maxValue);
+        } else{
+          return `${value * 100}%` || "-";
+        }
       default:
         return convertToVND(value);
     }
