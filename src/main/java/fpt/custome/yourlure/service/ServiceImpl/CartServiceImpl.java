@@ -122,7 +122,7 @@ public class CartServiceImpl implements CartService {
                     //get product information
                     Model3d m3d = customizeModel.getModel3d();
                     Product product = m3d.getProduct();
-                    if(orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                    if (orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
                         throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                     }
                     itemDtoOut.setProductName(product.getProductName());
@@ -146,7 +146,7 @@ public class CartServiceImpl implements CartService {
                     itemDtoOut.setVariantQuantity(variant.getQuantity());
 
                     Product product = variant.getProduct();
-                    if(orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                    if (orderService.validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
                         throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                     }
                     itemDtoOut.setVisibleInStorefront(product.getVisibleInStorefront());
@@ -188,7 +188,11 @@ public class CartServiceImpl implements CartService {
         // if exist -> just increase quantity
         for (CartItem cartItem : cart.getCartItemCollection()) {
             if (cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
-                cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
+                int newQuantity = cartItem.getQuantity() + addToCartDto.getQuantity();
+                if(newQuantity > 50){
+                    throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                }
+                cartItem.setQuantity(newQuantity);
                 cartItemRepos.save(cartItem);
                 return true;
             }
@@ -207,7 +211,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public Boolean addVariantItem(HttpServletRequest req, AddToCartDto addToCartDto) throws Exception {
+    public Boolean addVariantItem(HttpServletRequest req, AddToCartDto addToCartDto) {
 
         Cart cart = myCart(req);
 
@@ -217,8 +221,15 @@ public class CartServiceImpl implements CartService {
             // cart item exist
             for (CartItem cartItem : cart.getCartItemCollection()) {
                 if (cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
+                    int newQuantity = cartItem.getQuantity() + addToCartDto.getQuantity();
 
-                    cartItem.setQuantity(cartItem.getQuantity() + addToCartDto.getQuantity());
+                    if(newQuantity > 50){
+                        throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                    }
+                    if(newQuantity > variant.get().getQuantity()){
+                        throw new ValidationException("trong kho chỉ còn " + variant.get().getQuantity() + " sản phẩm!");
+                    }
+                    cartItem.setQuantity(newQuantity);
                     cartItemRepos.save(cartItem);
                     return true;
                 }

@@ -154,6 +154,13 @@ public class OrderServiceImpl implements OrderService {
                 // set price by variant
                 Variant variant = variantRepos.getById(item.getVariantId());
                 Product product = variant.getProduct();
+                int quantity = orderLine.getQuantity();
+                if(quantity > 50){
+                    throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                }
+                if(quantity > variant.getQuantity()){
+                    throw new ValidationException(product.getProductName() + ", " + variant.getVariantName() + " chỉ còn " + variant.getQuantity() + " sản phẩm!");
+                }
                 if(validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                 }
