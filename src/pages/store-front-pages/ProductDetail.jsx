@@ -175,7 +175,7 @@ function ProductDetail(props) {
             <h3>Chi tiết sản phẩm</h3>
           </div>
           <p
-            className="descrip-content"
+            className="product-description"
             dangerouslySetInnerHTML={safeContent(
               productDetail?.list?.content
                 ? productDetail?.list?.content
