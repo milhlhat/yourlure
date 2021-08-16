@@ -37,7 +37,7 @@ public class OrderLine {
 
     @Nullable
     @Column(name = "weight")
-    private Integer weight;
+    private Float weight;
 
     @Nullable
     @Column(name = "imgThumbnail")

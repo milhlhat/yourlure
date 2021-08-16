@@ -109,6 +109,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Float validateWeight(Product product, Float weight) {
+        if (product.getIsCustomizeWeight() != null && product.getIsCustomizeWeight()
+                && product.getMinWeight() != null && product.getMaxWeight() != null) {
+            if( weight <= product.getMaxWeight() && weight >= product.getMinWeight()){
+                return weight;
+            }
+            throw new ValidationException("Vui lòng nhập trọng lượng trong khoảng " + product.getMinWeight() + "-" +product.getMaxWeight());
+        }
+        return product.getDefaultWeight();
+    }
+
+    @Override
+    public Float validateWeight(Long productId, Float weight) {
+        Optional<Product> product = productRepos.findByProductId(productId);
+        return product.map(value -> validateWeight(value, weight)).orElseThrow(() -> new ValidationException("Không tìm thấy sản phẩm xin thử lại!"));
+    }
+
+    @Override
     public List<ProductsDtoOut> getNewestProduct() {
         List<ProductsDtoOut> result = new ArrayList<>();
         Pageable pageable = PageRequest.of(0,

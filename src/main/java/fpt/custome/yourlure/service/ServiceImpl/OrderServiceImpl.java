@@ -13,6 +13,7 @@ import fpt.custome.yourlure.security.JwtTokenProvider;
 import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.OtpService;
+import fpt.custome.yourlure.service.ProductService;
 import fpt.custome.yourlure.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
@@ -82,6 +83,9 @@ public class OrderServiceImpl implements OrderService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private OtpService otpService;
 
     @Override
@@ -148,6 +152,7 @@ public class OrderServiceImpl implements OrderService {
                 orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
                 orderLine.setCustomModelName(customizeModel.getName());
                 orderLine.setProductName(product.getProductName());
+                orderLine.setWeight(productService.validateWeight(customizeModel.getModel3d().getProduct(), item.getWeight()));
                 orderLine.setProductId(product.getProductId());
 
             } else if (item.getVariantId() != null) {
@@ -156,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
                 Product product = variant.getProduct();
                 int quantity = orderLine.getQuantity();
                 if(quantity > 50){
-                    throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                    throw new ValidationException("Bạn chỉ được mua tối đa 50 sản phẩm!");
                 }
                 if(quantity > variant.getQuantity()){
                     throw new ValidationException(product.getProductName() + ", " + variant.getVariantName() + " chỉ còn " + variant.getQuantity() + " sản phẩm!");
@@ -173,6 +178,7 @@ public class OrderServiceImpl implements OrderService {
                     orderLine.setImgThumbnail(variant.getImageUrl());
                     orderLine.setVariantName(variant.getVariantName());
                     orderLine.setProductId(variant.getProduct().getProductId());
+                    orderLine.setWeight(productService.validateWeight(product, item.getWeight()));
                     orderLine.setProductName(variant.getProduct().getProductName());
 
                     // decrease variant when order variant
@@ -183,7 +189,7 @@ public class OrderServiceImpl implements OrderService {
                     throw new Exception("Mã màu này đã hết hàng!");
                 }
             } else {
-                throw new Exception("Bạn cần chọn 1 sản phẩm hoặc customize!");
+                throw new Exception("Bạn cần chọn 1 sản phẩm hoặc tuỳ biến!");
             }
 
             orderLine.setOrder(order);

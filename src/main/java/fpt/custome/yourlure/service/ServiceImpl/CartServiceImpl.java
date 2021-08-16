@@ -8,6 +8,7 @@ import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.service.CartService;
 import fpt.custome.yourlure.service.OrderService;
+import fpt.custome.yourlure.service.ProductService;
 import fpt.custome.yourlure.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CustomizeRepos customizeRepos;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private UserService userService;
@@ -189,8 +193,8 @@ public class CartServiceImpl implements CartService {
         for (CartItem cartItem : cart.getCartItemCollection()) {
             if (cartItem.getCustomModelId() != null && cartItem.getCustomModelId().equals(myCustom.getCustomizeId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
                 int newQuantity = cartItem.getQuantity() + addToCartDto.getQuantity();
-                if(newQuantity > 50){
-                    throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                if (newQuantity > 50) {
+                    throw new ValidationException("Bạn chỉ được mua tối đa 50 sản phẩm!");
                 }
                 cartItem.setQuantity(newQuantity);
                 cartItemRepos.save(cartItem);
@@ -201,7 +205,7 @@ public class CartServiceImpl implements CartService {
                 .cart(cart)
                 .customModelId(myCustom.getCustomizeId())
                 .quantity(addToCartDto.getQuantity())
-                .weight(addToCartDto.getWeight())
+                .weight(productService.validateWeight(myCustom.getModel3d().getProduct(), addToCartDto.getWeight()))
                 .build();
         cartItemRepos.save(item);
 
@@ -223,11 +227,11 @@ public class CartServiceImpl implements CartService {
                 if (cartItem.getVariantId() != null && cartItem.getVariantId().equals(addToCartDto.getVariantId()) && cartItem.getWeight().equals(addToCartDto.getWeight())) {
                     int newQuantity = cartItem.getQuantity() + addToCartDto.getQuantity();
 
-                    if(newQuantity > 50){
-                        throw new ValidationException("bạn chỉ được mua tối đa 50 sản phẩm!");
+                    if (newQuantity > 50) {
+                        throw new ValidationException("Bạn chỉ được mua tối đa 50 sản phẩm!");
                     }
-                    if(newQuantity > variant.get().getQuantity()){
-                        throw new ValidationException("trong kho chỉ còn " + variant.get().getQuantity() + " sản phẩm!");
+                    if (newQuantity > variant.get().getQuantity()) {
+                        throw new ValidationException("Trong kho chỉ còn " + variant.get().getQuantity() + " sản phẩm!");
                     }
                     cartItem.setQuantity(newQuantity);
                     cartItemRepos.save(cartItem);
@@ -240,7 +244,7 @@ public class CartServiceImpl implements CartService {
                     .cart(cart)
                     .variantId(addToCartDto.getVariantId())
                     .quantity(addToCartDto.getQuantity())
-                    .weight(addToCartDto.getWeight())
+                    .weight(productService.validateWeight(variant.get().getProduct(), addToCartDto.getWeight()))
                     .build();
             cartItemRepos.save(item);
             return true;
