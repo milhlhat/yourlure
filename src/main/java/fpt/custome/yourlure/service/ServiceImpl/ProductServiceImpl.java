@@ -122,7 +122,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Float validateWeight(Long productId, Float weight) {
-        Optional<Product> product = productRepos.findByProductId(productId);
+        Optional<Product> product = productJPARepos.findById(productId);
         return product.map(value -> validateWeight(value, weight)).orElseThrow(() -> new ValidationException("Không tìm thấy sản phẩm xin thử lại!"));
     }
 
