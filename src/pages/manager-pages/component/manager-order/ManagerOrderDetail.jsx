@@ -58,7 +58,7 @@ function ManagerOrderDetail(props) {
 
   const options = [
     { value: "PENDING", lable: "Đang chờ xác nhận" },
-    { value: "ACCEPT", lable: "Xong" },
+    { value: "ACCEPT", lable: "Xác nhận" },
     { value: "STAFF_REJECT", lable: "Đã hủy bởi cửa hàng" },
     { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
     { value: "DONE", lable: "Đã xác nhận" },

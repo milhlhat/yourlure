@@ -54,7 +54,7 @@ function ManagerCategoryAddNew(props) {
             methods={methods}
             placeholder="Nhập tên danh mục"
             name="categoryName"
-            label="Tên danh mục(*)"
+            label="Tên danh mục"
             isRequired
             onBlur={(e) => {
               e.target.value = e.target.value.trim();

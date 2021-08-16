@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import ManagerSort from "pages/manager-pages/component/sort/ManagerSort";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
+import { toast } from "react-toastify";
 
 ManagerCategory.propTypes = {};
 
@@ -67,10 +68,11 @@ function ManagerCategory(props) {
       } else if (response.error) {
         throw new Error(response.error);
       } else {
+        toast.success("Xóa danh mục thành công")
         fetchManagerCategory();
       }
     } catch (error) {
-      alert("Xóa danh mục thất bại");
+      toast.error("Xóa danh mục thất bại");
       console.log("fail to fetch delete address");
     }
   };

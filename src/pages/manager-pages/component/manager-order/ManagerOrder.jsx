@@ -51,13 +51,13 @@ function ManagerOrder(props) {
     {
       display: "Tên từ A-Z",
       isAsc: true,
-      sortBy: "categoryName",
+      sortBy: "receiverName",
       value: "SORT_NAME_DESC",
     },
     {
       display: "Tên từ Z-A",
       isAsc: false,
-      sortBy: "categoryName",
+      sortBy: "receiverName",
       value: "SORT_NAME_DESC",
     },
   ];

@@ -116,16 +116,19 @@ function AddNewAddress() {
             </td>
 
             <tr>
-              <td className="text-end title-table">Địa Chỉ(*)</td>
+              <td className="text-end title-table">Địa Chỉ cụ thể(*)</td>
               <td>
                 <input
                   className="form-control"
-                  {...register("description")}
+                  {...register("description", {
+                    required: "Địa chỉ cụ thể không được để trống",
+                  })}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("description", {
                       required: "Địa chỉ cụ thể không được để trống",
                     });
+                    setValue("description", e.target.value.trim());
                   }}
                   placeholder="Nhập địa chỉ cụ thể"
                 />

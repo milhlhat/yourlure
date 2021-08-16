@@ -56,7 +56,7 @@ function ManagerStaffAddNew(props) {
             methods={methods}
             placeholder="Nhập tên"
             name="username"
-            label="Tên(*)"
+            label="Họ Tên"
             isRequired
             onBlur={(e) => {
               e.target.value = e.target.value.trim();
@@ -80,14 +80,14 @@ function ManagerStaffAddNew(props) {
             methods={methods}
             placeholder="Nhập số điện thoại"
             name="phone"
-            label="Số điện thoại(*)"
+            label="Số điện thoại"
             isRequired
             onBlur={(e) => {
               e.target.value = e.target.value.trim();
-              register("username", {
+              register("phone", {
                 required: "Số điện thoại",
               });
-              setValue("username", e.target.value.trim());
+              setValue("phone", e.target.value.trim());
             }}
           />
           
