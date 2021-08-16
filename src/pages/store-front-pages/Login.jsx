@@ -135,7 +135,7 @@ function Login(props) {
         <div className="mt-2">
           <YLButton
             variant="link"
-            onClick={() => history.push("/fogot-password")}
+            onClick={() => history.push(DEFINELINK.forgotPassword)}
             value="Quên mật khẩu?"
             width={100}
           />

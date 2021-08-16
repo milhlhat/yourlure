@@ -4,7 +4,7 @@ const DEFINELINK = {
   home: "/home",
   login: "/login",
   register: "/register",
-  forgotPassword: "/fogot-password",
+  forgotPassword: "/forgot-password",
   about: "/about",
   campaign: "/campaign",
   viewCustomizeOrder: "/view-customize-order",

@@ -23,7 +23,7 @@ function ProductAction(props) {
   const [price, setPrice] = useState();
 
   const [takeOut, setTakeOut] = useState(
-    product?.variantCollection[0]?.quantity
+    product?.variantCollection[0]?.quantity>50?50:product?.variantCollection[0]?.quantity
   );
   // let takeOut = 0;
   const { register, getValues, setValue } = useForm();
@@ -116,7 +116,7 @@ function ProductAction(props) {
               toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
             }
           } catch (error) {
-            toast.error("Thêm sản phẩm thất bại");
+            toast.error(error.response.data);
             console.log("fail to fetch add category");
           }
         }
@@ -131,7 +131,7 @@ function ProductAction(props) {
               toast.success(`Đã thêm${data.quantity} sản phẩm vào giỏ hàng.`);
             }
           } catch (error) {
-            toast.error("Thêm sản phẩm thất bại");
+            toast.error(error.response.data);
             console.log("fail to fetch add category");
           }
         }
@@ -237,7 +237,7 @@ function ProductAction(props) {
                 );
                 setBigImgLink(product?.variantCollection[index]?.imageUrl);
                 setcustomize(null);
-                setTakeOut(product.variantCollection[index].quantity);
+                setTakeOut(product.variantCollection[index].quantity>50?50:product.variantCollection[index].quantity);
               }}
             >
               <div
@@ -273,7 +273,7 @@ function ProductAction(props) {
                 setBigImgLink(item?.thumbnailUrl);
                 setPrice(item.customPrice + product?.defaultPrice);
                 setVariantName(item.name);
-                setTakeOut(100);
+                setTakeOut(50);
               }}
             >
               {/* <span className="d-none">{(takeOut = 100)}</span> */}

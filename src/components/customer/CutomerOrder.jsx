@@ -135,11 +135,19 @@ function CutomerOrder(props) {
                         </td>
                       </tr>
                       <tr>
+                        <td className="pe-3">
+                          <span className="order-title">Giảm giá:</span>
+                        </td>
+                        <td className="text-end">
+                          <span>{convertToVND(order?.discount)}</span>
+                        </td>
+                      </tr>
+                      <tr>
                         <td className="pe-3 text-end">
                           <span className="order-title ">Tổng:</span>
                         </td>
                         <td className="text-end">
-                          <span>{convertToVND((totalPrice(order?.items)+getShipping()))}</span>
+                          <span>{convertToVND((totalPrice(order?.items)+getShipping()-order?.discount))}</span>
                         </td>
                       </tr>
                     </table>

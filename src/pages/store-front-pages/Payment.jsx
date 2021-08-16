@@ -67,6 +67,7 @@ function Payment(props) {
     if (code.type === "Phần trăm") {
       let disCost = Number(code.discountValue * totalPrice(cartData));
       if (disCost > code.maxValue) disCost = code.maxValue;
+      if (disCost > totalPrice(cartData)) disCost = totalPrice(cartData);
       setDiscount(code.discountValue * totalPrice(cartData));
     }
     if (code.type === "Free Ship") {
@@ -74,7 +75,11 @@ function Payment(props) {
       toast.success(`Mã giảm giá hợp lệ`);
     }
     if (code.type === "Giá trị") {
-      setDiscount(code.discountValue);
+      setDiscount(
+        code.discountValue > totalPrice(cartData)
+          ? totalPrice(cartData)
+          : code.discountValue
+      );
       toast.success(`Mã giảm giá hợp lệ`);
     }
 
