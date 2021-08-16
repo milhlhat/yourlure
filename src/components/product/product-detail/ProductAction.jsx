@@ -23,7 +23,12 @@ function ProductAction(props) {
   const [price, setPrice] = useState();
 
   const [takeOut, setTakeOut] = useState(
-    product?.variantCollection[0]?.quantity>50?50:product?.variantCollection[0]?.quantity
+    product?.variantCollection[0]?.quantity > 50
+      ? 50
+      : product?.variantCollection[0]?.quantity
+  );
+  const [quanItem, setQuanItem] = useState(
+    product?.variantCollection[0]?.quantity
   );
   // let takeOut = 0;
   const { register, getValues, setValue } = useForm();
@@ -43,6 +48,9 @@ function ProductAction(props) {
       setQuantity(1);
       toast.error("Sản phẩm đang hết hàng");
     } else {
+      if (Number(quantity) === takeOut) {
+        toast.warning("Mỗi lần chỉ được chọn số lượng tối đa là 50");
+      }
       Number(quantity) >= takeOut
         ? setQuantity(takeOut)
         : setQuantity(Number(quantity) + 1);
@@ -241,7 +249,13 @@ function ProductAction(props) {
                 );
                 setBigImgLink(product?.variantCollection[index]?.imageUrl);
                 setcustomize(null);
-                setTakeOut(product.variantCollection[index].quantity>50?50:product.variantCollection[index].quantity);
+                setTakeOut(
+                  product.variantCollection[index].quantity > 50
+                    ? 50
+                    : product.variantCollection[index].quantity
+                );
+                setQuanItem(product.variantCollection[index].quantity);
+                setQuantity(1);
               }}
             >
               <div
@@ -278,6 +292,7 @@ function ProductAction(props) {
                 setPrice(item.customPrice + product?.defaultPrice);
                 setVariantName(item.name);
                 setTakeOut(50);
+                setQuantity(1);
               }}
             >
               {/* <span className="d-none">{(takeOut = 100)}</span> */}
@@ -302,7 +317,7 @@ function ProductAction(props) {
               takeOut <= 0 ? (
                 <span className="text-danger bold">Hết hàng</span>
               ) : (
-                "còn " + takeOut + " sản phẩm"
+                "còn " + quanItem + " sản phẩm"
               )
             ) : (
               <span className="text-danger bold">Ngừng kinh doanh</span>

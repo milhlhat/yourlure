@@ -189,6 +189,7 @@ function ColorChoices(props) {
             <YLButton
               variant="negative"
               value="Xoá màu"
+              type="button"
               onClick={handleRemoveColor}
             />
           </div>
