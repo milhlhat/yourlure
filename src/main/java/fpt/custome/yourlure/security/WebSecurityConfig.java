@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/reset-password").permitAll()
                 .antMatchers("/cart/list-variant-of-guest").permitAll()
                 .antMatchers("/model3d/**").permitAll()
+                .antMatchers("/db/**").permitAll()
 
 
 //                .antMatchers("/api/product/model-download").permitAll()

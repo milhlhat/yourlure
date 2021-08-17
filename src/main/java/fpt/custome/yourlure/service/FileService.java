@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 //import java.util.*;
 
 @Service
@@ -27,6 +29,8 @@ public class FileService {
     public static final String UPLOADS = "uploads";
     public static final String MODELS_DIR = "models";
     public static final String TEXTURE_DIR = "textures";
+
+    public static final String DB_BACKUP_FOLDER ="/home/ubuntu/dbbackup/";
 
     static {
         new File(parentPath + CUSTOMS_DIR).mkdir();
@@ -108,4 +112,16 @@ public class FileService {
         return new File(String.valueOf(Paths.get(parentPath, relativePath)));
     }
 
+    public List<String> getFileInFolder(String folderDir){
+        List<String> files = new ArrayList<>();
+        try (Stream<Path> paths = Files.walk(Paths.get(folderDir))) {
+            paths
+                    .filter(Files::isRegularFile)
+                    .forEach(file-> files.add(file.getFileName().toString()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ValidationException("File không tồn tại!");
+        }
+        return files;
+    }
 }
