@@ -6,18 +6,18 @@ import YLButton from "components/custom-field/YLButton";
 import ErrorLoad from "components/error-notify/ErrorLoad";
 import Loading from "components/Loading";
 import { filterConfig } from "constants/filter-setting";
-// import ManagerSort from "./ManagerSort";
+
 import ManagerSort from "pages/manager-pages/component/sort/ManagerSort";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
 import { useHistory } from "react-router-dom";
 import "./scss/manager-fish.scss";
+import { toast } from "react-toastify";
 
 ManagerFish.propTypes = {};
 
 function ManagerFish(props) {
-  const { register, handleSubmit } = useForm();
   const [activePage, setActivePage] = useState(1);
   const [fishList, setFishList] = useState({
     data: [],
@@ -61,12 +61,6 @@ function ManagerFish(props) {
       value: "SORT_NAME_DESC",
     },
   ];
-  // const location = useLocation();
-  // const setBack = {
-  //   canBack: true,
-  //   path: location,
-  //   label: "Loại cá",
-  // };
 
   function handlePageChange(newPage) {
     setActivePage(newPage);
@@ -78,16 +72,13 @@ function ManagerFish(props) {
   const handleDelete = async (id) => {
     console.log(id);
     try {
-      const response = await ManagerFishAPI.delete(id);
-      if (response.error) {
-        throw new Error(response.error);
-      } else {
-        alert("Xóa loại cá thành công");
-      }
-      fetchManagerFish();
+      await ManagerFishAPI.delete(id);
+
+      toast.success("Xóa loại cá thành công");
+
+      await fetchManagerFish();
     } catch (error) {
-      alert("Xóa loại cá thất bại");
-      console.log("fail to fetch delete address");
+      toast.error("Xóa loại cá thất bại");
     }
   };
 
@@ -167,7 +158,11 @@ function ManagerFish(props) {
               </tr>
               {fishList.data?.fishDtoOuts?.map((item, i) => (
                 <tr key={"fish-" + i} className="hover-background">
-                  <td>{i + 1}</td>
+                  <td>
+                    {(activePage - 1) * filterConfig.LIMIT_DATA_PER_PAGE +
+                      1 +
+                      i}
+                  </td>
                   <td
                     className="pointer"
                     onClick={() =>
