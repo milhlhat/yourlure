@@ -73,7 +73,6 @@ public class AdminUserControllerImpl implements AdminUserController {
         try {
             userService.staffUpdateById(adminStaffDtoInput, id);
 
-
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

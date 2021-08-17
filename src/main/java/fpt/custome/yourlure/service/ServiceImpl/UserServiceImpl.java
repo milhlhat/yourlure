@@ -321,10 +321,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long idInput) {
-        if (checkPhoneExist(adminStaffDtoInput.getPhone())) {
+
+        User userUpdate = userRepos.getById(idInput);
+        if (!userUpdate.getPhone().equals(adminStaffDtoInput.getPhone()) && checkPhoneExist(adminStaffDtoInput.getPhone())) {
             throw new ValidationException("Số điện thoại " + adminStaffDtoInput.getPhone() + " đã tồn tại!");
         }
-        User userUpdate = userRepos.getById(idInput);
         userUpdate.setUsername(adminStaffDtoInput.getUsername());
         userUpdate.setGender(adminStaffDtoInput.getGender());
         userUpdate.setPhone(adminStaffDtoInput.getPhone());
