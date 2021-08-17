@@ -31,10 +31,7 @@ public class BackupService {
             Process process = processBuilder.start();
             // ignore result string
             int exitVal = process.waitFor();
-            if (exitVal == 0) {
-                return true;
-            }
-
+            return true;
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -63,6 +60,15 @@ public class BackupService {
             return runCmd(cmd);
         }
         throw new ValidationException("File không tồn tại! vui lòng kiểm tra lại.");
+    }
+
+
+    public static void main(String[] args) {
+        String fileName = "Tue Aug 17 23:05:31 ICT 2021.dump";
+        String filePath = parent + fileName;
+        System.out.println(filePath);
+        FileService fileService = new FileService();
+        System.out.println(fileService.isFileExist("/Users/ngominhthang/Documents/ki 9/yourlure/UserClassDiagram.png"));
     }
 
 }
