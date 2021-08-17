@@ -36,7 +36,7 @@ function EditCustomerAccount(props) {
   };
   const initialData = () => {
     setValue("username", account?.data?.username);
-    setValue("gender", account?.data?.gender===false?false:true);
+    setValue("gender", account?.data?.gender === false ? false : true);
   };
   useEffect(() => {
     initialData();
@@ -57,13 +57,15 @@ function EditCustomerAccount(props) {
                 /> */}
                 <input
                   className="form-control"
-                  {...register("username")}
+                  {...register("username", {
+                    required: "Họ và tên không được để trống",
+                  })}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("username", {
                       required: "Họ và tên không được để trống",
                     });
-                    setValue("username",e.target.value.trim())
+                    setValue("username", e.target.value.trim());
                   }}
                   placeholder="Nhập họ tên"
                 />

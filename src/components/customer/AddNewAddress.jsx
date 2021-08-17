@@ -68,7 +68,7 @@ function AddNewAddress() {
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("userName", {
-                      required: "Vui lòng nhập họ tên",
+                      required: "Họ tên không được để trống",
                     });
                     setValue("userName", e.target.value.trim());
                   }}
@@ -130,7 +130,7 @@ function AddNewAddress() {
                     });
                     setValue("description", e.target.value.trim());
                   }}
-                  placeholder="Nhập địa chỉ cụ thể"
+                  placeholder="Số nhà, tên đường,.."
                 />
                 {errors.description && (
                   <span className="text-danger">

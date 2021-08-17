@@ -60,7 +60,7 @@ function ChangeAddress(props) {
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("userName", {
-                      required: "Vui lòng nhập họ tên",
+                      required: "Họ tên không được để trống",
                     });
                     setValue("userName", e.target.value.trim());
                   }}
@@ -111,22 +111,25 @@ function ChangeAddress(props) {
             </td>
 
             <tr>
-              <td className="text-end title-table">Địa Chỉ(*)</td>
+              <td className="text-end title-table">Địa Chỉ cụ thể(*)</td>
               <td>
                 <input
                   className="form-control"
-                  {...register("description")}
+                  {...register("description", {
+                    required: "Địa chỉ cụ thể không được để trống",
+                  })}
                   onBlur={(e) => {
                     e.target.value = e.target.value.trim();
                     register("description", {
-                      required: "Vui lòng nhập địa chỉ cụ thể",
+                      required: "Địa chỉ cụ thể không được để trống",
                     });
+                    setValue("description", e.target.value.trim());
                   }}
                   placeholder="Số nhà, tên đường,.."
                 ></input>
                 {errors.description && (
                   <span className="text-danger">
-                    (*){errors.adddescriptionress.message}
+                    (*){errors.description.message}
                   </span>
                 )}
               </td>
