@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Data
@@ -15,7 +16,10 @@ import java.util.Set;
 public class AdminStaffDtoInput {
     private String username;
     private String phone;
+    @NotNull
     private Boolean gender;
+    @NotNull
     private Boolean enabled;
+    @NotNull
     Set<Role> roles;
 }

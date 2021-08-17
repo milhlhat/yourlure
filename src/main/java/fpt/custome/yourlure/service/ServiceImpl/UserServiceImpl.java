@@ -85,10 +85,14 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
     public String verifyPhone(String phone) {
         phone = phone.replace("+84", "0");
         if (phone.startsWith("84")) {
             phone = "0" + phone.substring(2);
+        }
+        if (phone.length() != 10) {
+            throw new ValidationException("Số điện thoại chỉ chứa 10 số!");
         }
         return phone;
     }
@@ -148,7 +152,7 @@ public class UserServiceImpl implements UserService {
         if (oldPwd.equals(newPwd)) {
             throw new ValidationException("Mật khẩu mới phải khác mật khẩu cũ!");
         }
-        try{
+        try {
             Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getPhone(), oldPwd));
             if (authenticate.isAuthenticated()) {
                 user.setPassword(passwordEncoder.encode(newPwd));
@@ -157,7 +161,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 throw new ValidationException("Mật khẩu cũ không đúng!");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ValidationException("Mật khẩu cũ không đúng!");
         }
 
@@ -316,39 +320,30 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Boolean staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long idInput) {
-        try {
-            User userUpdate = userRepos.getById(idInput);
-            userUpdate.setUsername(adminStaffDtoInput.getUsername());
-            userUpdate.setGender(adminStaffDtoInput.getGender());
-            userUpdate.setPhone(adminStaffDtoInput.getPhone());
-            userUpdate.setRoles(adminStaffDtoInput.getRoles());
-            userRepos.save(userUpdate);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    public void staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long idInput) {
+        if (checkPhoneExist(adminStaffDtoInput.getPhone())) {
+            throw new ValidationException("Số điện thoại " + adminStaffDtoInput.getPhone() + " đã tồn tại!");
         }
+        User userUpdate = userRepos.getById(idInput);
+        userUpdate.setUsername(adminStaffDtoInput.getUsername());
+        userUpdate.setGender(adminStaffDtoInput.getGender());
+        userUpdate.setPhone(adminStaffDtoInput.getPhone());
+        userUpdate.setRoles(adminStaffDtoInput.getRoles());
+        userRepos.save(userUpdate);
+
+
     }
 
     @Override
-    public Boolean staffSave(AdminStaffDtoInput adminStaffDtoInput) {
-        try {
-            User checkPhone = userRepos.findByPhone(adminStaffDtoInput.getPhone());
-            if (checkPhone == null) {
-                User user = mapper.map(adminStaffDtoInput, User.class);
-                user.setEnabled(true);
-                user.setRoles(Collections.singleton(Role.ROLE_STAFF));
-                user.setPassword(passwordEncoder.encode("123@123a"));
-                userRepos.save(user);
-                return true;
-            }
-            return false;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    public void staffSave(AdminStaffDtoInput adminStaffDtoInput) {
+        if (checkPhoneExist(adminStaffDtoInput.getPhone())) {
+            throw new ValidationException("Số điện thoại " + adminStaffDtoInput.getPhone() + " đã tồn tại!");
         }
+        User user = mapper.map(adminStaffDtoInput, User.class);
+        user.setEnabled(true);
+        user.setRoles(Collections.singleton(Role.ROLE_STAFF));
+        user.setPassword(passwordEncoder.encode("123@123a"));
+        userRepos.save(user);
     }
 
     @Override

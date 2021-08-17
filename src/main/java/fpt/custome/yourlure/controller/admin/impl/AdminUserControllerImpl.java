@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,16 +69,29 @@ public class AdminUserControllerImpl implements AdminUserController {
     }
 
     @Override
-    public ResponseEntity<Optional<Boolean>> staffUpdateById(AdminStaffDtoInput adminStaffDtoInput,Long id) {
-        Boolean result = userService.staffUpdateById(adminStaffDtoInput,id);
-        return new ResponseEntity<>(Optional.of(result), HttpStatus.OK);
+    public ResponseEntity<Object> staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id) {
+        try {
+            userService.staffUpdateById(adminStaffDtoInput, id);
+
+
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Optional<Boolean>> staffSave(AdminStaffDtoInput adminStaffDtoInput) {
+    public ResponseEntity<Object> staffSave(AdminStaffDtoInput adminStaffDtoInput) {
+        try {
+            userService.staffSave(adminStaffDtoInput);
 
-        Boolean result = userService.staffSave(adminStaffDtoInput);
-        return new ResponseEntity<>(Optional.of(result), HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.OK);
+
     }
 
 

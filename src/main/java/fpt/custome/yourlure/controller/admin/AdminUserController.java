@@ -54,10 +54,10 @@ public interface AdminUserController {
 
     @PostMapping(value = "/staff/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseEntity<Optional<Boolean>> staffUpdateById(@RequestBody AdminStaffDtoInput adminStaffDtoInput, @RequestParam Long id);
+    ResponseEntity<Object> staffUpdateById(@RequestBody AdminStaffDtoInput adminStaffDtoInput, @RequestParam Long id);
 
     @PostMapping(value = "/staff/save")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseEntity<Optional<Boolean>> staffSave(@RequestBody AdminStaffDtoInput adminStaffDtoInput);
+    ResponseEntity<Object> staffSave(@RequestBody AdminStaffDtoInput adminStaffDtoInput);
 
 }

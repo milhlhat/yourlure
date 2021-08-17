@@ -76,9 +76,9 @@ public interface UserService {
 
     Optional<AdminStaffDtoOut.StaffDtoOut> staffGetById(Long id);
 
-    Boolean staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id);
+    void staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id);
 
-    Boolean staffSave(AdminStaffDtoInput adminStaffDtoInput);
+    void staffSave(AdminStaffDtoInput adminStaffDtoInput);
 
     Set<Role> getRoles(HttpServletRequest rq);
 
