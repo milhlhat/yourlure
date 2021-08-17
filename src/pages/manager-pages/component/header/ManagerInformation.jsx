@@ -104,14 +104,21 @@ function ManagerInformation(props) {
     setInitialValue();
   }, [account]);
 
+  function getRole(role) {
+    if (role === "ROLE_ADMIN") return "Quản lý";
+    if (role === "ROLE_STAFF") return "Nhân viên";
+    if (role === "ROLE_CUSTOMER") return "Khách hàng";
+  }
   //format display role
   const displayRole = (role) => {
-    if (role) {
-      if (role === "ROLE_ADMIN") return "Quản lý";
-      if (role === "ROLE_STAFF") return "Nhân viên";
-      if (role === "ROLE_CUSTOMER") return "Khách hàng";
-      return "chưa xác định";
-    } else return "-";
+    if (!role) return "-";
+    console.log(role);
+    let rs = role.reduce((res, r) => {
+      return res + getRole(r) + ", ";
+    }, "");
+    rs=rs.slice(0, rs?.length - 2);
+    return rs;
+    // console.log(rs);
   };
   return (
     <div>
@@ -121,7 +128,7 @@ function ManagerInformation(props) {
       <Dialog
         fullScreen={fullScreen}
         open={open}
-        onClose={isEdit?()=>{}:handleClose}
+        onClose={isEdit ? () => {} : handleClose}
         aria-labelledby="draggable-dialog-title"
       >
         <form onSubmit={handleSubmit(onsubmit)}>
@@ -192,7 +199,8 @@ function ManagerInformation(props) {
                         <tr>
                           <th className="text-end">Chức vụ:</th>
                           <td className="ps-3">
-                            {displayRole(account?.data?.roles[0])}
+                            {console.log(account?.data)}
+                            {displayRole(account?.data?.roles)}
                           </td>
                         </tr>
                       </tbody>

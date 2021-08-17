@@ -28,7 +28,11 @@ function ManagerFishAddNew(props) {
       const response = await ManagerFishAPI.add(data);
       if (response.error) {
         throw new Error(response.error);
-      } else {
+      }else 
+      if(response===false||response?.data===false){
+        throw new Error();
+      } 
+      else {
         alert("Thêm cá thành công");
         history.push("/manager/fish");
       }
@@ -49,7 +53,7 @@ function ManagerFishAddNew(props) {
             methods={methods}
             placeholder="Nhập tên cá"
             name="fishName"
-            label="Tên cá(*)"
+            label="Tên cá"
             isRequired
             onBlur={(e) => {
               e.target.value = e.target.value.trim();

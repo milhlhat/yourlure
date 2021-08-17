@@ -53,7 +53,7 @@ function ManagerProductDetail(props) {
     let rs = list.reduce((sum, fish) => {
       return sum + fish.fishName + ", ";
     }, "");
-    console.log(rs);
+    rs=rs.slice(0, rs?.length - 2);
     return rs;
   };
   useEffect(() => {
