@@ -46,5 +46,15 @@ public class BackupController {
         }
     }
 
+    @DeleteMapping(value ="/delete-version")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    ResponseEntity<Object> delte(@RequestBody String fileName) {
+        try {
+            return new ResponseEntity<>(backupService.deleteBackup(fileName), HttpStatus.OK);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

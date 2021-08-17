@@ -62,6 +62,11 @@ public class BackupService {
         throw new ValidationException("File không tồn tại! vui lòng kiểm tra lại.");
     }
 
+    public boolean deleteBackup(String fileName){
+        String filePath = parent + fileName;
+        return fileService.deleteFile(filePath);
+    }
+
 
     public static void main(String[] args) {
         String fileName = "Tue Aug 17 23:05:31 ICT 2021.dump";
