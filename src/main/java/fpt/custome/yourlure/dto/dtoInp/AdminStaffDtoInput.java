@@ -14,7 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminStaffDtoInput {
+    @NotNull
     private String username;
+    @NotNull
     private String phone;
     @NotNull
     private Boolean gender;
