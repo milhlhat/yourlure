@@ -87,6 +87,15 @@ public class FileService {
         }
     }
 
+    public boolean deleteFilePath(String filePath){
+        try {
+            return Files.deleteIfExists(Paths.get(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void deleteFiles(List<String> listFile){
         try {
             for (String item : listFile) {
