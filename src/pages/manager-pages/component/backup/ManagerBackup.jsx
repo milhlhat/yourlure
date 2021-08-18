@@ -139,7 +139,7 @@ function ManagerBackup(props) {
             type={"button"}
             onClick={() => handleLoadMore()}
           >
-            <i className="fad fa-angle-double-down" /> &nbsp; Tải thêm
+            <i className="fad fa-angle-double-down" /> &nbsp; Xem thêm
           </YLButton>
         )}
       </div>
