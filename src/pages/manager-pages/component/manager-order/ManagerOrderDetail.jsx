@@ -15,8 +15,6 @@ import { copyToClipboard } from "../../../../utils/common";
 import "./scss/manager-order-detail.scss";
 
 function ManagerOrderDetail(props) {
-  console.log(props);
-
   const orderId = props.match.params.id;
 
   const history = useHistory();
@@ -101,7 +99,7 @@ function ManagerOrderDetail(props) {
     return (
       <div className="manager-order-detail">
         <div className="d-flex row">
-          <div className="col-12 col-lg-9 p-2">
+          <div className="col-12 col-lg-12 p-2">
             <div className="bg-box bg-shadow">
               <div className="manager-order-show">
                 <span>Sẳn phẩm</span>
@@ -118,10 +116,10 @@ function ManagerOrderDetail(props) {
                         <th>Biến thể</th>
                         <th>Danh mục</th>
                         <th>Số lượng</th>
+                        <th>Trọng lượng</th>
                         <th>Trạng thái</th>
                         <th className="text-center">Giá</th>
                         <th className="text-center">Tổng</th>
-                        <th className="text-center">Sao chép đường dẫn</th>
                         <th className="text-center">Xem tuỳ biến</th>
                       </tr>
                       {order?.data?.items?.map((item, i) => (
@@ -141,6 +139,7 @@ function ManagerOrderDetail(props) {
                           <td className="text-center">{item?.variantName}</td>
                           <td>{item.categoryName}</td>
                           <td className="text-center">{item.quantity}</td>
+                          <td className="text-center">{item.weight}(g)</td>
                           <td className="text-center">
                             {item.visibleInStorefront
                               ? "Đang kinh doanh"
@@ -154,24 +153,6 @@ function ManagerOrderDetail(props) {
                               ? "N/A"
                               : convertToVND(item.price * item.quantity)}
                           </td>
-                          {item.customModelId ? (
-                            <td
-                              className="text-center"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                copyToClipboard(
-                                  `${
-                                    window.location.host +
-                                    DEFINELINK.viewCustomizeOrder
-                                  }?customizeId=${item.customModelId}`
-                                );
-                              }}
-                            >
-                              <i className="fad fa-copy text-success" />
-                            </td>
-                          ) : (
-                            <td />
-                          )}
                           <td
                             className="text-center"
                             onClick={(e) => e.stopPropagation()}
@@ -268,88 +249,96 @@ function ManagerOrderDetail(props) {
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-3 p-2">
-            <div className="bg-box bg-shadow">
-              <div className="order-head-row d-flex justify-content-between align-items-end">
-                <h6>Khách hàng</h6>
-                {order?.data?.userId && (
-                  <div className="order-customer">
-                    <YLButton
-                      variant="link"
-                      value="Xem hồ sơ"
-                      to={`/manager/user/detail/${order?.data?.userId}`}
-                    />
+          <div className="col-12 col-lg-12 p-2">
+            <div className="d-flex flex-wrap">
+              <div className="col-12 col-md-7">
+                <div className="bg-box bg-shadow h-100">
+                  <div className="order-head-row d-flex justify-content-between align-items-end">
+                    <h6>Khách hàng</h6>
+                    {order?.data?.userId && (
+                      <div className="order-customer">
+                        <YLButton
+                          variant="link"
+                          value="Xem hồ sơ"
+                          to={`/manager/user/detail/${order?.data?.userId}`}
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
+                  <div className="manager-customer-show">
+                    <hr />
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <b>Họ tên: </b>
+                            {order?.data?.receiverName
+                              ? order.data.receiverName
+                              : "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <b>Số điện thoại: </b>
+                            {order?.data?.phone ? order.data.phone : "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <b>Địa chỉ: </b>{" "}
+                            {order?.data?.address ? order.data.address : "-"}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <b>Chú ý: </b>
+                            {order?.data?.note ? order.data.note : "-"}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <div className="manager-customer-show">
-                <hr />
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <b>Họ tên: </b>
-                        {order?.data?.receiverName
-                          ? order.data.receiverName
-                          : "-"}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Số điện thoại: </b>
-                        {order?.data?.phone ? order.data.phone : "-"}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Địa chỉ: </b>{" "}
-                        {order?.data?.address ? order.data.address : "-"}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <b>Chú ý: </b>
-                        {order?.data?.note ? order.data.note : "-"}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="col-12 col-md-5 ps-md-2">
+                <div className="bg-box bg-shadow h-100 py-3">
+                  <table className="table">
+                    <tbody>
+                      <tr>
+                        <th>Tổng tiền hàng:</th>
+                        <td className="text-end">
+                          {order?.data?.items &&
+                            convertToVND(totalPrice(order?.data?.items))}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Được giảm giá:</th>
+                        <td className="text-end">
+                          {order?.data?.items &&
+                            convertToVND(order?.data?.discount)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Phí vận chuyển:</th>
+                        <td className="text-end">
+                          {convertToVND(getShipping())}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Tổng thanh toán:</th>
+                        <td className="text-end">
+                          {order?.data?.items &&
+                            convertToVND(
+                              totalPrice(order?.data?.items) +
+                                getShipping() -
+                                order?.data?.discount
+                            )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-            <div className="bg-box bg-shadow mt-5 py-3">
-              <table>
-                <tbody>
-                  <tr>
-                    <th>Tổng tiền hàng:</th>
-                    <td className="text-end">
-                      {order?.data?.items &&
-                        convertToVND(totalPrice(order?.data?.items))}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Được giảm giá:</th>
-                    <td className="text-end">
-                      {order?.data?.items &&
-                        convertToVND(order?.data?.discount)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Phí vận chuyển:</th>
-                    <td className="text-end">{convertToVND(getShipping())}</td>
-                  </tr>
-                  <tr>
-                    <th>Tổng thanh toán:</th>
-                    <td className="text-end">
-                      {order?.data?.items &&
-                        convertToVND(
-                          totalPrice(order?.data?.items) +
-                            getShipping() -
-                            order?.data?.discount
-                        )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </div>
