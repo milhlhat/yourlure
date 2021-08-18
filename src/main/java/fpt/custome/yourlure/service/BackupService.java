@@ -59,8 +59,8 @@ public class BackupService {
         files.sort((o1, o2) -> {
             DateFormat df = new SimpleDateFormat();
             try {
-                Date date1 = df.parse(o1);
-                Date date2 = df.parse(o2);
+                Date date1 = df.parse(o1.substring(0, o1.lastIndexOf(".")));
+                Date date2 = df.parse(o2.substring(0, o2.lastIndexOf(".")));
                 return date2.compareTo(date1);
 
             } catch (ParseException e) {
