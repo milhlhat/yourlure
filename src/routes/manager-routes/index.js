@@ -13,6 +13,7 @@ const ManagerStaff = React.lazy(() => import("./manager-staff-route"));
 const ManagerVoucher = React.lazy(() => import("./manager-voucher-route"));
 const ManagerOrder = React.lazy(() => import("./manager-order-route"));
 const CampainRoute = React.lazy(() => import("./manager-campaign-route"));
+const BackupRoute = React.lazy(() => import("./manager-backup"));
 const NotFound = React.lazy(() => import("pages/store-front-pages/Notfound"));
 
 function ManagementRouter(props) {
@@ -24,7 +25,11 @@ function ManagementRouter(props) {
         allowed ? (
           <ManagerLayout>
             <Switch>
-              <Redirect exact from="/manager" to={path + DEFINELINK.managementProduct} />
+              <Redirect
+                exact
+                from="/manager"
+                to={path + DEFINELINK.managementProduct}
+              />
               <Route
                 path={path + DEFINELINK.managementUser}
                 component={ManagerUser}
@@ -56,6 +61,10 @@ function ManagementRouter(props) {
               <Route
                 path={path + DEFINELINK.managementCampaign}
                 component={CampainRoute}
+              />
+              <Route
+                path={path + DEFINELINK.managementBackup}
+                component={BackupRoute}
               />
               <Route component={NotFound}></Route>
             </Switch>

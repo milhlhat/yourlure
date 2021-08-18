@@ -77,5 +77,8 @@ const DEFINELINK = {
   managementCampaignAddNew: "/addnew",
   managementCampaignEdit: "/edit/:id",
   managementCampaignDetail: "/detail/:id",
+
+  //backup
+  managementBackup: "/backup",
 };
 export default DEFINELINK;

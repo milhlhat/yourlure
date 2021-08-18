@@ -10,6 +10,7 @@ Sidebar.propTypes = {};
 function openNav() {
   document.getElementById("myNav").style.width = "100%";
 }
+
 function closeNav() {
   document.getElementById("myNav").style.width = "0%";
 }
@@ -146,6 +147,21 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Sự kiện</span>
                 </Link>
               </li>
+              <Can do={"read-write"} on={"admin"}>
+                <li>
+                  <Link
+                    to={DEFINELINK.manager + DEFINELINK.managementBackup}
+                    className={`nav-link ${
+                      path.indexOf(DEFINELINK.managementBackup) > -1
+                        ? "active"
+                        : "link-dark"
+                    }`}
+                  >
+                    <i className="fal fa-hdd" />
+                    <span className="text-side-bar"> Sao lưu</span>
+                  </Link>
+                </li>
+              </Can>
               <Can do={"read-write"} on={"customer"}>
                 <li>
                   <Link
@@ -159,28 +175,6 @@ function Sidebar(props) {
                   </Link>
                 </li>
               </Can>
-
-              {/* <li>
-                <Link
-                  to="/manager/about"
-                  className={`nav-link ${path.indexOf("manager/about") > -1
-                    ? "active"
-                    : "link-dark"
-                    }`}
-                >
-                  <i className="fal fa-box-heart"></i>
-                  <span className="text-side-bar"> About</span>
-                </Link>
-              </li> */}
-              {/* <li>
-                <Link
-                onClick={handleLogout}
-                  className={`nav-link link-dark`}
-                >
-                  <i className="fal fa-sign-out"></i>
-                  <span className="text-side-bar"> Đăng xuất</span>
-                </Link>
-              </li> */}
               <li>
                 <button className="d-none close-button btn btn-outline-dark">
                   <i className="fas fa-times" />

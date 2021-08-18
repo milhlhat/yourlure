@@ -21,10 +21,7 @@ const OrderAPI = {
     const url = `/api/order/guest-process-order`;
     return AxiosClient.post(url, param);
   },
-  userProcessOrder: (param) => {
-    const url = `/api/order/user-process-order`;
-    return AxiosClient.post(url, param);
-  },
+
   userBuyNow: (param) => {
     const url = `/api/order/user-buy-now`;
     return AxiosClient.post(url, param);
@@ -34,5 +31,5 @@ const OrderAPI = {
     return AxiosClient.get(url);
   },
 };
-export const {getUserOrder } = OrderAPI;
+export const { getUserOrder } = OrderAPI;
 export default OrderAPI;
