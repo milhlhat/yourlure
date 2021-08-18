@@ -61,7 +61,7 @@ public class BackupService {
             try {
                 Date date1 = df.parse(o1.substring(0, o1.lastIndexOf(".")));
                 Date date2 = df.parse(o2.substring(0, o2.lastIndexOf(".")));
-                return date2.compareTo(date1);
+                return date1.compareTo(date2);
 
             } catch (ParseException e) {
                 e.printStackTrace();
