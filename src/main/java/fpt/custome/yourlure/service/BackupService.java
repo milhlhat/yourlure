@@ -6,6 +6,11 @@ import org.springframework.stereotype.Service;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +55,20 @@ public class BackupService {
     }
 
     public List<String> findAllRestores() {
-        return fileService.getFileInFolder(parent);
+        List<String> files = fileService.getFileInFolder(parent);
+        files.sort((o1, o2) -> {
+            DateFormat df = new SimpleDateFormat();
+            try {
+                Date date1 = df.parse(o1);
+                Date date2 = df.parse(o2);
+                return date2.compareTo(date1);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+        return files;
     }
 
     public boolean restore(String fileName) {

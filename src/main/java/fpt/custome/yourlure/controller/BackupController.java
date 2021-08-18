@@ -38,22 +38,28 @@ public class BackupController {
 
     @PostMapping(value = "/restore")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseEntity<Object> restore(@RequestBody String fileName) {
+    ResponseEntity<Object> restore(@RequestParam String fileName) {
         try {
-            return new ResponseEntity<>(backupService.restore(fileName), HttpStatus.OK);
+            if (backupService.restore(fileName)) {
+                return new ResponseEntity<>("Khôi phục thành công.", HttpStatus.OK);
+            }
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Khôi phục thất bại.", HttpStatus.OK);
     }
 
-    @DeleteMapping(value ="/delete-version")
+    @DeleteMapping(value = "/delete-version")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseEntity<Object> delte(@RequestBody String fileName) {
+    ResponseEntity<Object> delete(@RequestParam String fileName) {
         try {
-            return new ResponseEntity<>(backupService.deleteBackup(fileName), HttpStatus.OK);
+            if (backupService.deleteBackup(fileName)) {
+                return new ResponseEntity<>("Xoá thành công.", HttpStatus.OK);
+            }
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>("Xoá thất bại.", HttpStatus.OK);
     }
 
 
