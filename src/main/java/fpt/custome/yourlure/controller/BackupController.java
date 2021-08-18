@@ -46,7 +46,7 @@ public class BackupController {
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Khôi phục thất bại.", HttpStatus.OK);
+        return new ResponseEntity<>("Khôi phục thất bại.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping(value = "/delete-version")
@@ -59,7 +59,7 @@ public class BackupController {
         } catch (ValidationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Xoá thất bại.", HttpStatus.OK);
+        return new ResponseEntity<>("Xoá thất bại.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
