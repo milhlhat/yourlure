@@ -4,6 +4,8 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { AbilityContext, Can } from "authorization/can";
 import { logout } from "utils/user";
 import DEFINELINK from "routes/define-link";
+import logo from "assets/images/logo/logo-social.png";
+import logoText from "assets/images/logo/text-1628010004845.png";
 
 Sidebar.propTypes = {};
 
@@ -33,7 +35,8 @@ function Sidebar(props) {
               href="#"
               className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
             >
-              <span className="fs-4">YourLure</span>
+            <img src={logo} alt="#1 Tuỳ biến mồi lure" className="logo" />
+            <img src={logoText} className="logo-text " />
             </a>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">

@@ -42,7 +42,7 @@ function ManagerStaffAddNew(props) {
         history.push("/manager/staff");
       }
     } catch (error) {
-      alert("Thêm nhân viên thất bại");
+      alert(error.response.data);
       console.log("fail to fetch add staff");
     }
   };
