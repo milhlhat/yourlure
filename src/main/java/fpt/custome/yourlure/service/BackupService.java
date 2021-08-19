@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +16,8 @@ import java.util.List;
 public class BackupService {
 
     public static final String parent = "/home/ubuntu/dbbackup/";
+
+    static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy ss:mm:HH");
 
     @Autowired
     private FileService fileService;
@@ -48,7 +48,7 @@ public class BackupService {
         if (!fileService.isFileExist(parent)) {
             new File(parent).mkdir();
         }
-        Date today = new Date();
+        String today = df.format(new Date());
         String filePath = parent + today;
         String cmd = "PGPASSWORD=\"sa\" pg_dump -Fc -h 127.0.0.1 -U sa -d yourlure -f \"" + filePath + ".dump\"";
         return runCmd(cmd);
@@ -84,5 +84,14 @@ public class BackupService {
         String filePath = parent + fileName;
         return fileService.deleteFilePath(filePath);
     }
+
+//    public static void main(String[] args) throws ParseException {
+//
+//
+//        Date date1 = df.parse("21/12/2021 05:05:05");
+//        Date date2 = df.parse("21/12/2021 06:05:05");
+//
+//        System.out.println(date1.compareTo(date2));
+//    }
 
 }
