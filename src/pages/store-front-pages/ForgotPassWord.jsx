@@ -35,7 +35,7 @@ function FogotPassWord(props) {
     },
   ];
   return (
-    <div className="login">
+    <div className="login container-lg">
       <div className="login-big-image">
         <img src={Fishing} alt="" />
       </div>
@@ -201,7 +201,6 @@ function OTPForm(props) {
                   <FastField
                     name="otp"
                     component={InputField}
-                    label="Nhập mã OTP"
                     placeholder="Nhập mã OTP"
                   ></FastField>
                   <div className="ms-2">

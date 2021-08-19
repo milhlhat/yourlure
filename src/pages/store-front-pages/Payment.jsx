@@ -34,6 +34,7 @@ function Payment(props) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = methods;
 
@@ -206,7 +207,7 @@ function Payment(props) {
     return <CartProduct />;
   } else
     return (
-      <form className="container mt-4" onSubmit={handleSubmit(onSubmit)}>
+      <div className="container mt-4">
         <div className="d-flex flex-wrap justify-content-between">
           <div className="deliver-address p-4 bg-box bg-shadow mb-4 col-12 col-md-7">
             <Can do="read-write" on="customer" passThrough>
@@ -219,125 +220,127 @@ function Payment(props) {
               }
             </Can>
           </div>
-          <div className="col-12 col-md-5">
-            <div className="total-order bg-box bg-shadow px-3">
-              <div>
-                <span>Giỏ hàng</span>
-                <Link
-                  to={{ pathname: DEFINELINK.cart, cart: cartData }}
-                  className="float-end login-link"
-                >
-                  Trở về giỏ hàng
-                </Link>
-              </div>
-              <div className="mt-2 list-item pe-2">
-                {cartData?.map((item, index) => (
-                  <CartRowProduct
-                    item={item}
-                    key={"cart-row" + index}
-                    canChange={false}
-                  />
-                ))}
-              </div>
-              <hr />
-              <div className="discount-form">
-                <label htmlFor="voucher">Nhập mã giảm giá</label>
-                <div className="d-flex">
-                  <input
-                    className="form-control"
-                    onChange={(e) => setDiscountValue(e.target.value)}
-                    type="text"
-                    id="voucher"
-                    value={discountValue ? discountValue : ""}
-                    disabled={discount > 0}
-                  />
-                  {discount > 0 ? (
-                    <>
-                      <div onClick={onDiscountDelete}>
-                        <YLButton variant="danger" type="button">
-                          Xóa
+          <form  className="col-12 col-md-5" onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <div className="total-order bg-box bg-shadow px-3">
+                <div>
+                  <span>Giỏ hàng</span>
+                  <Link
+                    to={{ pathname: DEFINELINK.cart, cart: cartData }}
+                    className="float-end login-link"
+                  >
+                    Trở về giỏ hàng
+                  </Link>
+                </div>
+                <div className="mt-2 list-item pe-2">
+                  {cartData?.map((item, index) => (
+                    <CartRowProduct
+                      item={item}
+                      key={"cart-row" + index}
+                      canChange={false}
+                    />
+                  ))}
+                </div>
+                <hr />
+                <div className="discount-form">
+                  <label htmlFor="voucher">Nhập mã giảm giá</label>
+                  <div className="d-flex">
+                    <input
+                      className="form-control"
+                      onChange={(e) => setDiscountValue(e.target.value)}
+                      type="text"
+                      id="voucher"
+                      value={discountValue ? discountValue : ""}
+                      disabled={discount > 0}
+                    />
+                    {discount > 0 ? (
+                      <>
+                        <div onClick={onDiscountDelete}>
+                          <YLButton variant="danger" type="button">
+                            Xóa
+                          </YLButton>
+                        </div>
+                      </>
+                    ) : (
+                      <div onClick={onDiscountSubmit}>
+                        <YLButton
+                          variant="primary"
+                          disabled={discountLoad}
+                          type="button"
+                        >
+                          Áp dụng{" "}
+                          {discountLoad && (
+                            <CircularProgress
+                              size={15}
+                              className="circle-progress"
+                            />
+                          )}
                         </YLButton>
                       </div>
-                    </>
-                  ) : (
-                    <div onClick={onDiscountSubmit}>
-                      <YLButton
-                        variant="primary"
-                        disabled={discountLoad}
-                        type="button"
-                      >
-                        Áp dụng{" "}
-                        {discountLoad && (
-                          <CircularProgress
-                            size={15}
-                            className="circle-progress"
-                          />
-                        )}
-                      </YLButton>
-                    </div>
-                  )}
+                    )}
+                  </div>
+                  <table className="table table-borderless">
+                    <tbody>
+                      <tr>
+                        <th className="text-start">Tổng phụ:</th>
+                        <td className="text-end">
+                          {convertToVND(cartData ? totalPrice(cartData) : 0)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th className="text-start">Phí vận chuyển:</th>
+                        <td className="text-end">{convertToVND(shipping)}</td>
+                      </tr>
+                      <tr>
+                        <th className="text-start">Giảm giá:</th>
+                        <td className="text-end">{convertToVND(discount)}</td>
+                      </tr>
+                      <tr>
+                        <th className="text-start">Tổng cộng:</th>
+                        <td className="text-end">
+                          {convertToVND(
+                            (cartData ? totalPrice(cartData) : 0) +
+                              shipping -
+                              discount
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <table className="table table-borderless">
-                  <tbody>
-                    <tr>
-                      <th className="text-start">Tổng phụ:</th>
-                      <td className="text-end">
-                        {convertToVND(cartData ? totalPrice(cartData) : 0)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Phí vận chuyển:</th>
-                      <td className="text-end">{convertToVND(shipping)}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Giảm giá:</th>
-                      <td className="text-end">{convertToVND(discount)}</td>
-                    </tr>
-                    <tr>
-                      <th className="text-start">Tổng cộng:</th>
-                      <td className="text-end">
-                        {convertToVND(
-                          (cartData ? totalPrice(cartData) : 0) +
-                            shipping -
-                            discount
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              {isLoggedIn && (
-                <div className="note">
-                  <input
-                    type="text"
-                    placeholder="Lưu ý"
-                    className="form-control"
-                    {...register("note")}
-                  />
+                {isLoggedIn && (
+                  <div className="note">
+                    <input
+                      type="text"
+                      placeholder="Lưu ý"
+                      className="form-control"
+                      {...register("note")}
+                    />
+                  </div>
+                )}
+                <div className="mt-4 d-flex justify-content-end">
+                  <YLButton
+                    variant="primary"
+                    type="submit"
+                    disabled={completeLoad}
+                  >
+                    Thanh toán{" "}
+                    {completeLoad && (
+                      <CircularProgress size={15} className="circle-progress" />
+                    )}
+                  </YLButton>
+                  <BillLine
+                    open={open}
+                    setOpen={setOpen}
+                    billLine={billLine}
+                    isLoggedIn={isLoggedIn}
+                  ></BillLine>
                 </div>
-              )}
-              <div className="mt-4 d-flex justify-content-end">
-                <YLButton
-                  variant="primary"
-                  type="submit"
-                  disabled={completeLoad}
-                >
-                  Thanh toán{" "}
-                  {completeLoad && (
-                    <CircularProgress size={15} className="circle-progress" />
-                  )}
-                </YLButton>
-                <BillLine
-                  open={open}
-                  setOpen={setOpen}
-                  billLine={billLine}
-                  isLoggedIn={isLoggedIn}
-                ></BillLine>
               </div>
             </div>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     );
 }
 

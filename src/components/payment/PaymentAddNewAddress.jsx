@@ -71,6 +71,7 @@ function ManagerChangePassWord(props) {
     reset,
     getValues,
     setValue,
+    handleSubmit,
     formState: { errors },
   } = methods;
 
@@ -87,20 +88,18 @@ function ManagerChangePassWord(props) {
       const response = await UserApi.addAddress(data);
       if (response.error) {
         throw new Error(response.error);
-      }
-      else if(response===false||response?.data===false){
+      } else if (response === false || response?.data === false) {
         throw new Error();
-      }
-       else {
-        fetchCustomAddress();
+      } else {
         handleClose();
         setNewAddress(data);
-        toast.success("Thêm địa chỉ thành công")
+        toast.success("Thêm địa chỉ thành công");
       }
     } catch (error) {
       toast.error("Thêm địa chỉ thất bại");
       console.log("fail to fetch add address");
     }
+    fetchCustomAddress();
   };
   useEffect(() => {
     const fetchCustomAccount = async () => {
@@ -132,108 +131,131 @@ function ManagerChangePassWord(props) {
         open={open}
         aria-labelledby="draggable-dialog-title"
       >
-        {/* <form onSubmit={handleSubmit(onSubmit)}> */}
-        <div className="border-bottom">
-          <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
-            Thêm địa chỉ
-          </DialogTitle>
-        </div>
-        <DialogContent>
-          <DialogContentText>
-            <div className="dialog-content">
-              <table className="add-address-table">
-                <tbody>
-                  <tr>
-                    <td className="text-end title-table align-top">
-                      Họ Và Tên(*)
-                    </td>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="border-bottom">
+            <DialogTitle id="draggable-dialog-title" onClose={handleClose}>
+              Thêm địa chỉ
+            </DialogTitle>
+          </div>
+          <DialogContent>
+            <DialogContentText>
+              <div className="dialog-content">
+                <table className="add-address-table">
+                  <tbody>
+                    <tr>
+                      <td className="text-end title-table align-top">
+                        Họ Và Tên(*)
+                      </td>
+                      <td>
+                        <input
+                          className="form-control"
+                          {...register("userName", {
+                            required: "Họ tên không được để trống",
+                          })}
+                          onBlur={(e) => {
+                            e.target.value = e.target.value.trim();
+                            register("userName", {
+                              required: "Họ và tên không được để trống",
+                            });
+                            setValue("userName", e.target.value.trim());
+                          }}
+                          placeholder="Nhập họ tên"
+                        />
+                        {errors.userName && (
+                          <span className="text-danger">
+                            (*){errors.userName.message}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="text-end title-table">Số Điện Thoại(*)</td>
+                      <td>
+                        <input
+                          className="form-control"
+                          {...register("phone", {
+                            required: "Vui lòng nhập số điện thoại",
+                            pattern: {
+                              value: /((\+84|84|0)[35789][0-9]{8})\b/,
+                              message: "Vui lòng nhập đúng số điện thoại",
+                            },
+                            minLength: {
+                              value: 10,
+                              message: "Vui lòng nhập đúng số điện thoại",
+                            },
+                            maxLength: {
+                              value: 12,
+                              message: "Vui lòng nhập đúng số điện thoại",
+                            },
+                          })}
+                          onBlur={(e) => {
+                            e.target.value = e.target.value.trim();
+                            register("phone", {
+                              required: "Vui lòng nhập số điện thoại",
+                            });
+                            setValue("phone", e.target.value.trim());
+                          }}
+                          type="text"
+                          placeholder="Nhập số điện thoại"
+                        />
+                        {errors.phone && (
+                          <span className="text-danger">
+                            {console.log(errors)}
+                            {errors.phone.message}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                    <td className="text-end title-table">Địa chỉ(*)</td>
                     <td>
-                      <input
-                        className="form-control"
-                        {...register("userName", {
-                          required: "Họ tên không được để trống",
-                        })}
-                        placeholder="Nhập họ tên"
-                      />
-                      {errors.userName && (
-                        <span className="text-danger">
-                          (*){errors.userName.message}
-                        </span>
-                      )}
+                      <YLSelectAddress {...methods} />
                     </td>
-                  </tr>
-                  <tr>
-                    <td className="text-end title-table">Số Điện Thoại(*)</td>
-                    <td>
-                      <input
-                        className="form-control"
-                        {...register("phone", {
-                          required: "Vui lòng nhập số điện thoại",
-                          pattern: {
-                            value: /((\+84|84|0)[35789][0-9]{8})\b/,
-                            message: "Vui lòng nhập đúng số điện thoại",
-                          },
-                          minLength: {
-                            value: 10,
-                            message: "Vui lòng nhập đúng số điện thoại",
-                          },
-                          maxLength: {
-                            value: 12,
-                            message: "Vui lòng nhập đúng số điện thoại",
-                          },
-                        })}
-                        type="text"
-                        placeholder="Nhập số điện thoại"
-                      />
-                      {errors.phone && (
-                        <span className="text-danger">
-                          {console.log(errors)}
-                          {errors.phone.message}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                  <td className="text-end title-table">Địa chỉ(*)</td>
-                  <td>
-                    <YLSelectAddress {...methods} />
-                  </td>
 
-                  <tr>
-                    <td className="text-end title-table">Địa Chỉ cụ thể(*)</td>
-                    <td>
-                      <input
-                        className="form-control"
-                        {...register("description", {
-                          required: "Địa chỉ cụ thể không được để trống",
-                        })}
-                        placeholder="Địa chỉ cụ thể"
-                      />
-                      {errors.description && (
-                        <span className="text-danger">
-                          (*){errors.description.message}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <>
-            <Button color="primary" onClick={handleClose}>
-              Hủy
-            </Button>
-            <Button color="primary" onClick={onSubmit}>
-              Thêm
-            </Button>
-            {/* <YLButton type="submit" variant="primary">
+                    <tr>
+                      <td className="text-end title-table">
+                        Địa Chỉ cụ thể(*)
+                      </td>
+                      <td>
+                        <input
+                          className="form-control"
+                          {...register("description", {
+                            required: "Địa chỉ cụ thể không được để trống",
+                          })}
+                          onBlur={(e) => {
+                            e.target.value = e.target.value.trim();
+                            register("description", {
+                              required: "Địa chỉ cụ thể không được để trống",
+                            });
+                            setValue("description", e.target.value.trim());
+                          }}
+                          placeholder="Địa chỉ cụ thể"
+                        />
+                        {errors.description && (
+                          <span className="text-danger">
+                            (*){errors.description.message}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <>
+              <YLButton variant="link" type="button" onClick={handleClose}>
+                Hủy
+              </YLButton>
+              <YLButton variant="primary" type="submit">
+                Thêm
+              </YLButton>
+              {/* <YLButton type="submit" variant="primary">
               Thêm
             </YLButton> */}
-          </>
-        </DialogActions>
-        {/* </form> */}
+            </>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
