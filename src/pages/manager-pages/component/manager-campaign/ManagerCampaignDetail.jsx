@@ -39,7 +39,7 @@ const options = [
 ];
 
 function ManagerCampaignDetail(props) {
-  const campaignId = props.match.params.id;
+  const idSearch = props.match.params.id;
   const rootPath = props.location.pathname;
 
   let params = new URLSearchParams(props.location.search);
@@ -53,7 +53,7 @@ function ManagerCampaignDetail(props) {
   let display = params.get("display") || "Mới nhất";
 
   const filterParams = {
-    campaignId,
+    idSearch,
     isAsc,
     keyword,
     limit,
