@@ -17,7 +17,7 @@ public class BackupService {
 
     public static final String parent = "/home/ubuntu/dbbackup/";
 
-    static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy ss:mm:HH");
+    static final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Autowired
     private FileService fileService;
