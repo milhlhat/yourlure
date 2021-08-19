@@ -48,7 +48,7 @@ public class BackupService {
         if (!fileService.isFileExist(parent)) {
             new File(parent).mkdir();
         }
-        String today = df.format(new Date());
+        String today = df.format(new Date()).replaceAll("/", "-");
         String filePath = parent + today;
         String cmd = "PGPASSWORD=\"sa\" pg_dump -Fc -h 127.0.0.1 -U sa -d yourlure -f \"" + filePath + ".dump\"";
         return runCmd(cmd);
@@ -86,7 +86,9 @@ public class BackupService {
     }
 
 //    public static void main(String[] args) throws ParseException {
-//
+//        String today = df.format(new Date());
+//        String filePath = parent + today;
+//        System.out.println(filePath);
 //
 //        Date date1 = df.parse("21/12/2021 05:05:05");
 //        Date date2 = df.parse("21/12/2021 06:05:05");
