@@ -6,6 +6,7 @@
   box-shadow: none !important;
   border: none !important;
 }
+
 .button {
   display: inline-block;
   font-weight: 450;
@@ -21,14 +22,16 @@
   font-size: 1rem;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   text-decoration: none;
   width: 100%;
   height: 100%;
+
   &_outline-primary {
     color: $primary;
     background-color: #fff;
-    border:1px solid $primary ;
+    border: 1px solid $primary;
+
     &:hover,
     :focus {
       color: #fff;
@@ -36,14 +39,17 @@
       outline: 0;
       box-shadow: 0px 0px 0px 3px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $primary !important;
     }
   }
+
   &_primary {
     color: #fff;
     background-color: $primary;
+
     &:hover,
     :focus {
       color: #fff;
@@ -51,28 +57,35 @@
       outline: 0;
       box-shadow: 0px 0px 0px 3px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $primary !important;
     }
-  }  &_success {
+  }
+
+  &_success {
     color: #fff;
     background-color: $hover-color;
+
     &:hover,
     :focus {
       color: #fff;
-      opacity: 80%;
+      opacity: 0.8;
       outline: 0;
       box-shadow: 0px 0px 0px 3px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $hover-color !important;
     }
   }
+
   &_dark {
     color: #fff;
     background-color: $dark;
+
     &:hover,
     :focus {
       color: #fff;
@@ -81,15 +94,18 @@
       box-shadow: 0px 0px 0px 1px rgb(209, 211, 209);
 
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $dark !important;
     }
   }
+
   &_light {
     color: $text-color;
     background-color: $bg-light-btn;
     border: 1px solid #d9dcdc;
+
     &:hover,
     :focus {
       color: $text-color;
@@ -97,15 +113,18 @@
       outline: 0;
       box-shadow: 0px 0px 0px 1px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $bg-light-btn !important;
     }
   }
+
   &_danger {
     color: #fff;
     background-color: $bg-danger-btn;
     opacity: 0.8;
+
     &:hover,
     :focus {
       color: #fff;
@@ -113,14 +132,17 @@
       outline: 0;
       box-shadow: 0px 0px 0px 3px rgb(240, 221, 221);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $bg-danger-btn !important;
     }
   }
+
   &_warning {
     color: #fff;
     background-color: $bg-warning-btn;
+
     &:hover,
     :focus {
       color: #fff;
@@ -128,26 +150,32 @@
       outline: 0;
       box-shadow: 0px 0px 0px 1px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $bg-warning-btn !important;
     }
   }
+
   &_link {
     color: $link-color;
+
     &:hover,
     :focus {
       color: $link-color;
       text-decoration: underline !important;
       outline: 0;
     }
+
     &.disabled {
       opacity: 0.5 !important;
     }
   }
+
   &_negative {
     color: #fff;
     background-color: $bg-negative-btn;
+
     &:hover,
     :focus {
       color: #fff;
@@ -155,6 +183,7 @@
       outline: 0;
       box-shadow: 0px 0px 0px 1px rgba(221, 240, 223, 1);
     }
+
     &.disabled {
       opacity: 0.5 !important;
       background-color: $bg-negative-btn;

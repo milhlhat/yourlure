@@ -110,7 +110,7 @@ function ManagerBackup(props) {
                   onConfirm={() => restoreBackup(item)}
                   title={"Khôi phục"}
                   content={
-                    "Tất cả liệu của website sẽ chuyển về thời gian tạo bản khôi phục"
+                    "Tất cả dữ liệu của website sẽ chuyển về thời gian tạo bản khôi phục"
                   }
                 >
                   <i className="fad fa-cloud-download-alt text-warning" />
