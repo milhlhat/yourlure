@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,32 +70,33 @@ public class FishServiceImpl implements FishService {
     }
 
     @Override
-    public Boolean save(FishDtoInput fishDtoInput) {
-        try {
+    public Object save(FishDtoInput fishDtoInput) {
+        if (fishDtoInput != null) {
+            if (fishRepos.findByFishNameContainsIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
+                throw new ValidationException("Tên cá này đã có!");
+            }
             Fish fishInput = mapper.map(fishDtoInput, Fish.class);
             fishRepos.save(fishInput);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } else {
+            throw new ValidationException("fishDtoInput không được null");
         }
-        return true;
+        return "Thêm cá thành công!";
     }
 
     @Override
-    public Boolean update(FishDtoInput fishDtoInput, Long id) {
-        try {
-            if (id != null && fishDtoInput != null) {
-                Fish fishToUpdate = fishRepos.findById(id).get();
-                fishToUpdate.setFishName(fishDtoInput.getFishName());
-                fishRepos.save(fishToUpdate);
-            } else {
-                return false;
+    public Object update(FishDtoInput fishDtoInput, Long id) {
+
+        if (id != null && fishDtoInput != null) {
+            if (fishRepos.findByFishNameContainsIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
+                throw new ValidationException("Tên cá này đã có!");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            Fish fishToUpdate = fishRepos.findById(id).get();
+            fishToUpdate.setFishName(fishDtoInput.getFishName());
+            fishRepos.save(fishToUpdate);
+        } else {
+            throw new ValidationException("fishDtoInput và id không được null");
         }
-        return true;
+        return "cập nhật cá thành công!";
     }
 
     @Override

@@ -25,11 +25,11 @@ public interface AdminFishController {
 
     @PostMapping(value = "/save")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> addFish(@RequestBody @Valid FishDtoInput fishDtoInput);
+    ResponseEntity<Object> addFish(@RequestBody @Valid FishDtoInput fishDtoInput);
 
     @PostMapping(value = "/update")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
-    ResponseEntity<Boolean> update(@RequestBody @Valid FishDtoInput fishDtoInput, Long id);
+    ResponseEntity<Object> update(@RequestBody @Valid FishDtoInput fishDtoInput, Long id);
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_STAFF')")
