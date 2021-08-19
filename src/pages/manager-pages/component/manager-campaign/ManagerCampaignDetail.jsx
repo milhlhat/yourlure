@@ -113,6 +113,7 @@ function ManagerCampaignDetail(props) {
       setIsExportCsv(true);
       console.log(filterParams);
       const response = await filterCampaign({
+        idSearch,
         isAsc: false,
         keyword: "",
         limit: 99999999,
@@ -129,7 +130,7 @@ function ManagerCampaignDetail(props) {
         })
       );
       let downloadLink = document.createElement("a");
-      downloadLink.download = `Campaign-${filterParams.campaignId}.xls`;
+      downloadLink.download = `Campaign-${filterParams.idSearch}.xls`;
       downloadLink.href = url;
       downloadLink.click();
     } catch (e) {
