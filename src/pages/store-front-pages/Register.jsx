@@ -111,17 +111,20 @@ function RegisterBase({ ability, changeTab }) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    phone: Yup.string().trim()
+    phone: Yup.string()
+      .trim()
       .required("Vui lòng nhập số điện thoại.")
       .matches(
         /((\+84|84|0)[35789][0-9]{8})\b/,
         "Vui lòng nhập đúng số điện thoại"
       ),
-    password: Yup.string().trim()
+    password: Yup.string()
+      .trim()
       .required("Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có it nhất 6 ký tự")
       .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
-    rePassword: Yup.string().trim()
+    rePassword: Yup.string()
+      .trim()
       .required("Vui lòng nhập mật khẩu")
       .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
       .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
@@ -140,7 +143,7 @@ function RegisterBase({ ability, changeTab }) {
         >
           {(formikProps) => {
             const { values, errors, touched } = formikProps;
-            console.log({ values });
+
             return (
               <Form>
                 <FastField
@@ -260,7 +263,8 @@ function RegisterOTP({ ability, changeTab, info }) {
   };
   //check validate for formik field
   const validationSchema = Yup.object().shape({
-    otp: Yup.string().trim()
+    otp: Yup.string()
+      .trim()
       .required("Vui lòng nhập mã OTP")
       .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
       .max(6, "Vui lòng nhập đúng mã OTP"),

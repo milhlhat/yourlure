@@ -89,7 +89,7 @@ export const VOUCHER_VALIDATE_SCHEMA = {
       then: yup
         .number()
         .typeError("Giá trị phần trăm phải là số")
-        .min(0, "Giá trị phần trăm phải lớn hơn 0")
+        .moreThan(0, "Giá trị phần trăm phải lớn hơn 0")
         .max(1, "Giá trị  phần trăm không được lớn hơn 1"),
     })
     .when("type", {
@@ -97,7 +97,7 @@ export const VOUCHER_VALIDATE_SCHEMA = {
       then: yup
         .number()
         .typeError("Giá trị phải là số")
-        .min(0, "Giá trị lớn hơn 0"),
+        .moreThan(0, "Giá trị lớn hơn 0"),
     })
     .when("type", {
       is: (type) => type === TYPE_OPTION[2],
