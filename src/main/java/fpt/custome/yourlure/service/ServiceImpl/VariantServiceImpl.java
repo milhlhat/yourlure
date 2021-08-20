@@ -6,12 +6,14 @@ import fpt.custome.yourlure.entity.Variant;
 import fpt.custome.yourlure.repositories.OrderLineRepos;
 import fpt.custome.yourlure.repositories.ProductJpaRepos;
 import fpt.custome.yourlure.repositories.VariantRepos;
+import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.VariantService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
+import java.io.File;
 import java.util.Optional;
 
 @Service
@@ -25,6 +27,9 @@ public class VariantServiceImpl implements VariantService {
 
     @Autowired
     private ProductJpaRepos productJPARepos;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -61,13 +66,16 @@ public class VariantServiceImpl implements VariantService {
     public Object remove(Long variantId, Long productId) {
 
         //check variant is exist in order_line
-        if (orderLineRepos.findByProductIdOrVariantId(variantId) == null) {
+        if (orderLineRepos.findByVariantId(variantId) == null) {
             Product product = productJPARepos.getById(productId);
             if (product.getVariantCollection().size() > 1) {
                 Variant variant = variantRepos.getById(variantId);
+                fileService.deleteFile(variant.getImageUrl());
                 product.getVariantCollection().remove(variant);
                 productJPARepos.save(product);
                 return "Xóa biến thể thành công!";
+
+
             } else {
                 throw new ValidationException("Phải tồn tại ít nhất một biến thể!");
             }

@@ -332,11 +332,16 @@ public class ProductServiceImpl implements ProductService {
             throw new ValidationException("Sản phẩm này đã có người tuỳ biến, không thể xoá!");
         }
 
+        // todo: xoá variant image
+        Collection<Variant> variants = product.getVariantCollection();
+        fileService.deleteFiles(variants.stream().map(Variant::getImageUrl).collect(Collectors.toList()));
+
         // todo: xoá image
         Collection<Image> productImages = product.getImageCollection();
         if (productImages.size() > 0) {
             fileService.deleteFiles(productImages.stream().map(Image::getLinkImage).collect(Collectors.toList()));
         }
+
         // todo: xoá image model 3d
         Collection<DefaultMaterial> materials = product.getModel3d().getMaterials();
         for (DefaultMaterial material : materials) {
