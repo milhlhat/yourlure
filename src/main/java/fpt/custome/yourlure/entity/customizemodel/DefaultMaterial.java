@@ -42,7 +42,7 @@ public class DefaultMaterial {
     private String img;
 
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, orphanRemoval = true)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
     private Collection<Texture> textures;

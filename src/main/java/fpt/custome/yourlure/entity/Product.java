@@ -120,13 +120,13 @@ public class Product {
 
     @JsonIgnore
     @OrderBy("variantId ASC")
-    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
     @OrderBy("fishId asc")
-    @ManyToMany(mappedBy = "products",cascade = CascadeType.REMOVE)
+    @ManyToMany(mappedBy = "products",cascade = CascadeType.ALL)
     private Collection<Fish> fishList = new ArrayList<>();
 
     /**

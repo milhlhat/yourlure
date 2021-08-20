@@ -337,6 +337,7 @@ public class ProductServiceImpl implements ProductService {
         // todo: xoá variant image
         Collection<Variant> variants = product.getVariantCollection();
         fileService.deleteFiles(variants.stream().map(Variant::getImageUrl).collect(Collectors.toList()));
+        product.getVariantCollection().clear();
 
         // todo: xoá image
         Collection<Image> productImages = product.getImageCollection();
@@ -350,6 +351,7 @@ public class ProductServiceImpl implements ProductService {
             Collection<DefaultMaterial> materials = product.getModel3d().getMaterials();
             for (DefaultMaterial material : materials) {
                 fileService.deleteFiles(material.getTextures().stream().map(Texture::getTextureUrl).collect(Collectors.toList()));
+                material.getTextures().clear();
             }
         }
 

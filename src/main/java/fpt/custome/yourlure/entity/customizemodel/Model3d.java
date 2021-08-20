@@ -31,7 +31,7 @@ public class Model3d {
     private String url;
 
     @OrderBy("materialId ASC")
-    @OneToMany(mappedBy = "model3d", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "model3d", cascade = CascadeType.ALL, orphanRemoval = true)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
     private Collection<DefaultMaterial> materials;
