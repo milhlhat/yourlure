@@ -187,8 +187,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Object updateProduct(ProductsDtoInp productsDtoInp, Long id) {
 
         if (id != null && productsDtoInp != null) {
@@ -245,6 +245,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    @Transactional
     public Long save(ProductsDtoInp productsDtoInp) {
         Product product;
         Long idReturn;
