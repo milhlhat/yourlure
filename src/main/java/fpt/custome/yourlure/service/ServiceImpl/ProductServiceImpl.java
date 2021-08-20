@@ -325,7 +325,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getVisibleInStorefront()) {
             throw new ValidationException("Sản phẩm đang được bày bán, không thể xoá!");
         }
-        if (orderLineRepos.findByProductIdOrVariantId(id) != null) {
+        if (orderLineRepos.findByProductId(id) != null) {
             throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
         }
         if (product.getCustomizable() && product.getModel3d().getCustomizeModels().size() > 0) {
