@@ -18,9 +18,9 @@ public interface FishService {
 
     Optional<FishDtoOut> getById(Long id);
 
-    Boolean save(FishDtoInput fishDtoInput);
+    Object save(FishDtoInput fishDtoInput);
 
-    Boolean update(FishDtoInput fishDtoInput, Long id);
+    Object update(FishDtoInput fishDtoInput, Long id);
 
     Boolean remove(Long id);
 

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.ValidationException;
 import java.util.Optional;
 
 @RestController
@@ -37,15 +38,31 @@ public class AdminFishControllerImpl implements AdminFishController {
     }
 
     @Override
-    public ResponseEntity<Boolean> addFish(FishDtoInput fishDtoInput) {
-        Boolean result = fishService.save(fishDtoInput);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> addFish(FishDtoInput fishDtoInput) {
+        try {
+            Object result = fishService.save(fishDtoInput);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
-    public ResponseEntity<Boolean> update(FishDtoInput fishDtoInput, Long id) {
-        Boolean result = fishService.update(fishDtoInput, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<Object> update(FishDtoInput fishDtoInput, Long id) {
+        try {
+            Object result = fishService.update(fishDtoInput, id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

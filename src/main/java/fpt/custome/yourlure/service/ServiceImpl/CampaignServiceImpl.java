@@ -192,10 +192,13 @@ public class CampaignServiceImpl implements CampaignService {
                     throw new ValidationException("Bạn phải đăng ký trong thời gian diễn ra sự kiện! vui lòng kiểm tra lại.");
                 }
                 CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
-                campaignRegister.setCampaign(Campaign.builder().campaignId(campaignRegisterDtoInput.getCampaignId()).build());
+                campaignRegister.setCampaign(
+                        Campaign.builder()
+                        .campaignId(campaignRegisterDtoInput.getCampaignId())
+                        .build());
                 campaignRegisterRepos.save(campaignRegister);
             } else {
-                throw new ValidationException("Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\n Vui lòng sử dụng số điện thoại khác!");
+                throw new ValidationException("Số điện thoại " + campaignRegisterDtoInput.getPhone() + " đã được đăng ký sự kiện!\nVui lòng sử dụng số điện thoại khác!");
             }
         } else {
             throw new ValidationException("Vui lòng nhập dữ liệu!");
@@ -204,8 +207,8 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public Object adminGetAllRegister(String keyword, Pageable pageable) {
-        Page<CampaignRegister> list = campaignRegisterRepos.findAllCampaignRegister("%" + keyword + "%", pageable);
+    public Object adminGetAllRegister(String keyword, Long campaignId, Pageable pageable) {
+        Page<CampaignRegister> list = campaignRegisterRepos.findAllCampaignRegister("%" + keyword + "%", campaignId,pageable);
         List<AdminCampaignRegisterDtoOutput.CampaignRegisterDtoOutput> outputs = new ArrayList<>();
         if (list.isEmpty()) {
             return outputs;

@@ -28,6 +28,6 @@ public interface CampaignService {
 
     Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput);
 
-    Object adminGetAllRegister(String keyword, Pageable pageable);
+    Object adminGetAllRegister(String keyword,Long campaignId, Pageable pageable);
 
 }

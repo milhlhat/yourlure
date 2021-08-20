@@ -144,6 +144,10 @@ public class ProductServiceImpl implements ProductService {
     public Object getProductFilter(Filter filter, Boolean isAdmin) {
         Query query = productRepos.getProductFilter(filter);
         int totalProduct = query.getResultList().size();
+        if (filter.getLimit() == 0 || filter.getLimit() < 0 || filter.getLimit() % 1 != 0 ||
+                filter.getPage() < 0) {
+            throw new ValidationException("Không có sản phẩm nào!");
+        }
         query.setFirstResult(filter.getLimit() * filter.getPage());
         query.setMaxResults(filter.getLimit());
         List<Product> list = query.getResultList();
@@ -178,17 +182,6 @@ public class ProductServiceImpl implements ProductService {
             return Optional.of(results);
         }
     }
-
-//    @Override
-//    public List<ProductsDtoOut> findAllByProductName(String keyword, Pageable pageable) {
-//        List<ProductsDtoOut> result = new ArrayList<>();
-//        List<Product> list = productJPARepos.findAllByProductNameContainsIgnoreCase(keyword, pageable);
-//        for (Product item : list) {
-//            ProductsDtoOut dtoOut = mapper.map(item, ProductsDtoOut.class);
-//            result.add(dtoOut);
-//        }
-//        return result;
-//    }
 
     @Transactional
     @Override
@@ -318,23 +311,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Object remove(Long id) {
         if (id == null) {
-            throw new ValidationException("Vui lòng chọn sản phẩm để xoá!");
+            throw new ValidationException("Mã sản phẩm không tồn tại!");
         }
-        Product product = productJPARepos.findById(id).orElse(null);
-        if (product == null) {
-            throw new ValidationException("Sản phẩm không tồn tại!");
-        }
-        if (product.getVisibleInStorefront()) {
-            throw new ValidationException("Sản phẩm đang được bày bán, không thể xoá!");
-        }
-        if (orderLineRepos.findByProductIdOrVariantId(id) != null) {
+        if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
+            Optional<Product> productOptional = productJPARepos.findById(id);
+            if (!productOptional.isPresent()) {
+                throw new ValidationException("Không có sản phẩm nào có ID này!");
+            }
+            productJPARepos.deleteById(id);
+            return true;
+        } else
             throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
-        }
-        if (product.getCustomizable() && product.getModel3d().getCustomizeModels().size() > 0) {
-            throw new ValidationException("Sản phẩm này đã có người tuỳ biến, không thể xoá!");
-        }
-        productJPARepos.delete(product);
-        return true;
     }
 
     @Override

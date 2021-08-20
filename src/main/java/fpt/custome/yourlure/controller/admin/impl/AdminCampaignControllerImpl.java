@@ -36,7 +36,7 @@ public class AdminCampaignControllerImpl implements AdminCampaignController {
 
     @Override
     public ResponseEntity<Object> adminGetAllRegister(AdminFilterDtoInput filter) {
-        Object dtoOuts = campaignService.adminGetAllRegister(filter.getKeyword(),
+        Object dtoOuts = campaignService.adminGetAllRegister(filter.getKeyword(), filter.getIdSearch(),
                 PageRequest.of(filter.getPage(),
                         filter.getLimit(),
                         filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));

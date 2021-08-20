@@ -13,6 +13,7 @@ public class AdminFilterDtoInput {
 
     private String keyword;
     private String typeSearch;
+    private Long idSearch;
     private int page;
     @Min(1)
     private int limit;
