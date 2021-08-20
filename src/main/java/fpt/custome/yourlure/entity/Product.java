@@ -113,7 +113,7 @@ public class Product {
     private Category category;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     // MapopedBy trỏ tới tên biến products ở trong Images .
     //1 product có nhiều image
     private Collection<Image> imageCollection;

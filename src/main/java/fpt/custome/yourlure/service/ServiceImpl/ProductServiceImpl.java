@@ -192,7 +192,7 @@ public class ProductServiceImpl implements ProductService {
     public Object updateProduct(ProductsDtoInp productsDtoInp, Long id) {
 
         if (id != null && productsDtoInp != null) {
-            Product productToUpdate = productJPARepos.getById(id);
+            Product productToUpdate = productJPARepos.findById(id).orElse(null);
             if (productToUpdate != null) {
                 productToUpdate.update(productsDtoInp);
                 productToUpdate.setCategory(categoryRepos.getById(productsDtoInp.getCategoryId()));
@@ -213,7 +213,7 @@ public class ProductServiceImpl implements ProductService {
                         imageRepos.deleteByLinkImage(imgRemove);
 //                            productToUpdate.getImageCollection().remove(Image.builder().linkImage(imgRemove).build());
                     }
-                    adminProductController.deleteFiles(productsDtoInp.getImgListRemove());
+                    fileService.deleteFiles(productsDtoInp.getImgListRemove());
                 }
 
                 Product product = productJPARepos.save(productToUpdate);
@@ -235,10 +235,10 @@ public class ProductServiceImpl implements ProductService {
                 }
                 return "Cập nhật sản phẩm thành công!";
             } else {
-                throw new ValidationException("Mã Sản Phẩm cập nhật không tồn tại!");
+                throw new ValidationException("Mã sản phẩm cập nhật không tồn tại!");
             }
         } else {
-            throw new ValidationException("Mã Sản Phẩm cập nhật không được null!");
+            throw new ValidationException("Mã sản phẩm cập nhật không được trống!");
         }
 
     }
@@ -311,7 +311,6 @@ public class ProductServiceImpl implements ProductService {
             return Optional.empty();
         }
     }
-
 
 
     @Override
