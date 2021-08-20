@@ -342,6 +342,7 @@ public class ProductServiceImpl implements ProductService {
         if (productImages.size() > 0) {
             fileService.deleteFiles(productImages.stream().map(Image::getLinkImage).collect(Collectors.toList()));
         }
+        product.getImageCollection().clear();
 
         // todo: xoá image model 3d
         if (product.getModel3d() != null) {
