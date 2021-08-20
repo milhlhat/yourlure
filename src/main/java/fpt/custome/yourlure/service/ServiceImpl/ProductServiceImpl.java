@@ -112,10 +112,10 @@ public class ProductServiceImpl implements ProductService {
     public Float validateWeight(Product product, Float weight) {
         if (product.getIsCustomizeWeight() != null && product.getIsCustomizeWeight()
                 && product.getMinWeight() != null && product.getMaxWeight() != null) {
-            if( weight <= product.getMaxWeight() && weight >= product.getMinWeight()){
+            if (weight <= product.getMaxWeight() && weight >= product.getMinWeight()) {
                 return weight;
             }
-            throw new ValidationException("Vui lòng nhập trọng lượng trong khoảng " + product.getMinWeight() + "-" +product.getMaxWeight());
+            throw new ValidationException("Vui lòng nhập trọng lượng trong khoảng " + product.getMinWeight() + "-" + product.getMaxWeight());
         }
         return product.getDefaultWeight();
     }
@@ -142,41 +142,41 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Object getProductFilter(Filter filter, Boolean isAdmin) {
-            Query query = productRepos.getProductFilter(filter);
-            int totalProduct = query.getResultList().size();
-            query.setFirstResult(filter.getLimit() * filter.getPage());
-            query.setMaxResults(filter.getLimit());
-            List<Product> list = query.getResultList();
-            if (!isAdmin) {
-                List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
-                for (Product item : list) {
-                    ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
-                    productOutList.add(dtoOut);
-                }
-                ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
-                        .productOutList(productOutList)
-                        .totalProduct(totalProduct)
-                        .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
-                        .build();
-                return Optional.of(result);
-            } else {
-                int numberOfProduct = 0;
-                List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
-                for (Product item : list) {
-                    AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
-                    for (Variant variant : item.getVariantCollection()) {
-                        numberOfProduct += variant.getQuantity();
-                    }
-                    dtoOut.setNumberOfVariantProduct(numberOfProduct);
-                    listResult.add(dtoOut);
-                }
-                AdminProductDtoOut results = AdminProductDtoOut.builder()
-                        .productOutputList(listResult)
-                        .totalProduct(totalProduct)
-                        .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
-                        .build();
-                return Optional.of(results);
+        Query query = productRepos.getProductFilter(filter);
+        int totalProduct = query.getResultList().size();
+        query.setFirstResult(filter.getLimit() * filter.getPage());
+        query.setMaxResults(filter.getLimit());
+        List<Product> list = query.getResultList();
+        if (!isAdmin) {
+            List<ProductsFilterDtoOut.ProductOut> productOutList = new ArrayList<>();
+            for (Product item : list) {
+                ProductsFilterDtoOut.ProductOut dtoOut = mapper.map(item, ProductsFilterDtoOut.ProductOut.class);
+                productOutList.add(dtoOut);
             }
+            ProductsFilterDtoOut result = ProductsFilterDtoOut.builder()
+                    .productOutList(productOutList)
+                    .totalProduct(totalProduct)
+                    .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
+                    .build();
+            return Optional.of(result);
+        } else {
+            int numberOfProduct = 0;
+            List<AdminProductDtoOut.ProductOutput> listResult = new ArrayList<>();
+            for (Product item : list) {
+                AdminProductDtoOut.ProductOutput dtoOut = mapper.map(item, AdminProductDtoOut.ProductOutput.class);
+                for (Variant variant : item.getVariantCollection()) {
+                    numberOfProduct += variant.getQuantity();
+                }
+                dtoOut.setNumberOfVariantProduct(numberOfProduct);
+                listResult.add(dtoOut);
+            }
+            AdminProductDtoOut results = AdminProductDtoOut.builder()
+                    .productOutputList(listResult)
+                    .totalProduct(totalProduct)
+                    .totalPage((int) Math.ceil((double) totalProduct / filter.getLimit()))
+                    .build();
+            return Optional.of(results);
+        }
     }
 
 //    @Override
@@ -318,17 +318,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Object remove(Long id) {
         if (id == null) {
-            throw new ValidationException("Mã sản phẩm không tồn tại!");
+            throw new ValidationException("Vui lòng chọn sản phẩm để xoá!");
         }
-        if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
-            Optional<Product> productOptional = productJPARepos.findById(id);
-            if (!productOptional.isPresent()) {
-                throw new ValidationException("Không có sản phẩm nào có ID này!");
-            }
-            productJPARepos.deleteById(id);
-            return true;
-        } else
+        Product product = productJPARepos.findById(id).orElse(null);
+        if (product == null) {
+            throw new ValidationException("Sản phẩm không tồn tại!");
+        }
+        if (product.getVisibleInStorefront()) {
+            throw new ValidationException("Sản phẩm đang được bày bán, không thể xoá!");
+        }
+        if (orderLineRepos.findByProductIdOrVariantId(id) != null) {
             throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
+        }
+        if (product.getCustomizable() && product.getModel3d().getCustomizeModels().size() > 0) {
+            throw new ValidationException("Sản phẩm này đã có người tuỳ biến, không thể xoá!");
+        }
+        productJPARepos.delete(product);
+        return true;
     }
 
     @Override

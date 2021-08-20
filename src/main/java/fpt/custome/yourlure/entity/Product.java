@@ -2,6 +2,7 @@ package fpt.custome.yourlure.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
+import fpt.custome.yourlure.entity.customizemodel.Model3d;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -79,15 +80,19 @@ public class Product {
     private String deepDiving;
 
     @NotNull
-    @Column(name = "customizable", columnDefinition = "bool default false")
+    @Column(name = "customizable", nullable = false, columnDefinition = "bool default false")
     private Boolean customizable;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "product")
+    private Model3d model3d;
 
     @Nullable
     @Column(name = "brand")
     private String brand;
 
-    @Nullable
-    @Column(name = "visibleInStorefront")
+    @NotNull
+    @Column(name = "visibleInStorefront", nullable = false)
     private Boolean visibleInStorefront;
 
     @Nullable

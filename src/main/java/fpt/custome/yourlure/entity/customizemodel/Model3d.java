@@ -24,7 +24,7 @@ public class Model3d {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "productId", referencedColumnName = "modelId")
     private Product product;
 
     private String name;
