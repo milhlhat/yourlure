@@ -84,7 +84,7 @@ public class Product {
     private Boolean customizable;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Model3d model3d;
 
     @Nullable
@@ -113,20 +113,20 @@ public class Product {
     private Category category;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     // MapopedBy trỏ tới tên biến products ở trong Images .
     //1 product có nhiều image
     private Collection<Image> imageCollection;
 
     @JsonIgnore
     @OrderBy("variantId ASC")
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.REMOVE, orphanRemoval = true)
     // MapopedBy trỏ tới tên biến products ở trong variants .
     //1 product có nhiều variants
     private Collection<Variant> variantCollection;
 
     @OrderBy("fishId asc")
-    @ManyToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "products",cascade = CascadeType.REMOVE)
     private Collection<Fish> fishList = new ArrayList<>();
 
     /**

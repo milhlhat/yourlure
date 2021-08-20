@@ -4,7 +4,10 @@ import fpt.custome.yourlure.controller.admin.AdminProductController;
 import fpt.custome.yourlure.dto.dtoInp.ProductsDtoInp;
 import fpt.custome.yourlure.dto.dtoOut.*;
 import fpt.custome.yourlure.entity.*;
+import fpt.custome.yourlure.entity.customizemodel.DefaultMaterial;
+import fpt.custome.yourlure.entity.customizemodel.Texture;
 import fpt.custome.yourlure.repositories.*;
+import fpt.custome.yourlure.service.FileService;
 import fpt.custome.yourlure.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -41,6 +42,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private OrderLineRepos orderLineRepos;
+
+    @Autowired
+    private FileService fileService;
 
     @Autowired
     private FishRepos fishRepos;
@@ -308,20 +312,38 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+
     @Override
     public Object remove(Long id) {
         if (id == null) {
-            throw new ValidationException("Mã sản phẩm không tồn tại!");
+            throw new ValidationException("Vui lòng chọn sản phẩm để xoá!");
         }
-        if (orderLineRepos.findByProductIdOrVariantId(id) == null) {
-            Optional<Product> productOptional = productJPARepos.findById(id);
-            if (!productOptional.isPresent()) {
-                throw new ValidationException("Không có sản phẩm nào có ID này!");
-            }
-            productJPARepos.deleteById(id);
-            return true;
-        } else
+        Product product = productJPARepos.findById(id).orElse(null);
+        if (product == null) {
+            throw new ValidationException("Sản phẩm không tồn tại!");
+        }
+        if (product.getVisibleInStorefront()) {
+            throw new ValidationException("Sản phẩm đang được bày bán, không thể xoá!");
+        }
+        if (orderLineRepos.findByProductIdOrVariantId(id) != null) {
             throw new ValidationException("Sản phẩm đã được khách hàng mua nên không thể xóa!");
+        }
+        if (product.getCustomizable() && product.getModel3d().getCustomizeModels().size() > 0) {
+            throw new ValidationException("Sản phẩm này đã có người tuỳ biến, không thể xoá!");
+        }
+
+        // todo: xoá image
+        Collection<Image> productImages = product.getImageCollection();
+        if (productImages.size() > 0) {
+            fileService.deleteFiles(productImages.stream().map(Image::getLinkImage).collect(Collectors.toList()));
+        }
+        // todo: xoá image model 3d
+        Collection<DefaultMaterial> materials = product.getModel3d().getMaterials();
+        for (DefaultMaterial material : materials) {
+            fileService.deleteFiles(material.getTextures().stream().map(Texture::getTextureUrl).collect(Collectors.toList()));
+        }
+        productJPARepos.delete(product);
+        return true;
     }
 
     @Override

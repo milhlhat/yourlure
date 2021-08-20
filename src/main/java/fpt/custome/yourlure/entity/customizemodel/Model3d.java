@@ -23,15 +23,15 @@ public class Model3d {
     private Long modelId;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "productId", referencedColumnName = "modelId")
+    @OneToOne
+    @JoinColumn(name = "productId", referencedColumnName = "productId")
     private Product product;
 
     private String name;
     private String url;
 
     @OrderBy("materialId ASC")
-    @OneToMany(mappedBy = "model3d", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "model3d", cascade = CascadeType.REMOVE)
     // MapopedBy trỏ tới tên biến users ở trong Customize .
     //1 User có nhiều Customize
     private Collection<DefaultMaterial> materials;
