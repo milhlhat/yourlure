@@ -243,7 +243,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    @Transactional
+
     @Override
     public Long save(ProductsDtoInp productsDtoInp) {
         Product product;
@@ -313,7 +313,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+
     @Override
+    @Transactional
     public Object remove(Long id) {
         if (id == null) {
             throw new ValidationException("Vui lòng chọn sản phẩm để xoá!");
@@ -343,10 +345,13 @@ public class ProductServiceImpl implements ProductService {
         }
 
         // todo: xoá image model 3d
-        Collection<DefaultMaterial> materials = product.getModel3d().getMaterials();
-        for (DefaultMaterial material : materials) {
-            fileService.deleteFiles(material.getTextures().stream().map(Texture::getTextureUrl).collect(Collectors.toList()));
+        if (product.getModel3d() != null) {
+            Collection<DefaultMaterial> materials = product.getModel3d().getMaterials();
+            for (DefaultMaterial material : materials) {
+                fileService.deleteFiles(material.getTextures().stream().map(Texture::getTextureUrl).collect(Collectors.toList()));
+            }
         }
+
         productJPARepos.delete(product);
         return true;
     }

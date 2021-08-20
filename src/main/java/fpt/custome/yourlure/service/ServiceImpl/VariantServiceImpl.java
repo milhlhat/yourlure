@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
+    @Transactional
     public Object update(VariantDtoInput variantDtoInput, Long variantId) {
 
         Optional<Product> productOptional = productJPARepos.findById(variantDtoInput.getProductId());
@@ -63,6 +65,7 @@ public class VariantServiceImpl implements VariantService {
     }
 
     @Override
+    @Transactional
     public Object remove(Long variantId, Long productId) {
 
         //check variant is exist in order_line
