@@ -46,8 +46,11 @@ import { AbilityContext, Can } from "../../authorization/can";
 import ConfirmPopupV2 from "../../components/confirm-popup/ConfirmPopupV2";
 import NoPermistion from "../../components/error-notify/NoPermistion";
 import { logout } from "../../utils/user";
-import { FONT_CUSTOMIZE_MODEL_LINK } from "../../constants/product-config";
-
+import {
+  FONT_CUSTOMIZE_MODEL_LINK,
+  FONTS_CUSTOMIZE,
+} from "../../constants/product-config";
+import WebFont from "webfontloader";
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
@@ -498,16 +501,14 @@ export default function Customize(props) {
       console.log("fail to fetch data");
     }
   };
-
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: FONTS_CUSTOMIZE,
+      },
+    });
+  }, []);
   useEffect(async () => {
-    //load font
-    let link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href = FONT_CUSTOMIZE_MODEL_LINK;
-
-    document.getElementsByTagName("head")[0].appendChild(link);
-
     await fetchMaterialInfo(productId, isEdit);
   }, [productId, isEdit]);
   if (product.isLoading) {

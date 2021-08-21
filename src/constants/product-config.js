@@ -1,6 +1,6 @@
 export const SUPPORTED_IMAGE_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
-export const FONT_CUSTOMIZE_MODEL_LINK =
-  "https://fonts.googleapis.com/css2?family=Ballet&family=Grenze:wght@200&family=Old+Standard+TT:ital@1&family=Pacifico&family=Playball&family=Style+Script&display=swap";
+// export const FONT_CUSTOMIZE_MODEL_LINK =
+//   "https://fonts.googleapis.com/css2?family=Ballet&family=Grenze:wght@200&family=Old+Standard+TT:ital@1&family=Pacifico&family=Playball&family=Style+Script&display=swap";
 export const FONTS_CUSTOMIZE = [
   "Style Script",
   "Ballet",

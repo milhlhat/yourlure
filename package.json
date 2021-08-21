@@ -33,6 +33,7 @@
     "redux-persist": "^6.0.0",
     "slugify": "^1.6.0",
     "three": "^0.129.0",
+    "webfontloader": "^1.6.28",
     "yup": "^0.32.9"
   },
   "scripts": {
