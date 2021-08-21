@@ -77,7 +77,7 @@ public class AdminUserControllerImpl implements AdminUserController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.OK);
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class AdminUserControllerImpl implements AdminUserController {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.OK);
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
