@@ -86,19 +86,27 @@ function RenderModel(props) {
               textureResult.flipY = false;
               textureResult.flipX = false;
               textureResult.flipZ = false;
-              const material = new THREE.MeshPhysicalMaterial({
+              const material = new THREE.MeshStandardMaterial({
                 map: textureResult,
                 color: customizeInfo[i].color,
                 name: customizeInfo[i].defaultName,
+                metalness: defaultMate[i].metalness,
+                roughness: defaultMate[i].roughness,
+                clearcoat: defaultMate[i].clearcoat,
+                clearcoatRoughness: defaultMate[i].clearcoatRoughness,
               });
               ref.current.children[i].material = material;
             });
           }
           // else
           if (customizeInfo[i].color && customizeInfo[i].color !== "") {
-            const material = new THREE.MeshPhysicalMaterial({
+            const material = new THREE.MeshStandardMaterial({
               color: customizeInfo[i].color,
               name: customizeInfo[i].defaultName,
+              metalness: defaultMate[i].metalness,
+              roughness: defaultMate[i].roughness,
+              clearcoat: defaultMate[i].clearcoat,
+              clearcoatRoughness: defaultMate[i].clearcoatRoughness,
             });
             ref.current.children[i].material = material;
           } else if (defaultMate) {
