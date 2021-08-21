@@ -220,7 +220,7 @@ function Payment(props) {
               }
             </Can>
           </div>
-          <form  className="col-12 col-md-5" onSubmit={handleSubmit(onSubmit)}>
+          <form className="col-12 col-md-5" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div className="total-order bg-box bg-shadow px-3">
                 <div>

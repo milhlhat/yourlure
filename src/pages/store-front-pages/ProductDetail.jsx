@@ -125,7 +125,6 @@ function ProductDetail(props) {
   }, [productId]);
 
   useEffect(() => {
-    console.log(props);
     const slugPath = `${currentPath}/${slugify(
       productDetail?.list?.productName || ""
     )}`;

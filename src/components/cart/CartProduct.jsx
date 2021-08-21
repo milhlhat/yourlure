@@ -157,7 +157,8 @@ function CartProduct(props) {
   // if (isLoggedIn && cart.isLoading) {
   //   return <Loading />;
   // }
-  // else if (isLoggedIn && !cart.isSuccess) {
+  // else
+  //  if (isLoggedIn && !cart.isSuccess) {
   //   return <ErrorLoad />;
   // }
   // else

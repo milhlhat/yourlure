@@ -77,7 +77,7 @@ const cart = createSlice({
       for (let i in current(state.carts)) {
         for (let index in action.payload) {
           if (
-            state.carts[i].variantId === action.payload[index].variantId &&
+            state.carts[i]?.variantId === action.payload[index]?.variantId &&
             // state.carts[i].customModelId ===
             //   action.payload[index].customizeId &&
             state.carts[i].weight === action.payload[index].weight

@@ -98,7 +98,7 @@ function PhoneForm(props) {
                 <FastField
                   name="phone"
                   component={InputField}
-                  label="Nhập Số điện thoại"
+                  label="Nhập số điện thoại"
                   placeholder="Nhập số điện thoại"
                 ></FastField>
               </div>

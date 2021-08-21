@@ -198,7 +198,7 @@ function ManagerOrderDetail(props) {
                               type="button"
                               disabled={cancel || loading}
                             >
-                              Hủy
+                              Hủy đơn
                               {cancel && (
                                 <CircularProgress
                                   size={15}
