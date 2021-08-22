@@ -210,15 +210,18 @@ let customizeUtils = {
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath("/examples/js/libs/draco/");
     loader.setDRACOLoader(dracoLoader);
-    await loader.load(url, function (gltf) {
-      const scene = gltf.scene;
-
-      scene.traverse(function (object) {
-        if (object.material) materials.push(object.material);
+    return new Promise((resolve, reject) => {
+      loader.load(url, function (gltf) {
+        const scene = gltf.scene;
+        scene.traverse(function (object) {
+          if (object.material) materials.push(object.material);
+        });
+        console.log("travel", materials);
+        resolve(materials);
       });
-      console.log("travel", materials);
     });
-    return materials;
+
+    // return materials;
   },
   validateTexture: async (currentMaterial) => {
     let imgLink = currentMaterial.img;

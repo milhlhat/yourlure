@@ -40,11 +40,14 @@ export default function OtherRoute() {
       exact: false,
     },
     { path: DEFINELINK.home, component: HomePage },
-    { path: DEFINELINK.viewCustomizeOrder, component: ViewCustomizeOrder },
   ];
   return (
     <Switch>
-      <Redirect exact from={DEFINELINK.store} to={DEFINELINK.home} />
+      <Redirect exact from={DEFINELINK.store} to={DEFINELINK.home} />{" "}
+      <Route
+        path={DEFINELINK.viewCustomizeOrder}
+        component={ViewCustomizeOrder}
+      />
       <RenderRoutes routes={routes} />
       <Route component={NotFound} />
     </Switch>

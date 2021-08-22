@@ -1,5 +1,6 @@
 import React, {
   Suspense,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -51,6 +52,7 @@ import {
   FONTS_CUSTOMIZE,
 } from "../../constants/product-config";
 import WebFont from "webfontloader";
+
 const BE_SERVER = process.env.REACT_APP_API_URL;
 const BE_FOLDER = process.env.REACT_APP_URL_FILE_DOWNLOAD;
 
@@ -65,16 +67,6 @@ function RenderModel(props) {
   let customizeInfo = props.customizeInfo;
   const modelUrl = `${BE_SERVER}${BE_FOLDER}${model3d}`;
 
-  //Load default 3d model
-
-  const [defaultMate, setDefaultMate] = useState();
-  useEffect(() => {
-    getDefaultMaterials(modelUrl).then((value) => {
-      setDefaultMate(value);
-      console.log("de", value);
-    });
-  }, [modelUrl]);
-
   //Load 3d model
   const { nodes, materials } = useGLTF(modelUrl);
 
@@ -86,17 +78,18 @@ function RenderModel(props) {
   );
   // load texture
 
-  useEffect(async () => {
-    //load texture
-    const promisesTextureDraw = (listNodes, customInfo) => {
-      let promises = [];
-      for (let i = 0; i < listNodes.length; i++) {
-        promises.push(validateTexture(customInfo[i]));
-      }
-      return Promise.all(promises);
-    };
-    let textureLoader = new THREE.TextureLoader();
+  const promisesTextureDraw = (listNodes, customInfo) => {
+    let promises = [];
+    for (let i = 0; i < listNodes.length; i++) {
+      promises.push(validateTexture(customInfo[i]));
+    }
+    return Promise.all(promises);
+  };
 
+  const preloadTexture = async () => {
+    let defaultMate = await getDefaultMaterials(modelUrl);
+
+    const textureLoader = new THREE.TextureLoader();
     promisesTextureDraw(listNodes, customizeInfo)
       .then((result) => {
         for (let i = 0; i < result.length; i++) {
@@ -110,11 +103,14 @@ function RenderModel(props) {
               const material = new THREE.MeshStandardMaterial({
                 map: textureResult,
                 color: customizeInfo[i].color,
-                name: customizeInfo[i].defaultName,
-                metalness: defaultMate[i].metalness,
-                roughness: defaultMate[i].roughness,
-                clearcoat: defaultMate[i].clearcoat,
-                clearcoatRoughness: defaultMate[i].clearcoatRoughness,
+                name: customizeInfo && customizeInfo[i]?.defaultName,
+
+                metalness: defaultMate ? defaultMate[i]?.metalness : null,
+                roughness: defaultMate ? defaultMate[i]?.roughness : null,
+                clearcoat: defaultMate ? defaultMate[i]?.clearcoat : null,
+                clearcoatRoughness: defaultMate
+                  ? defaultMate[i]?.clearcoatRoughness
+                  : null,
               });
 
               ref.current.children[i].material = material;
@@ -125,11 +121,15 @@ function RenderModel(props) {
             const material = new THREE.MeshStandardMaterial({
               color: customizeInfo[i].color,
               name: customizeInfo[i].defaultName,
-              metalness: defaultMate[i].metalness,
-              roughness: defaultMate[i].roughness,
-              clearcoat: defaultMate[i].clearcoat,
-              clearcoatRoughness: defaultMate[i].clearcoatRoughness,
+              map: defaultMate ? defaultMate[i]?.map : null,
+              metalness: defaultMate ? defaultMate[i]?.metalness : null,
+              roughness: defaultMate ? defaultMate[i]?.roughness : null,
+              clearcoat: defaultMate ? defaultMate[i]?.clearcoat : null,
+              clearcoatRoughness: defaultMate
+                ? defaultMate[i]?.clearcoatRoughness
+                : null,
             });
+
             ref.current.children[i].material = material;
           } else if (defaultMate) {
             ref.current.children[i].material = defaultMate[i];
@@ -137,7 +137,13 @@ function RenderModel(props) {
         }
       })
       .catch((err) => console.log(err));
-  }, [customizeInfo, listNodes, listMaterials]);
+  };
+
+  useEffect(() => {
+    //load texture
+    console.log("run preload");
+    preloadTexture();
+  }, [customizeInfo, listNodes, modelUrl]);
 
   //generate mesh to render
   useEffect(() => {
@@ -152,6 +158,7 @@ function RenderModel(props) {
       listMesh.push(item);
     }
     setMeshs(listMesh);
+    console.log("render");
   }, [customizeInfo, listNodes, listMaterials]);
 
   // Animate model
@@ -413,7 +420,11 @@ function ExportCustomInformation(props) {
         </YLButton>
       </Can>
 
-      <AddNameCustomize open={openDialog} setOpen={setOpenDialog} />
+      <AddNameCustomize
+        open={openDialog}
+        setOpen={setOpenDialog}
+        customizeId={captureModel.customizeId}
+      />
       <ConfirmPopupV2
         children={<i />}
         title={getTitleNotAllowRoles()}
@@ -503,14 +514,18 @@ export default function Customize(props) {
     }
   };
   useEffect(() => {
-    WebFont.load({
-      google: {
-        families: FONTS_CUSTOMIZE,
-      },
-    });
+    try {
+      WebFont.load({
+        google: {
+          families: FONTS_CUSTOMIZE,
+        },
+      });
+    } catch (e) {
+      console.log("Lỗi tải font");
+    }
   }, []);
-  useEffect(async () => {
-    await fetchMaterialInfo(productId, isEdit);
+  useEffect(() => {
+    fetchMaterialInfo(productId, isEdit);
   }, [productId, isEdit]);
   if (product.isLoading) {
     return <Loading hasLayout />;

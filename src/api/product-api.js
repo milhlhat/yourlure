@@ -60,8 +60,8 @@ const ProductAPI = {
     const url = `/model3d/customize-price`;
     return AxiosClient.get(url);
   },
-  checkDuplicateCustomName: (name) => {
-    const url = `/model3d/custom-name-duplicate?name=${name}`;
+  checkDuplicateCustomName: (name, customizeId) => {
+    const url = `/model3d/custom-name-duplicate?name=${name}&customizeId=${customizeId}`;
     return AxiosClient.get(url); // true là trùng
   },
 };

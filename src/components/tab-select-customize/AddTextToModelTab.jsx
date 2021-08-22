@@ -138,9 +138,7 @@ function AddTextToModelTab() {
                   onChange={(e) => handleChangeInputAddText(e)}
                   maxLength="30"
                 />
-              </div>
-
-              <div className={"group-select-text-attribute"}>
+                <span className={"label"}>Kiểu chữ</span>
                 <select
                   className={"form-select select-font"}
                   style={{
@@ -166,6 +164,9 @@ function AddTextToModelTab() {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className={"group-select-text-attribute"}>
                 <select
                   className={"form-select"}
                   onChange={(e) => {

@@ -53,7 +53,7 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 function AddNameCustomize(props) {
-  const { open, setOpen } = props;
+  const { open, setOpen, customizeId } = props;
   const captureModel = useSelector((state) => state.captureModel);
   //Dialog
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("xs"));
@@ -79,9 +79,13 @@ function AddNameCustomize(props) {
   const dispatch = useDispatch();
   const onsubmit = async (data) => {
     const name = data.customName;
-    const isDuplicateName = await checkDuplicateCustomName(name);
-    console.log(isDuplicateName);
-    if (parseString2Boolean(isDuplicateName.data)) {
+    try {
+      // await checkDuplicateCustomName(name, customizeId);
+
+      const action = setCaptureModel({ isCapture: true, name: name });
+      dispatch(action);
+      setOpen(false);
+    } catch (e) {
       setError(
         "customName",
         {
@@ -90,10 +94,6 @@ function AddNameCustomize(props) {
         },
         { shouldFocus: true }
       );
-    } else {
-      const action = setCaptureModel({ isCapture: true, name: name });
-      dispatch(action);
-      setOpen(false);
     }
   };
   const setInitialValue = () => {
