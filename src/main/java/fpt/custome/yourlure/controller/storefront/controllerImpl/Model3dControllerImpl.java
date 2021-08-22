@@ -93,10 +93,13 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name) {
+    public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name, Long customizeId) {
         try{
             User user = userService.whoami(rq);
-            return new ResponseEntity<>(customizeModelService.isDuplicatedCustomName(user, name), HttpStatus.OK);
+            if(customizeModelService.isDuplicatedCustomName(user, name, customizeId)){
+                return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Tên này đã được sử dụng", HttpStatus.CONFLICT);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -62,7 +62,7 @@ public interface Model3dController {
 
     @GetMapping(value = "/custom-name-duplicate")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, @RequestParam String name);
+    ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, @RequestParam String name, @RequestParam Long customizeId);
 
     @PostMapping(value = "/create-custom")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")

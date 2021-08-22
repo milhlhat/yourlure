@@ -35,6 +35,8 @@ public interface CustomizeModelService {
 
     boolean isDuplicatedCustomName(User user, String name);
 
+    boolean isDuplicatedCustomName(User user, String name, Long customizeId);
+
     @Transactional
     CustomModelDtoOut updateCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws Exception;
 

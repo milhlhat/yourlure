@@ -230,6 +230,16 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         return user.getCustomizeModels().stream().anyMatch(customizeModel -> customizeModel.getName().equals(customName));
     }
 
+    public boolean isDuplicatedCustomName(User user, String customName, Long customizeId) {
+        CustomizeModel customizeModel = customizeModelRepos.getById(customizeId);
+        if (!customizeModel.getName().equals(customName)) {
+            if (isDuplicatedCustomName(user, customName)) {
+                throw new ValidationException("Tên " + customName + " đã tồn tại! vui lòng chọn tên khác.");
+            }
+        }
+        return false;
+    }
+
     @Override
     public CustomModelDtoOut createCustomizeModel(HttpServletRequest rq, CustomModelDtoInput customModelDtoInput) throws IOException {
 
