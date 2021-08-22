@@ -101,7 +101,7 @@ function RenderModel(props) {
       .then((result) => {
         for (let i = 0; i < result.length; i++) {
           const r = result[i];
-
+          // console.log(r);
           if (r) {
             textureLoader.load(r, (textureResult) => {
               textureResult.flipY = false;
@@ -116,6 +116,7 @@ function RenderModel(props) {
                 clearcoat: defaultMate[i].clearcoat,
                 clearcoatRoughness: defaultMate[i].clearcoatRoughness,
               });
+
               ref.current.children[i].material = material;
             });
           }
@@ -282,7 +283,7 @@ function CanvasModel(props) {
             captureModel={captureModel}
             handleExportModel={handleExportModel}
           />
-          <Environment preset="sunset" background={false} />
+          <Environment preset="city" background={false} />
           <ContactShadows
             rotation-x={Math.PI / 2}
             position={[0, -0.8, 0]}

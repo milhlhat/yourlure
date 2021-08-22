@@ -35,8 +35,8 @@ function Sidebar(props) {
               href="#"
               className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
             >
-            <img src={logo} alt="#1 Tuỳ biến mồi lure" className="logo" />
-            <img src={logoText} className="logo-text " />
+              <img src={logo} alt="#1 Tuỳ biến mồi lure" className="logo" />
+              <img src={logoText} className="logo-text " />
             </a>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
@@ -150,21 +150,21 @@ function Sidebar(props) {
                   <span className="text-side-bar"> Sự kiện</span>
                 </Link>
               </li>
-              <Can do={"read-write"} on={"admin"}>
-                <li>
-                  <Link
-                    to={DEFINELINK.manager + DEFINELINK.managementBackup}
-                    className={`nav-link ${
-                      path.indexOf(DEFINELINK.managementBackup) > -1
-                        ? "active"
-                        : "link-dark"
-                    }`}
-                  >
-                    <i className="fal fa-hdd" />
-                    <span className="text-side-bar"> Sao lưu</span>
-                  </Link>
-                </li>
-              </Can>
+              {/*<Can do={"read-write"} on={"admin"}>*/}
+              {/*  <li>*/}
+              {/*    <Link*/}
+              {/*      to={DEFINELINK.manager + DEFINELINK.managementBackup}*/}
+              {/*      className={`nav-link ${*/}
+              {/*        path.indexOf(DEFINELINK.managementBackup) > -1*/}
+              {/*          ? "active"*/}
+              {/*          : "link-dark"*/}
+              {/*      }`}*/}
+              {/*    >*/}
+              {/*      <i className="fal fa-hdd" />*/}
+              {/*      <span className="text-side-bar"> Sao lưu</span>*/}
+              {/*    </Link>*/}
+              {/*  </li>*/}
+              {/*</Can>*/}
               <Can do={"read-write"} on={"customer"}>
                 <li>
                   <Link
