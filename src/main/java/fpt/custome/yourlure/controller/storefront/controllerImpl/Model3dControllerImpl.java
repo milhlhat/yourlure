@@ -94,13 +94,16 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name, Long customizeId) {
-        try{
+        try {
             User user = userService.whoami(rq);
-            if(customizeModelService.isDuplicatedCustomName(user, name, customizeId)){
+            if (customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
                 return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
             }
             return new ResponseEntity<>("Tên này đã được sử dụng", HttpStatus.CONFLICT);
-        }catch (Exception e){
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -114,7 +117,7 @@ public class Model3dControllerImpl implements Model3dController {
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (IOException e){
+        } catch (IOException e) {
             return new ResponseEntity<>("Tạo tuỳ biến thất bại", HttpStatus.BAD_REQUEST);
         }
     }
@@ -126,7 +129,7 @@ public class Model3dControllerImpl implements Model3dController {
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Cập nhật thất bại", HttpStatus.BAD_REQUEST);
         }
     }
@@ -157,9 +160,9 @@ public class Model3dControllerImpl implements Model3dController {
 
     @Override
     public ResponseEntity<Object> getCustomizePrice() {
-        try{
-           return new ResponseEntity<>(customizeModelService.getCustomizePrice(), HttpStatus.OK);
-        }catch (Exception e){
+        try {
+            return new ResponseEntity<>(customizeModelService.getCustomizePrice(), HttpStatus.OK);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -231,13 +231,13 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     }
 
     public boolean isDuplicatedCustomName(User user, String customName, Long customizeId) {
-        CustomizeModel customizeModel = customizeModelRepos.getById(customizeId);
+        CustomizeModel customizeModel = customizeModelRepos.findById(customizeId).orElseThrow((() -> new ValidationException("Không tồn tại Model này!")));
         if (!customizeModel.getName().equals(customName)) {
             if (isDuplicatedCustomName(user, customName)) {
                 throw new ValidationException("Tên " + customName + " đã tồn tại! vui lòng chọn tên khác.");
             }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -248,7 +248,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
 
         User user = userRepos.findByPhone(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(rq)));
         Optional<Model3d> m3d = model3dRepos.findById(customModelDtoInput.getModel3dId());
-        if(!m3d.isPresent()){
+        if (!m3d.isPresent()) {
             throw new ValidationException("Không tồn tại model này!");
         }
         if (isDuplicatedCustomName(user, customModelDtoInput.getName())) {
