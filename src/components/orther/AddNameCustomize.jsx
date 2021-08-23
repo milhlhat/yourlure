@@ -80,7 +80,7 @@ function AddNameCustomize(props) {
   const onsubmit = async (data) => {
     const name = data.customName;
     try {
-      // await checkDuplicateCustomName(name, customizeId);
+      await checkDuplicateCustomName(name, customizeId);
 
       const action = setCaptureModel({ isCapture: true, name: name });
       dispatch(action);
