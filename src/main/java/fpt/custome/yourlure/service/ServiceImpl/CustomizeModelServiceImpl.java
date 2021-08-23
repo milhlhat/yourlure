@@ -231,9 +231,12 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
     }
 
     public boolean isDuplicatedCustomName(User user, String customName, Long customizeId) {
+        if(customizeId == null){
+            return isDuplicatedCustomName(user, customName);
+        }
         CustomizeModel customizeModel = customizeModelRepos.findById(customizeId).orElse(null);
         if (customizeModel == null){
-            return true;
+            throw new ValidationException("Không tìm thấy tuỳ biế này!");
         }
         if (!customizeModel.getName().equals(customName)) {
             if (isDuplicatedCustomName(user, customName)) {
