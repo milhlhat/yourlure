@@ -16,7 +16,7 @@
     ```
     sudo /usr/bin/java -jar target/yourlure-0.0.1-SNAPSHOT.jar
     ```
-
+  - Create .sh file and give permission to read
 
   - Create service for our application
 
