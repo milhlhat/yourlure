@@ -72,24 +72,31 @@ public class AdminUserControllerImpl implements AdminUserController {
     public ResponseEntity<Object> staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id) {
         try {
             userService.staffUpdateById(adminStaffDtoInput, id);
+            return new ResponseEntity<>("Thêm thành công!", HttpStatus.OK);
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
     public ResponseEntity<Object> staffSave(AdminStaffDtoInput adminStaffDtoInput) {
         try {
             userService.staffSave(adminStaffDtoInput);
+            return new ResponseEntity<>("Thêm thành công!", HttpStatus.OK);
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
