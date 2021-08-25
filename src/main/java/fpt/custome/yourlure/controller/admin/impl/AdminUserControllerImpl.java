@@ -72,7 +72,7 @@ public class AdminUserControllerImpl implements AdminUserController {
     public ResponseEntity<Object> staffUpdateById(AdminStaffDtoInput adminStaffDtoInput, Long id) {
         try {
             userService.staffUpdateById(adminStaffDtoInput, id);
-            return new ResponseEntity<>("Thêm thành công!", HttpStatus.OK);
+            return new ResponseEntity<>("Sửa thành công!", HttpStatus.OK);
 
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
