@@ -218,13 +218,15 @@ export const FormTableVoucher = ({ methods, watchForm }) => {
             />
           </td>
           <td>
-            <YlInputFormHook
-              name={"minCheckoutItemsQuantity"}
-              label={"Số lượng tối thiểu"}
-              placeholder="Số lượng tối thiểu"
-              methods={methods}
-              type={"number"}
-            />
+            <div className={"d-none"}>
+              <YlInputFormHook
+                name={"minCheckoutItemsQuantity"}
+                label={"Số lượng tối thiểu"}
+                placeholder="Số lượng tối thiểu"
+                methods={methods}
+                type={"number"}
+              />
+            </div>
           </td>
         </tr>
       </tbody>
