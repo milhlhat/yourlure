@@ -69,7 +69,7 @@ function Payment(props) {
       let disCost = Number(code.discountValue * totalPrice(cartData));
       if (disCost > code.maxValue) disCost = code.maxValue;
       if (disCost > totalPrice(cartData)) disCost = totalPrice(cartData);
-      setDiscount(code.discountValue * totalPrice(cartData));
+      setDiscount(disCost);
     }
     if (code.type === "Free Ship") {
       setShipping(0);
