@@ -72,7 +72,7 @@ public class FishServiceImpl implements FishService {
     @Override
     public Object save(FishDtoInput fishDtoInput) {
         if (fishDtoInput != null) {
-            if (fishRepos.findByFishNameContainsIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
+            if (fishRepos.findByFishNameIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
                 throw new ValidationException("Tên cá này đã có!");
             }
             Fish fishInput = mapper.map(fishDtoInput, Fish.class);
@@ -87,7 +87,7 @@ public class FishServiceImpl implements FishService {
     public Object update(FishDtoInput fishDtoInput, Long id) {
 
         if (id != null && fishDtoInput != null) {
-            if (fishRepos.findByFishNameContainsIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
+            if (fishRepos.findByFishNameIgnoreCase(fishDtoInput.getFishName()).isPresent()) {
                 throw new ValidationException("Tên cá này đã có!");
             }
             Fish fishToUpdate = fishRepos.findById(id).get();

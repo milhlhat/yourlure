@@ -13,4 +13,6 @@ public interface FishRepos extends JpaRepository<Fish, Long> {
 
     Optional<Fish> findByFishNameContainsIgnoreCase(String keyword);
 
+    Optional<Fish> findByFishNameIgnoreCase(String keyword);
+
 }
