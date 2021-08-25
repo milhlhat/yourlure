@@ -41,7 +41,7 @@ function ManagerFishEdit(props) {
           data: response,
           success: true,
         });
-        setValue("fishName",response?.fishName)
+        setValue("fishName", response?.fishName);
       }
     } catch (error) {
       console.log("fail to fetch fish ");
@@ -53,7 +53,6 @@ function ManagerFishEdit(props) {
   }, [fishID]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const response = await ManagerFishAPI.update(data, fishID);
       if (response.error) {
@@ -65,7 +64,7 @@ function ManagerFishEdit(props) {
         history.push("/manager/fish");
       }
     } catch (error) {
-      alert("update thất bại");
+      alert(error.response.data);
       console.log("fail to fetch add fish");
     }
   };
@@ -83,7 +82,7 @@ function ManagerFishEdit(props) {
             methods={methods}
             placeholder="Nhập tên cá"
             name="fishName"
-            label="Tên cá(*)"
+            label="Tên cá"
             isRequired
             onBlur={(e) => {
               e.target.value = e.target.value.trim();
@@ -93,7 +92,11 @@ function ManagerFishEdit(props) {
               setValue("fishName", e.target.value.trim());
             }}
           />
-          <YLButton variant="primary" type="submit" value="Xong" />
+
+          <div className="mt-3 d-flex justify-content-center">
+            <YLButton variant="primary" type="submit" value="Xong" />
+            <YLButton variant="link" to="/manager/fish" value="Hủy" />
+          </div>
         </form>
       </div>
     </div>
