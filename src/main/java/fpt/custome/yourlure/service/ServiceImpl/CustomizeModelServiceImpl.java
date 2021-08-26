@@ -240,10 +240,10 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
         if (!customizeModel.getName().equals(customName)) {
             if (isDuplicatedCustomName(user, customName)) {
-                throw new ValidationException("Tên " + customName + " đã tồn tại! vui lòng chọn tên khác.");
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @Override
