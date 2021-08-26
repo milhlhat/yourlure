@@ -96,7 +96,7 @@ public class Model3dControllerImpl implements Model3dController {
     public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name, Long customizeId) {
         try {
             User user = userService.whoami(rq);
-            if (customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
+            if (!customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
                 return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
             }
             return new ResponseEntity<>("Tên này đã được sử dụng", HttpStatus.CONFLICT);
