@@ -62,7 +62,8 @@ function Login(props) {
       .matches(
         /((\+84|84|0)[35789][0-9]{8})\b/,
         "Vui lòng nhập đúng số điện thoại"
-      ),
+      )
+      .max(12,"Vui lòng nhập đúng số điện thoại"),
     password: Yup.string()
       .required("Vui lòng nhập mật khẩu")
       .min(6, "Mật khẩu phải có it nhất 6 ký tự")

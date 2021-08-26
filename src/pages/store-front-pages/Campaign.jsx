@@ -29,7 +29,8 @@ function Campaign() {
       .matches(
         /((\+84|84|0)[35789][0-9]{8})\b/,
         "Vui lòng nhập đúng số điện thoại"
-      ),
+      )
+      .max(12,"Vui lòng nhập đúng số điện thoại"),
     username: Yup.string()
       .required("Vui lòng nhập họ tên")
       .typeError("Vui lòng nhập họ tên"),
