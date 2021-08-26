@@ -99,16 +99,22 @@ public class Model3dControllerImpl implements Model3dController {
         try {
             User user = userService.whoami(rq);
             String name = params.get("name");
-            Long customizeId = Long.parseLong(params.get("customizeId"));
+            String customizeIdStr = params.get("customizeId");
+            if(customizeIdStr != null){
+                Long customizeId = Long.parseLong(customizeIdStr);
+                if (!customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
+                    return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
+                }
+            }
 
-            if (!customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
+            if (!customizeModelService.isDuplicatedCustomName(user, name)) {
                 return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
             }
             return new ResponseEntity<>("Tên này đã được sử dụng", HttpStatus.CONFLICT);
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (ClassCastException classCastException) {
+        } catch (NumberFormatException numberFormatException) {
             System.out.println("customizeId không hợp lệ!");
             return new ResponseEntity<>("customizeId không hợp lệ!", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
