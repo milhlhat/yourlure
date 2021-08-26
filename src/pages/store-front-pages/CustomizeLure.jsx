@@ -490,6 +490,7 @@ export default function Customize(props) {
         customizeId: customizeId,
         isEdit: isEdit,
         productId: productId,
+        modelName: response.name,
       });
       dispatch(captureAction);
       dispatch(action);

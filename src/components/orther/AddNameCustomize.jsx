@@ -97,11 +97,11 @@ function AddNameCustomize(props) {
     }
   };
   const setInitialValue = () => {
-    setValue("customName", captureModel?.name ? captureModel?.name : "");
+    setValue("customName", captureModel.modelName || "");
   };
 
   useEffect(() => {
-    setInitialValue();
+    // setInitialValue();
   }, []);
 
   return (
@@ -129,6 +129,7 @@ function AddNameCustomize(props) {
                   type="text"
                   id="name"
                   placeholder="Tên tùy biến"
+                  defaultValue={captureModel.modelName || ""}
                 />
                 {errors?.customName && (
                   <span
