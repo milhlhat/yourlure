@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -93,9 +95,12 @@ public class Model3dControllerImpl implements Model3dController {
     }
 
     @Override
-    public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, String name, Long customizeId) {
+    public ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, Map<String, String> params) {
         try {
             User user = userService.whoami(rq);
+            String name = params.get("name");
+            Long customizeId = Long.parseLong(params.get("customizeId"));
+
             if (!customizeModelService.isDuplicatedCustomName(user, name, customizeId)) {
                 return new ResponseEntity<>("Tên hợp lệ.", HttpStatus.OK);
             }
@@ -103,10 +108,13 @@ public class Model3dControllerImpl implements Model3dController {
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ClassCastException classCastException) {
+            System.out.println("customizeId không hợp lệ!");
+            return new ResponseEntity<>("customizeId không hợp lệ!", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

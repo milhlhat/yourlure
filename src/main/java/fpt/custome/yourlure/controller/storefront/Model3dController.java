@@ -10,11 +10,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RequestMapping(path = "/model3d")
 public interface Model3dController {
@@ -62,7 +64,7 @@ public interface Model3dController {
 
     @GetMapping(value = "/custom-name-duplicate")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, @RequestParam String name, @RequestParam Long customizeId);
+    ResponseEntity<Object> isDuplicateCustomName(HttpServletRequest rq, @RequestParam Map<String, String> params);
 
     @PostMapping(value = "/create-custom")
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")

@@ -236,7 +236,7 @@ public class CustomizeModelServiceImpl implements CustomizeModelService {
         }
         CustomizeModel customizeModel = customizeModelRepos.findById(customizeId).orElse(null);
         if (customizeModel == null){
-            throw new ValidationException("Không tìm thấy tuỳ biế này!");
+            throw new ValidationException("Không tìm thấy tuỳ biến này!");
         }
         if (!customizeModel.getName().equals(customName)) {
             if (isDuplicatedCustomName(user, customName)) {
