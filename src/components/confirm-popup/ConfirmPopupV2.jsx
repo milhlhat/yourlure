@@ -61,7 +61,6 @@ export default function ConfirmPopupV2(props) {
         )}
         <DialogActions>
           <Button
-            autoFocus
             onClick={handleClose}
             style={{
               color: "green",

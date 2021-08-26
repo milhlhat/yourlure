@@ -444,7 +444,8 @@ export default function Customize(props) {
 
   const dispatch = useDispatch();
   const productId = new URLSearchParams(props.location.search).get("productId");
-  const isEdit = new URLSearchParams(props.location.search).get("isEdit");
+  const isEdit =
+    new URLSearchParams(props.location.search).get("isEdit") || false;
   const customizeId = new URLSearchParams(props.location.search).get(
     "customizeId"
   );
