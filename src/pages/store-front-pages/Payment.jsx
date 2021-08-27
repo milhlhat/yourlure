@@ -248,6 +248,9 @@ function Payment(props) {
                     <input
                       className="form-control"
                       onChange={(e) => setDiscountValue(e.target.value)}
+                      onBlur={(e)=>{
+                        setDiscountValue(e.target.value.trim())
+                      }}
                       type="text"
                       id="voucher"
                       value={discountValue ? discountValue : ""}
@@ -267,6 +270,7 @@ function Payment(props) {
                           variant="primary"
                           disabled={discountLoad}
                           type="button"
+                          disabled={!discountValue}
                         >
                           Áp dụng{" "}
                           {discountLoad && (

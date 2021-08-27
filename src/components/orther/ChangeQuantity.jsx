@@ -1,6 +1,7 @@
 import React from "react";
 import "assets/scss/scss-components/orther/change-quantity.scss";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 function ChangeQuantity(props) {
   let { quantity, setQuantity } = props;
@@ -11,7 +12,11 @@ function ChangeQuantity(props) {
   };
   const increment = () => {
     let updateQuantity = Number(quantity) + 1;
-    setQuantity(updateQuantity);
+    if (updateQuantity > 50) {
+      toast.warning("Số lượng mua không được quá 50.");
+    } else {
+      setQuantity(updateQuantity);
+    }
   };
   return (
     <div className="product-details-quantity d-flex">
