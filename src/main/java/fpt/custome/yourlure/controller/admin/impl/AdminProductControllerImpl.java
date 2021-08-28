@@ -109,8 +109,14 @@ public class AdminProductControllerImpl implements AdminProductController {
 
     @Override
     public ResponseEntity<Object> uploadFile(MultipartFile[] files) {
-        List<String> result = fileService.saveMultipartFiles(files, FileService.UPLOADS);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try{
+            List<String> result = fileService.saveMultipartFiles(files, FileService.UPLOADS);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("Lỗi hệ thống", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @Override
