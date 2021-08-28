@@ -48,23 +48,24 @@ function PhoneForm(props) {
   const history = useHistory();
   const { changeTab } = props;
   const register = async (value) => {
-    try {
-      const response = await PhoneAPI.checkPhoneExist(value);
-      if (response.error) {
-        throw new Error(response.error);
-      } else {
-        if (response.data == false) {
-          throw new Error();
-        }
-        changeTab(1, value);
-      }
-    } catch (error) {
-      if (error?.response?.status - 500 >= 0) {
-        toast.error("Lỗi hệ thống");
-      } else {
-        toast.error("Số điện thoại chưa được đăng ký trước đó");
-      }
-    }
+    changeTab(1, value);
+    // try {
+    //   const response = await PhoneAPI.checkPhoneExist(value);
+    //   if (response.error) {
+    //     throw new Error(response.error);
+    //   } else {
+    //     if (response.data == false) {
+    //       throw new Error();
+    //     }
+    //     changeTab(1, value);
+    //   }
+    // } catch (error) {
+    //   if (error?.response?.status - 500 >= 0) {
+    //     toast.error("Lỗi hệ thống");
+    //   } else {
+    //     toast.error("Số điện thoại chưa được đăng ký trước đó");
+    //   }
+    // }
   };
   //constructor value for formik field
   const initialValues = {
@@ -130,19 +131,15 @@ function OTPForm(props) {
   const { changeTab, info } = props;
   console.log(info);
   const [isDisableSendOtp, setDisableSendOtp] = useState(false);
-  const submitOTP = (value) => {
-    console.log(value);
-    changeTab(2, value);
-  };
   //constructor value for formik field
   const initialValues = {
     otp: "",
     phone: info,
   };
   const [countTime, setCountTime] = useState(0);
+  const [loading, setLoading] = useState(false);
   //
   const sentOTP = async () => {
-    console.log("send OTP");
     setDisableSendOtp(true);
     setCountTime(TIME_COUNT_DOWN);
     let sendCountTime;
@@ -177,7 +174,33 @@ function OTPForm(props) {
       .required("Vui lòng nhập mã OTP")
       .matches(/([0-9]{6})\b/, "Vui lòng nhập đúng mã OTP")
       .max(6, "Vui lòng nhập đúng mã OTP"),
+      password: Yup.string()
+        .trim()
+        .required("Vui lòng nhập mật khẩu")
+        .min(6, "Mật khẩu phải có it nhất 6 ký tự")
+        .max(32, "Mật khẩu không được vượt quá 32 ký tự"),
+      rePassword: Yup.string()
+        .trim()
+        .oneOf([Yup.ref("password"), null], "Mật khẩu không khớp")
+        .min(6, "Mật khẩu phải chứa từ 6-32 ký tự")
+        .max(32, "Mật khẩu phải chứa từ 6-32 ký tự")
+        .required("Vui lòng nhập mật khẩu"),
   });
+  const submitPassword = async (data) => {
+    try {
+      setLoading(true);
+      const response = await UserApi.resetPassword(data);
+      if (response.error) {
+        throw new Error(response.error);
+      }
+      setLoading(false);
+      toast.success("Đổi mật khẩu thành công");
+      history.push("/login");
+    } catch (error) {
+      setLoading(false);
+      toast.error(error.response.data);
+    }
+  };
   useEffect(() => {
     sentOTP();
   }, []);
@@ -189,8 +212,7 @@ function OTPForm(props) {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            console.log("submited");
-            submitOTP(values);
+            submitPassword(values);
           }}
         >
           {(formikProps) => {
@@ -216,7 +238,21 @@ function OTPForm(props) {
                     ></YLButton>
                   </div>
                 </div>
-                <div className="otp-form">
+                <FastField
+                    name="password"
+                    type="password"
+                    component={InputField}
+                    label="Mật khẩu"
+                    placeholder="Nhập mật khẩu"
+                  ></FastField>
+                  <FastField
+                    name="rePassword"
+                    type="password"
+                    component={InputField}
+                    label="Nhập lại mật khẩu"
+                    placeholder="Nhập lại mật khẩu"
+                  ></FastField>
+                <div className="otp-form mt-2">
                   <YLButton
                     type="submit"
                     variant="primary"
