@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -85,10 +86,11 @@ function RenderModel(props) {
     }
     return Promise.all(promises);
   };
-
+  const getDefaultMate = useMemo(async () => {
+    return await getDefaultMaterials(modelUrl);
+  }, [modelUrl]);
   const preloadTexture = async () => {
-    let defaultMate = await getDefaultMaterials(modelUrl);
-
+    const defaultMate = await getDefaultMate;
     const textureLoader = new THREE.TextureLoader();
     promisesTextureDraw(listNodes, customizeInfo)
       .then((result) => {
