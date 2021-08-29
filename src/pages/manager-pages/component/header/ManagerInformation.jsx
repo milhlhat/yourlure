@@ -81,7 +81,6 @@ function ManagerInformation(props) {
     resolver: yupResolver(schema),
   });
   const onsubmit = async (data) => {
-    console.log(data);
     try {
       const response = await UserApi.update(data);
       if (response.error) {
@@ -112,7 +111,6 @@ function ManagerInformation(props) {
   //format display role
   const displayRole = (role) => {
     if (!role) return "-";
-    console.log(role);
     let rs = role.reduce((res, r) => {
       return res + getRole(r) + ", ";
     }, "");
@@ -199,7 +197,6 @@ function ManagerInformation(props) {
                         <tr>
                           <th className="text-end">Chức vụ:</th>
                           <td className="ps-3">
-                            {console.log(account?.data)}
                             {displayRole(account?.data?.roles)}
                           </td>
                         </tr>

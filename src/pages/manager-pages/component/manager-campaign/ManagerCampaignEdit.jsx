@@ -20,9 +20,9 @@ import { SUPPORTED_IMAGE_FORMATS } from "../../../../constants/product-config";
 import { uploadMultiFiles } from "../../../../api/manager-product-api";
 import DEFINELINK from "../../../../routes/define-link";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { date } from "yup/lib/locale";
 
 function ManagerCampignEdit(props) {
-  const canBack = props.location.canBack;
   const dispatch = useDispatch();
 
   const campaignId = props.match.params.id;
@@ -31,8 +31,6 @@ function ManagerCampignEdit(props) {
     ...VALIDATE_CAMPAIGN_SCHEMA,
     newImages: yup.mixed().when("imgList", {
       is: (imgList) => {
-        console.log(imgList);
-
         return imgList?.length > 0;
       },
       then: yup.mixed().nullable(),
@@ -64,7 +62,6 @@ function ManagerCampignEdit(props) {
     handleSubmit,
     setValue,
   } = methods;
-  console.log(errors);
   const handleGetOldImage = useCallback(async () => {
     const response = await getCampaignById(campaignId);
     return response.imageCollection;
@@ -81,17 +78,28 @@ function ManagerCampignEdit(props) {
       setValue("banner", response.banner);
       setValue("description", response.description);
       setValue("content", response.content);
+      // setValue(
+      //   "startDate",
+
+      //   response.startDate ? response.startDate.substr(0, 10) : ""
+      // );
       setValue(
-        "startDate",
+        "biginDate",
+
         response.startDate ? response.startDate.substr(0, 10) : ""
       );
+      // setValue(
+      //   "endDate",
+      //   response.endDate ? response.endDate.substr(0, 10) : ""
+      // );
       setValue(
-        "endDate",
+        "finishDate",
         response.endDate ? response.endDate.substr(0, 10) : ""
       );
       setValue("imgList", response.imageCollection);
       setValue("newImages", []);
       setValue("imageCollection", []);
+      setValue("imageCollectionRemove", []);
     } catch (error) {
       toast.error("Lỗi hệ thống");
     }
@@ -100,18 +108,9 @@ function ManagerCampignEdit(props) {
     fetchCampaign(campaignId);
   }, [campaignId]);
 
-  useEffect(() => {
-    if (canBack) {
-      const action = setIsBack({
-        canBack: canBack.canBack,
-        path: canBack.path,
-        label: canBack.label,
-      });
-      dispatch(action);
-    }
-  }, [canBack]);
 
   const onsubmit = async (data) => {
+    data={...data,endDate:data.finishDate,startDate:data.biginDate}
     try {
       if (data.newImages && data.newImages.length > 0) {
         const fileLinks = await uploadMultiFiles(data.newImages);
@@ -155,12 +154,14 @@ function ManagerCampignEdit(props) {
                       </td>
                       <td>
                         <YlInputFormHook
-                          name={"startDate"}
+                          name={"biginDate"}
                           isRequired={true}
                           label={"Ngày bắt đầu"}
                           type="date"
                           methods={methods}
                         />
+                        
+                        {/* <input className="form-control"  {...register("biginDate")} type="date" /> */}
                       </td>
                     </tr>
                     <tr>
@@ -175,12 +176,13 @@ function ManagerCampignEdit(props) {
                       </td>
                       <td>
                         <YlInputFormHook
-                          name={"endDate"}
+                          name={"finishDate"}
                           isRequired={true}
                           label={"Ngày kết thúc"}
                           type="date"
                           methods={methods}
                         />
+                        {/* <input className="form-control" {...register("finishDate")} type="date" /> */}
                       </td>
                     </tr>
                     <tr>

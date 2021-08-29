@@ -78,7 +78,6 @@ function ManagerCampaign(props) {
   const handleDelete = async (id) => {
     try {
       const response = await deleteCampaignById(id);
-      console.log(response);
       if (response === true) {
         fetchManagerCampaign();
         toast.success("Xóa sự kiện thành công");
@@ -109,9 +108,7 @@ function ManagerCampaign(props) {
       return { ...prevState, isLoading: true };
     });
     try {
-      console.log(filter);
       const response = await getAllCampaign(filter);
-      console.log(response);
       setCampaignList({ data: response, isLoading: false, isSuccess: true });
     } catch (error) {
       setCampaignList({ data: null, isLoading: false, isSuccess: false });
