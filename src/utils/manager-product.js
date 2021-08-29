@@ -66,7 +66,9 @@ let managerProductUtils = {
     if (newTextureFiles && newTextureFiles?.length > 0) {
       let promiseQueue = [];
       newTextureFiles.forEach((item) => {
-        promiseQueue.push(uploadMultiTexture(item.files, item.materialId));
+        if (Array.isArray(item.files) && item.files?.length > 0) {
+          promiseQueue.push(uploadMultiTexture(item.files, item.materialId));
+        }
       });
       return Promise.all(promiseQueue);
     } else {

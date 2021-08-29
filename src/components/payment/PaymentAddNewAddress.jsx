@@ -92,7 +92,6 @@ function ManagerChangePassWord(props) {
         throw new Error();
       } else {
         handleClose();
-        setNewAddress(data);
         toast.success("Thêm địa chỉ thành công");
       }
     } catch (error) {
