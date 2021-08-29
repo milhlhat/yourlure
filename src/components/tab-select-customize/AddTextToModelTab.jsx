@@ -36,7 +36,12 @@ function AddTextToModelTab() {
   }, [customizeInfo, mId]);
 
   function handleChangeInputAddText(e) {
-    const value = e.target.value;
+    let value = e.target.value;
+    value = value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D");
     setText(value);
   }
 

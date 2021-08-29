@@ -208,7 +208,17 @@ function CanvasModel(props) {
       setExportStatus({ isLoading: false, isSuccess: false });
     }
   };
-
+  useEffect(() => {
+    try {
+      WebFont.load({
+        google: {
+          families: FONTS_CUSTOMIZE,
+        },
+      });
+    } catch (e) {
+      console.log("Error load font");
+    }
+  }, []);
   return (
     <div className="customize">
       <Canvas

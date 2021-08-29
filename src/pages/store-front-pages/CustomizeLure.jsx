@@ -525,7 +525,7 @@ export default function Customize(props) {
         },
       });
     } catch (e) {
-      console.log("Lỗi tải font");
+      console.log("Error load font");
     }
   }, []);
   useEffect(() => {
