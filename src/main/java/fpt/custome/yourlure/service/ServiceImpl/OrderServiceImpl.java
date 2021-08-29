@@ -140,7 +140,9 @@ public class OrderServiceImpl implements OrderService {
             if (item.getCustomModelId() != null) {
                 // get default price of product
                 // TODO: calculate price of model
-                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
+                CustomizeModel customizeModel = new CustomizeModel(customizeModelRepos.getById(item.getCustomModelId()));
+                customizeModel = customizeModelRepos.save(customizeModel);
+
                 Product product = customizeModel.getModel3d().getProduct();
                 if(product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
@@ -148,6 +150,7 @@ public class OrderServiceImpl implements OrderService {
                 Float defaultPrice = product.getDefaultPrice();
                 Float customAmount = calculateCustomizePrice(customizeModel);
                 Float totalPrice = defaultPrice + customAmount;
+                orderLine.setCustomModelId(customizeModel.getCustomizeId());
                 orderLine.setPrice(totalPrice);
                 orderLine.setImgThumbnail(customizeModel.getThumbnailUrl());
                 orderLine.setCustomModelName(customizeModel.getName());

@@ -42,5 +42,13 @@ public class CustomizeModel {
     @OneToMany(mappedBy = "customizeModel")
     private Collection<CustomMaterial> customMaterials;
 
+    public CustomizeModel(CustomizeModel original){
+        this.name = original.getName();
+        this.thumbnailUrl = original.getThumbnailUrl();
+        this.user = original.getUser();
+        this.model3d = original.getModel3d();
+        this.customMaterials = original.getCustomMaterials();
+    }
+
 
 }
