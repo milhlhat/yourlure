@@ -47,7 +47,6 @@ public class CustomizeModel {
         this.thumbnailUrl = original.getThumbnailUrl();
         this.user = original.getUser();
         this.model3d = original.getModel3d();
-        this.customMaterials = original.getCustomMaterials();
     }
 
 

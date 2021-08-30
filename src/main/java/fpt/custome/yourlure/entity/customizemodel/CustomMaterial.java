@@ -39,5 +39,15 @@ public class CustomMaterial {
     private String color;
     private String img;
 
+    public CustomMaterial(CustomMaterial original, CustomizeModel newModel){
+        this.defaultMaterial = original.getDefaultMaterial();
+        this.customizeModel = newModel;
+        this.text = original.getText();
+        this.textFont = original.getTextFont();
+        this.textSize = original.getTextSize();
+        this.color = original.getColor();
+        this.img = original.getImg();
+    }
+
 
 }

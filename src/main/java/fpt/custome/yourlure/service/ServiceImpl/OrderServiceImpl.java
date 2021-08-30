@@ -17,6 +17,7 @@ import fpt.custome.yourlure.service.ProductService;
 import fpt.custome.yourlure.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,6 +70,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CustomPriceRepos customPriceRepos;
+
+    @Autowired
+    private CustomMaterialRepos customMaterialRepos;
 
     @Autowired
     private CustomizeModelRepos customizeModelRepos;
@@ -138,11 +142,17 @@ public class OrderServiceImpl implements OrderService {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
 
             if (item.getCustomModelId() != null) {
+
+                // create a clone customize model to disable editable of customer
+                CustomizeModel original = customizeModelRepos.getById(item.getCustomModelId());
+                CustomizeModel customizeModel = new CustomizeModel(original);
+                customizeModel = customizeModelRepos.save(customizeModel);
+                for (CustomMaterial customMaterial : original.getCustomMaterials()) {
+                    customMaterialRepos.save(new CustomMaterial(customMaterial, customizeModel));
+                }
+
                 // get default price of product
                 // TODO: calculate price of model
-                CustomizeModel customizeModel = new CustomizeModel(customizeModelRepos.getById(item.getCustomModelId()));
-                customizeModel = customizeModelRepos.save(customizeModel);
-
                 Product product = customizeModel.getModel3d().getProduct();
                 if(product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
