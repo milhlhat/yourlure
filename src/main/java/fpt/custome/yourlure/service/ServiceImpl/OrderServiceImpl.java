@@ -147,8 +147,9 @@ public class OrderServiceImpl implements OrderService {
                 CustomizeModel original = customizeModelRepos.getById(item.getCustomModelId());
                 CustomizeModel customizeModel = new CustomizeModel(original);
                 customizeModel = customizeModelRepos.save(customizeModel);
+                customizeModel.setCustomMaterials(Collections.emptyList());
                 for (CustomMaterial customMaterial : original.getCustomMaterials()) {
-                    customMaterialRepos.save(new CustomMaterial(customMaterial, customizeModel));
+                    customizeModel.getCustomMaterials().add(customMaterialRepos.save(new CustomMaterial(customMaterial, customizeModel)));
                 }
 
                 // get default price of product
