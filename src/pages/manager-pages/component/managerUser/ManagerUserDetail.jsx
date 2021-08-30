@@ -69,7 +69,7 @@ function ManagerUserDetail(props) {
   };
   const options = [
     { value: "PENDING", lable: "Đang chờ xác nhận" },
-    { value: "ACCEPT", lable: "Đang giao" },
+    { value: "ACCEPT", lable: "Đã xác nhận" },
     { value: "CUSTOMER_REJECT", lable: "Đã hủy bởi khách hàng" },
     { value: "STAFF_REJECT", lable: "Đã hủy bởi của hàng" },
   ];

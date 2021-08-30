@@ -15,6 +15,7 @@ function CartProduct(props) {
   const cartData = props?.location?.cart;
   const ability = useContext(AbilityContext);
   const isLoggedIn = ability.can("login", "website");
+  const isManager = ability.can("read-write", "admin-staff");
   const state = useSelector((state) => state.cartGuest.carts);
   const [cart, setCart] = useState({
     data: null,
@@ -159,7 +160,7 @@ function CartProduct(props) {
   //   return <Loading />;
   // }
   // else
-   if (isLoggedIn) {
+   if (isManager) {
     return <NoPermistion />;
   }
   else
