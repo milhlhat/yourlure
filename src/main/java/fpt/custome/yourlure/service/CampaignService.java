@@ -6,6 +6,7 @@ import fpt.custome.yourlure.dto.dtoOut.AdminCampaignDtoOut;
 import fpt.custome.yourlure.dto.dtoOut.CampaignDtoOut;
 import org.springframework.data.domain.Pageable;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public interface CampaignService {
 
     Optional<Boolean> delete(Long id);
 
-    Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput);
+    Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) throws ParseException;
 
     Object adminGetAllRegister(String keyword,Long campaignId, Pageable pageable);
 

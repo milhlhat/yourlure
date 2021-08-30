@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -89,6 +91,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OtpService otpService;
 
+    public Date getDateWithoutTimeUsingFormat(Date date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "dd/MM/yyyy");
+        return formatter.parse(formatter.format(date));
+    }
+
     @Override
     public DiscountVoucher verifyDiscountCode(String discountCode) throws Exception {
         if (discountCode == null) {
@@ -100,11 +108,15 @@ public class OrderServiceImpl implements OrderService {
             throw new Exception("Mã giảm giá không đúng");
         }
 
-        if (voucher.getStart_date() == null || voucher.getStart_date().compareTo(new Date()) > 0) {
+        Date voucherStartDate = getDateWithoutTimeUsingFormat(voucher.getStart_date());
+        Date voucherEndDate = getDateWithoutTimeUsingFormat(voucher.getEnd_date());
+        Date currentDate = getDateWithoutTimeUsingFormat(new Date());
+
+        if (voucher.getStart_date() == null || voucherStartDate.after(currentDate)) {
             // the voucher is not start
             throw new Exception("Mã giảm giá chưa bắt đầu!");
         }
-        if (voucher.getEnd_date() == null || voucher.getEnd_date().compareTo(new Date()) < 0) {
+        if (voucher.getEnd_date() == null || voucherEndDate.before(currentDate)) {
             // expire voucher
             throw new Exception("Mã giảm giá đã hết hạn!");
         }
@@ -120,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
         return payment.get();
     }
 
-    public boolean validateWeightCustom(Float weight, Float minWeight, Float maxWeight){
+    public boolean validateWeightCustom(Float weight, Float minWeight, Float maxWeight) {
         if (weight != null && minWeight != null && maxWeight != null
                 && weight >= minWeight && weight <= maxWeight) {
             return true;
@@ -143,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
                 // TODO: calculate price of model
                 CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
                 Product product = customizeModel.getModel3d().getProduct();
-                if(product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                if (product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                 }
                 Float defaultPrice = product.getDefaultPrice();
@@ -162,13 +174,13 @@ public class OrderServiceImpl implements OrderService {
                 Variant variant = variantRepos.getById(item.getVariantId());
                 Product product = variant.getProduct();
                 int quantity = orderLine.getQuantity();
-                if(quantity > 50){
+                if (quantity > 50) {
                     throw new ValidationException("Bạn chỉ được mua tối đa 50 sản phẩm!");
                 }
-                if(quantity > variant.getQuantity()){
+                if (quantity > variant.getQuantity()) {
                     throw new ValidationException(product.getProductName() + ", " + variant.getVariantName() + " chỉ còn " + variant.getQuantity() + " sản phẩm!");
                 }
-                if(product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
+                if (product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())) {
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
                 }
                 if (variant.getQuantity() > 0) {
@@ -528,7 +540,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<AdminOrderDtoOut> getAll(String keyword, String typeSearch, Pageable pageable) {
 
-            Page<Order> list = orderRepos.findAllOrder("%"+keyword.trim()+"%", pageable);
+            Page<Order> list = orderRepos.findAllOrder("'%"+keyword.trim()+"%'", pageable);
             if (list.getContent().isEmpty()) {
                 throw new ValidationException("Không tìm thấy đơn hàng nào");
             } else {

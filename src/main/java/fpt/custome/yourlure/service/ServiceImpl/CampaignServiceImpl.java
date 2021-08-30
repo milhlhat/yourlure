@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -182,13 +184,22 @@ public class CampaignServiceImpl implements CampaignService {
         return Optional.of(false);
     }
 
+    public Date getDateWithoutTimeUsingFormat(Date date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "dd/MM/yyyy");
+        return formatter.parse(formatter.format(date));
+    }
+
     @Override
-    public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
+    public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) throws ParseException {
         if (campaignRegisterDtoInput != null) {
             if (!campaignRegisterRepos.findAllByPhoneAndAndCampaign_CampaignId(campaignRegisterDtoInput.getPhone(),campaignRegisterDtoInput.getCampaignId()).isPresent()) {
                 Campaign campaign = campaignRepos.findById(campaignRegisterDtoInput.getCampaignId()).orElseThrow(()->new ValidationException("Không có sự kiện này!"));
-                Date currentDate = new Date();
-                if ( currentDate.before(campaign.getStartDate()) || currentDate.after(campaign.getEndDate())){
+                Date currentDate = getDateWithoutTimeUsingFormat(new Date());
+                Date campaignStartDate = getDateWithoutTimeUsingFormat(campaign.getStartDate());
+                Date campaignEndDate = getDateWithoutTimeUsingFormat(campaign.getEndDate());
+
+                if ( currentDate.before(campaignStartDate) || currentDate.after(campaignEndDate)){
                     throw new ValidationException("Bạn phải đăng ký trong thời gian diễn ra sự kiện! vui lòng kiểm tra lại.");
                 }
                 CampaignRegister campaignRegister = mapper.map(campaignRegisterDtoInput, CampaignRegister.class);
