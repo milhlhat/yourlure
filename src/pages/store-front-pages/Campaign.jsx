@@ -92,6 +92,7 @@ function Campaign() {
         isSuccess: true,
       });
       setIsAvailable(new Date(response.endDate) - new Date() > 0);
+      setIsAvailable(new Date(response.startDate) <= new Date());
     } catch (error) {
       setCampaign({ data: null, isLoading: false, isSuccess: false });
     }
@@ -108,6 +109,7 @@ function Campaign() {
         isSuccess: true,
       });
       setIsAvailable(new Date(response.endDate) - new Date() > 0);
+      setIsAvailable(new Date(response.startDate) <= new Date());
     } catch (error) {
       setCampaign({ data: null, isLoading: false, isSuccess: false });
       toast.error("Hệ thống gặp lỗi lạ");
@@ -152,6 +154,7 @@ function Campaign() {
   }, []);
   const timeCountDown = () => {
     const endDate = new Date(campaign?.data?.endDate);
+    const startDate = new Date(campaign?.data?.startDate);
     let countDownInterval;
     const countTime = () => {
       const today = new Date();
@@ -172,6 +175,10 @@ function Campaign() {
           .padStart(2, "0")} `
       );
     };
+    if (startDate > new Date()) {
+      setCountdown("Sự kiện chưa bắt đầu");
+      return;
+    }
     if (endDate - new Date() > 0) {
       countDownInterval = setInterval(() => countTime(), 1000);
     } else setCountdown("Sự kiện đã kết thúc");
