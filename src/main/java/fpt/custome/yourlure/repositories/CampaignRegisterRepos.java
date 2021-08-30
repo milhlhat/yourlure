@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CampaignRegisterRepos extends JpaRepository<CampaignRegister, Long> {
 
-    Optional<CampaignRegister> findAllByPhone(String phone);
+    Optional<CampaignRegister> findAllByPhoneAndAndCampaign_CampaignId(String phone, Long campaignId);
 
     @Query(value = "SELECT\n" +
             "cr.* \n" +

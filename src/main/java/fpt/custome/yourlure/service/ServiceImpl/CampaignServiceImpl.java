@@ -185,7 +185,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public Object registerCampaign(CampaignRegisterDtoInput campaignRegisterDtoInput) {
         if (campaignRegisterDtoInput != null) {
-            if (!campaignRegisterRepos.findAllByPhone(campaignRegisterDtoInput.getPhone()).isPresent()) {
+            if (!campaignRegisterRepos.findAllByPhoneAndAndCampaign_CampaignId(campaignRegisterDtoInput.getPhone(),campaignRegisterDtoInput.getCampaignId()).isPresent()) {
                 Campaign campaign = campaignRepos.findById(campaignRegisterDtoInput.getCampaignId()).orElseThrow(()->new ValidationException("Không có sự kiện này!"));
                 Date currentDate = new Date();
                 if ( currentDate.before(campaign.getStartDate()) || currentDate.after(campaign.getEndDate())){
