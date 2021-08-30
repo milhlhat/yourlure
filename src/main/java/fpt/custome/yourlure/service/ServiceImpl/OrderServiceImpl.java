@@ -145,8 +145,7 @@ public class OrderServiceImpl implements OrderService {
 
                 // create a clone customize model to disable editable of customer
                 CustomizeModel original = customizeModelRepos.getById(item.getCustomModelId());
-                CustomizeModel customizeModel = new CustomizeModel(original);
-                customizeModel = customizeModelRepos.save(customizeModel);
+                CustomizeModel customizeModel = customizeModelRepos.saveWithoutUser(original.getName(), original.getThumbnailUrl(), original.getModel3d().getModelId());
                 customizeModel.setCustomMaterials(new ArrayList<>());
                 for (CustomMaterial customMaterial : original.getCustomMaterials()) {
                     CustomMaterial material = customMaterialRepos.save(new CustomMaterial(customMaterial, customizeModel));
