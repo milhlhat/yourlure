@@ -32,7 +32,7 @@ public class AdminOrderControllerImpl implements AdminOrderController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (ValidationException validationException) {
             System.out.println(validationException.getMessage());
-            return new ResponseEntity<>(validationException.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             e.printStackTrace();
         }

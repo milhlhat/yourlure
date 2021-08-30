@@ -540,7 +540,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<AdminOrderDtoOut> getAll(String keyword, String typeSearch, Pageable pageable) {
 
-            Page<Order> list = orderRepos.findAllOrder("'%"+keyword.trim()+"%'", pageable);
+            Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword.trim(), pageable);
             if (list.getContent().isEmpty()) {
                 throw new ValidationException("Không tìm thấy đơn hàng nào");
             } else {
