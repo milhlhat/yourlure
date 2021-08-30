@@ -142,18 +142,9 @@ public class OrderServiceImpl implements OrderService {
             OrderLine orderLine = mapper.map(item, OrderLine.class);
 
             if (item.getCustomModelId() != null) {
-
-                // create a clone customize model to disable editable of customer
-                CustomizeModel original = customizeModelRepos.getById(item.getCustomModelId());
-                CustomizeModel customizeModel = new CustomizeModel(original);
-                customizeModel = customizeModelRepos.save(customizeModel);
-                customizeModel.setCustomMaterials(new ArrayList<>());
-                for (CustomMaterial customMaterial : original.getCustomMaterials()) {
-                    customizeModel.getCustomMaterials().add(customMaterialRepos.save(new CustomMaterial(customMaterial, customizeModel)));
-                }
-
                 // get default price of product
                 // TODO: calculate price of model
+                CustomizeModel customizeModel = customizeModelRepos.getById(item.getCustomModelId());
                 Product product = customizeModel.getModel3d().getProduct();
                 if(product.getIsCustomizeWeight() && !validateWeightCustom(item.getWeight(), product.getMinWeight(), product.getMaxWeight())){
                     throw new ValidationException("Vui lòng chọn đúng trọng lượng trong khoảng " + product.getMinWeight() + " đến " + product.getMaxWeight());
