@@ -115,7 +115,7 @@ public class CampaignServiceImpl implements CampaignService {
                                 .build();
                         objUpdate.getImageCollection().add(image);
                     }
-                    fileService.deleteFiles((adminCampaignDtoInput.getImageCollectionRemove()));
+                    fileService.deleteFiles(adminCampaignDtoInput.getImageCollectionRemove());
                     campaignRepos.save(objUpdate);
                     //delete image
                     for (String link : adminCampaignDtoInput.getImageCollectionRemove()) {
