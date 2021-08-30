@@ -147,7 +147,7 @@ function About() {
         <h3 className={"text-center mb-3"}>Tuỳ biến chuyên nghiệp</h3>
         <iframe
           className={"youtube-frame"}
-          src="https://www.youtube.com/embed/wKPwJtC8eO0"
+          src="https://www.youtube.com/embed/_uEh0ldrHzI"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
