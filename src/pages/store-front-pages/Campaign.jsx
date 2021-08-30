@@ -30,7 +30,7 @@ function Campaign() {
         /((\+84|84|0)[35789][0-9]{8})\b/,
         "Vui lòng nhập đúng số điện thoại"
       )
-      .max(12,"Vui lòng nhập đúng số điện thoại"),
+      .max(12, "Vui lòng nhập đúng số điện thoại"),
     username: Yup.string()
       .required("Vui lòng nhập họ tên")
       .typeError("Vui lòng nhập họ tên"),
@@ -157,7 +157,7 @@ function Campaign() {
       const today = new Date();
       let ms = (endDate - today) % 86400000;
       if (ms < 1) clearInterval(countDownInterval);
-      const d = Math.floor((endDate - today) / 86400000);
+      const d = Math.floor((endDate - today) / 86400000) + 1;
       let h = Math.floor(ms / 3600000);
 
       let m = Math.floor((ms % 3600000) / 60000);

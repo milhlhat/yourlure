@@ -12,7 +12,7 @@ import {
 } from "./ManagerVoucherAddNew";
 import { toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { addDays } from "utils/format-string";
+import { addDays, formatDateToInputDate } from "utils/format-string";
 
 function ManagerVoucherEdit(props) {
   const voucherId = props.match.params.id;
@@ -33,8 +33,11 @@ function ManagerVoucherEdit(props) {
   const fetchVoucher = async () => {
     try {
       const response = await ManagerVoucherAPI.getById(voucherId);
-      response.start_date = response?.start_date.substr(0, 10);
-      response.end_date = response?.end_date.substr(0, 10);
+
+      const sDate = new Date(response?.start_date).toString();
+      const eDate = new Date(response?.end_date).toString();
+      response.start_date = formatDateToInputDate(sDate).substr(0, 10);
+      response.end_date = formatDateToInputDate(eDate).substr(0, 10);
       reset(response);
     } catch (error) {
       toast.error("Lấy thông tin mã giảm giá thất bại");
@@ -45,8 +48,8 @@ function ManagerVoucherEdit(props) {
   }, [voucherId, reset]);
 
   const onSubmit = async (data) => {
-    data.end_date= addDays(data.end_date,1);
-    data.start_date= addDays(data.start_date,1);
+    // data.end_date= addDays(data.end_date,1);
+    // data.start_date= addDays(data.start_date,1);
     if (data.type == "Free Ship") data.discountValue = 0;
     try {
       await ManagerVoucherAPI.update(data, voucherId);

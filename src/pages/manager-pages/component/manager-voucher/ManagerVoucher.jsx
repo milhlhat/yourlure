@@ -11,7 +11,11 @@ import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
 
 import "./scss/manager-discount-voucher.scss";
-import { convertToVND, formatDate, minusDays } from "../../../../utils/format-string";
+import {
+  convertToVND,
+  formatDate,
+  minusDays,
+} from "../../../../utils/format-string";
 import { toast } from "react-toastify";
 import { TYPE_OPTION } from "./ManagerVoucherAddNew";
 import ManagerSort from "../sort/ManagerSort";
@@ -125,9 +129,9 @@ function ManagerVoucher() {
         // } else return convertToVND(value) || "-";
         return "100% Phí vận chuyển";
       case TYPE_OPTION[0]:
-         if (maxValue && maxValue > value) {
+        if (maxValue && maxValue > value) {
           return convertToVND(maxValue);
-        } else{
+        } else {
           return `${value * 100}%` || "-";
         }
       default:
@@ -193,8 +197,10 @@ function ManagerVoucher() {
                     )}
                   </td>
                   <td>{item.code || "-"}</td>
-                  <td>{item.start_date ? formatDate(minusDays(item.start_date,1)) : "-"}</td>
-                  <td>{item.end_date ? formatDate(minusDays(item.end_date,1)) : "-"}</td>
+                  {/*<td>{item.start_date ? formatDate(minusDays(item.start_date,1)) : "-"}</td>*/}
+                  {/*<td>{item.end_date ? formatDate(minusDays(item.end_date,1)) : "-"}</td>*/}
+                  <td>{item.start_date ? formatDate(item.start_date) : "-"}</td>
+                  <td>{item.end_date ? formatDate(item.end_date) : "-"}</td>
                   <td>
                     <td className="d-flex float-end">
                       <img

@@ -175,8 +175,10 @@ function ManagerCampaign(props) {
                 >
                   <td>{(activePage - 1) * totalItem + i + 1}</td>
                   <td>{item?.banner ? item?.banner : "-"}</td>
-                  <td>{item.startDate ? formatDate(minusDays(item.startDate,1)) : "-"}</td>
-                  <td>{item.endDate ? formatDate(minusDays(item.endDate,1)) : "-"}</td>
+                  {/*<td>{item.startDate ? formatDate(minusDays(item.startDate,1)) : "-"}</td>*/}
+                  {/*<td>{item.endDate ? formatDate(minusDays(item.endDate,1)) : "-"}</td>  */}
+                  <td>{item.startDate ? formatDate(item.startDate) : "-"}</td>
+                  <td>{item.endDate ? formatDate(item.endDate) : "-"}</td>
                   <td
                     className={"item-action"}
                     onClick={(event) => event.stopPropagation()}

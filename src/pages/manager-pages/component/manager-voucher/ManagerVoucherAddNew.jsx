@@ -26,8 +26,8 @@ function ManagerVoucherAddNew() {
   } = methods;
   const watchForm = watch();
   const onsubmit = async (data) => {
-    data.end_date = addDays(data.end_date, 1);
-    data.start_date = addDays(data.start_date, 1);
+    // data.end_date = addDays(data.end_date, 1);
+    // data.start_date = addDays(data.start_date, 1);
     if (data.type == "Free Ship") data.discountValue = 0;
     try {
       await ManagerVoucherAPI.add(data);

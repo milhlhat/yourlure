@@ -21,7 +21,7 @@ import { uploadMultiFiles } from "../../../../api/manager-product-api";
 import DEFINELINK from "../../../../routes/define-link";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { date } from "yup/lib/locale";
-import { addDays } from "utils/format-string";
+import { addDays, formatDateToInputDate } from "utils/format-string";
 
 function ManagerCampignEdit(props) {
   const dispatch = useDispatch();
@@ -79,15 +79,15 @@ function ManagerCampignEdit(props) {
       setValue("banner", response.banner);
       setValue("description", response.description);
       setValue("content", response.content);
-      setValue(
-        "startDate",
 
-        response.startDate ? response.startDate.substr(0, 10) : ""
-      );
-      setValue(
-        "endDate",
-        response.endDate ? response.endDate.substr(0, 10) : ""
-      );
+      const sDate = new Date(response?.startDate).toString();
+      const eDate = new Date(response?.endDate).toString();
+      response.startDate = formatDateToInputDate(sDate).substr(0, 10);
+      response.endDate = formatDateToInputDate(eDate).substr(0, 10);
+
+      setValue("startDate", response.startDate || "");
+      setValue("endDate", response.endDate || "");
+
       setValue("imgList", response.imageCollection);
       setValue("newImages", []);
       setValue("imageCollection", []);
@@ -100,10 +100,9 @@ function ManagerCampignEdit(props) {
     fetchCampaign(campaignId);
   }, [campaignId]);
 
-
   const onsubmit = async (data) => {
-    data.endDate= addDays(data.endDate,1);
-    data.startDate= addDays(data.startDate,1);
+    // data.endDate= addDays(data.endDate,1);
+    // data.startDate= addDays(data.startDate,1);
     try {
       if (data.newImages && data.newImages.length > 0) {
         const fileLinks = await uploadMultiFiles(data.newImages);
@@ -153,7 +152,6 @@ function ManagerCampignEdit(props) {
                           type="date"
                           methods={methods}
                         />
-                        
                       </td>
                     </tr>
                     <tr>

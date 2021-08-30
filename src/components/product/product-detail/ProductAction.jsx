@@ -108,11 +108,12 @@ function ProductAction(props) {
       (product.maxWeight && data.weight > product.maxWeight) ||
       (product.minWeight && data.weight < product.minWeight)
     ) {
-      toast.warning(
-        `Vui lòng chọn độ nặng trong khoảng ${Number(
-          product.minWeight
-        )} - ${Number(product.maxWeight)}`
-      );
+      // toast.warning(
+      //   `Vui lòng chọn độ nặng trong khoảng ${Number(
+      //     product.minWeight
+      //   )} - ${Number(product.maxWeight)}`
+      // );
+      toast.warning("Độ nặng không phù hợp, vui lòng chỉnh lại độ nặng");
       setValue("weight", product.defaultWeight);
       setAddCart(false);
     } else {

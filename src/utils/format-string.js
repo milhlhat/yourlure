@@ -23,7 +23,15 @@ let FormatUtils = {
 
     return dd + "/" + mm + "/" + yyyy;
   },
+  formatDateToInputDate: (date) => {
+    if (date == null) return null;
+    let today = new Date(date);
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
 
+    return yyyy + "-" + mm + "-" + dd;
+  },
   getStatus: (status, reject) => {
     if (!status) return null;
     if (status === "PENDING") return "Đang chờ xác nhận";
@@ -54,8 +62,16 @@ let FormatUtils = {
     var result = new Date(date);
     result.setDate(result.getDate() - days);
     return result;
-  }
+  },
 };
-export const { convertToVND, totalPrice, formatDate, getStatus, getShipping,addDays,minusDays } =
-  FormatUtils;
+export const {
+  convertToVND,
+  totalPrice,
+  formatDate,
+  getStatus,
+  getShipping,
+  addDays,
+  minusDays,
+  formatDateToInputDate,
+} = FormatUtils;
 export default FormatUtils;
