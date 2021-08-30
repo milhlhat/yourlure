@@ -45,7 +45,6 @@ public class CustomizeModel {
     public CustomizeModel(CustomizeModel original){
         this.name = original.getName();
         this.thumbnailUrl = original.getThumbnailUrl();
-        this.user = original.getUser();
         this.model3d = original.getModel3d();
     }
 
