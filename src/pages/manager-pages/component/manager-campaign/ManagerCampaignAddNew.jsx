@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { uploadMultiFiles } from "../../../../api/manager-product-api";
 import { addCampaign } from "../../../../api/manager-campaign-api";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { addDays } from "utils/format-string";
 
 function ManagerVoucherAddNew(props) {
   const dispatch = useDispatch();
@@ -46,18 +47,17 @@ function ManagerVoucherAddNew(props) {
     formState: { errors, isSubmitting },
     handleSubmit,
   } = methods;
-  console.log(errors);
   const onsubmit = async (data) => {
+    data.endDate= addDays(data.endDate,1);
+    data.startDate= addDays(data.startDate,1);
     try {
       const fileLinks = await uploadMultiFiles(data.newImages);
       data.imageCollection = fileLinks;
       await addCampaign(data);
       toast.success("Thêm sự kiện thành công");
       history.push("/manager/campaign");
-      console.log(data);
     } catch (error) {
       toast.error("Thêm sự kiện thất bại");
-      console.log(error);
     }
   };
   useEffect(() => {

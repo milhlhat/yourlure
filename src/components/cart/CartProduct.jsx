@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { convertToVND, getShipping, totalPrice } from "utils/format-string";
 import CartAPI from "api/user-cart-api";
 import Loading from "components/Loading";
+import NoPermistion from "components/error-notify/NoPermistion";
 
 function CartProduct(props) {
   const cartData = props?.location?.cart;
@@ -158,10 +159,10 @@ function CartProduct(props) {
   //   return <Loading />;
   // }
   // else
-  //  if (isLoggedIn && !cart.isSuccess) {
-  //   return <ErrorLoad />;
-  // }
-  // else
+   if (isLoggedIn) {
+    return <NoPermistion />;
+  }
+  else
   return (
     <div className="container">
       {/* {console.log(cart)} */}

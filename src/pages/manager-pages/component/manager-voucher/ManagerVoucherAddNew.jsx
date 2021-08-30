@@ -9,6 +9,7 @@ import "./scss/manager-add-new-voucher.scss";
 import YlInputFormHook from "../../../../components/custom-field/YLInputFormHook";
 import { toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { addDays } from "utils/format-string";
 
 function ManagerVoucherAddNew() {
   const history = useHistory();
@@ -24,9 +25,10 @@ function ManagerVoucherAddNew() {
     watch,
   } = methods;
   const watchForm = watch();
-  console.log(watchForm);
   const onsubmit = async (data) => {
-    console.log(data);
+    data.end_date = addDays(data.end_date, 1);
+    data.start_date = addDays(data.start_date, 1);
+    if (data.type == "Free Ship") data.discountValue = 0;
     try {
       await ManagerVoucherAPI.add(data);
       toast.success("Thêm mã giảm giá thành công");

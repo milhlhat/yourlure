@@ -45,7 +45,17 @@ let FormatUtils = {
   getShipping() {
     return 25000;
   },
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  },
+  minusDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+  }
 };
-export const { convertToVND, totalPrice, formatDate, getStatus, getShipping } =
+export const { convertToVND, totalPrice, formatDate, getStatus, getShipping,addDays,minusDays } =
   FormatUtils;
 export default FormatUtils;

@@ -21,6 +21,7 @@ import { uploadMultiFiles } from "../../../../api/manager-product-api";
 import DEFINELINK from "../../../../routes/define-link";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { date } from "yup/lib/locale";
+import { addDays } from "utils/format-string";
 
 function ManagerCampignEdit(props) {
   const dispatch = useDispatch();
@@ -78,22 +79,13 @@ function ManagerCampignEdit(props) {
       setValue("banner", response.banner);
       setValue("description", response.description);
       setValue("content", response.content);
-      // setValue(
-      //   "startDate",
-
-      //   response.startDate ? response.startDate.substr(0, 10) : ""
-      // );
       setValue(
-        "biginDate",
+        "startDate",
 
         response.startDate ? response.startDate.substr(0, 10) : ""
       );
-      // setValue(
-      //   "endDate",
-      //   response.endDate ? response.endDate.substr(0, 10) : ""
-      // );
       setValue(
-        "finishDate",
+        "endDate",
         response.endDate ? response.endDate.substr(0, 10) : ""
       );
       setValue("imgList", response.imageCollection);
@@ -110,7 +102,8 @@ function ManagerCampignEdit(props) {
 
 
   const onsubmit = async (data) => {
-    data={...data,endDate:data.finishDate,startDate:data.biginDate}
+    data.endDate= addDays(data.endDate,1);
+    data.startDate= addDays(data.startDate,1);
     try {
       if (data.newImages && data.newImages.length > 0) {
         const fileLinks = await uploadMultiFiles(data.newImages);
@@ -154,14 +147,13 @@ function ManagerCampignEdit(props) {
                       </td>
                       <td>
                         <YlInputFormHook
-                          name={"biginDate"}
+                          name={"startDate"}
                           isRequired={true}
                           label={"Ngày bắt đầu"}
                           type="date"
                           methods={methods}
                         />
                         
-                        {/* <input className="form-control"  {...register("biginDate")} type="date" /> */}
                       </td>
                     </tr>
                     <tr>
@@ -176,13 +168,12 @@ function ManagerCampignEdit(props) {
                       </td>
                       <td>
                         <YlInputFormHook
-                          name={"finishDate"}
+                          name={"endDate"}
                           isRequired={true}
                           label={"Ngày kết thúc"}
                           type="date"
                           methods={methods}
                         />
-                        {/* <input className="form-control" {...register("finishDate")} type="date" /> */}
                       </td>
                     </tr>
                     <tr>

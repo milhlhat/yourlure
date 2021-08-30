@@ -72,7 +72,11 @@ function Payment(props) {
       setDiscount(disCost);
     }
     if (code.type === "Free Ship") {
-      setShipping(0);
+      setDiscount(
+        shipping > totalPrice(cartData)
+          ? totalPrice(cartData)
+          : shipping
+      );
       toast.success(`Mã giảm giá hợp lệ`);
     }
     if (code.type === "Giá trị") {
@@ -248,15 +252,15 @@ function Payment(props) {
                     <input
                       className="form-control"
                       onChange={(e) => setDiscountValue(e.target.value)}
-                      onBlur={(e)=>{
-                        setDiscountValue(e.target.value.trim())
+                      onBlur={(e) => {
+                        setDiscountValue(e.target.value.trim());
                       }}
                       type="text"
                       id="voucher"
                       value={discountValue ? discountValue : ""}
                       disabled={discount > 0}
                     />
-                    {discount > 0 ? (
+                    {discount > 0 || shipping === 0 ? (
                       <>
                         <div onClick={onDiscountDelete}>
                           <YLButton variant="danger" type="button">

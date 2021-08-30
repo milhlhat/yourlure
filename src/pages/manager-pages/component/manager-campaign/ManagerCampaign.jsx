@@ -14,7 +14,7 @@ import { setIsBack } from "store/back-action/back-action";
 import "./scss/manager-campaign.scss";
 import { toast } from "react-toastify";
 import ManagerSort from "../sort/ManagerSort";
-import { formatDate } from "../../../../utils/format-string";
+import { formatDate, minusDays } from "../../../../utils/format-string";
 import DEFINELINK from "../../../../routes/define-link";
 
 function ManagerCampaign(props) {
@@ -175,8 +175,8 @@ function ManagerCampaign(props) {
                 >
                   <td>{(activePage - 1) * totalItem + i + 1}</td>
                   <td>{item?.banner ? item?.banner : "-"}</td>
-                  <td>{item.startDate ? formatDate(item.startDate) : "-"}</td>
-                  <td>{item.endDate ? formatDate(item.endDate) : "-"}</td>
+                  <td>{item.startDate ? formatDate(minusDays(item.startDate,1)) : "-"}</td>
+                  <td>{item.endDate ? formatDate(minusDays(item.endDate,1)) : "-"}</td>
                   <td
                     className={"item-action"}
                     onClick={(event) => event.stopPropagation()}

@@ -12,6 +12,7 @@ import {
 } from "./ManagerVoucherAddNew";
 import { toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { addDays } from "utils/format-string";
 
 function ManagerVoucherEdit(props) {
   const voucherId = props.match.params.id;
@@ -44,8 +45,9 @@ function ManagerVoucherEdit(props) {
   }, [voucherId, reset]);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
+    data.end_date= addDays(data.end_date,1);
+    data.start_date= addDays(data.start_date,1);
+    if (data.type == "Free Ship") data.discountValue = 0;
     try {
       await ManagerVoucherAPI.update(data, voucherId);
       toast.success("Sửa mã giảm giá thành công");

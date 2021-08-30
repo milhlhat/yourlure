@@ -11,7 +11,7 @@ import Pagination from "react-js-pagination";
 import { useHistory, useLocation } from "react-router-dom";
 
 import "./scss/manager-discount-voucher.scss";
-import { convertToVND, formatDate } from "../../../../utils/format-string";
+import { convertToVND, formatDate, minusDays } from "../../../../utils/format-string";
 import { toast } from "react-toastify";
 import { TYPE_OPTION } from "./ManagerVoucherAddNew";
 import ManagerSort from "../sort/ManagerSort";
@@ -77,7 +77,6 @@ function ManagerVoucher() {
   }
 
   const handleDelete = async (id) => {
-    console.log(id);
     try {
       const response = await ManagerVoucherAPI.delete(id);
       if (!response) throw response.error;
@@ -119,7 +118,6 @@ function ManagerVoucher() {
     }
   };
   const getValueDiscount = (type, value, maxValue) => {
-    console.log("max", type, maxValue);
     switch (type) {
       case TYPE_OPTION[2]:
         // if (maxValue && maxValue > value) {
@@ -195,8 +193,8 @@ function ManagerVoucher() {
                     )}
                   </td>
                   <td>{item.code || "-"}</td>
-                  <td>{item.start_date ? formatDate(item.start_date) : "-"}</td>
-                  <td>{item.end_date ? formatDate(item.end_date) : "-"}</td>
+                  <td>{item.start_date ? formatDate(minusDays(item.start_date,1)) : "-"}</td>
+                  <td>{item.end_date ? formatDate(minusDays(item.end_date,1)) : "-"}</td>
                   <td>
                     <td className="d-flex float-end">
                       <img
