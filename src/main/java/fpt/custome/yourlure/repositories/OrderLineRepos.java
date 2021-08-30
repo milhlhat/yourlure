@@ -10,7 +10,7 @@ public interface OrderLineRepos extends JpaRepository<OrderLine, Long> {
 
     List<OrderLine> findByOrder_OrderId(Long id);
 
-    List<OrderLine> findAllByProductId(Long id);
+    OrderLine findByProductId(Long id);
 
     OrderLine findByVariantId(Long id);
 
