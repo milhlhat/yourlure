@@ -10,20 +10,17 @@ import fpt.custome.yourlure.entity.customizemodel.CustomPrice;
 import fpt.custome.yourlure.entity.customizemodel.CustomizeModel;
 import fpt.custome.yourlure.repositories.*;
 import fpt.custome.yourlure.security.JwtTokenProvider;
-import fpt.custome.yourlure.security.exception.CustomException;
 import fpt.custome.yourlure.service.OrderService;
 import fpt.custome.yourlure.service.OtpService;
 import fpt.custome.yourlure.service.ProductService;
 import fpt.custome.yourlure.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -531,10 +528,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Optional<AdminOrderDtoOut> getAll(String keyword, String typeSearch, Pageable pageable) {
 
-        try {
-            Page<Order> list = orderRepos.findAllByReceiverNameContainsIgnoreCase(keyword, pageable);
+            Page<Order> list = orderRepos.findAllOrder("%"+keyword.trim()+"%", pageable);
             if (list.getContent().isEmpty()) {
-                throw new CustomException("Không tìm thấy đơn hàng nào", HttpStatus.NOT_FOUND);
+                throw new ValidationException("Không tìm thấy đơn hàng nào");
             } else {
                 // map data vao AdminOrderDtoOut.OrderDtoOut
                 List<AdminOrderDtoOut.OrderDtoOut> orderDtoOuts = mapCustomData(list.getContent());
@@ -546,11 +542,6 @@ public class OrderServiceImpl implements OrderService {
 
                 return Optional.of(result);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
     }
 
     @Override

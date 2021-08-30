@@ -26,9 +26,18 @@ public class AdminOrderControllerImpl implements AdminOrderController {
 
     @Override
     public ResponseEntity<Object> findAll(AdminFilterDtoInput filter) {
-        Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), filter.getTypeSearch(), PageRequest.of(filter.getPage(),
-                filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            Optional<AdminOrderDtoOut> result = orderService.getAll(filter.getKeyword(), filter.getTypeSearch(), PageRequest.of(filter.getPage(),
+                    filter.getLimit(), filter.getIsAsc() ? Sort.by(filter.getSortBy()).ascending() : Sort.by(filter.getSortBy()).descending()));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (ValidationException validationException) {
+            System.out.println(validationException.getMessage());
+            return new ResponseEntity<>(validationException.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>("Lỗi hệ thống!", HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
     @Override
